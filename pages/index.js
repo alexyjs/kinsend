@@ -1,60 +1,31 @@
 import Head from 'next/head'
 import clientPromise from '../lib/mongodb'
 
-export default function Home({ isConnected }) {
+export default function Home({ isConnected, listingsAndReviews }) {
   return (
     <div className="container">
       <Head>
-        <title>Create Next App</title>
+        <title>Listings And Reviews</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
         <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js with MongoDB!</a>
+          Listings And Reviews
         </h1>
 
-        {isConnected ? (
-          <h2 className="subtitle">You are connected to MongoDB</h2>
-        ) : (
-          <h2 className="subtitle">
-            You are NOT connected to MongoDB. Check the <code>README.md</code>{' '}
-            for instructions.
-          </h2>
-        )}
-
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
+        {
+          !isConnected && <h2 className="subtitle">Getting Listings And Reviews data</h2>
+        }
 
         <div className="grid">
-          <a href="https://nextjs.org/docs" className="card">
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className="card">
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="card"
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="card"
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+          {
+            listingsAndReviews.map(lItem => {
+              return   <a href={lItem.listing_url} key={lItem._id} className="card">
+                <h3>{lItem.name}</h3>
+              </a>
+            })
+          }
         </div>
       </main>
 
@@ -158,13 +129,13 @@ export default function Home({ isConnected }) {
           justify-content: center;
           flex-wrap: wrap;
 
-          max-width: 800px;
+          max-width: 100%;
           margin-top: 3rem;
         }
 
         .card {
           margin: 1rem;
-          flex-basis: 45%;
+          flex-basis: 25%;
           padding: 1.5rem;
           text-align: left;
           color: inherit;
@@ -224,18 +195,20 @@ export default function Home({ isConnected }) {
 
 export async function getServerSideProps(context) {
   try {
-    await clientPromise
+    // await clientPromise
     // `await clientPromise` will use the default database passed in the MONGODB_URI
     // However you can use another database (e.g. myDatabase) by replacing the `await clientPromise` with the folloing code:
     //
-    // `const client = await clientPromise`
-    // `const db = client.db("myDatabase")`
+    const client = await clientPromise
+    const db = client.db("sample_airbnb")
     //
     // Then you can execute queries against your database like so:
     // db.find({}) or any of the MongoDB Node Driver commands
+    let listingsAndReviews = await db.collection("listingsAndReviews").find({}).toArray();
+    listingsAndReviews = JSON.parse(JSON.stringify(listingsAndReviews));
 
     return {
-      props: { isConnected: true },
+      props: { isConnected: true, listingsAndReviews },
     }
   } catch (e) {
     console.error(e)
