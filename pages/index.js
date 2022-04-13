@@ -1,21 +1,62 @@
-import Button from "@material-ui/core/Button";
 // import clientPromise from '../lib/mongodb'
+import {Button} from '../components/primitives/Button'
+import {Input, SearchInput} from '../components/primitives/Input'
+import {Select} from '../components/primitives/Select'
+import {Checkbox} from '../components/primitives/Checkbox'
+import {Radio} from '../components/primitives/Radio'
+import {Switch} from '../components/primitives/Switch'
+import {
+  KeyboardDateTimePicker,
+} from '@material-ui/pickers';
 
-export default function Home({ isConnected, listingsAndReviews }) {
-  return (<>Home page
-    <Button variant="outlined">Default</Button>
-    <Button variant="outlined" color="primary">
-      Primary
-    </Button>
-    <Button variant="outlined" color="secondary">
-      Secondary
-    </Button>
-    <Button variant="outlined" disabled>
-      Disabled
-    </Button>
-    <Button variant="outlined" color="primary" href="#outlined-buttons">
-      Link
-    </Button>
+export default function Home({isConnected, listingsAndReviews}) {
+  return (<>
+    <div>
+      <Button variant="outlined" color="primary">
+        Choose start trigger
+      </Button>
+    </div>
+    <br/>
+    <div>
+      <Input placeholder={'First name'}/>
+    </div>
+    <br/>
+    <div>
+      <Input rows={4} multiline placeholder={'Send new messenge ...'}/>
+    </div>
+
+    <br/>
+    <div>
+      <KeyboardDateTimePicker
+        variant="inline"
+        margin="normal"
+      />
+    </div>
+
+    <br/>
+    <div>
+      <Radio checked/>
+    </div>
+
+    <br/>
+    <div>
+      <Checkbox checked/>
+    </div>
+
+    <br/>
+    <div>
+      <Switch checked/>
+    </div>
+
+    <br/>
+    <div>
+      <SearchInput/>
+    </div>
+
+    <br/>
+    <div>
+      <Select options={[{id: 1, value: '1', label: 'label'}]} inputProps={{placeholder: 'Choose tag'}}/>
+    </div>
   </>)
 }
 
@@ -34,12 +75,12 @@ export async function getServerSideProps(context) {
     // listingsAndReviews = JSON.parse(JSON.stringify(listingsAndReviews));
 
     return {
-      props: { isConnected: true, listingsAndReviews: [] },
+      props: {isConnected: true, listingsAndReviews: []},
     }
   } catch (e) {
     console.error(e)
     return {
-      props: { isConnected: false },
+      props: {isConnected: false},
     }
   }
 }
