@@ -8,6 +8,8 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 
+import MuiSnackbarProvider from "../infrastructure/providers/MuiSnackbarProvider";
+
 export default function MyApp({Component, pageProps}) {
   return <>
     <Head>
@@ -18,7 +20,9 @@ export default function MyApp({Component, pageProps}) {
       <GlobalStyle />
       <MuiThemeProvider theme={AppTheme}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <Component {...pageProps} />
+          <MuiSnackbarProvider>
+            <Component {...pageProps} />
+          </MuiSnackbarProvider>
         </MuiPickersUtilsProvider>
       </MuiThemeProvider>
     </StylesProvider>
