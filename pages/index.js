@@ -5,16 +5,63 @@ import {Select} from '../components/primitives/Select'
 import {Checkbox} from '../components/primitives/Checkbox'
 import {Radio} from '../components/primitives/Radio'
 import {Switch} from '../components/primitives/Switch'
+import * as React from "react";
+
+import {Typography} from '../components/primitives/Typography'
+import {Dialog, DialogTitle, DialogActions, DialogContent} from '../components/primitives/Dialog'
+
 import {
   KeyboardDateTimePicker,
 } from '@material-ui/pickers';
+import useNotification from "../infrastructure/hooks/useNotification";
 
 export default function Home({isConnected, listingsAndReviews}) {
+  const [showModal, setShowModal] = React.useState(false)
+  const { notifySuccess, notifyError, notifyWarning } = useNotification();
+
   return (<>
     <div>
-      <Button variant="outlined" color="primary">
-        Choose start trigger
+      <Button variant="outlined" color="primary" onClick={() => setShowModal(true)}>
+        Show Modal
       </Button>
+      <br />
+      <Button variant="outlined" color="primary" onClick={() => notifySuccess("Success")}>
+        Show Success
+      </Button>
+      <br />
+      <Button variant="outlined" color="primary" onClick={() => notifyError("Error")}>
+        Show Error
+      </Button>
+      <br />
+      <Button variant="outlined" color="primary" onClick={() => notifyWarning("Warning")}>
+        Show Warning
+      </Button>
+
+      <Dialog onClose={() => setShowModal(false)} aria-labelledby="customized-dialog-title" open={showModal}>
+        <DialogTitle id="customized-dialog-title" onClose={() => setShowModal(false)}>
+          Modal title
+        </DialogTitle>
+        <DialogContent dividers>
+          <Typography gutterBottom>
+            Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
+            in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+          </Typography>
+          <Typography gutterBottom>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
+            lacus vel augue laoreet rutrum faucibus dolor auctor.
+          </Typography>
+          <Typography gutterBottom>
+            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
+            scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
+            auctor fringilla.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={() => setShowModal(false)} color="primary">
+            Save changes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
     <br/>
     <div>
