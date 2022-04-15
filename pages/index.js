@@ -77,6 +77,7 @@ export default function Home({isConnected, listingsAndReviews}) {
       <KeyboardDateTimePicker
         variant="inline"
         margin="normal"
+        onChange={() => {}}
       />
     </div>
 
