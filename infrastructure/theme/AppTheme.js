@@ -1,7 +1,13 @@
 import {createTheme} from "@material-ui/core";
+
+const Palette = {
+  primaryColor: '#D15D36',
+  textPrimaryColor: '#000000',
+}
+
 export const AppTheme = createTheme({
   datePicker: {
-    selectColor: '#D15D36',
+    selectColor: Palette.primaryColor,
   },
   overrides: {
     MuiOutlinedInput: {
@@ -10,7 +16,7 @@ export const AppTheme = createTheme({
         borderColor: '#DCDCDC',
         color: '#707070',
         '&:hover': {
-          color: '#000000',
+          color: Palette.textPrimaryColor,
           fontWeight: 700
         }
       }
@@ -18,7 +24,7 @@ export const AppTheme = createTheme({
     MuiButton: {
       outlinedPrimary: {
         '&:hover': {
-          backgroundColor: '#D15D36',
+          backgroundColor: Palette.primaryColor,
           color: 'white',
           fontWeight: 700
         }
@@ -27,13 +33,13 @@ export const AppTheme = createTheme({
   },
   palette: {
     primary: {
-      main: '#D15D36',
+      main: Palette.primaryColor,
     },
     secondary: {
-      main: '#000000',
+      main: Palette.textPrimaryColor,
     },
     text: {
-      primary: '#000000',
+      primary: Palette.textPrimaryColor,
       disabled: '#7B7B7B',
     },
   }, typography: {
