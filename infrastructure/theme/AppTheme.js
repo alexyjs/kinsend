@@ -25,7 +25,7 @@ export const AppTheme = createTheme({
       outlinedPrimary: {
         '&:hover': {
           backgroundColor: Palette.primaryColor,
-          color: 'white',
+          color: '#FAFAFA',
           fontWeight: 700
         }
       }
