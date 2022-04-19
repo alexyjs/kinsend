@@ -5,6 +5,22 @@ const Palette = {
   textPrimaryColor: '#000000',
 }
 
+
+// '&:hover': {
+//   backgroundColor: '#F1F2F7',
+//     color: '#FAFAFA',
+//     fontWeight: 700,
+//     border: `1px solid #DCDCDC`,
+//     boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.25)'
+// },
+// '&:focus': {
+//   backgroundColor: '#F1F2F7',
+//     color: '#FAFAFA',
+//     fontWeight: 700,
+//     border: `1px solid #DCDCDC`,
+//     boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.25)'
+// }
+
 export const AppTheme = createTheme({
   datePicker: {
     selectColor: Palette.primaryColor,
@@ -13,11 +29,21 @@ export const AppTheme = createTheme({
     MuiOutlinedInput: {
       root: {
         backgroundColor: '#F1F2F7',
-        borderColor: '#DCDCDC',
         color: '#707070',
+        '& .MuiOutlinedInput-notchedOutline': {
+          borderColor: '#DCDCDC !important',
+        },
         '&:hover': {
-          color: Palette.textPrimaryColor,
-          fontWeight: 700
+          color: '#000000',
+          fontWeight: 700,
+          border: `1px solid #DCDCDC !important`,
+          boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.25)'
+        },
+        '&.Mui-focused': {
+          color: '#000000',
+          fontWeight: 700,
+          border: `1px solid #DCDCDC !important`,
+          boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.25)'
         }
       }
     },
