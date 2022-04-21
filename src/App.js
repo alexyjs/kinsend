@@ -1,5 +1,6 @@
 import './styles/antd.less'
 import './styles/tailwind.css'
+import './App.less'
 import { Routes, Link, Route } from 'react-router-dom'
 import SignUp from './pages/SignUp'
 import Home from './pages/Home'
@@ -9,7 +10,7 @@ const { Header } = Layout
 
 function App() {
   return (
-    <div>
+    <main>
       <Header>
         <Menu theme='dark' mode="horizontal" defaultSelectedKeys={['mail']}>
           <Menu.Item key="home">
@@ -28,7 +29,7 @@ function App() {
         <Route path="sign-up" element={<SignUp />} />
         <Route path="ui-kit" element={<UIKit />} />
       </Routes>
-    </div>
+    </main>
   )
 }
 

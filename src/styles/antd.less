@@ -1,6 +1,8 @@
 @import '~antd/dist/antd.less';
 
+@font-family: "Montserrat", sans-serif;
 @black-color: #000;
+@gray-color: #707070;
 @kindsend-primary-color: #D15D36;
 @primary-color: #D15D36;
 
@@ -62,10 +64,40 @@
 // @btn-group-border: @primary-5;
 
 // @btn-link-hover-bg: @primary-color;
-@btn-text-hover-bg: @primary-color;
+@btn-text-hover-bg: transparent;
 
+.ant-btn-text {
+  color: #707070
+}
 .ant-btn-primary:hover {
   color: @text-white;
+}
+
+
+
+
+
+// Form
+// ---
+// @label-required-color: @highlight-color;
+// @label-color: @heading-color;
+// @form-warning-input-bg: @input-bg;
+// @form-item-margin-bottom: 24px;
+// @form-item-trailing-colon: true;
+// @form-vertical-label-padding: 0 0 8px;
+// @form-vertical-label-margin: 0;
+// @form-item-label-font-size: @font-size-base;
+// @form-item-label-height: @input-height-base;
+// @form-item-label-colon-margin-right: 8px;
+// @form-item-label-colon-margin-left: 2px;
+// @form-error-input-bg: @input-bg;
+
+.ant-form-item-label label{
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 40px;
+  letter-spacing: 0.155em;
 }
 
 // Input
