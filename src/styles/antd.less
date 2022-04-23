@@ -69,8 +69,22 @@
 .ant-btn-text {
   color: #707070
 }
+.ant-btn-primary:focus:not(:hover) {
+  background-color: inherit
+}
 .ant-btn-primary:hover {
   color: @text-white;
+}
+
+.ant-btn-loading {
+  &:hover {
+    background-color: transparent;
+    color: @primary-color;
+  }
+}
+
+.ant-btn > .ant-btn-loading-icon .anticon {
+  vertical-align: text-top;
 }
 
 
