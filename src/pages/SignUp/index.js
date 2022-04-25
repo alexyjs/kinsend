@@ -9,7 +9,7 @@ import {
   Radio,
   Row,
   Space,
-  Typography
+  Typography,
 } from 'antd'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
@@ -128,6 +128,14 @@ const SignUp = () => {
                           required: true,
                           message: 'This field is required',
                         },
+                        {
+                          min: 3,
+                          message: 'Fist name must be minimum 3 characters.',
+                        },
+                        {
+                          max: 50,
+                          message: 'Fist name must be less than 50 characters.',
+                        },
                       ]}
                     >
                       <Input size="large" placeholder="Adam " />
@@ -141,6 +149,14 @@ const SignUp = () => {
                         {
                           required: true,
                           message: 'This field is required',
+                        },
+                        {
+                          min: 3,
+                          message: 'Last name must be minimum 3 characters.',
+                        },
+                        {
+                          max: 50,
+                          message: 'Last name must be less than 50 characters.',
                         },
                       ]}
                     >
@@ -176,10 +192,6 @@ const SignUp = () => {
                       name="phoneNumber"
                       label="Phone"
                       rules={[
-                        {
-                          required: true,
-                          message: 'This field is required',
-                        },
                       ]}
                     >
                       <Input size="large" placeholder="" />

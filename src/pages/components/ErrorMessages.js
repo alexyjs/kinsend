@@ -7,7 +7,7 @@ const ErrorMessages = ({ errors }) => {
   }
   return (
     _.map(_.castArray(errors), (message, index) => {
-      return <Typography.Text key={index} type="danger">{_.upperFirst(message)}</Typography.Text>
+      return <Typography.Text className="block" key={index} type="danger">{_.upperFirst(message)}</Typography.Text>
     })
   )
 }
