@@ -4,19 +4,25 @@ import _ from 'lodash'
 import { call, put, takeLatest } from 'redux-saga/effects'
 
 export const createUserAsync = createAction('user/createUserAsync')
-export async function createUserAPI(payload) {
+export const loginAsync = createAction('user/loginAsync')
+
+const getHeaders = (headers) => {
+  return {
+    'Content-Type': 'application/json',
+    'x-api-key': process.env.REACT_APP_API_KEY,
+    ...headers,
+  }
+}
+
+const handleCallAPI = async (payload) => {
   try {
     const result = await axios({
       method: 'post',
-      url: `${process.env.REACT_APP_API_BASE_URL}/users`,
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.REACT_APP_API_KEY,
-      },
-      data: payload,
+      headers: getHeaders(),
+      ...payload,
     })
 
-    return result
+    return { response: _.get(result, 'data') }
   } catch (e) {
     return {
       errors: _.get(e, 'response.data.message'),
@@ -24,6 +30,23 @@ export async function createUserAPI(payload) {
   }
 }
 
+export async function createUserAPI(data) {
+  const payload = {
+    url: `${process.env.REACT_APP_API_BASE_URL}/users`,
+    data,
+  }
+  return handleCallAPI(payload)
+}
+
+export async function loginAPI(data) {
+  const payload = {
+    url: `${process.env.REACT_APP_API_BASE_URL}/auths`,
+    data,
+  }
+
+  return handleCallAPI(payload)
+}
+// saga
 export function* createUserSaga(action) {
   const { response, errors } = yield call(createUserAPI, action.payload)
   if (response) {
@@ -33,14 +56,28 @@ export function* createUserSaga(action) {
   }
 }
 
+export function* loginSaga(action) {
+  const { response, errors } = yield call(loginAPI, action.payload)
+  if (response) {
+    yield put(login(response))
+  } else {
+    yield put(failed(errors))
+  }
+}
+
 export function* userSaga() {
   yield takeLatest(createUserAsync, createUserSaga)
+}
+
+export function* watchLoginSaga() {
+  yield takeLatest(loginAsync, loginSaga)
 }
 
 const initialState = {
   isLoading: false,
   user: null,
   errors: [],
+  auth: null,
 }
 
 export const userSlice = createSlice({
@@ -55,16 +92,28 @@ export const userSlice = createSlice({
       state.isLoading = false
       state.errors = action.payload
     },
+    login: (state, action) => {
+      state.isLoading = false
+      state.auth = action.payload
+    },
+    failed: (state, action) => {
+      state.isLoading = false
+      state.errors = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(createUserAsync, (state) => {
       state.isLoading = true
       state.errors = []
     })
+    builder.addCase(loginAsync, (state) => {
+      state.isLoading = true
+      state.errors = []
+    })
   },
 })
 
-export const { createUser, createUserFailed } = userSlice.actions
+export const { createUser, createUserFailed, login, failed } = userSlice.actions
 
 export const selectUser = (state) => state.user
 export const selectUserError = (state) => state.errors
@@ -74,6 +123,13 @@ export const selectCreateUser = ({ users }) => {
     isLoading: users.isLoading,
     errors: users.errors,
     user: users.user,
+  }
+}
+export const selectAuth = ({ users }) => {
+  return {
+    isLoading: users.isLoading,
+    errors: users.errors,
+    auth: users.auth,
   }
 }
 

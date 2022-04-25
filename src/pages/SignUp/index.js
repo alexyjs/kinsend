@@ -63,7 +63,12 @@ const SignUp = () => {
   }
 
   useEffect(() => {
+    console.log('user', user)
     if (user) {
+      notification.success({
+        title: 'Action Completed',
+        message: `The user has been created.`,
+      })
       swiperRef.current.swiper.slideNext()
     }
   }, [user])
@@ -78,7 +83,7 @@ const SignUp = () => {
   }, [errors])
 
   return (
-    <div className="grid place-items-center h-screen">
+    <div className="grid place-items-center min-h-screen">
       <div className="container mx-auto px-4">
         <Title className="text-center">Sign Up for KinSend</Title>
         <Typography className={`mb-8 text-center ${isEnd ? 'invisible' : ''}`}>
@@ -90,19 +95,7 @@ const SignUp = () => {
             </span>
           </p>
         </Typography>
-        <Form
-          layout="vertical"
-          onFinish={handleFinish}
-          initialValues={{
-            firstName: 'name',
-            lastName: 'sadf',
-            confirmPassword: '1234',
-            password: '1234',
-            email: 'emar@gmail.com',
-            phoneNumber: '12341',
-            oneSocial: 'sadfasdf',
-          }}
-        >
+        <Form layout="vertical" onFinish={handleFinish} initialValues={{}}>
           <ErrorMessages errors={errors} />
 
           <Swiper
@@ -188,13 +181,8 @@ const SignUp = () => {
                     </Form.Item>
                   </Col>
                   <Col sm={12} span={24}>
-                    <Form.Item
-                      name="phoneNumber"
-                      label="Phone"
-                      rules={[
-                      ]}
-                    >
-                      <Input size="large" placeholder="" />
+                    <Form.Item name="phoneNumber" label="Phone" rules={[]}>
+                      <Input size="large" placeholder="Enter Mobile Number" />
                     </Form.Item>
                   </Col>
                   <Col span={24}>

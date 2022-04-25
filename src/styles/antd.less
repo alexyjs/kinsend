@@ -1,13 +1,13 @@
 @import '~antd/dist/antd.less';
 
-@font-family: "Montserrat", sans-serif;
+@font-family: 'Montserrat', sans-serif;
 @black-color: #000;
 @gray-color: #707070;
-@kindsend-primary-color: #D15D36;
-@primary-color: #D15D36;
+@kindsend-primary-color: #d15d36;
+@primary-color: #d15d36;
 
-@secondary-color: #7B7B7B;
-@text-white: #FAFAFA;
+@secondary-color: #7b7b7b;
+@text-white: #fafafa;
 
 // Buttons
 @btn-font-weight: 700;
@@ -66,12 +66,18 @@
 // @btn-link-hover-bg: @primary-color;
 @btn-text-hover-bg: transparent;
 
+.ant-btn {
+  text-transform: uppercase;
+}
+
 .ant-btn-text {
-  color: #707070
+  color: #707070;
 }
+
 .ant-btn-primary:focus:not(:hover) {
-  background-color: inherit
+  background-color: inherit;
 }
+
 .ant-btn-primary:hover {
   color: @text-white;
 }
@@ -86,10 +92,6 @@
 .ant-btn > .ant-btn-loading-icon .anticon {
   vertical-align: text-top;
 }
-
-
-
-
 
 // Form
 // ---
@@ -106,7 +108,7 @@
 // @form-item-label-colon-margin-left: 2px;
 // @form-error-input-bg: @input-bg;
 
-.ant-form-item-label label{
+.ant-form-item-label label {
   text-transform: uppercase;
   font-weight: 500;
   font-size: 14px;
@@ -139,22 +141,55 @@
 @input-placeholder-color: #707070;
 @input-color: @black-color;
 // @input-icon-color: @input-color;
-@input-border-color: #DCDCDC;
-@input-bg: #F1F2F7;
+@input-border-color: #dcdcdc;
+@input-bg: #f1f2f7;
 // @input-number-hover-border-color: @input-hover-border-color;
 // @input-number-handler-active-bg: #f4f4f4;
 // @input-number-handler-hover-bg: @primary-5;
 // @input-number-handler-bg: @component-background;
 // @input-number-handler-border-color: @border-color-base;
 // @input-addon-bg: @background-color-light;
-@input-hover-border-color: #DCDCDC;
+@input-hover-border-color: #dcdcdc;
 // @input-disabled-bg: @disabled-bg;
 // @input-outline-offset: 0 0;
 // @input-icon-hover-color: fade(@black, 85%);
 // @input-disabled-color: @disabled-color;
 .ant-input:hover,
-.ant-input:focus, .ant-input-focused {
+.ant-input:focus,
+.ant-input-focused {
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);
   outline: 0;
-  border-color: #DCDCDC;
+  border-color: #dcdcdc;
 }
+
+// Divider
+// @divider-text-padding: 1em;
+// @divider-orientation-margin: 5%;
+@divider-color: #000;
+@divider-vertical-gutter: 36px;
+
+// Modal
+// --
+// @modal-header-padding-vertical: @padding-md;
+// @modal-header-padding-horizontal: @padding-lg;
+@modal-body-padding: 48px;
+// @modal-header-bg: @component-background;
+// @modal-header-padding: @modal-header-padding-vertical @modal-header-padding-horizontal;
+// @modal-header-border-width: @border-width-base;
+// @modal-header-border-style: @border-style-base;
+// @modal-header-title-line-height: 22px;
+// @modal-header-title-font-size: @font-size-lg;
+// @modal-header-border-color-split: @border-color-split;
+// @modal-header-close-size: 56px;
+// @modal-content-bg: @component-background;
+// @modal-heading-color: @heading-color;
+// @modal-close-color: @text-color-secondary;
+// @modal-footer-bg: transparent;
+// @modal-footer-border-color-split: @border-color-split;
+// @modal-footer-border-style: @border-style-base;
+// @modal-footer-padding-vertical: 10px;
+// @modal-footer-padding-horizontal: 16px;
+// @modal-footer-border-width: @border-width-base;
+// @modal-mask-bg: fade(@black, 45%);
+// @modal-confirm-body-padding: 32px 32px 24px;
+// @modal-confirm-title-font-size: @font-size-lg;
