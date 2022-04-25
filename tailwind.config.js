@@ -6,8 +6,8 @@ module.exports = {
     extend: {
       colors: {
         primary: '#D15D36',
-        gray: '#DCDCDC'
-
+        gray: '#DCDCDC',
+        'dark-gray': '#707070'
       },
       minWidth: {
         200: '200px'

@@ -39,7 +39,7 @@ const Login = () => {
 
   useEffect(() => {
     if (auth) {
-      navigate('/')
+      // navigate('/')
       notification.success({
         title: 'Action Completed',
         message: `Login successfully.`,

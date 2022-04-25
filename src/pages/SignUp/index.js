@@ -9,7 +9,7 @@ import {
   Radio,
   Row,
   Space,
-  Typography,
+  Typography
 } from 'antd'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
@@ -22,7 +22,7 @@ import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
 import SuccessIcon from '../../assets/svg/SuccessIcon'
 import { createUserAsync, selectCreateUser } from '../../redux/userReducer'
 import { EMAIL_REGEX, INFO_FROM } from '../../utils/constants'
-import { ErrorMessages } from '../components'
+import { ErrorMessages, InputPhone } from '../components'
 const { Title } = Typography
 const { Panel } = Collapse
 
@@ -63,7 +63,6 @@ const SignUp = () => {
   }
 
   useEffect(() => {
-    console.log('user', user)
     if (user) {
       notification.success({
         title: 'Action Completed',
@@ -121,14 +120,6 @@ const SignUp = () => {
                           required: true,
                           message: 'This field is required',
                         },
-                        {
-                          min: 3,
-                          message: 'Fist name must be minimum 3 characters.',
-                        },
-                        {
-                          max: 50,
-                          message: 'Fist name must be less than 50 characters.',
-                        },
                       ]}
                     >
                       <Input size="large" placeholder="Adam " />
@@ -143,14 +134,6 @@ const SignUp = () => {
                           required: true,
                           message: 'This field is required',
                         },
-                        {
-                          min: 3,
-                          message: 'Last name must be minimum 3 characters.',
-                        },
-                        {
-                          max: 50,
-                          message: 'Last name must be less than 50 characters.',
-                        },
                       ]}
                     >
                       <Input size="large" placeholder="Smith" />
@@ -161,10 +144,6 @@ const SignUp = () => {
                       name="email"
                       label="email"
                       rules={[
-                        {
-                          required: true,
-                          message: 'This field is required',
-                        },
                         {
                           validator(_, value) {
                             if (EMAIL_REGEX.test(value) || !value) {
@@ -182,20 +161,11 @@ const SignUp = () => {
                   </Col>
                   <Col sm={12} span={24}>
                     <Form.Item name="phoneNumber" label="Phone" rules={[]}>
-                      <Input size="large" placeholder="Enter Mobile Number" />
+                      <InputPhone />
                     </Form.Item>
                   </Col>
                   <Col span={24}>
-                    <Form.Item
-                      name="oneSocial"
-                      label="Social"
-                      rules={[
-                        {
-                          required: true,
-                          message: 'This field is required',
-                        },
-                      ]}
-                    >
+                    <Form.Item name="oneSocial" label="Social">
                       <Input size="large" placeholder="@kinsend.io" />
                     </Form.Item>
                   </Col>
@@ -208,9 +178,15 @@ const SignUp = () => {
                           required: true,
                           message: 'This field is required',
                         },
+                        {
+                          min: 3,
+                          message: 'Passworde must be minimum 6 characters.',
+                        },
                       ]}
                     >
                       <Input
+                        autoComplete="off"
+                        aria-autocomplete="off"
                         type="password"
                         size="large"
                         placeholder="********"
@@ -270,7 +246,7 @@ const SignUp = () => {
                   Tell Us More
                 </Title>
               </div>
-              <Collapse accordion expandIconPosition="right">
+              <Collapse className="my-4" accordion expandIconPosition="right">
                 <Panel header="How are you hear about KinSend?" key="1">
                   <Form.Item noStyle name="infoFrom">
                     <Checkbox.Group>
@@ -286,6 +262,8 @@ const SignUp = () => {
                     </Checkbox.Group>
                   </Form.Item>
                 </Panel>
+              </Collapse>
+              <Collapse className="my-4" accordion expandIconPosition="right">
                 <Panel
                   header="What are you looking to get out of KinSend?"
                   key="2"
@@ -317,6 +295,8 @@ const SignUp = () => {
                     </Space>
                   </Radio.Group>
                 </Panel>
+              </Collapse>
+              <Collapse className="my-4" accordion expandIconPosition="right">
                 <Panel header="What is the size of your audience?" key="3">
                   <Radio.Group name="size">
                     <Space direction="vertical">
@@ -366,7 +346,7 @@ const SignUp = () => {
                   </Typography>
                   <Typography className="text-center">
                     <span className="text-primary font-bold underline uppercase">
-                      resent emaol verification
+                      resent email verification
                     </span>
                   </Typography>
                 </Space>
