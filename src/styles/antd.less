@@ -1,0 +1,215 @@
+@import '~antd/dist/antd.less';
+
+@font-family: 'Montserrat', sans-serif;
+@black-color: #000;
+@gray-color: #707070;
+@kindsend-primary-color: #d15d36;
+@primary-color: #d15d36;
+
+@secondary-color: #7b7b7b;
+@text-white: #fafafa;
+
+// Buttons
+@btn-font-weight: 700;
+@btn-border-radius-base: 4px;
+// @btn-border-radius-sm: @border-radius-base;
+// @btn-border-width: @border-width-base;
+// @btn-border-style: @border-style-base;
+// @btn-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+// @btn-primary-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+// @btn-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+
+@btn-primary-color: @kindsend-primary-color;
+// @btn-primary-bg: transparentr;
+
+// @btn-default-color: @text-color;
+// @btn-default-bg: @component-background;
+// @btn-default-border: @border-color-base;
+
+// @btn-danger-color: #fff;
+// @btn-danger-bg: @error-color;
+// @btn-danger-border: @error-color;
+
+// @btn-disable-color: @disabled-color;
+// @btn-disable-bg: @disabled-bg;
+// @btn-disable-border: @border-color-base;
+
+// @btn-default-ghost-color: @component-background;
+// @btn-default-ghost-bg: transparent;
+// @btn-default-ghost-border: @component-background;
+
+@btn-font-size-lg: 18px;
+// @btn-font-size-sm: @font-size-base;
+// @btn-padding-horizontal-base: @padding-md - 1px;
+// @btn-padding-horizontal-lg: 8px;
+// @btn-padding-horizontal-sm: @padding-xs - 1px;
+
+// @btn-height-base: @height-base;
+@btn-height-lg: 56px;
+// @btn-height-sm: @height-sm;
+
+// @btn-line-height: 40px;
+
+// @btn-circle-size: @btn-height-base;
+// @btn-circle-size-lg: @btn-height-lg;
+// @btn-circle-size-sm: @btn-height-sm;
+
+// @btn-square-size: @btn-height-base;
+// @btn-square-size-lg: @btn-height-lg;
+// @btn-square-size-sm: @btn-height-sm;
+// @btn-square-only-icon-size: @font-size-base + 2px;
+// @btn-square-only-icon-size-sm: @font-size-base;
+// @btn-square-only-icon-size-lg: @btn-font-size-lg + 2px;
+
+// @btn-group-border: @primary-5;
+
+// @btn-link-hover-bg: @primary-color;
+@btn-text-hover-bg: transparent;
+
+.ant-btn {
+  text-transform: uppercase;
+}
+
+.ant-btn-text {
+  color: #707070;
+}
+
+.ant-btn-primary:focus:not(:hover) {
+  background-color: inherit;
+}
+
+.ant-btn-primary:hover {
+  color: @text-white;
+}
+
+.ant-btn-loading {
+  &:hover {
+    background-color: transparent;
+    color: @primary-color;
+  }
+}
+
+.ant-btn > .ant-btn-loading-icon .anticon {
+  vertical-align: text-top;
+}
+
+// Form
+// ---
+// @label-required-color: @highlight-color;
+// @label-color: @heading-color;
+// @form-warning-input-bg: @input-bg;
+// @form-item-margin-bottom: 24px;
+// @form-item-trailing-colon: true;
+// @form-vertical-label-padding: 0 0 8px;
+// @form-vertical-label-margin: 0;
+// @form-item-label-font-size: @font-size-base;
+// @form-item-label-height: @input-height-base;
+// @form-item-label-colon-margin-right: 8px;
+// @form-item-label-colon-margin-left: 2px;
+// @form-error-input-bg: @input-bg;
+
+.ant-form-item-label label {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 40px;
+  letter-spacing: 0.155em;
+}
+
+// Input
+// ---
+// @input-height-base: @height-base;
+@input-height-lg: 60px;
+// @input-height-sm: @height-sm;
+// @input-padding-horizontal: @control-padding-horizontal - 1px;
+// @input-padding-horizontal-base: @input-padding-horizontal;
+// @input-padding-horizontal-sm: @control-padding-horizontal-sm - 1px;
+@input-padding-horizontal-lg: 24px;
+// @input-padding-vertical-base: max(
+//   (round(((@input-height-base - @font-size-base * @line-height-base) / 2) * 10) / 10) -
+//     @border-width-base,
+//   3px
+// );
+// @input-padding-vertical-sm: max(
+//   (round(((@input-height-sm - @font-size-base * @line-height-base) / 2) * 10) / 10) -
+//     @border-width-base,
+//   0
+// );
+// @input-padding-vertical-lg: (
+//     ceil(((@input-height-lg - @font-size-lg * @line-height-base) / 2) * 10) / 10
+//   ) - @border-width-base;
+@input-placeholder-color: #707070;
+@input-color: @black-color;
+// @input-icon-color: @input-color;
+@input-border-color: #dcdcdc;
+@input-bg: #f1f2f7;
+// @input-number-hover-border-color: @input-hover-border-color;
+// @input-number-handler-active-bg: #f4f4f4;
+// @input-number-handler-hover-bg: @primary-5;
+// @input-number-handler-bg: @component-background;
+// @input-number-handler-border-color: @border-color-base;
+// @input-addon-bg: @background-color-light;
+@input-hover-border-color: #dcdcdc;
+// @input-disabled-bg: @disabled-bg;
+// @input-outline-offset: 0 0;
+// @input-icon-hover-color: fade(@black, 85%);
+// @input-disabled-color: @disabled-color;
+.ant-input:hover,
+.ant-input:focus,
+.ant-input-focused {
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);
+  outline: 0;
+  border-color: #dcdcdc;
+}
+
+// Divider
+// @divider-text-padding: 1em;
+// @divider-orientation-margin: 5%;
+@divider-color: #000;
+@divider-vertical-gutter: 36px;
+
+// Modal
+// --
+// @modal-header-padding-vertical: @padding-md;
+// @modal-header-padding-horizontal: @padding-lg;
+@modal-body-padding: 48px;
+// @modal-header-bg: @component-background;
+// @modal-header-padding: @modal-header-padding-vertical @modal-header-padding-horizontal;
+// @modal-header-border-width: @border-width-base;
+// @modal-header-border-style: @border-style-base;
+// @modal-header-title-line-height: 22px;
+// @modal-header-title-font-size: @font-size-lg;
+// @modal-header-border-color-split: @border-color-split;
+// @modal-header-close-size: 56px;
+// @modal-content-bg: @component-background;
+// @modal-heading-color: @heading-color;
+// @modal-close-color: @text-color-secondary;
+// @modal-footer-bg: transparent;
+// @modal-footer-border-color-split: @border-color-split;
+// @modal-footer-border-style: @border-style-base;
+// @modal-footer-padding-vertical: 10px;
+// @modal-footer-padding-horizontal: 16px;
+// @modal-footer-border-width: @border-width-base;
+// @modal-mask-bg: fade(@black, 45%);
+// @modal-confirm-body-padding: 32px 32px 24px;
+// @modal-confirm-title-font-size: @font-size-lg;
+
+// Collapse
+// ---
+// @collapse-header-padding: @padding-sm @padding-md;
+// @collapse-header-padding-extra: 40px;
+// @collapse-header-bg: @background-color-light;
+// @collapse-content-padding: @padding-md;
+// @collapse-content-bg: #F1F2F7;
+// @collapse-header-arrow-left: 16px;
+
+.ant-collapse-content {
+  background: #fff;
+}
+
+.ant-collapse {
+  background: #F1F2F7;
+}
+.ant-collapse > .ant-collapse-item {
+  border: 1px solid #dcdcdc;
+}
