@@ -4,13 +4,14 @@ import 'antd-country-phone-input/dist/index.css'
 import 'flagpack/dist/flagpack.css'
 import { Link, Route, Routes } from 'react-router-dom'
 import en from 'world_countries_lists/data/countries/en/world.json'
-import './App.less'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import UIKit from './pages/UIKit'
 import './styles/antd.less'
 import './styles/tailwind.css'
+import './App.less'
+
 const { Header } = Layout
 function App() {
   const getFlag = (short) => {

@@ -1,5 +1,6 @@
 import { Button, Col, Form, Modal, Row } from 'antd'
 import React from 'react'
+import { displayPhoneNumber } from '../../utils'
 
 const NumberAddedModal = ({
   visible,
@@ -22,7 +23,7 @@ const NumberAddedModal = ({
       <h3 className="font-bold text-center text-2xl mb-6">
         Your shiny new kinSend number
       </h3>
-      <h3 className="font-bold text-center text-xl mb-6">{phoneNumber}</h3>
+      <h3 className="font-bold text-center text-xl mb-6">{displayPhoneNumber(phoneNumber)}</h3>
 
       <p className="text-base text-dark-gray text-center mb-6">
         It was popularised in the 1960s with the release of Letraset sheets

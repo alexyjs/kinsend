@@ -1,5 +1,7 @@
 import { Button, Col, Form, Input, Modal, Row } from 'antd'
 import React from 'react'
+import { InputPhone } from '.'
+import { phoneValidator } from '../../utils'
 import { useModal } from '../hook/useModal'
 import CustomTag from './CustomTag'
 import NumberAddedModal from './NumberAddedModal'
@@ -32,13 +34,10 @@ const SelectNumberModal = ({ visible, handleOk, handleCancel }) => {
           name="phoneNumber"
           label="Phone"
           rules={[
-            {
-              required: true,
-              message: 'This field is required',
-            },
+            phoneValidator,
           ]}
         >
-          <Input size="large" placeholder="Enter Mobile Number" />
+          <InputPhone placeholder="Enter your phone" />
         </Form.Item>
 
         <div className="my-6">
@@ -74,8 +73,8 @@ const SelectNumberModal = ({ visible, handleOk, handleCancel }) => {
               </Button>
             </Form.Item>
             <Form.Item noStyle shouldUpdate>
-              {(getFieldValue) => {
-                const phoneNumber = getFieldValue('phonenumber')
+              {({ getFieldValue }) => {
+                const phoneNumber = getFieldValue('phoneNumber')
                 return (
                   <NumberAddedModal
                     handleCancel={close}

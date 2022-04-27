@@ -1,15 +1,15 @@
 import {
   Button,
+  Cascader,
   Checkbox,
   Col,
   Collapse,
   Form,
   Input,
   notification,
-  Radio,
   Row,
   Space,
-  Typography
+  Typography,
 } from 'antd'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
@@ -21,6 +21,7 @@ import 'swiper/css/pagination'
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
 import SuccessIcon from '../../assets/svg/SuccessIcon'
 import { createUserAsync, selectCreateUser } from '../../redux/userReducer'
+import { phoneValidator } from '../../utils'
 import { EMAIL_REGEX, INFO_FROM } from '../../utils/constants'
 import { ErrorMessages, InputPhone } from '../components'
 const { Title } = Typography
@@ -94,7 +95,17 @@ const SignUp = () => {
             </span>
           </p>
         </Typography>
-        <Form layout="vertical" onFinish={handleFinish} initialValues={{}}>
+        <Form
+          layout="vertical"
+          onFinish={handleFinish}
+          initialValues={{
+            phoneNumber: {
+              phone: undefined,
+              code: 1,
+              short: 'US',
+            },
+          }}
+        >
           <ErrorMessages errors={errors} />
 
           <Swiper
@@ -160,13 +171,22 @@ const SignUp = () => {
                     </Form.Item>
                   </Col>
                   <Col sm={12} span={24}>
-                    <Form.Item name="phoneNumber" label="Phone" rules={[]}>
+                    <Form.Item
+                      name="phoneNumber"
+                      label="Phone"
+                      rules={[phoneValidator]}
+                    >
                       <InputPhone />
                     </Form.Item>
                   </Col>
                   <Col span={24}>
                     <Form.Item name="oneSocial" label="Social">
-                      <Input size="large" placeholder="@kinsend.io" />
+                      {/* <Input size="large" placeholder="@kinsend.io" /> */}
+                      <Input
+                        size="large"
+                        // addonBefore={<SuccessIcon />}
+                        // defaultValue="mysite"
+                      />
                     </Form.Item>
                   </Col>
                   <Col sm={12} span={24}>
@@ -268,46 +288,46 @@ const SignUp = () => {
                   header="What are you looking to get out of KinSend?"
                   key="2"
                 >
-                  <Radio.Group name="what">
+                  <Checkbox.Group name="what">
                     <Space direction="vertical">
-                      <Radio value="1">
+                      <Checkbox value="1">
                         I would like to collect data on my customers and rurn
                         them into phone contacts
-                      </Radio>
-                      <Radio value="2">
+                      </Checkbox>
+                      <Checkbox value="2">
                         I would like to have the ability to send mass messages
                         to my contacts
-                      </Radio>
-                      <Radio value="3">
+                      </Checkbox>
+                      <Checkbox value="3">
                         I would like to convert an existing email list into text
-                      </Radio>
-                      <Radio value="4">
+                      </Checkbox>
+                      <Checkbox value="4">
                         I would like to sync my Shopify store and sell products
                         through text
-                      </Radio>
-                      <Radio value="5">
+                      </Checkbox>
+                      <Checkbox value="5">
                         I would like to manage RSVPs for events via text
-                      </Radio>
-                      <Radio value="6">
+                      </Checkbox>
+                      <Checkbox value="6">
                         I would like to supply my sales associates/employees
                         with their own KinSend Number
-                      </Radio>
+                      </Checkbox>
                     </Space>
-                  </Radio.Group>
+                  </Checkbox.Group>
                 </Panel>
               </Collapse>
               <Collapse className="my-4" accordion expandIconPosition="right">
                 <Panel header="What is the size of your audience?" key="3">
-                  <Radio.Group name="size">
+                  <Checkbox.Group name="size">
                     <Space direction="vertical">
                       <Space direction="vertical">
-                        <Radio value="1">0-1,000</Radio>
-                        <Radio value="2">5,000-10,000</Radio>
-                        <Radio value="3">10,000-20,000</Radio>
-                        <Radio value="4">20,000+</Radio>
+                        <Checkbox value="1">0-1,000</Checkbox>
+                        <Checkbox value="2">5,000-10,000</Checkbox>
+                        <Checkbox value="3">10,000-20,000</Checkbox>
+                        <Checkbox value="4">20,000+</Checkbox>
                       </Space>
                     </Space>
-                  </Radio.Group>
+                  </Checkbox.Group>
                 </Panel>
               </Collapse>
               <Row justify="end">

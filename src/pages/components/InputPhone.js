@@ -1,13 +1,17 @@
 import CountryPhoneInput from 'antd-country-phone-input'
-import { useState } from 'react'
 
+const DEFAULT_PHONE = {
+  phone: undefined,
+  code: 1,
+  short: 'US'
+}
 
-const PhoneInput = () => {
-  const [value, setValue] = useState({ short: 'US' })
-  console.log(value);
+const InputPhone = (props) => {
   return (
-    <CountryPhoneInput size='large' value={value} onChange={setValue}/>
+    <CountryPhoneInput size='large' {...props}/>
   )
 }
 
-export default PhoneInput
+
+
+export default InputPhone
