@@ -100,6 +100,9 @@ export const userSlice = createSlice({
       state.isLoading = false
       state.errors = action.payload
     },
+    reset: (state, action) => {
+      state = initialState;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(createUserAsync, (state) => {

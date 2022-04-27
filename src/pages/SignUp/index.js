@@ -1,15 +1,15 @@
 import {
   Button,
-  Cascader,
   Checkbox,
   Col,
   Collapse,
   Form,
   Input,
   notification,
+  Radio,
   Row,
   Space,
-  Typography,
+  Typography
 } from 'antd'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
@@ -19,11 +19,11 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
-import SuccessIcon from '../../assets/svg/SuccessIcon'
+import { SuccessIcon } from '../../assets/svg'
 import { createUserAsync, selectCreateUser } from '../../redux/userReducer'
 import { phoneValidator } from '../../utils'
 import { EMAIL_REGEX, INFO_FROM } from '../../utils/constants'
-import { ErrorMessages, InputPhone } from '../components'
+import { ErrorMessages, InputPhone, InputSocial} from '../components'
 const { Title } = Typography
 const { Panel } = Collapse
 
@@ -180,13 +180,17 @@ const SignUp = () => {
                     </Form.Item>
                   </Col>
                   <Col span={24}>
-                    <Form.Item name="oneSocial" label="Social">
-                      {/* <Input size="large" placeholder="@kinsend.io" /> */}
-                      <Input
-                        size="large"
-                        // addonBefore={<SuccessIcon />}
-                        // defaultValue="mysite"
-                      />
+                    <Form.Item
+                      name="oneSocial"
+                      label="Social"
+                      rules={[
+                        {
+                          required: true,
+                          message: 'This field is required',
+                        },
+                      ]}
+                    >
+                      <InputSocial />
                     </Form.Item>
                   </Col>
                   <Col sm={12} span={24}>
@@ -318,16 +322,16 @@ const SignUp = () => {
               </Collapse>
               <Collapse className="my-4" accordion expandIconPosition="right">
                 <Panel header="What is the size of your audience?" key="3">
-                  <Checkbox.Group name="size">
+                  <Radio.Group name="size">
                     <Space direction="vertical">
                       <Space direction="vertical">
-                        <Checkbox value="1">0-1,000</Checkbox>
-                        <Checkbox value="2">5,000-10,000</Checkbox>
-                        <Checkbox value="3">10,000-20,000</Checkbox>
-                        <Checkbox value="4">20,000+</Checkbox>
+                        <Radio value="1">0-1,000</Radio>
+                        <Radio value="2">5,000-10,000</Radio>
+                        <Radio value="3">10,000-20,000</Radio>
+                        <Radio value="4">20,000+</Radio>
                       </Space>
                     </Space>
-                  </Checkbox.Group>
+                  </Radio.Group>
                 </Panel>
               </Collapse>
               <Row justify="end">
