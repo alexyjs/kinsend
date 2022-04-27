@@ -22,7 +22,7 @@ import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
 import { SuccessIcon } from '../../assets/svg'
 import { createUserAsync, selectCreateUser } from '../../redux/userReducer'
 import { phoneValidator } from '../../utils'
-import { EMAIL_REGEX, INFO_FROM } from '../../utils/constants'
+import { EMAIL_REGEX, INFO_FROM, PASSWORD_REGEX } from '../../utils/constants'
 import { ErrorMessages, InputPhone, InputSocial} from '../components'
 const { Title } = Typography
 const { Panel } = Collapse
@@ -203,8 +203,14 @@ const SignUp = () => {
                           message: 'This field is required',
                         },
                         {
-                          min: 3,
-                          message: 'Passworde must be minimum 6 characters.',
+                          validator(_, value) {
+                            if (PASSWORD_REGEX.test(value) || !value) {
+                              return Promise.resolve()
+                            }
+                            return Promise.reject(
+                              new Error('The password must be a minimum of eight characters, at least one letter, and one number.'),
+                            )
+                          },
                         },
                       ]}
                     >
