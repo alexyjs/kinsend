@@ -3,12 +3,12 @@ import axios from 'axios'
 import _ from 'lodash'
 import { call, put, takeLatest } from 'redux-saga/effects'
 import { storage } from '../pages/hook/userLocalStorage'
+import { STORAGE_AUTH_KEY } from '../utils/constants'
 
 export const createUserAsync = createAction('user/createUserAsync')
 export const loginAsync = createAction('user/loginAsync')
 export const patchUserAsync = createAction('user/patchUserAsync')
 export const addPaymentMethodAsync = createAction('user/addPaymentMethodAsync')
-export const STORAGE_AUTH_KEY = 'auth';
 
 const authStorage = storage(STORAGE_AUTH_KEY);
 

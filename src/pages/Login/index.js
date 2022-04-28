@@ -14,6 +14,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import {
   loginAsync,
+  selectAddPaymentSuccess,
   selectUsers
 } from '../../redux/userReducer'
 import { EMAIL_REGEX } from '../../utils/constants'
@@ -25,6 +26,7 @@ const { Title } = Typography
 
 const Login = () => {
   const { isLoading, errors, user } = useSelector(selectUsers)
+  const { addPaymentSuccess } = useSelector(selectAddPaymentSuccess)
   const [savedAuth, setSavedAuth] = userLocalStorage('auth')
   const { close, show, visible } = useModal()
   const { close: closeAccountModal, show: showAccountModal, visible: visibleAccountModal } = useModal()
@@ -39,28 +41,26 @@ const Login = () => {
   }
 
   useEffect(() => {
-    if (savedAuth) {
-      // navigate('/')
+    if (user) {
       notification.success({
         title: 'Action Completed',
         message: `Login successfully.`,
       })
-      // setSavedAuth(auth)
-    }
-  }, [savedAuth])
-
-  useEffect(() => {
-    if (savedAuth) {
       if (false) {
-        // TO DO redirect to home page if used is logged
+        // TO DO redirect to home page if used has payment Method
 
       } else {
-        // Open for credit card
+        // Open modal to create stripe payment method
         showAccountModal();
-        navigate('/dashboard');
       }
     }
-  }, [])
+  }, [user])
+
+  useEffect(() => {
+    if (addPaymentSuccess) {
+      navigate('/dashboard')
+    }
+  }, [addPaymentSuccess])
 
   return (
     <div className="grid place-items-center min-h-screen">

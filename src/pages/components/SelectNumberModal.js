@@ -1,14 +1,16 @@
 import { Button, Col, Form, Input, Modal, Row } from 'antd'
 import React from 'react'
 import { InputPhone } from '.'
-import { phoneValidator } from '../../utils'
+import { phoneRequireValidator, phoneValidator } from '../../utils'
 import { useModal } from '../hook/useModal'
 import CustomTag from './CustomTag'
 import NumberAddedModal from './NumberAddedModal'
 
 const SelectNumberModal = ({ visible, handleOk, handleCancel }) => {
   const { close, show, visible: numberAddedModalVisible } = useModal()
-  const handleFinish = () => { }
+  const handleFinish = () => { 
+    show();
+  }
   return (
     <Modal
       visible={visible}
@@ -43,6 +45,7 @@ const SelectNumberModal = ({ visible, handleOk, handleCancel }) => {
           name="phoneNumber"
           label="Phone"
           rules={[
+            phoneRequireValidator,
             phoneValidator,
           ]}
         >
@@ -76,7 +79,8 @@ const SelectNumberModal = ({ visible, handleOk, handleCancel }) => {
                 className="min-w-200"
                 type="primary"
                 size="large"
-                onClick={show}
+                htmlType='submit'
+                // onClick={show}
               >
                 Confirm
               </Button>

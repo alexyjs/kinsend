@@ -42,3 +42,17 @@ export const phoneValidator = {
     return Promise.reject(new Error('The phone is invalid'))
   }
 }
+
+export const phoneRequireValidator = {
+  validator: async (rule, value) => {
+    const phone = _.get(value, 'phone');
+    const code = _.get(value, 'code');
+    const short = _.get(value, 'short');
+
+    if (code && phone && short) {
+      return Promise.resolve()
+    }
+
+    return Promise.reject(new Error('This field is required'))
+  }
+}
