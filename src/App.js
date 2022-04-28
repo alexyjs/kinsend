@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import UIKit from './pages/UIKit'
+import Dashboard from './pages/Dashboard'
 import './styles/antd.less'
 import './styles/tailwind.css'
 import './App.less'
@@ -49,6 +50,9 @@ function App() {
             <Menu.Item key="ui-kit">
               <Link to="/ui-kit">UI Kit</Link>
             </Menu.Item>
+            <Menu.Item key="ui-kit">
+              <Link to="/dashboard">UI Kit</Link>
+            </Menu.Item>
           </Menu>
         </Header>
         <Routes>
@@ -56,6 +60,7 @@ function App() {
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/ui-kit" element={<UIKit />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </ConfigProvider>
     </main>

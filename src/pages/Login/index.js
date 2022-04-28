@@ -14,19 +14,20 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import {
   loginAsync,
-  selectAuth
+  selectUsers
 } from '../../redux/userReducer'
 import { EMAIL_REGEX } from '../../utils/constants'
-import { ErrorMessages, ResendPasswordModal } from '../components'
+import { AccountSetupModal, ErrorMessages, ResendPasswordModal } from '../components'
 import { useModal } from '../hook/useModal'
 import userLocalStorage from '../hook/userLocalStorage'
 
 const { Title } = Typography
 
 const Login = () => {
-  const { isLoading, errors, auth } = useSelector(selectAuth)
+  const { isLoading, errors, user } = useSelector(selectUsers)
   const [savedAuth, setSavedAuth] = userLocalStorage('auth')
   const { close, show, visible } = useModal()
+  const { close: closeAccountModal, show: showAccountModal, visible: visibleAccountModal } = useModal()
   const dispatch = useDispatch()
   let navigate = useNavigate()
   const handleFinish = (values) => {
@@ -38,19 +39,26 @@ const Login = () => {
   }
 
   useEffect(() => {
-    if (auth) {
+    if (savedAuth) {
       // navigate('/')
       notification.success({
         title: 'Action Completed',
         message: `Login successfully.`,
       })
-      setSavedAuth(auth)
+      // setSavedAuth(auth)
     }
-  }, [auth])
+  }, [savedAuth])
 
   useEffect(() => {
     if (savedAuth) {
-      // TO DO redirect to home page if used is logged
+      if (false) {
+        // TO DO redirect to home page if used is logged
+
+      } else {
+        // Open for credit card
+        showAccountModal();
+        navigate('/dashboard');
+      }
     }
   }, [])
 
@@ -137,6 +145,11 @@ const Login = () => {
           </div>
         </Form>
       </div>
+      <AccountSetupModal
+        handleCancel={closeAccountModal}
+        handleOk={closeAccountModal}
+        visible={visibleAccountModal}
+      />
     </div>
   )
 }

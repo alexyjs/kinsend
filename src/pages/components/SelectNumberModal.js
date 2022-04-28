@@ -8,7 +8,7 @@ import NumberAddedModal from './NumberAddedModal'
 
 const SelectNumberModal = ({ visible, handleOk, handleCancel }) => {
   const { close, show, visible: numberAddedModalVisible } = useModal()
-  const handleFinish = () => {}
+  const handleFinish = () => { }
   return (
     <Modal
       visible={visible}
@@ -29,7 +29,16 @@ const SelectNumberModal = ({ visible, handleOk, handleCancel }) => {
         phone numbers of almost all countries.{' '}
         <span className="text-primary">Get in touch</span>
       </p>
-      <Form layout="vertical" onFinish={handleFinish} initialValues={{}}>
+      <Form
+        layout="vertical"
+        onFinish={handleFinish}
+        initialValues={{
+          phoneNumber: {
+            phone: undefined,
+            code: 1,
+            short: 'US',
+          },
+        }}>
         <Form.Item
           name="phoneNumber"
           label="Phone"
