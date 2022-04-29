@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const storage = (key) => {
+export const storage = (key) => {
   const get = () => {
     const serializedValue = localStorage.getItem(key)
     if (serializedValue !== null) {

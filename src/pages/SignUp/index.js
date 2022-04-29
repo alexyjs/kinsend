@@ -19,10 +19,11 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
-import SuccessIcon from '../../assets/svg/SuccessIcon'
+import { SuccessIcon } from '../../assets/svg'
 import { createUserAsync, selectCreateUser } from '../../redux/userReducer'
-import { EMAIL_REGEX, INFO_FROM } from '../../utils/constants'
-import { ErrorMessages, InputPhone } from '../components'
+import { phoneValidator } from '../../utils'
+import { EMAIL_REGEX, INFO_FROM, PASSWORD_REGEX } from '../../utils/constants'
+import { ErrorMessages, InputPhone, InputSocial} from '../components'
 const { Title } = Typography
 const { Panel } = Collapse
 
@@ -94,7 +95,17 @@ const SignUp = () => {
             </span>
           </p>
         </Typography>
-        <Form layout="vertical" onFinish={handleFinish} initialValues={{}}>
+        <Form
+          layout="vertical"
+          onFinish={handleFinish}
+          initialValues={{
+            phoneNumber: {
+              phone: undefined,
+              code: 1,
+              short: 'US',
+            },
+          }}
+        >
           <ErrorMessages errors={errors} />
 
           <Swiper
@@ -160,13 +171,26 @@ const SignUp = () => {
                     </Form.Item>
                   </Col>
                   <Col sm={12} span={24}>
-                    <Form.Item name="phoneNumber" label="Phone" rules={[]}>
+                    <Form.Item
+                      name="phoneNumber"
+                      label="Phone"
+                      rules={[phoneValidator]}
+                    >
                       <InputPhone />
                     </Form.Item>
                   </Col>
                   <Col span={24}>
-                    <Form.Item name="oneSocial" label="Social">
-                      <Input size="large" placeholder="@kinsend.io" />
+                    <Form.Item
+                      name="oneSocial"
+                      label="Social"
+                      rules={[
+                        {
+                          required: true,
+                          message: 'This field is required',
+                        },
+                      ]}
+                    >
+                      <InputSocial />
                     </Form.Item>
                   </Col>
                   <Col sm={12} span={24}>
@@ -179,8 +203,14 @@ const SignUp = () => {
                           message: 'This field is required',
                         },
                         {
-                          min: 3,
-                          message: 'Passworde must be minimum 6 characters.',
+                          validator(_, value) {
+                            if (PASSWORD_REGEX.test(value) || !value) {
+                              return Promise.resolve()
+                            }
+                            return Promise.reject(
+                              new Error('The password must be a minimum of eight characters, at least one letter, and one number.'),
+                            )
+                          },
                         },
                       ]}
                     >
@@ -268,32 +298,32 @@ const SignUp = () => {
                   header="What are you looking to get out of KinSend?"
                   key="2"
                 >
-                  <Radio.Group name="what">
+                  <Checkbox.Group name="what">
                     <Space direction="vertical">
-                      <Radio value="1">
+                      <Checkbox value="1">
                         I would like to collect data on my customers and rurn
                         them into phone contacts
-                      </Radio>
-                      <Radio value="2">
+                      </Checkbox>
+                      <Checkbox value="2">
                         I would like to have the ability to send mass messages
                         to my contacts
-                      </Radio>
-                      <Radio value="3">
+                      </Checkbox>
+                      <Checkbox value="3">
                         I would like to convert an existing email list into text
-                      </Radio>
-                      <Radio value="4">
+                      </Checkbox>
+                      <Checkbox value="4">
                         I would like to sync my Shopify store and sell products
                         through text
-                      </Radio>
-                      <Radio value="5">
+                      </Checkbox>
+                      <Checkbox value="5">
                         I would like to manage RSVPs for events via text
-                      </Radio>
-                      <Radio value="6">
+                      </Checkbox>
+                      <Checkbox value="6">
                         I would like to supply my sales associates/employees
                         with their own KinSend Number
-                      </Radio>
+                      </Checkbox>
                     </Space>
-                  </Radio.Group>
+                  </Checkbox.Group>
                 </Panel>
               </Collapse>
               <Collapse className="my-4" accordion expandIconPosition="right">

@@ -1,5 +1,7 @@
 import { Button, Form, Input, Modal } from 'antd'
 import React from 'react'
+import { phoneValidator } from '../../utils'
+import PhoneInput from './InputPhone'
 
 const GetStartedModal = ({ visible, handleOk, handleCancel }) => {
   const handleFinish = () => {}
@@ -21,13 +23,10 @@ const GetStartedModal = ({ visible, handleOk, handleCancel }) => {
           name="phoneNumber"
           label="Phone"
           rules={[
-            {
-              required: true,
-              message: 'This field is required',
-            },
+            phoneValidator,
           ]}
         >
-          <Input size="large" placeholder="Enter Mobile Number" />
+          <PhoneInput placeholder="Enter phone number" />
         </Form.Item>
         <Form.Item noStyle shouldUpdate>
           <Button

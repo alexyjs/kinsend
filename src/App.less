@@ -22,12 +22,45 @@
   box-shadow: none;
 }
 .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
-  height: 24px !important;
+  height: 23px !important;
+  border: 0;
 }
 .ant-select-single:not(.ant-select-customize-input) .ant-select-selector .ant-select-selection-search-input {
-  height: 24px !important;
+  height: 23px !important;
+  border: 0 !important;
 }
+
+.ant-form-item-control-input .ant-select-status-error.ant-select:not(.ant-select-disabled):not(.ant-select-customize-input) .ant-select-selector {
+  border: 0 !important;
+  transition: none !important;
+}
+
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  border: 0 !important;
+}
+.ant-input-affix-wrapper:focus, .ant-input-affix-wrapper-focused,
+.ant-input-affix-wrapper:hover, .ant-input-affix-wrapper-hovered {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.14) !important;
+  border-color: #dcdcdc !important;
+  transition: none !important;
+}
+
 
 .ant-select-single .ant-select-selector .ant-select-selection-item {
   line-height: 22px !important;
+}
+
+.card-element {
+  padding: 20px;
+  border: 1px solid #dcdcdc;
+  background-color: #f1f2f7;
+
+  &:hover,
+  &:focus,
+  &:active {
+    box-shadow: 0px 2px 8px rgb(0 0 0 / 25%);
+    outline: 0;
+    border-color: #dcdcdc;
+    transition: all 0.3s;
+  }
 }

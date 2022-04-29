@@ -1,12 +1,16 @@
 import { Button, Col, Form, Input, Modal, Row } from 'antd'
 import React from 'react'
+import { InputPhone } from '.'
+import { phoneRequireValidator, phoneValidator } from '../../utils'
 import { useModal } from '../hook/useModal'
 import CustomTag from './CustomTag'
 import NumberAddedModal from './NumberAddedModal'
 
 const SelectNumberModal = ({ visible, handleOk, handleCancel }) => {
   const { close, show, visible: numberAddedModalVisible } = useModal()
-  const handleFinish = () => {}
+  const handleFinish = () => { 
+    show();
+  }
   return (
     <Modal
       visible={visible}
@@ -27,18 +31,25 @@ const SelectNumberModal = ({ visible, handleOk, handleCancel }) => {
         phone numbers of almost all countries.{' '}
         <span className="text-primary">Get in touch</span>
       </p>
-      <Form layout="vertical" onFinish={handleFinish} initialValues={{}}>
+      <Form
+        layout="vertical"
+        onFinish={handleFinish}
+        initialValues={{
+          phoneNumber: {
+            phone: undefined,
+            code: 1,
+            short: 'US',
+          },
+        }}>
         <Form.Item
           name="phoneNumber"
           label="Phone"
           rules={[
-            {
-              required: true,
-              message: 'This field is required',
-            },
+            phoneRequireValidator,
+            phoneValidator,
           ]}
         >
-          <Input size="large" placeholder="Enter Mobile Number" />
+          <InputPhone placeholder="Enter your phone" />
         </Form.Item>
 
         <div className="my-6">
@@ -68,14 +79,15 @@ const SelectNumberModal = ({ visible, handleOk, handleCancel }) => {
                 className="min-w-200"
                 type="primary"
                 size="large"
-                onClick={show}
+                htmlType='submit'
+                // onClick={show}
               >
                 Confirm
               </Button>
             </Form.Item>
             <Form.Item noStyle shouldUpdate>
-              {(getFieldValue) => {
-                const phoneNumber = getFieldValue('phonenumber')
+              {({ getFieldValue }) => {
+                const phoneNumber = getFieldValue('phoneNumber')
                 return (
                   <NumberAddedModal
                     handleCancel={close}
