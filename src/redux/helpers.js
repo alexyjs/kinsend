@@ -1,0 +1,37 @@
+import axios from "axios";
+import { storage } from "../pages/hook/userLocalStorage";
+import { STORAGE_AUTH_KEY } from "../utils/constants";
+import _ from 'lodash';
+
+const authStorage = storage(STORAGE_AUTH_KEY);
+
+const getAuthorization = () => {
+  const headers = authStorage.get();
+  return `Bearer ${_.get(headers, 'accesstoken')}`;
+}
+
+export const handleCallAPI = async (payload, headers) => {
+  try {
+    const result = await axios({
+      method: 'post',
+      headers: getHeaders(),
+      ...payload,
+    })
+    console.log('result', result);
+    return { response: _.get(result, 'data'), headers: _.get(result, 'headers') }
+  } catch (e) {
+    return {
+      errors: _.get(e, 'response.data.message'),
+    }
+  }
+}
+
+
+export const getHeaders = (headers) => {
+  return {
+    'Content-Type': 'application/json',
+    'x-api-key': process.env.REACT_APP_API_KEY,
+    Authorization: getAuthorization(),
+    ...headers,
+  }
+}

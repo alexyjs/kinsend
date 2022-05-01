@@ -14,6 +14,7 @@ import './styles/tailwind.css'
 import './App.less'
 import { STORAGE_AUTH_KEY } from './utils/constants'
 import useLocalStorage from './pages/hook/userLocalStorage'
+import PaymentSetup from './pages/PaymentSetup'
 
 const { Header } = Layout
 function App() {
@@ -45,10 +46,13 @@ function App() {
             <Menu.Item key="ui-kit">
               <Link to="/ui-kit">UI Kit</Link>
             </Menu.Item>
-            <Menu.Item key="ui-kit">
+            <Menu.Item key="dashboard">
               <Link to="/dashboard">Dashboard</Link>
             </Menu.Item>
-            <Menu.Item key="ui-kit">
+            <Menu.Item key="payment-setup">
+              <Link to="/payment-setup">Payment Setup</Link>
+            </Menu.Item>
+            <Menu.Item key="log-out">
               <Button type="text" onClick={() => setAuth()}>Log out</Button>
             </Menu.Item>
           </Menu>
@@ -59,6 +63,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/ui-kit" element={<UIKit />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/payment-setup" element={<PaymentSetup />} />
         </Routes>
       </ConfigProvider>
     </main>

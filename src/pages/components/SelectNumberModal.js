@@ -1,16 +1,43 @@
-import { Button, Col, Form, Input, Modal, Row } from 'antd'
-import React from 'react'
-import { InputPhone } from '.'
+import { Button, Col, Form, Modal, Row } from 'antd'
+import _ from 'lodash'
+import React, { useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { InputPhone, PhoneList } from '.'
+import { getListPhoneAsync, selectPhones } from '../../redux/phoneReducer'
 import { phoneRequireValidator, phoneValidator } from '../../utils'
 import { useModal } from '../hook/useModal'
-import CustomTag from './CustomTag'
 import NumberAddedModal from './NumberAddedModal'
 
+const mapTwilioPhoneToPhoneNumber = (twilioPhone) => {
+  const { friendlyName, phoneNumber, isoCountry } = twilioPhone;
+  const phone = _.replace(friendlyName, /\D/g, '');
+  return {
+    phone,
+    short: isoCountry,
+    code: _.replace(_.replace(phoneNumber, phone, ''), '+', '')
+  }
+}
 const SelectNumberModal = ({ visible, handleOk, handleCancel }) => {
-  const { close, show, visible: numberAddedModalVisible } = useModal()
-  const handleFinish = () => { 
+  const { close, show, visible: numberAddedModalVisible } = useModal();
+  const { listPhone } = useSelector(selectPhones);
+  const [form] = Form.useForm();
+  const handleFinish = () => {
     show();
   }
+  const handleSelectPhone = useCallback((phone) => {
+    console.log(' mapTwilioPhoneToPhoneNumber(phone)', mapTwilioPhoneToPhoneNumber(phone));
+    console.log('form', form);
+    form.setFieldsValue({
+      phoneNumber: mapTwilioPhoneToPhoneNumber(phone)
+    })
+  }, [form])
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getListPhoneAsync());
+  }, [])
+
+  console.log('abc', listPhone)
   return (
     <Modal
       visible={visible}
@@ -34,37 +61,45 @@ const SelectNumberModal = ({ visible, handleOk, handleCancel }) => {
       <Form
         layout="vertical"
         onFinish={handleFinish}
+        form={form}
         initialValues={{
           phoneNumber: {
             phone: undefined,
             code: 1,
             short: 'US',
           },
-        }}>
-        <Form.Item
-          name="phoneNumber"
-          label="Phone"
-          rules={[
-            phoneRequireValidator,
-            phoneValidator,
-          ]}
-        >
-          <InputPhone placeholder="Enter your phone" />
+        }}
+      >
+        <Form.Item noStyle shouldUpdate>
+          {({ getFieldValue }) => {
+            console.log('hpne nunber', getFieldValue('phoneNumber'))
+            return (
+              <Form.Item
+                name="phoneNumber"
+                label="Phone"
+                rules={[
+                  phoneRequireValidator,
+                  phoneValidator,
+                ]}
+              >
+                <InputPhone placeholder="Enter your phone" />
+              </Form.Item>
+            )
+          }}
         </Form.Item>
-
         <div className="my-6">
           <p className="text-base text-primary text-center ">
             How about any of these numbers?
           </p>
 
-          <CustomTag />
+          <PhoneList listPhone={listPhone} onSelectPhone={handleSelectPhone} />
         </div>
 
         <Row justify="end" className="mt-6">
           <Col>
             <Form.Item noStyle>
               <Button
-                className="min-w-200"
+                className="md:min-w-200"
                 type="text"
                 size="large"
                 onClick={handleCancel}
@@ -76,11 +111,11 @@ const SelectNumberModal = ({ visible, handleOk, handleCancel }) => {
           <Col>
             <Form.Item noStyle shouldUpdate>
               <Button
-                className="min-w-200"
+                className="md:min-w-200"
                 type="primary"
                 size="large"
                 htmlType='submit'
-                // onClick={show}
+              // onClick={show}
               >
                 Confirm
               </Button>

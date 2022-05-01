@@ -23,7 +23,7 @@ import { SuccessIcon } from '../../assets/svg'
 import { createUserAsync, selectCreateUser } from '../../redux/userReducer'
 import { phoneValidator } from '../../utils'
 import { EMAIL_REGEX, INFO_FROM, PASSWORD_REGEX } from '../../utils/constants'
-import { ErrorMessages, InputPhone, InputSocial} from '../components'
+import { ErrorMessages, InputPhone, InputSocial } from '../components'
 const { Title } = Typography
 const { Panel } = Collapse
 
@@ -33,7 +33,7 @@ function SlideBackButton() {
   return (
     <Form.Item noStyle>
       <Button
-        className="min-w-200 mt-8"
+        className="md:min-w-200 mt-8"
         type="text"
         size="large"
         onClick={() => swiper.slidePrev()}
@@ -83,7 +83,7 @@ const SignUp = () => {
   }, [errors])
 
   return (
-    <div className="grid place-items-center min-h-screen">
+    <div className="flex flex-col justify-center min-h-screen py-6">
       <div className="container mx-auto px-4">
         <Title className="text-center">Sign Up for KinSend</Title>
         <Typography className={`mb-8 text-center ${isEnd ? 'invisible' : ''}`}>
@@ -95,6 +95,7 @@ const SignUp = () => {
             </span>
           </p>
         </Typography>
+        <ErrorMessages errors={errors} />
         <Form
           layout="vertical"
           onFinish={handleFinish}
@@ -106,7 +107,6 @@ const SignUp = () => {
             },
           }}
         >
-          <ErrorMessages errors={errors} />
 
           <Swiper
             modules={[Pagination, Navigation]}
@@ -114,6 +114,7 @@ const SignUp = () => {
             onSlideChange={(s) => {
               setIsEnd(s.isEnd)
             }}
+            autoHeight={true}
             noSwiping={true}
             className="swiper-no-swiping"
             pagination={{ clickable: false }}
@@ -121,7 +122,7 @@ const SignUp = () => {
           >
             <SwiperSlide>
               <div className="pb-12">
-                <Row gutter={40}>
+                <Row gutter={40} >
                   <Col sm={12} span={24}>
                     <Form.Item
                       name="firstName"
@@ -258,10 +259,11 @@ const SignUp = () => {
                   <Col>
                     <Form.Item noStyle shouldUpdate>
                       <Button
-                        className="min-w-200 mt-8"
+                        className="md:min-w-200 mt-8"
                         type="primary"
                         size="large"
-                        htmlType="submit"
+                        // htmlType="submit"
+                        onClick={() => swiperRef.current.swiper.slideNext()}
                       >
                         Next
                       </Button>
@@ -271,115 +273,119 @@ const SignUp = () => {
               </div>
             </SwiperSlide>
             <SwiperSlide>
-              <div className="my-12">
-                <Title level={4} className="text-center">
-                  Tell Us More
-                </Title>
-              </div>
-              <Collapse className="my-4" accordion expandIconPosition="right">
-                <Panel header="How are you hear about KinSend?" key="1">
-                  <Form.Item noStyle name="infoFrom">
-                    <Checkbox.Group>
+              <div className="pb-12">
+                <div className="my-12">
+                  <Title level={4} className="text-center">
+                    Tell Us More
+                  </Title>
+                </div>
+                <Collapse className="my-4" accordion expandIconPosition="right">
+                  <Panel header="How are you hear about KinSend?" key="1">
+                    <Form.Item noStyle name="infoFrom">
+                      <Checkbox.Group>
+                        <Space direction="vertical">
+                          {_.map(INFO_FROM, ({ key, value, title }) => {
+                            return (
+                              <Checkbox key={key} value={value}>
+                                {title}
+                              </Checkbox>
+                            )
+                          })}
+                        </Space>
+                      </Checkbox.Group>
+                    </Form.Item>
+                  </Panel>
+                </Collapse>
+                <Collapse className="my-4" accordion expandIconPosition="right">
+                  <Panel
+                    header="What are you looking to get out of KinSend?"
+                    key="2"
+                  >
+                    <Checkbox.Group name="what">
                       <Space direction="vertical">
-                        {_.map(INFO_FROM, ({ key, value, title }) => {
-                          return (
-                            <Checkbox key={key} value={value}>
-                              {title}
-                            </Checkbox>
-                          )
-                        })}
+                        <Checkbox value="1">
+                          I would like to collect data on my customers and rurn
+                          them into phone contacts
+                        </Checkbox>
+                        <Checkbox value="2">
+                          I would like to have the ability to send mass messages
+                          to my contacts
+                        </Checkbox>
+                        <Checkbox value="3">
+                          I would like to convert an existing email list into text
+                        </Checkbox>
+                        <Checkbox value="4">
+                          I would like to sync my Shopify store and sell products
+                          through text
+                        </Checkbox>
+                        <Checkbox value="5">
+                          I would like to manage RSVPs for events via text
+                        </Checkbox>
+                        <Checkbox value="6">
+                          I would like to supply my sales associates/employees
+                          with their own KinSend Number
+                        </Checkbox>
                       </Space>
                     </Checkbox.Group>
-                  </Form.Item>
-                </Panel>
-              </Collapse>
-              <Collapse className="my-4" accordion expandIconPosition="right">
-                <Panel
-                  header="What are you looking to get out of KinSend?"
-                  key="2"
-                >
-                  <Checkbox.Group name="what">
-                    <Space direction="vertical">
-                      <Checkbox value="1">
-                        I would like to collect data on my customers and rurn
-                        them into phone contacts
-                      </Checkbox>
-                      <Checkbox value="2">
-                        I would like to have the ability to send mass messages
-                        to my contacts
-                      </Checkbox>
-                      <Checkbox value="3">
-                        I would like to convert an existing email list into text
-                      </Checkbox>
-                      <Checkbox value="4">
-                        I would like to sync my Shopify store and sell products
-                        through text
-                      </Checkbox>
-                      <Checkbox value="5">
-                        I would like to manage RSVPs for events via text
-                      </Checkbox>
-                      <Checkbox value="6">
-                        I would like to supply my sales associates/employees
-                        with their own KinSend Number
-                      </Checkbox>
-                    </Space>
-                  </Checkbox.Group>
-                </Panel>
-              </Collapse>
-              <Collapse className="my-4" accordion expandIconPosition="right">
-                <Panel header="What is the size of your audience?" key="3">
-                  <Radio.Group name="size">
-                    <Space direction="vertical">
+                  </Panel>
+                </Collapse>
+                <Collapse className="my-4" accordion expandIconPosition="right">
+                  <Panel header="What is the size of your audience?" key="3">
+                    <Radio.Group name="size">
                       <Space direction="vertical">
-                        <Radio value="1">0-1,000</Radio>
-                        <Radio value="2">5,000-10,000</Radio>
-                        <Radio value="3">10,000-20,000</Radio>
-                        <Radio value="4">20,000+</Radio>
+                        <Space direction="vertical">
+                          <Radio value="1">0-1,000</Radio>
+                          <Radio value="2">5,000-10,000</Radio>
+                          <Radio value="3">10,000-20,000</Radio>
+                          <Radio value="4">20,000+</Radio>
+                        </Space>
                       </Space>
-                    </Space>
-                  </Radio.Group>
-                </Panel>
-              </Collapse>
-              <Row justify="end">
-                <Col>
-                  <SlideBackButton />
-                </Col>
-                <Col>
-                  <Form.Item noStyle shouldUpdate>
-                    <Button
-                      className="min-w-200 mt-8"
-                      type="primary"
-                      size="large"
-                      htmlType="submit"
-                      loading={isLoading}
-                    >
-                      Submit
-                    </Button>
-                  </Form.Item>
-                </Col>
-              </Row>
+                    </Radio.Group>
+                  </Panel>
+                </Collapse>
+                <Row justify="end">
+                  <Col>
+                    <SlideBackButton />
+                  </Col>
+                  <Col>
+                    <Form.Item noStyle shouldUpdate>
+                      <Button
+                        className="md:min-w-200 mt-8"
+                        type="primary"
+                        size="large"
+                        htmlType="submit"
+                        loading={isLoading}
+                      >
+                        Submit
+                      </Button>
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </div>
             </SwiperSlide>
             <SwiperSlide>
-              <div className="bg-gray max-w-2xl mx-auto p-16 text-center">
-                <Space direction="vertical" size={'large'}>
-                  <div className="text-center">
-                    <SuccessIcon className="mx-auto" />
-                  </div>
-                  <Title className="text-center" level={2}>
-                    Verify your email
-                  </Title>
-                  <Typography className="text-center">
-                    <p className="max-w-sm mx-auto">
-                      Thank you for completing the sigup for the KinSend Starter
-                      Plan. Plase check your email for a verification link.
-                    </p>
-                  </Typography>
-                  <Typography className="text-center">
-                    <span className="text-primary font-bold underline uppercase">
-                      resent email verification
-                    </span>
-                  </Typography>
-                </Space>
+              <div className="pb-12">
+                <div className="bg-gray max-w-2xl mx-auto p-16 text-center">
+                  <Space direction="vertical" size={'large'}>
+                    <div className="text-center">
+                      <SuccessIcon className="mx-auto" />
+                    </div>
+                    <Title className="text-center" level={2}>
+                      Verify your email
+                    </Title>
+                    <Typography className="text-center">
+                      <p className="max-w-sm mx-auto">
+                        Thank you for completing the sigup for the KinSend Starter
+                        Plan. Plase check your email for a verification link.
+                      </p>
+                    </Typography>
+                    <Typography className="text-center">
+                      <span className="text-primary font-bold underline uppercase">
+                        resent email verification
+                      </span>
+                    </Typography>
+                  </Space>
+                </div>
               </div>
             </SwiperSlide>
           </Swiper>

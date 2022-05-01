@@ -51,7 +51,7 @@ const Login = () => {
 
       } else {
         // Open modal to create stripe payment method
-        showAccountModal();
+        navigate('/payment-setup');
       }
     }
   }, [user])

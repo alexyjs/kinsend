@@ -42,7 +42,7 @@ const ResendPasswordModal = ({ visible, handleOk, handleCancel }) => {
           <Col>
             <Form.Item noStyle>
               <Button
-                className="min-w-200"
+                className="md:min-w-200"
                 type="text"
                 size="large"
                 onClick={handleCancel}
@@ -54,7 +54,7 @@ const ResendPasswordModal = ({ visible, handleOk, handleCancel }) => {
           <Col>
             <Form.Item noStyle shouldUpdate>
               <Button
-                className="min-w-200"
+                className="md:min-w-200"
                 type="primary"
                 size="large"
                 htmlType="submit"

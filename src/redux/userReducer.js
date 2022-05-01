@@ -92,7 +92,6 @@ export function* loginSaga(action) {
   const { response, errors, headers } = yield call(loginAPI, action.payload);
 
   if (response) {
-    console.log('here', headers);
     authStorage.set(headers);
     yield put(login(response))
   } else {
