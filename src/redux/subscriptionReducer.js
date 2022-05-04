@@ -1,6 +1,7 @@
 import { createAction, createSlice } from '@reduxjs/toolkit'
 import { call, put, takeLatest } from 'redux-saga/effects'
 import { handleCallAPI } from './helpers'
+import _ from 'lodash';
 
 export const getListSubscriptionAsync = createAction('subscription/getListSubscriptionAsync')
 export const getListSubscriptionPricesAsync = createAction('subscription/getListSubscriptionPricesAsync')
@@ -37,7 +38,7 @@ export async function getListSubscriptionPricesAPI(data) {
 export function* getListSubscriptionPrices(action) {
   const { response, errors } = yield call(getListSubscriptionPricesAPI, action.payload)
   if (response) {
-    yield put(getListSubscriptionPricesSuccess(response))
+    yield put(getListSubscriptionPricesSuccess(_.get(response, 'data')))
   } else {
     yield put(failed(errors))
   }

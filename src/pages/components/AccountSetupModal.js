@@ -52,6 +52,10 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
     }
   }, [addPaymentSuccess, show])
 
+  // useEffect(() => {
+  //   dispatch(getListSubscriptionAsync());
+  // }, [])
+
   return (
     <Modal
       visible={visible}

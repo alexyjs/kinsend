@@ -1,11 +1,10 @@
 import { Button, Card, Col, Modal, Radio, Row, Typography } from 'antd'
 import _ from 'lodash'
 import React from 'react'
-import { PLANS_DATA } from '../../utils/constants'
 
-const PlanModal = ({ visible, handleOk, handleCancel }) => {
-  const handleSelectPlan = (code) => {
-    handleOk(code);
+const PlanModal = ({ visible, handleOk, handleCancel, subscriptionPrices }) => {
+  const handleSelectSubscription = (subscription) => {
+    handleOk(subscription);
   }
 
   return (
@@ -46,10 +45,13 @@ const PlanModal = ({ visible, handleOk, handleCancel }) => {
         </Radio.Group>
       </div>
       <Row className='w-full'>
-        {_.map(PLANS_DATA, (plan) => {
-          const { name, prices, subcribers, messages, descriptions, key, code } = plan;
+        {_.map(subscriptionPrices, (subscription) => {
+          const { unit_amount: unitAmount, id } = subscription;
+          const product = _.get(subscription, 'product', {})
+          const { name, metadata = {}, key, code } = product;
+          const { messages, prices, subscribers, descriptions } = metadata;
           return (
-            <Col sm={{ span: 8 }} key={key}>
+            <Col sm={{ span: 8 }} key={id}>
               <Card
                 headStyle={{
                   background: '#f5f5f5'
@@ -59,16 +61,19 @@ const PlanModal = ({ visible, handleOk, handleCancel }) => {
                   <>
                     <div className='text-center bg-gray-1'>
                       <p className='uppercase text-bold text-lg mb-2'>{name}</p>
-                      <p className='uppercase text-bold text-5xl my-2'>{prices}</p>
+                      <p className='text-bold text-5xl my-2'>{prices}</p>
+                      {/* <p className='text-bold text-5xl my-2'>
+                        {accounting.formatMoney(unitAmount / 100 )}/m
+                        </p> */}
                       <p className='text-sm'>Ideal if you</p>
-                      <p className='text-sm'>Have {subcribers} subscribers</p>
+                      <p className='text-sm'>Have {subscribers} subscribers</p>
                       <p className='text-sm'>Send {messages} Messages</p>
                     </div>
                   </>
                 }
               >
                 <div className="text-center">
-                  {_.map(descriptions, (desc, index) => {
+                  {_.map(_.split(descriptions, '#'), (desc, index) => {
                     return <Typography.Paragraph key={index}>{desc}</Typography.Paragraph>
                   })}
 
@@ -76,7 +81,7 @@ const PlanModal = ({ visible, handleOk, handleCancel }) => {
                     className='mt-4'
                     size='large'
                     type='primary'
-                    onClick={() => handleSelectPlan(code)}
+                    onClick={() => handleSelectSubscription(subscription)}
                   >Select plan</Button>
                 </div>
               </Card>

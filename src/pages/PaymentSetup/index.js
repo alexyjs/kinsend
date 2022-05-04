@@ -1,10 +1,10 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
-import { Button, Col, Form, Modal, Row } from 'antd'
+import { Button, Col, Form, Row } from 'antd'
 import _ from 'lodash'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { getListSubscriptionPricesAsync, selectSubscriptions } from '../../redux/subscriptionReducer'
 import { addPaymentMethodAsync, selectAddPaymentSuccess, selectUpdatedUserSuccess } from '../../redux/userReducer'
-import { PLANS_DATA } from '../../utils/constants'
 import { PlanModal } from '../components'
 import { useModal } from '../hook/useModal'
 // import SelectNumberModal from './SelectNumberModal'
@@ -14,14 +14,23 @@ const PaymentSetup = () => {
   const { updatedUserSuccess } = useSelector(selectUpdatedUserSuccess);
   const { addPaymentSuccess } = useSelector(selectAddPaymentSuccess);
   const [isStripeLoading, setIsStripeLoading] = useState(false);
-  const [selectedPlanCode, setSelectedPlanCode] = useState(PLANS_DATA.starter.code);
+  const [selectedSubscription, setSelectedSubscription] = useState(null);
   const stripe = useStripe();
   const elements = useElements();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
+  const { listSubscriptionPrices } = useSelector(selectSubscriptions);
 
-  const handleSelectPlan = (code) => {
-    setSelectedPlanCode(code);
+  const subscriptionPrices = useMemo(() => {
+    return _.orderBy(listSubscriptionPrices, 'unit_amount')
+  }, [listSubscriptionPrices])
+
+  useEffect(() => {
+    dispatch(getListSubscriptionPricesAsync());
+  }, []);
+
+  const handleSelectSubscription = (subscription) => {
+    setSelectedSubscription(subscription);
   }
 
   const handleFinish = async (values) => {
@@ -46,7 +55,7 @@ const PaymentSetup = () => {
 
       dispatch(addPaymentMethodAsync({
         paymentMethod,
-        code: selectedPlanCode
+        code: selectedSubscription
       }))
     } catch (e) {
       setIsStripeLoading(false)
@@ -54,8 +63,15 @@ const PaymentSetup = () => {
   }
 
   const { name, prices } = useMemo(() => {
-    return _.get(PLANS_DATA, selectedPlanCode, PLANS_DATA.starter);
-  }, [selectedPlanCode])
+    console.log('subscriptionPrices', subscriptionPrices);
+    console.log('selectedSubscription', selectedSubscription);
+    const subscription = selectedSubscription || _.first(subscriptionPrices);
+    if (_.isEmpty(subscription)) {
+      return {}
+    }
+
+    return _.get(subscription, 'product.metadata');
+  }, [selectedSubscription, subscriptionPrices])
 
   useEffect(() => {
     if (addPaymentSuccess) {
@@ -164,11 +180,12 @@ const PaymentSetup = () => {
         </Form>
         <PlanModal
           handleCancel={close}
-          handleOk={(code) => {
-            handleSelectPlan(code);
+          handleOk={(subscription) => {
+            handleSelectSubscription(subscription);
             close();
           }}
           visible={visible}
+          subscriptionPrices={subscriptionPrices}
         />
       </div>
     </div>
