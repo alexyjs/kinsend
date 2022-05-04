@@ -5,6 +5,7 @@ import {
   notification,
   Typography
 } from 'antd'
+import _ from 'lodash'
 import React, { useEffect } from 'react'
 import { GoogleLogin } from 'react-google-login'
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,7 +15,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import {
   loginAsync,
-  selectAddPaymentSuccess,
+  loginWithGoogleAsync, selectAddPaymentSuccess,
   selectUsers
 } from '../../redux/userReducer'
 import { EMAIL_REGEX } from '../../utils/constants'
@@ -37,8 +38,17 @@ const Login = () => {
   }
 
   const responseGoogle = (response) => {
-    console.log(response)
+    handleLogin(response);
   }
+
+  const handleLogin = googleData => {
+    dispatch(loginWithGoogleAsync({
+      idToken: _.get(googleData, 'tokenId'),
+      accessToken: _.get(googleData, 'accessToken'),
+      provider: 'google'
+    }))
+  }
+
 
   useEffect(() => {
     if (user) {

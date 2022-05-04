@@ -7,6 +7,8 @@ import { STORAGE_AUTH_KEY } from '../utils/constants'
 
 export const createUserAsync = createAction('user/createUserAsync')
 export const loginAsync = createAction('user/loginAsync')
+export const resendVerifyEmailAsync = createAction('user/resendVerifyEmailAsync')
+export const loginWithGoogleAsync = createAction('user/loginWithGoogleAsync')
 export const patchUserAsync = createAction('user/patchUserAsync')
 export const addPaymentMethodAsync = createAction('user/addPaymentMethodAsync')
 
@@ -58,6 +60,25 @@ export async function loginAPI(data) {
   return handleCallAPI(payload)
 }
 
+export async function loginWithGoogleAPI(data) {
+  const payload = {
+    url: `${process.env.REACT_APP_API_BASE_URL}/auths/provider/GOOGLE`,
+    data,
+  }
+
+  return handleCallAPI(payload)
+}
+
+export async function resendVerifyEmailAPI(data) {
+  const payload = {
+    method: 'get',
+    url: `${process.env.REACT_APP_API_BASE_URL}/users/resend-verify-email`,
+    data,
+  }
+
+  return handleCallAPI(payload)
+}
+
 export async function patchUserAPI(data) {
   const payload = {
     method: 'PATCH',
@@ -99,6 +120,28 @@ export function* loginSaga(action) {
   }
 }
 
+export function* loginWithGoogleSaga(action) {
+  const { response, errors, headers } = yield call(loginWithGoogleAPI, action.payload);
+
+  if (response) {
+    // authStorage.set(headers);
+    yield put(login(response))
+  } else {
+    yield put(failed(errors))
+  }
+}
+
+export function* resendVerifyEmailSaga(action) {
+  const { response, errors, headers } = yield call(resendVerifyEmailAPI, action.payload);
+
+  if (response) {
+    // authStorage.set(headers);
+    yield put(resendVerifyEmailSuccess(response))
+  } else {
+    yield put(failed(errors))
+  }
+}
+
 export function* patchUserSaga(action) {
   const { response, errors } = yield call(patchUserAPI, action.payload)
   if (response) {
@@ -125,6 +168,14 @@ export function* watchLoginSaga() {
   yield takeLatest(loginAsync, loginSaga)
 }
 
+export function* watchLoginWithGoogleAsyncSaga() {
+  yield takeLatest(loginWithGoogleAsync, loginWithGoogleSaga)
+}
+
+export function* watchResendVerifyEmailSaga() {
+  yield takeLatest(resendVerifyEmailAsync, resendVerifyEmailSaga)
+}
+
 export function* watchPatchUserSaga() {
   yield takeLatest(patchUserAsync, patchUserSaga)
 }
@@ -139,6 +190,8 @@ const initialState = {
   errors: [],
   auth: null,
   updatedUserSuccess: false,
+  addPaymentSuccess: false,
+  resendVerifyEmailSuccess: false,
 }
 
 export const userSlice = createSlice({
@@ -170,7 +223,13 @@ export const userSlice = createSlice({
     },
     addPaymentSuccess: (state, action) => {
       state.addPaymentSuccess = true;
-    }
+    },
+    resendVerifyEmailSuccess: (state, action) => {
+      state.resendVerifyEmailSuccess = true;
+    },
+    resetResendVerifyEmail: (state, action) => {
+      state.resendVerifyEmailSuccess = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -185,6 +244,7 @@ export const userSlice = createSlice({
   },
 })
 
+const { resendVerifyEmailSuccess } = userSlice.actions;
 export const {
   createUser,
   createUserFailed,
@@ -192,13 +252,10 @@ export const {
   failed,
   updatedUser,
   addPaymentSuccess,
+  resetResendVerifyEmail,
 } = userSlice.actions
 
-export const selectUsers = (state) => {
-  return {
-    ...state.users,
-  }
-};
+export const selectUsers = (state) => state.users;
 export const selectUserError = (state) => state.errors
 export const selectUserLoading = (state) => state.isLoading
 export const selectCreateUser = ({ users }) => {
