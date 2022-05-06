@@ -18,7 +18,6 @@ let formatPhoneNumber = (str) => {
 }
 
 export const displayPhoneNumber = (phoneNumber) => {
-  console.log(phoneNumber)
   if (_.isEmpty(phoneNumber)) {
     return ''
   }

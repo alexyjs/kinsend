@@ -17,7 +17,6 @@ export const handleCallAPI = async (payload, headers) => {
       headers: getHeaders(),
       ...payload,
     })
-    console.log('result', result);
     return { response: _.get(result, 'data'), headers: _.get(result, 'headers') }
   } catch (e) {
     return {

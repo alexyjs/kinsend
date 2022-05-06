@@ -1,14 +1,16 @@
-import { Button, Col, Form, Modal, Row } from 'antd'
-import React from 'react'
-import { displayPhoneNumber } from '../../utils'
+import { Button, Col, Form, Modal, Row } from "antd";
+import React from "react";
+// import { useNavigate } from "react-router-dom";
 
-const NumberAddedModal = ({
-  visible,
-  handleOk,
-  handleCancel,
-  phoneNumber,
-}) => {
-  const handleFinish = () => {}
+import { displayPhoneNumber } from "../../utils";
+
+const NumberAddedModal = ({ visible, handleOk, handleCancel, phoneNumber }) => {
+  // const navigate = useNavigate();
+  const handleFinish = () => {
+    handleOk();
+    // navigate("/dashboard");
+  };
+
   return (
     <Modal
       visible={visible}
@@ -23,7 +25,9 @@ const NumberAddedModal = ({
       <h3 className="font-bold text-center text-2xl mb-6">
         Your shiny new kinSend number
       </h3>
-      <h3 className="font-bold text-center text-xl mb-6">{displayPhoneNumber(phoneNumber)}</h3>
+      <h3 className="font-bold text-center text-xl mb-6">
+        {displayPhoneNumber(phoneNumber)}
+      </h3>
 
       <p className="text-base text-dark-gray text-center mb-6">
         It was popularised in the 1960s with the release of Letraset sheets
@@ -33,12 +37,17 @@ const NumberAddedModal = ({
       </p>
       <Row className="mt-6" gutter={24}>
         <Col flex={1}>
-          <Button block className="min-w-200" size='large' onClick={handleCancel}>
+          <Button
+            block
+            className="min-w-200"
+            size="large"
+            onClick={handleCancel}
+          >
             Reguest a Different Number
           </Button>
         </Col>
         <Col flex={1}>
-          <Button block className="min-w-200" size='large' type="primary">
+          <Button block className="min-w-200" size="large" type="primary">
             Learn more about routing
           </Button>
         </Col>
@@ -58,14 +67,19 @@ const NumberAddedModal = ({
         </Col>
         <Col>
           <Form.Item noStyle shouldUpdate>
-            <Button className="min-w-200" type="primary" size="large">
+            <Button
+              className="min-w-200"
+              type="primary"
+              size="large"
+              onClick={handleFinish}
+            >
               Continue to app
             </Button>
           </Form.Item>
         </Col>
       </Row>
     </Modal>
-  )
-}
+  );
+};
 
-export default NumberAddedModal
+export default NumberAddedModal;

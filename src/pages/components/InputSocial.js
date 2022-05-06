@@ -6,10 +6,9 @@ const InputSocial = ({ defaultActiveKey = 'instagram', ...rest }) => {
   const [activeKey, setActiveKey] = useState(defaultActiveKey)
 
   const handleClick = (activeKey) => () => {
-    console.log('click', activeKey)
     setActiveKey(activeKey)
   }
-  console.log('activeKey', activeKey)
+
   return (
     <Input
       size="large"

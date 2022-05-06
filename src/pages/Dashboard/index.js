@@ -1,32 +1,61 @@
-import _ from 'lodash'
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { selectUsers } from '../../redux/userReducer'
-import { SelectNumberModal } from '../components'
-import { useModal } from '../hook/useModal'
+import _ from "lodash";
+import React, { useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+
+import { AccountSetupModal, SelectNumberModal } from "../components";
+import { useModal } from "../hook/useModal";
 
 const Dashboard = () => {
-  const { user } = useSelector(selectUsers);
-  const { close, show, visible } = useModal()
+  // let navigate = useNavigate();
+  const {
+    close: closePhoneNumber,
+    show: showPhoneNumber,
+    visible: phoneNumberModalVisible,
+  } = useModal();
+  const {
+    close: closeAccountModal,
+    show: showAccountModal,
+    visible: visibleAccountModal,
+  } = useModal();
+
+  // TODO: refactor. we need to handle by step. we will add these step to array
+  const handleOkAccountModal = () => {
+    showPhoneNumber();
+    closeAccountModal();
+  };
+
+  const handleCancelAccountModal = () => {
+    closeAccountModal();
+    // navigate('/dashboard');
+  };
+
+  const handleOkPhoneModal = () => {};
+
+  const handleCancelPhoneModal = () => {
+    closePhoneNumber();
+    showAccountModal();
+  };
 
   useEffect(() => {
-    console.log('a')
-    if (_.isEmpty(_.get(user, 'twilio'))) {
-      show();
-    }
-  }, [])
+    showAccountModal();
+  }, []);
 
   return (
-    <div className="mx-5">
-      Dashboard
-
+    <div>
+      <h1 className="py-4 text-center text-5xl">Dashboard</h1>
+      <AccountSetupModal
+        handleCancel={handleCancelAccountModal}
+        handleOk={handleOkAccountModal}
+        visible={visibleAccountModal}
+      />
       <SelectNumberModal
-        handleCancel={close}
-        handleOk={close}
-        visible={visible}
+        handleCancel={handleCancelPhoneModal}
+        handleClose={closePhoneNumber}
+        handleOk={handleOkPhoneModal}
+        visible={phoneNumberModalVisible}
       />
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;
