@@ -48,7 +48,7 @@ function App() {
   }, [savedAuth]);
 
   const isAuth = user;
-
+  console.log(isAuth);
   return (
     <main>
       <ConfigProvider
@@ -61,12 +61,10 @@ function App() {
         }}
       >
         <Routes>
+          <Route path="/payment-setup" element={<PaymentSetup />} />
           {isAuth && (
             <Route path="/dashboard" element={<Dashboard />} />
           )}
-          {/* {isAuth  && (
-            <Route path="*" element={<Dashboard />} />
-          )} */}
           {isAuth  && (
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           )}

@@ -27,9 +27,7 @@ const Login = () => {
   const handleFinish = (values) => {
     try {
       dispatch(loginAsync(values));
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 300);
+      navigate("/payment-setup");
     } catch {}
   };
 

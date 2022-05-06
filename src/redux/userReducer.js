@@ -225,7 +225,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     createUser: (state, action) => {
-      state.user = action.payload
+      // state.user = action.payload
       state.isLoading = false
     },
     createUserFailed: (state, action) => {

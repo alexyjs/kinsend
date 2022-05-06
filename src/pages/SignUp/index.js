@@ -18,6 +18,8 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
+import { useNavigate } from "react-router-dom";
+
 import { SuccessIcon } from '../../assets/svg'
 import { createUserAsync, selectCreateUser } from '../../redux/userReducer'
 import { phoneValidator } from '../../utils'
@@ -53,6 +55,7 @@ const SignUp = () => {
   const dispatch = useDispatch()
   const { close, show, visible } = useModal();
   const { listSubscriptionPrices } = useSelector(selectSubscriptions);
+  let navigate = useNavigate();
 
   const subscriptionPrices = useMemo(() => {
     return _.orderBy(listSubscriptionPrices, 'unit_amount')
@@ -68,9 +71,12 @@ const SignUp = () => {
     if (swiper.activeIndex === 0) {
       swiperRef.current.swiper.slideNext()
     } else {
-      let params = {...values};
-      params.phoneNumber = [params.phoneNumber]
-      dispatch(createUserAsync(params))
+      try {
+        let params = {...values};
+        params.phoneNumber = [params.phoneNumber]
+        dispatch(createUserAsync(params))
+        navigate('/login');
+      } catch {}
     }
   }
 
