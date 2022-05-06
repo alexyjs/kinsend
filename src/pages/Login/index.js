@@ -2,7 +2,6 @@ import {
   Button, Divider,
   Form,
   Input,
-  notification,
   Typography
 } from 'antd'
 import _ from 'lodash'
@@ -52,10 +51,6 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      notification.success({
-        title: 'Action Completed',
-        message: `Login successfully.`,
-      })
       if (false) {
         // TO DO redirect to home page if used has payment Method
 
@@ -76,7 +71,6 @@ const Login = () => {
     <div className="grid place-items-center min-h-screen">
       <div className="container mx-auto px-4 max-w-lg">
         <Title className="text-center">Login</Title>
-        <ErrorMessages errors={errors} />
         <Form layout="vertical" onFinish={handleFinish} initialValues={{}}>
           <Form.Item
             name="email"
@@ -128,6 +122,7 @@ const Login = () => {
               </p>
             </Typography>
           </div>
+          <ErrorMessages errors={errors} classNames="text-center pb-4" />
           <Form.Item noStyle shouldUpdate>
             <Button
               className="min-w-200"

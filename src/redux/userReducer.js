@@ -2,6 +2,8 @@ import { createAction, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import _ from 'lodash'
 import { call, put, takeLatest } from 'redux-saga/effects'
+import { notification } from 'antd'
+
 import { storage } from '../pages/hook/userLocalStorage'
 import { STORAGE_AUTH_KEY } from '../utils/constants'
 
@@ -104,8 +106,18 @@ export function* createUserSaga(action) {
   const { response, errors } = yield call(createUserAPI, action.payload)
   if (response) {
     yield put(createUser(response))
+
+    notification.success({
+      title: 'Action Completed',
+      message: `The user has been created.`,
+    })
   } else {
     yield put(createUserFailed(errors))
+
+    notification.error({
+      title: 'Action failed',
+      message: `Can't create new user.`,
+    })
   }
 }
 
@@ -115,6 +127,10 @@ export function* loginSaga(action) {
   if (response) {
     authStorage.set(headers);
     yield put(login(response))
+    notification.success({
+      title: 'Action Completed',
+      message: `Login successfully.`,
+    })
   } else {
     yield put(failed(errors))
   }
@@ -126,6 +142,10 @@ export function* loginWithGoogleSaga(action) {
   if (response) {
     // authStorage.set(headers);
     yield put(login(response))
+    notification.success({
+      title: 'Action Completed',
+      message: `Login With Google successfully.`,
+    })
   } else {
     yield put(failed(errors))
   }

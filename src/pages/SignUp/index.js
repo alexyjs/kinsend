@@ -5,14 +5,13 @@ import {
   Collapse,
   Form,
   Input,
-  notification,
   Radio,
   Row,
   Space,
   Typography
 } from 'antd'
 import _ from 'lodash'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigation, Pagination } from 'swiper'
 import 'swiper/css'
@@ -23,7 +22,10 @@ import { SuccessIcon } from '../../assets/svg'
 import { createUserAsync, selectCreateUser } from '../../redux/userReducer'
 import { phoneValidator } from '../../utils'
 import { EMAIL_REGEX, INFO_FROM, PASSWORD_REGEX } from '../../utils/constants'
-import { ErrorMessages, InputPhone, InputSocial } from '../components'
+import { InputPhone, InputSocial, PlanModal } from '../components'
+import { useModal } from '../hook/useModal'
+import { getListSubscriptionPricesAsync, selectSubscriptions } from '../../redux/subscriptionReducer'
+
 const { Title } = Typography
 const { Panel } = Collapse
 
@@ -49,6 +51,13 @@ const SignUp = () => {
   const { isLoading, errors, user } = useSelector(selectCreateUser)
   const swiperRef = React.useRef(null)
   const dispatch = useDispatch()
+  const { close, show, visible } = useModal();
+  const { listSubscriptionPrices } = useSelector(selectSubscriptions);
+
+  const subscriptionPrices = useMemo(() => {
+    return _.orderBy(listSubscriptionPrices, 'unit_amount')
+  }, [listSubscriptionPrices])
+
   const handleFinish = (values) => {
     const swiper = _.get(swiperRef, 'current.swiper', null)
 
@@ -59,28 +68,21 @@ const SignUp = () => {
     if (swiper.activeIndex === 0) {
       swiperRef.current.swiper.slideNext()
     } else {
-      dispatch(createUserAsync(values))
+      let params = {...values};
+      params.phoneNumber = [params.phoneNumber]
+      dispatch(createUserAsync(params))
     }
   }
 
   useEffect(() => {
     if (user) {
-      notification.success({
-        title: 'Action Completed',
-        message: `The user has been created.`,
-      })
       swiperRef.current.swiper.slideNext()
     }
   }, [user])
 
   useEffect(() => {
-    if (!_.isEmpty(errors)) {
-      notification.error({
-        title: 'Action failed',
-        message: `Can't create new user.`,
-      })
-    }
-  }, [errors])
+    dispatch(getListSubscriptionPricesAsync());
+  }, []);
 
   return (
     <div className="flex flex-col justify-center min-h-screen py-6">
@@ -90,12 +92,11 @@ const SignUp = () => {
           <p>
             Thank you for your interest in the KinSend Starter Plan starting at
             $20.00/month{' '}
-            <span className="text-primary font-bold underline">
+            <span className="text-primary font-bold cursor-pointer" onClick={show}>
               Change Plan
             </span>
           </p>
         </Typography>
-        <ErrorMessages errors={errors} />
         <Form
           layout="vertical"
           onFinish={handleFinish}
@@ -114,7 +115,7 @@ const SignUp = () => {
             onSlideChange={(s) => {
               setIsEnd(s.isEnd)
             }}
-            autoHeight={true}
+            calculateHeight={true}
             noSwiping={true}
             className="swiper-no-swiping"
             pagination={{ clickable: false }}
@@ -391,6 +392,15 @@ const SignUp = () => {
           </Swiper>
         </Form>
       </div>
+      <PlanModal
+        handleCancel={close}
+        handleOk={(subscription) => {
+          close();
+        }}
+        visible={visible}
+        subscriptionPrices={subscriptionPrices}
+        disabled={true}
+      />
     </div>
   )
 }

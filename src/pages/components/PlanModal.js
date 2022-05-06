@@ -2,7 +2,7 @@ import { Button, Card, Col, Modal, Radio, Row, Typography } from 'antd'
 import _ from 'lodash'
 import React from 'react'
 
-const PlanModal = ({ visible, handleOk, handleCancel, subscriptionPrices }) => {
+const PlanModal = ({ visible, handleOk, handleCancel, subscriptionPrices, disabled }) => {
   const handleSelectSubscription = (subscription) => {
     handleOk(subscription);
   }
@@ -81,6 +81,7 @@ const PlanModal = ({ visible, handleOk, handleCancel, subscriptionPrices }) => {
                     className='mt-4'
                     size='large'
                     type='primary'
+                    disabled={disabled}
                     onClick={() => handleSelectSubscription(subscription)}
                   >Select plan</Button>
                 </div>
