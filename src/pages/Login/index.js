@@ -27,7 +27,6 @@ const Login = () => {
   const handleFinish = (values) => {
     try {
       dispatch(loginAsync(values));
-      navigate("/payment-setup");
     } catch {}
   };
 
@@ -44,9 +43,14 @@ const Login = () => {
           provider: "google",
         })
       );
-      navigate("/payment-setup");
     } catch {}
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/payment-setup");
+    }
+  }, [user]);
 
   return (
     <div className="grid place-items-center min-h-screen">

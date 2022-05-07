@@ -28,6 +28,7 @@ import {
   patchUserAsync,
   resetUserAsync,
 } from "./redux/userReducer";
+import { authStorage } from "./utils";
 
 const { Header } = Layout;
 function App() {
@@ -47,8 +48,8 @@ function App() {
     }
   }, [savedAuth]);
 
-  const isAuth = user;
-  console.log(isAuth);
+  const isAuth = authStorage.get();
+  // console.log("###isAuth:", isAuth);
   return (
     <main>
       <ConfigProvider
@@ -61,18 +62,14 @@ function App() {
         }}
       >
         <Routes>
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/payment-setup" element={<PaymentSetup />} />
-          {isAuth && (
-            <Route path="/dashboard" element={<Dashboard />} />
-          )}
-          {isAuth  && (
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
-          )}
-
-          {!isAuth && <Route path="/sign-up" element={<SignUp />} />}
-          {!isAuth && <Route path="/login" element={<Login />} />}
-          {!isAuth && (
+          {isAuth && <Route path="/dashboard" element={<Dashboard />} />}
+          {!isAuth ? (
             <Route path="*" element={<Navigate to="/login" replace />} />
+          ) : (
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
           )}
         </Routes>
       </ConfigProvider>

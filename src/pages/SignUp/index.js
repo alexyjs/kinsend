@@ -8,31 +8,34 @@ import {
   Radio,
   Row,
   Space,
-  Typography
-} from 'antd'
-import _ from 'lodash'
-import React, { useEffect, useState, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Navigation, Pagination } from 'swiper'
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
+  Typography,
+} from "antd";
+import _ from "lodash";
+import React, { useEffect, useState, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigation, Pagination } from "swiper";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import { useNavigate } from "react-router-dom";
 
-import { SuccessIcon } from '../../assets/svg'
-import { createUserAsync, selectCreateUser } from '../../redux/userReducer'
-import { phoneValidator } from '../../utils'
-import { EMAIL_REGEX, INFO_FROM, PASSWORD_REGEX } from '../../utils/constants'
-import { InputPhone, InputSocial, PlanModal } from '../components'
-import { useModal } from '../hook/useModal'
-import { getListSubscriptionPricesAsync, selectSubscriptions } from '../../redux/subscriptionReducer'
+import { SuccessIcon } from "../../assets/svg";
+import { createUserAsync, selectCreateUser } from "../../redux/userReducer";
+import { phoneValidator } from "../../utils";
+import { EMAIL_REGEX, INFO_FROM, PASSWORD_REGEX } from "../../utils/constants";
+import { InputPhone, InputSocial, PlanModal } from "../components";
+import { useModal } from "../hook/useModal";
+import {
+  getListSubscriptionPricesAsync,
+  selectSubscriptions,
+} from "../../redux/subscriptionReducer";
 
-const { Title } = Typography
-const { Panel } = Collapse
+const { Title } = Typography;
+const { Panel } = Collapse;
 
 function SlideBackButton() {
-  const swiper = useSwiper()
+  const swiper = useSwiper();
 
   return (
     <Form.Item noStyle>
@@ -45,46 +48,49 @@ function SlideBackButton() {
         Back
       </Button>
     </Form.Item>
-  )
+  );
 }
 
 const SignUp = () => {
-  const [isEnd, setIsEnd] = useState(false)
-  const { isLoading, errors, user } = useSelector(selectCreateUser)
-  const swiperRef = React.useRef(null)
-  const dispatch = useDispatch()
+  const [isEnd, setIsEnd] = useState(false);
+  const { isLoading, errors, user, signupSuccess } =
+    useSelector(selectCreateUser);
+  const swiperRef = React.useRef(null);
+  const dispatch = useDispatch();
   const { close, show, visible } = useModal();
   const { listSubscriptionPrices } = useSelector(selectSubscriptions);
   let navigate = useNavigate();
 
   const subscriptionPrices = useMemo(() => {
-    return _.orderBy(listSubscriptionPrices, 'unit_amount')
-  }, [listSubscriptionPrices])
+    return _.orderBy(listSubscriptionPrices, "unit_amount");
+  }, [listSubscriptionPrices]);
 
   const handleFinish = (values) => {
-    const swiper = _.get(swiperRef, 'current.swiper', null)
+    const swiper = _.get(swiperRef, "current.swiper", null);
 
     if (!swiper) {
-      return
+      return;
     }
 
     if (swiper.activeIndex === 0) {
-      swiperRef.current.swiper.slideNext()
+      swiperRef.current.swiper.slideNext();
     } else {
       try {
-        let params = {...values};
-        params.phoneNumber = [params.phoneNumber]
-        dispatch(createUserAsync(params))
-        navigate('/login');
+        let params = { ...values };
+        params.phoneNumber = [params.phoneNumber];
+        dispatch(createUserAsync(params));
       } catch {}
     }
-  }
+  };
 
   useEffect(() => {
-    if (user) {
-      swiperRef.current.swiper.slideNext()
+    if (signupSuccess) {
+      swiperRef.current.swiper.slideNext();
+
+      // TODO: remove this logic. we shouldn't handle reddirect by signupSuccess
+      navigate("/login");
     }
-  }, [user])
+  }, [signupSuccess]);
 
   useEffect(() => {
     dispatch(getListSubscriptionPricesAsync());
@@ -94,11 +100,14 @@ const SignUp = () => {
     <div className="flex flex-col justify-center min-h-screen py-6">
       <div className="container mx-auto px-4">
         <Title className="text-center">Sign Up for KinSend</Title>
-        <Typography className={`mb-8 text-center ${isEnd ? 'invisible' : ''}`}>
+        <Typography className={`mb-8 text-center ${isEnd ? "invisible" : ""}`}>
           <p>
             Thank you for your interest in the KinSend Starter Plan starting at
-            $20.00/month{' '}
-            <span className="text-primary font-bold cursor-pointer" onClick={show}>
+            $20.00/month{" "}
+            <span
+              className="text-primary font-bold cursor-pointer"
+              onClick={show}
+            >
               Change Plan
             </span>
           </p>
@@ -110,16 +119,15 @@ const SignUp = () => {
             phoneNumber: {
               phone: undefined,
               code: 1,
-              short: 'US',
+              short: "US",
             },
           }}
         >
-
           <Swiper
             modules={[Pagination, Navigation]}
             spaceBetween={50}
             onSlideChange={(s) => {
-              setIsEnd(s.isEnd)
+              setIsEnd(s.isEnd);
             }}
             calculateHeight={true}
             noSwiping={true}
@@ -129,7 +137,7 @@ const SignUp = () => {
           >
             <SwiperSlide>
               <div className="pb-12">
-                <Row gutter={40} >
+                <Row gutter={40}>
                   <Col sm={12} span={24}>
                     <Form.Item
                       name="firstName"
@@ -137,7 +145,7 @@ const SignUp = () => {
                       rules={[
                         {
                           required: true,
-                          message: 'This field is required',
+                          message: "This field is required",
                         },
                       ]}
                     >
@@ -151,7 +159,7 @@ const SignUp = () => {
                       rules={[
                         {
                           required: true,
-                          message: 'This field is required',
+                          message: "This field is required",
                         },
                       ]}
                     >
@@ -166,11 +174,11 @@ const SignUp = () => {
                         {
                           validator(_, value) {
                             if (EMAIL_REGEX.test(value) || !value) {
-                              return Promise.resolve()
+                              return Promise.resolve();
                             }
                             return Promise.reject(
-                              new Error('The email is invalid'),
-                            )
+                              new Error("The email is invalid")
+                            );
                           },
                         },
                       ]}
@@ -194,7 +202,7 @@ const SignUp = () => {
                       rules={[
                         {
                           required: true,
-                          message: 'This field is required',
+                          message: "This field is required",
                         },
                       ]}
                     >
@@ -208,16 +216,18 @@ const SignUp = () => {
                       rules={[
                         {
                           required: true,
-                          message: 'This field is required',
+                          message: "This field is required",
                         },
                         {
                           validator(_, value) {
                             if (PASSWORD_REGEX.test(value) || !value) {
-                              return Promise.resolve()
+                              return Promise.resolve();
                             }
                             return Promise.reject(
-                              new Error('The password must be a minimum of eight characters, at least one letter, and one number.'),
-                            )
+                              new Error(
+                                "The password must be a minimum of eight characters, at least one letter, and one number."
+                              )
+                            );
                           },
                         },
                       ]}
@@ -238,18 +248,18 @@ const SignUp = () => {
                       rules={[
                         {
                           required: true,
-                          message: 'This field is required',
+                          message: "This field is required",
                         },
                         ({ getFieldValue }) => ({
                           validator(_, value) {
-                            if (!value || getFieldValue('password') === value) {
-                              return Promise.resolve()
+                            if (!value || getFieldValue("password") === value) {
+                              return Promise.resolve();
                             }
                             return Promise.reject(
                               new Error(
-                                'The two passwords that you entered do not match!',
-                              ),
-                            )
+                                "The two passwords that you entered do not match!"
+                              )
+                            );
                           },
                         }),
                       ]}
@@ -296,7 +306,7 @@ const SignUp = () => {
                               <Checkbox key={key} value={value}>
                                 {title}
                               </Checkbox>
-                            )
+                            );
                           })}
                         </Space>
                       </Checkbox.Group>
@@ -319,11 +329,12 @@ const SignUp = () => {
                           to my contacts
                         </Checkbox>
                         <Checkbox value="3">
-                          I would like to convert an existing email list into text
+                          I would like to convert an existing email list into
+                          text
                         </Checkbox>
                         <Checkbox value="4">
-                          I would like to sync my Shopify store and sell products
-                          through text
+                          I would like to sync my Shopify store and sell
+                          products through text
                         </Checkbox>
                         <Checkbox value="5">
                           I would like to manage RSVPs for events via text
@@ -373,7 +384,7 @@ const SignUp = () => {
             <SwiperSlide>
               <div className="pb-12">
                 <div className="bg-gray max-w-2xl mx-auto p-16 text-center">
-                  <Space direction="vertical" size={'large'}>
+                  <Space direction="vertical" size={"large"}>
                     <div className="text-center">
                       <SuccessIcon className="mx-auto" />
                     </div>
@@ -382,8 +393,9 @@ const SignUp = () => {
                     </Title>
                     <Typography className="text-center">
                       <p className="max-w-sm mx-auto">
-                        Thank you for completing the sigup for the KinSend Starter
-                        Plan. Plase check your email for a verification link.
+                        Thank you for completing the sigup for the KinSend
+                        Starter Plan. Plase check your email for a verification
+                        link.
                       </p>
                     </Typography>
                     <Typography className="text-center">
@@ -408,7 +420,7 @@ const SignUp = () => {
         disabled={true}
       />
     </div>
-  )
-}
+  );
+};
 
-export default SignUp
+export default SignUp;
