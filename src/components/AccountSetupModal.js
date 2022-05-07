@@ -4,13 +4,13 @@ import _ from "lodash";
 import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { addPaymentMethodAsync } from "../../redux/userReducer";
+import { addPaymentMethodAsync } from "../redux/userReducer";
 import { PlanModal } from "./";
 import { useModal } from "../hook/useModal";
 import {
   getListSubscriptionPricesAsync,
   selectSubscriptions,
-} from "../../redux/subscriptionReducer";
+} from "../redux/subscriptionReducer";
 
 const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
   // const { updatedUserSuccess } = useSelector(selectUpdatedUserSuccess);

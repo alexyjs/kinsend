@@ -24,8 +24,8 @@ import { SuccessIcon } from "../../assets/svg";
 import { createUserAsync, selectCreateUser } from "../../redux/userReducer";
 import { phoneValidator } from "../../utils";
 import { EMAIL_REGEX, INFO_FROM, PASSWORD_REGEX } from "../../utils/constants";
-import { InputPhone, InputSocial, PlanModal } from "../components";
-import { useModal } from "../hook/useModal";
+import { InputPhone, InputSocial, PlanModal } from "../../components";
+import { useModal } from "../../hook/useModal";
 import {
   getListSubscriptionPricesAsync,
   selectSubscriptions,

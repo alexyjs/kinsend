@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { PHONE_REGEX } from "./constants";
-import { storage } from "../pages/hook/userLocalStorage";
+import { storage } from "../hook/userLocalStorage";
 import { STORAGE_AUTH_KEY } from "../utils/constants";
 
 export const authStorage = storage(STORAGE_AUTH_KEY);

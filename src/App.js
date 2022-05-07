@@ -21,7 +21,7 @@ import "./styles/antd.less";
 import "./styles/tailwind.css";
 import "./App.less";
 import { STORAGE_AUTH_KEY } from "./utils/constants";
-import useLocalStorage from "./pages/hook/userLocalStorage";
+import useLocalStorage from "./hook/userLocalStorage";
 import PaymentSetup from "./pages/PaymentSetup";
 import {
   selectUsers,

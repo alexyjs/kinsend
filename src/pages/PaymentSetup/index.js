@@ -2,8 +2,8 @@ import _ from "lodash";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { AccountSetupModal, SelectNumberModal } from "../components";
-import { useModal } from "../hook/useModal";
+import { AccountSetupModal, SelectNumberModal } from "../../components";
+import { useModal } from "../../hook/useModal";
 
 const PaymentSetup = () => {
   let navigate = useNavigate();

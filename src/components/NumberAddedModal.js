@@ -2,7 +2,7 @@ import { Button, Col, Form, Modal, Row } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import { displayPhoneNumber } from "../../utils";
+import { displayPhoneNumber } from "../utils";
 
 const NumberAddedModal = ({ visible, handleOk, handleCancel, phoneNumber }) => {
   const navigate = useNavigate();

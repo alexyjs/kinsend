@@ -1,6 +1,6 @@
 import { Button, Input } from 'antd'
 import React, { useState } from 'react'
-import { InstagramSVG, TwitterSVG } from '../../assets/svg'
+import { InstagramSVG, TwitterSVG } from '../assets/svg'
 
 const InputSocial = ({ defaultActiveKey = 'instagram', ...rest }) => {
   const [activeKey, setActiveKey] = useState(defaultActiveKey)

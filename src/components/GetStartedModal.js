@@ -1,6 +1,6 @@
 import { Button, Form, Input, Modal } from 'antd'
 import React from 'react'
-import { phoneValidator } from '../../utils'
+import { phoneValidator } from '../utils'
 import PhoneInput from './InputPhone'
 
 const GetStartedModal = ({ visible, handleOk, handleCancel }) => {

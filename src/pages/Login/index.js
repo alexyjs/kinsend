@@ -14,8 +14,8 @@ import {
   selectUsers,
 } from "../../redux/userReducer";
 import { EMAIL_REGEX } from "../../utils/constants";
-import { ErrorMessages, ResendPasswordModal } from "../components";
-import { useModal } from "../hook/useModal";
+import { ErrorMessages, ResendPasswordModal } from "../../components";
+import { useModal } from "../../hook/useModal";
 
 const { Title } = Typography;
 
@@ -92,7 +92,7 @@ const Login = () => {
           <div>
             <Typography className={`mb-8`}>
               <p>
-                Firgot your password?{" "}
+                Forgot your password?{" "}
                 <span
                   className="text-primary font-bold underline"
                   onClick={show}
