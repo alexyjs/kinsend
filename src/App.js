@@ -64,7 +64,7 @@ function App() {
         <Routes>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/payment-setup" element={<PaymentSetup />} />
+          {isAuth && <Route path="/payment-setup" element={<PaymentSetup />} />}
           {isAuth && <Route path="/dashboard" element={<Dashboard />} />}
           {!isAuth ? (
             <Route path="*" element={<Navigate to="/login" replace />} />

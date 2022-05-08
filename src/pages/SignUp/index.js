@@ -225,7 +225,7 @@ const SignUp = () => {
                             }
                             return Promise.reject(
                               new Error(
-                                "The password must be a minimum of eight characters, at least one letter, and one number."
+                                "Minimum eight characters, at least one letter, one number and one special character"
                               )
                             );
                           },

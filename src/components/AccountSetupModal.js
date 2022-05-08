@@ -4,7 +4,8 @@ import _ from "lodash";
 import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { addPaymentMethodAsync } from "../redux/userReducer";
+import { selectUsers } from "../redux/userReducer";
+import { addPaymentMethodAsync, selectAddPaymentSuccess } from "../redux/paymentReducer";
 import { PlanModal } from "./";
 import { useModal } from "../hook/useModal";
 import {
@@ -14,6 +15,7 @@ import {
 
 const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
   // const { updatedUserSuccess } = useSelector(selectUpdatedUserSuccess);
+  const { addPaymentSuccess } = useSelector(selectAddPaymentSuccess);
   const [isStripeLoading, setIsStripeLoading] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
@@ -22,6 +24,7 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
   const { close: closePlan, show: showPlan, visible: visiblePlan } = useModal();
   const [selectedSubscription, setSelectedSubscription] = useState(null);
   const { listSubscriptionPrices } = useSelector(selectSubscriptions);
+  const { user } = useSelector(selectUsers);
 
   const subscriptionPrices = useMemo(() => {
     return _.orderBy(listSubscriptionPrices, "unit_amount");
@@ -29,7 +32,7 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
 
   useEffect(() => {
     dispatch(getListSubscriptionPricesAsync());
-  }, []);
+  }, [dispatch]);
 
   const handleSelectSubscription = (subscription) => {
     setSelectedSubscription(subscription);
@@ -58,9 +61,10 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
       dispatch(
         addPaymentMethodAsync({
           paymentMethod,
+          user,
+          priceID: selectedSubscription.id,
         })
       );
-      handleOk();
     } catch (e) {
       setIsStripeLoading(false);
     }
@@ -75,6 +79,28 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
     return _.get(subscription, "product.metadata");
   }, [selectedSubscription, subscriptionPrices]);
 
+  useEffect(() => {
+    if (subscriptionPrices?.length) {
+      setSelectedSubscription(_.first(subscriptionPrices));
+    }
+  }, [subscriptionPrices]);
+
+  useEffect(() => {
+    if (addPaymentSuccess) {
+      handleOk();
+    }
+  }, [addPaymentSuccess, handleOk]);
+
+  // useEffect(() => {
+  //   if (user) {
+  //     dispatch(
+  //       addPaymentMethodAsync({
+  //         paymentMethod,
+  //       })
+  //     );
+  //   }
+  // }, [user]);
+  console.log('###addPaymentSuccess', addPaymentSuccess, selectedSubscription);
   return (
     <>
       <Modal

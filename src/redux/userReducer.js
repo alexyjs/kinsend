@@ -13,7 +13,6 @@ export const resendVerifyEmailAsync = createAction(
 );
 export const loginWithGoogleAsync = createAction("user/loginWithGoogleAsync");
 export const patchUserAsync = createAction("user/patchUserAsync");
-export const addPaymentMethodAsync = createAction("user/addPaymentMethodAsync");
 export const resetUserAsync = createAction("user/resetUserAsync");
 
 const getAuthorization = () => {
@@ -93,10 +92,10 @@ export async function patchUserAPI(data) {
   return handleCallAPI(payload);
 }
 
-export async function addPaymentMethodAPI(data) {
+export async function getListSubscriptionAPI(data) {
   const payload = {
-    method: "POST",
-    url: `${process.env.REACT_APP_API_BASE_URL}/payments/credit-card`,
+    method: "GET",
+    url: `${process.env.REACT_APP_API_BASE_URL}/subscriptions`,
     data,
   };
 
@@ -178,15 +177,6 @@ export function* resetUserSaga() {
   yield put(reset());
 }
 
-export function* addPaymentMethodSaga(action) {
-  const { response, errors } = yield call(addPaymentMethodAPI, action.payload);
-  if (response) {
-    yield put(addPaymentSuccess(response));
-  } else {
-    yield put(failed(errors));
-  }
-}
-
 export function* userSaga() {
   yield takeLatest(createUserAsync, createUserSaga);
 }
@@ -207,10 +197,6 @@ export function* watchPatchUserSaga() {
   yield takeLatest(patchUserAsync, patchUserSaga);
 }
 
-export function* watchAddPaymentMethodSaga() {
-  yield takeLatest(addPaymentMethodAsync, addPaymentMethodSaga);
-}
-
 export function* watchResetUserSaga() {
   yield takeLatest(resetUserAsync, resetUserSaga);
 }
@@ -221,7 +207,6 @@ const initialState = {
   errors: [],
   auth: null,
   updatedUserSuccess: false,
-  addPaymentSuccess: false,
   resendVerifyEmailSuccess: false,
   signupSuccess: false,
   signupfailed: false,
@@ -258,9 +243,6 @@ export const userSlice = createSlice({
       state.user = action.payload;
       state.updatedUserSuccess = true;
     },
-    addPaymentSuccess: (state, action) => {
-      state.addPaymentSuccess = true;
-    },
     resendVerifyEmailSuccess: (state, action) => {
       state.resendVerifyEmailSuccess = true;
     },
@@ -289,7 +271,6 @@ export const {
   login,
   failed,
   updatedUser,
-  addPaymentSuccess,
   resetResendVerifyEmail,
   reset,
 } = userSlice.actions;
@@ -316,12 +297,6 @@ export const selectAuth = ({ users }) => {
 export const selectUpdatedUserSuccess = ({ users }) => {
   return {
     updatedUserSuccess: users.updatedUserSuccess,
-  };
-};
-
-export const selectAddPaymentSuccess = ({ users }) => {
-  return {
-    addPaymentSuccess: users.addPaymentSuccess,
   };
 };
 

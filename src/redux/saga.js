@@ -6,27 +6,28 @@ import {
 } from "./subscriptionReducer";
 import {
   userSaga,
-  watchAddPaymentMethodSaga,
   watchLoginSaga,
   watchLoginWithGoogleAsyncSaga,
   watchPatchUserSaga,
   watchResendVerifyEmailSaga,
   watchResetUserSaga,
 } from "./userReducer";
+import { watchAddPaymentMethodSaga } from './paymentReducer';
 
 export default function* rootSaga() {
   yield all([
+    watchGetListPhoneSaga(),
+  
+    watchGetListSubscriptionSaga(),
+    watchGetListSubscriptionPricesSaga(),
+
     userSaga(),
     watchLoginSaga(),
     watchLoginWithGoogleAsyncSaga(),
     watchPatchUserSaga(),
-    watchAddPaymentMethodSaga(),
-    watchGetListPhoneSaga(),
-
-    watchGetListSubscriptionSaga(),
-    watchGetListSubscriptionPricesSaga(),
-
     watchResendVerifyEmailSaga(),
     watchResetUserSaga(),
+
+    watchAddPaymentMethodSaga(),
   ]);
 }
