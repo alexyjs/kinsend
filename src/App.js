@@ -66,10 +66,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           {isAuth && <Route path="/payment-setup" element={<PaymentSetup />} />}
           {isAuth && <Route path="/dashboard" element={<Dashboard />} />}
-          {!isAuth ? (
-            <Route path="*" element={<Navigate to="/login" replace />} />
-          ) : (
+          {isAuth ? (
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            ) : (
+            <Route path="*" element={<Navigate to="/login" replace />} />
           )}
         </Routes>
       </ConfigProvider>

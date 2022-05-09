@@ -5,7 +5,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { selectUsers } from "../redux/userReducer";
-import { addPaymentMethodAsync, selectAddPaymentSuccess } from "../redux/paymentReducer";
+import { addPaymentMethodAsync, selectAddPayment } from "../redux/paymentReducer";
 import { PlanModal } from "./";
 import { useModal } from "../hook/useModal";
 import {
@@ -15,7 +15,7 @@ import {
 
 const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
   // const { updatedUserSuccess } = useSelector(selectUpdatedUserSuccess);
-  const { addPaymentSuccess } = useSelector(selectAddPaymentSuccess);
+  const { addPaymentSuccess, isLoading } = useSelector(selectAddPayment);
   const [isStripeLoading, setIsStripeLoading] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
@@ -91,16 +91,6 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
     }
   }, [addPaymentSuccess, handleOk]);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     dispatch(
-  //       addPaymentMethodAsync({
-  //         paymentMethod,
-  //       })
-  //     );
-  //   }
-  // }, [user]);
-  console.log('###addPaymentSuccess', addPaymentSuccess, selectedSubscription);
   return (
     <>
       <Modal
@@ -179,6 +169,7 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
                   type="text"
                   size="large"
                   onClick={handleCancel}
+                  disabled={isLoading}
                 >
                   Back
                 </Button>
@@ -191,7 +182,7 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
                   type="primary"
                   size="large"
                   htmlType="submit"
-                  loading={isStripeLoading}
+                  loading={isStripeLoading || isLoading}
                 >
                   Next
                 </Button>

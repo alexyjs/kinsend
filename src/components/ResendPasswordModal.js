@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { resendVerifyEmailAsync, resetResendVerifyEmail, selectUsers } from '../redux/userReducer'
 import { EMAIL_REGEX } from '../utils/constants'
+import "./ResendPasswordModal.less";
 
 const ResendPasswordModal = ({ visible, handleOk, handleCancel }) => {
   const dispatch = useDispatch()
@@ -12,16 +13,12 @@ const ResendPasswordModal = ({ visible, handleOk, handleCancel }) => {
   }
 
   useEffect(() => {
-
-  })
-
-  useEffect(() => {
     if (resendVerifyEmailSuccess) {
       handleOk && handleOk()
     }
 
     return () => dispatch(resetResendVerifyEmail());
-  }, [resendVerifyEmailSuccess]);
+  }, [resendVerifyEmailSuccess, handleOk, dispatch]);
 
   return (
     <Modal
@@ -32,8 +29,9 @@ const ResendPasswordModal = ({ visible, handleOk, handleCancel }) => {
       closable={false}
       destroyOnClose={true}
       centered
+      className="reset-modal"
     >
-      <h3 className="font-bold text-center text-2xl mb-6">
+      <h3 className="font-bold text-center text-2xl mb-9">
         Resend Your Password
       </h3>
       <Form layout="vertical" onFinish={handleFinish} initialValues={{}}>
@@ -57,7 +55,7 @@ const ResendPasswordModal = ({ visible, handleOk, handleCancel }) => {
         >
           <Input size="large" placeholder="Enter your email" />
         </Form.Item>
-        <Row justify="end" className="mt-6">
+        <Row justify="end" className="mt-12">
           <Col>
             <Form.Item noStyle>
               <Button
@@ -66,7 +64,7 @@ const ResendPasswordModal = ({ visible, handleOk, handleCancel }) => {
                 size="large"
                 onClick={handleCancel}
               >
-                Back
+                Back To Login
               </Button>
             </Form.Item>
           </Col>

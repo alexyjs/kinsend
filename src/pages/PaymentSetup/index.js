@@ -1,12 +1,15 @@
-import _ from "lodash";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { AccountSetupModal, SelectNumberModal } from "../../components";
+import { selectUsers } from "../../redux/userReducer";
 import { useModal } from "../../hook/useModal";
 
 const PaymentSetup = () => {
   let navigate = useNavigate();
+  const { user } = useSelector(selectUsers);
+
   const {
     close: closePhoneNumber,
     show: showPhoneNumber,
@@ -38,7 +41,13 @@ const PaymentSetup = () => {
 
   useEffect(() => {
     showAccountModal();
-  });
+  }, [showAccountModal]);
+
+  useEffect(() => {
+    if (user?.isEnabledBuyPlan) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
 
   return (
     <>

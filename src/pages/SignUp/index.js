@@ -18,7 +18,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
-import { useNavigate } from "react-router-dom";
 
 import { SuccessIcon } from "../../assets/svg";
 import { createUserAsync, selectCreateUser } from "../../redux/userReducer";
@@ -30,6 +29,7 @@ import {
   getListSubscriptionPricesAsync,
   selectSubscriptions,
 } from "../../redux/subscriptionReducer";
+import "./styles.less";
 
 const { Title } = Typography;
 const { Panel } = Collapse;
@@ -53,13 +53,12 @@ function SlideBackButton() {
 
 const SignUp = () => {
   const [isEnd, setIsEnd] = useState(false);
-  const { isLoading, errors, user, signupSuccess } =
+  const { isLoading, signupSuccess } =
     useSelector(selectCreateUser);
   const swiperRef = React.useRef(null);
   const dispatch = useDispatch();
   const { close, show, visible } = useModal();
   const { listSubscriptionPrices } = useSelector(selectSubscriptions);
-  let navigate = useNavigate();
 
   const subscriptionPrices = useMemo(() => {
     return _.orderBy(listSubscriptionPrices, "unit_amount");
@@ -94,13 +93,13 @@ const SignUp = () => {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center min-h-screen py-6">
+    <div className="flex flex-col justify-center min-h-screen py-6 signup-page">
       <div className="container mx-auto px-4">
         <Title className="text-center">Sign Up for KinSend</Title>
         <Typography className={`mb-8 text-center ${isEnd ? "invisible" : ""}`}>
           <p>
-            Thank you for your interest in the KinSend Starter Plan starting at
-            $20.00/month{" "}
+            Thank you for your interest in the KinSend Starter Plan<br />
+            starting at $20.00/month{" "}
             <span
               className="text-primary font-bold cursor-pointer"
               onClick={show}
@@ -287,7 +286,7 @@ const SignUp = () => {
               </div>
             </SwiperSlide>
             <SwiperSlide>
-              <div className="pb-12">
+              <div className="pb-12 swipe-slider-small">
                 <div className="my-12">
                   <Title level={4} className="text-center">
                     Tell Us More
@@ -379,7 +378,7 @@ const SignUp = () => {
               </div>
             </SwiperSlide>
             <SwiperSlide>
-              <div className="pb-12">
+              <div className="pb-12 swipe-slider-small">
                 <div className="bg-gray max-w-2xl mx-auto p-16 text-center">
                   <Space direction="vertical" size={"large"}>
                     <div className="text-center">

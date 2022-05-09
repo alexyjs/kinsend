@@ -149,23 +149,24 @@ export const paymentSlice = createSlice({
   reducers: {
     addPaymentSuccess: (state, action) => {
       state.addPaymentSuccess = true;
+      state.isLoading = false;
+      state.errors = [];
     },
     failed: (state, action) => {
       state.isLoading = false;
       state.errors = action.payload;
     },
   },
-  // extraReducers: (builder) => {
-  //   builder
-  //     .addCase(createUserAsync, (state) => {
-  //       state.isLoading = true;
-  //       state.errors = [];
-  //       state.signupSuccess = false;
-  //     });
-  // },
+  extraReducers: (builder) => {
+    builder
+      .addCase(addPaymentMethodAsync, (state) => {
+        state.isLoading = true;
+        state.errors = [];
+      });
+  },
 });
 
-export const { addPaymentSuccess, failed } = paymentSlice.actions;
+export const { addPaymentStart, addPaymentSuccess, failed } = paymentSlice.actions;
 
 export const selectUpdatedUserSuccess = ({ payments }) => {
   return {
@@ -173,9 +174,11 @@ export const selectUpdatedUserSuccess = ({ payments }) => {
   };
 };
 
-export const selectAddPaymentSuccess = ({ payments }) => {
+export const selectAddPayment = ({ payments }) => {
   return {
     addPaymentSuccess: payments.addPaymentSuccess,
+    isLoading: payments.isLoading,
+    errors: payments.errors,
   };
 };
 
