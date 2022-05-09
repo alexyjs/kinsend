@@ -86,9 +86,6 @@ const SignUp = () => {
   useEffect(() => {
     if (signupSuccess) {
       swiperRef.current.swiper.slideNext();
-
-      // TODO: remove this logic. we shouldn't handle reddirect by signupSuccess
-      navigate("/login");
     }
   }, [signupSuccess]);
 
