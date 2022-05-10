@@ -74,7 +74,7 @@ export async function attachPaymentMethodAPI(paymentMethodId) {
 export async function makeDefaultPaymentMethodAPI(paymentMethodId) {
   const payload = {
     method: "POST",
-    url: `${process.env.REACT_APP_API_BASE_URL}/payments/credit-card/payment-method/${paymentMethodId}/customer-update`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/payments/credit-card/payment-method/${paymentMethodId}/attach-consumer`,
     data: {
       paymentMethodId,
     },
@@ -117,13 +117,10 @@ export async function createPaymentCharge(amount, paymentMethodId) {
 export function* addPaymentMethodSaga(action) {
   const { paymentMethod, user, priceID } = action.payload;
   const { response, errors } = yield call(addPaymentMethodAPI, {
-    paymentMethod
+    paymentMethodId: paymentMethod.id,
+    type: paymentMethod.type,
   });
-  const { response: responseConfirm, errors: errorsConfirm } = yield call(confirmPaymentMethodAPI, response.stripePaymentMethodId, response.stripeSetupIntentId);
-
-  // TODO: need to check again
-  const { responseDefaultPayment, errorsDefaultPayment } = yield call(makeDefaultPaymentMethodAPI, responseConfirm?.payment_method);
-  
+  const { responseDefaultPayment, errorsDefaultPayment } = yield call(makeDefaultPaymentMethodAPI, response.stripePaymentMethodId);
   const { response: responseSubscription, errors: errorsSubscription } = yield call(createPaymentSubscription, user.stripeCustomerUserId, priceID);
   if (responseSubscription) {
     yield put(addPaymentSuccess(responseSubscription));
