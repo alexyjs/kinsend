@@ -189,7 +189,6 @@ export function* resendVerifyEmailSaga(action) {
 export function* getUserSaga(action) {
   const { response, errors, headers } = yield call(getUserAPI, action.payload);
   if (response) {
-    authStorage.set(headers);
     yield put(updatedUser(response));
   } else {
     yield put(failed(errors));
@@ -199,7 +198,6 @@ export function* getUserSaga(action) {
 export function* patchUserSaga(action) {
   const { response, errors, headers } = yield call(patchUserAPI, action.payload);
   if (response) {
-    authStorage.set(headers);
     yield put(updatedUser(response));
     notification.success({
       title: "Action Completed",
@@ -217,12 +215,12 @@ export function* patchUserSaga(action) {
 export function* resetPasswordSaga(action) {
   const { response, errors, headers } = yield call(resetPasswordAPI, action.payload);
   if (response) {
-    authStorage.set(false);
+    // authStorage.set(false);
     notification.success({
       title: "Action Completed",
       message: `Reset password successfully.`,
     });
-    window.location.reload();
+    // window.location.reload();
   } else {
     yield put(failed(errors));
     notification.error({
