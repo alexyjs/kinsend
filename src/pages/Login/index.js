@@ -1,6 +1,6 @@
 import { Button, Divider, Form, Input, Typography } from "antd";
 import _ from "lodash";
-import React, { useEffect } from "react";
+import React, { memo,useEffect } from "react";
 import { GoogleLogin } from "react-google-login";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -54,7 +54,7 @@ const Login = () => {
         navigate("/payment-setup");
       }
     }
-  }, [user, navigate]);
+  }, [user, user?.isEnabledBuyPlan]);
 
   return (
     <div className="grid place-items-center min-h-screen signin-page">
@@ -144,4 +144,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default memo(Login);

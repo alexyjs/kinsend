@@ -13,7 +13,9 @@ export const resendVerifyEmailAsync = createAction(
 );
 export const loginWithGoogleAsync = createAction("user/loginWithGoogleAsync");
 export const patchUserAsync = createAction("user/patchUserAsync");
+export const getUserAsync = createAction("user/getUserAsync");
 export const resetUserAsync = createAction("user/resetUserAsync");
+export const resetPasswordAsync = createAction("user/resetPasswordAsync");
 
 const getAuthorization = () => {
   const headers = authStorage.get();
@@ -84,8 +86,28 @@ export async function resendVerifyEmailAPI(data) {
 
 export async function patchUserAPI(data) {
   const payload = {
+    method: "Put",
+    url: `${process.env.REACT_APP_API_BASE_URL}/users/me`,
+    data,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function getUserAPI(data) {
+  const payload = {
     method: "GET",
     url: `${process.env.REACT_APP_API_BASE_URL}/users/me`,
+    data,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function resetPasswordAPI(data) {
+  const payload = {
+    method: "Put",
+    url: `${process.env.REACT_APP_API_BASE_URL}/users/me/password`,
     data,
   };
 
@@ -164,12 +186,49 @@ export function* resendVerifyEmailSaga(action) {
   }
 }
 
-export function* patchUserSaga(action) {
-  const { response, errors } = yield call(patchUserAPI, action.payload);
+export function* getUserSaga(action) {
+  const { response, errors, headers } = yield call(getUserAPI, action.payload);
   if (response) {
+    authStorage.set(headers);
     yield put(updatedUser(response));
   } else {
     yield put(failed(errors));
+  }
+}
+
+export function* patchUserSaga(action) {
+  const { response, errors, headers } = yield call(patchUserAPI, action.payload);
+  if (response) {
+    authStorage.set(headers);
+    yield put(updatedUser(response));
+    notification.success({
+      title: "Action Completed",
+      message: `Update profile successfully.`,
+    });
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: `Update profile failed.`,
+    });
+  }
+}
+
+export function* resetPasswordSaga(action) {
+  const { response, errors, headers } = yield call(resetPasswordAPI, action.payload);
+  if (response) {
+    authStorage.set(false);
+    notification.success({
+      title: "Action Completed",
+      message: `Reset password successfully.`,
+    });
+    window.location.reload();
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: `Reset password failed.`,
+    });
   }
 }
 
@@ -197,8 +256,16 @@ export function* watchPatchUserSaga() {
   yield takeLatest(patchUserAsync, patchUserSaga);
 }
 
+export function* watchGetUserSaga() {
+  yield takeLatest(getUserAsync, getUserSaga);
+}
+
 export function* watchResetUserSaga() {
   yield takeLatest(resetUserAsync, resetUserSaga);
+}
+
+export function* watchResetPasswordSaga() {
+  yield takeLatest(resetPasswordAsync, resetPasswordSaga);
 }
 
 const initialState = {

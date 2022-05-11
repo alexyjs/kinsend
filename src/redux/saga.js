@@ -9,8 +9,10 @@ import {
   watchLoginSaga,
   watchLoginWithGoogleAsyncSaga,
   watchPatchUserSaga,
+  watchGetUserSaga,
   watchResendVerifyEmailSaga,
   watchResetUserSaga,
+  watchResetPasswordSaga,
 } from "./userReducer";
 import { watchAddPaymentMethodSaga } from './paymentReducer';
 
@@ -25,8 +27,10 @@ export default function* rootSaga() {
     watchLoginSaga(),
     watchLoginWithGoogleAsyncSaga(),
     watchPatchUserSaga(),
+    watchGetUserSaga(),
     watchResendVerifyEmailSaga(),
     watchResetUserSaga(),
+    watchResetPasswordSaga(),
 
     watchAddPaymentMethodSaga(),
   ]);
