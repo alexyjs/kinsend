@@ -3,8 +3,8 @@ import _ from "lodash";
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { InputPhone, PhoneList } from ".";
-import { getListPhoneAsync, selectPhones } from "../../redux/phoneReducer";
-import { phoneRequireValidator, phoneValidator } from "../../utils";
+import { getListPhoneAsync, selectPhones } from "../redux/phoneReducer";
+import { phoneRequireValidator, phoneValidator } from "../utils";
 import { useModal } from "../hook/useModal";
 import NumberAddedModal from "./NumberAddedModal";
 
