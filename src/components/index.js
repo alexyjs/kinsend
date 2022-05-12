@@ -6,3 +6,5 @@ export { default as InputPhone } from './InputPhone';
 export { default as InputSocial } from './InputSocial';
 export { default as ResendPasswordModal } from './ResendPasswordModal';
 export { default as SelectNumberModal } from './SelectNumberModal';
+export { default as PhoneList } from './PhoneList';
+export { default as PlanModal } from './PlanModal';

@@ -1,9 +1,25 @@
 import { Button, Col, Form, Input, Modal, Row } from 'antd'
-import React from 'react'
-import { EMAIL_REGEX } from '../../utils/constants'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { resendVerifyEmailAsync, resetResendVerifyEmail, selectUsers } from '../redux/userReducer'
+import { EMAIL_REGEX } from '../utils/constants'
+import "./ResendPasswordModal.less";
 
 const ResendPasswordModal = ({ visible, handleOk, handleCancel }) => {
-  const handleFinish = () => {}
+  const dispatch = useDispatch()
+  const { resendVerifyEmailSuccess } = useSelector(selectUsers);
+  const handleFinish = (values) => {
+    dispatch(resendVerifyEmailAsync(values))
+  }
+
+  useEffect(() => {
+    if (resendVerifyEmailSuccess) {
+      handleOk && handleOk()
+    }
+
+    return () => dispatch(resetResendVerifyEmail());
+  }, [resendVerifyEmailSuccess, handleOk, dispatch]);
+
   return (
     <Modal
       visible={visible}
@@ -13,8 +29,9 @@ const ResendPasswordModal = ({ visible, handleOk, handleCancel }) => {
       closable={false}
       destroyOnClose={true}
       centered
+      className="reset-modal"
     >
-      <h3 className="font-bold text-center text-2xl mb-6">
+      <h3 className="font-bold text-center text-2xl mb-9">
         Resend Your Password
       </h3>
       <Form layout="vertical" onFinish={handleFinish} initialValues={{}}>
@@ -38,23 +55,23 @@ const ResendPasswordModal = ({ visible, handleOk, handleCancel }) => {
         >
           <Input size="large" placeholder="Enter your email" />
         </Form.Item>
-        <Row justify="end" className="mt-6">
+        <Row justify="end" className="mt-12">
           <Col>
             <Form.Item noStyle>
               <Button
-                className="min-w-200"
+                className="md:min-w-200"
                 type="text"
                 size="large"
                 onClick={handleCancel}
               >
-                Back
+                Back To Login
               </Button>
             </Form.Item>
           </Col>
           <Col>
             <Form.Item noStyle shouldUpdate>
               <Button
-                className="min-w-200"
+                className="md:min-w-200"
                 type="primary"
                 size="large"
                 htmlType="submit"

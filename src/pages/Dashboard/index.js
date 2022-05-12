@@ -1,32 +1,14 @@
-import _ from 'lodash'
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { selectUsers } from '../../redux/userReducer'
-import { SelectNumberModal } from '../components'
-import { useModal } from '../hook/useModal'
+import _ from "lodash";
+import React from "react";
+import LayoutComponent from '../../components/Layout';
 
 const Dashboard = () => {
-  const { user } = useSelector(selectUsers);
-  const { close, show, visible } = useModal()
-
-  useEffect(() => {
-    console.log('a')
-    if (_.isEmpty(_.get(user, 'twilio'))) {
-      show();
-    }
-  }, [])
 
   return (
-    <div className="mx-5">
-      Dashboard
+    <LayoutComponent>
+      <h1 className="py-4 text-center text-5xl">Dashboard</h1>
+    </LayoutComponent>
+  );
+};
 
-      <SelectNumberModal
-        handleCancel={close}
-        handleOk={close}
-        visible={visible}
-      />
-    </div>
-  )
-}
-
-export default Dashboard
+export default Dashboard;

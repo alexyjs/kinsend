@@ -2,7 +2,6 @@ import React from 'react'
 
 const InstagramSVG = ({ isActive }) => {
   const color = isActive ? '#D15D36' : '#BABABA'
-  console.log('isActive', isActive);
   return (
     <svg
       width="22"

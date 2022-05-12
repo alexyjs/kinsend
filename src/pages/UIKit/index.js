@@ -1,10 +1,12 @@
 import { Button, Col, Form, Input, Row, Typography } from 'antd'
-import React from 'react'
-import { AccountSetupModal } from '../components'
+import React, { useEffect } from 'react'
+import { AccountSetupModal, SelectNumberModal } from '../components'
 import { useModal } from '../hook/useModal'
 
 const UIKit = () => {
   const { close, show, visible } = useModal()
+  const { close: closeSelectNumberModal, show: showSelectNumberModal, visible: visibleSelectNumberModal } = useModal()
+
   return (
     <div className="mx-5">
       <Typography.Title className="text-center">UI Kit</Typography.Title>
@@ -42,6 +44,23 @@ const UIKit = () => {
               handleCancel={close}
               handleOk={close}
               visible={visible}
+            />
+          </div>
+          <div className="mb-6">
+            <Typography.Title level={2}>Select Phone Number Modal</Typography.Title>
+            <Button
+              className="min-w-200"
+              type="primary"
+              size="large"
+              block
+              onClick={showSelectNumberModal}
+            >
+              Ooen Phone Number Modal
+            </Button>
+            <SelectNumberModal
+              handleCancel={closeSelectNumberModal}
+              handleOk={closeSelectNumberModal}
+              visible={visibleSelectNumberModal}
             />
           </div>
         </Col>
