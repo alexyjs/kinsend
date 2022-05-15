@@ -52,7 +52,7 @@ function App() {
         <Routes>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
-          {isAuth && <Route path="/profile" element={<Profile />} />}
+          {isAuth && <Route path="/settings/profile" element={<Profile />} />}
           {isAuth && <Route path="/payment-setup" element={<PaymentSetup />} />}
           {isAuth && <Route path="/dashboard" element={<Dashboard />} />}
           {isAuth ? (

@@ -1,7 +1,7 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import _ from "lodash";
-import { call, put, delay, takeLatest, fork, select, take } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
 
 import { authStorage } from "./../utils";
 export const addPaymentMethodAsync = createAction("user/addPaymentMethodAsync");

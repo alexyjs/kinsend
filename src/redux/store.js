@@ -8,7 +8,19 @@ import paymentReducer from "./paymentReducer";
 
 // disalbe thunk and add redux-saga middleware
 const sagaMiddleware = createSagaMiddleware();
-const middleware = [...getDefaultMiddleware({ thunk: false }), sagaMiddleware];
+const middleware = [
+  ...getDefaultMiddleware({
+    thunk: false,
+    serializableCheck: false,
+    // Ignore these action types
+    ignoredActions: ['your/action/type'],
+    // Ignore these field paths in all actions
+    ignoredActionPaths: ['meta.arg', 'payload.timestamp'],
+    // Ignore these paths in the state
+    ignoredPaths: ['items.dates'],
+  }),
+  sagaMiddleware,
+];
 
 const store = configureStore({
   reducer: {
