@@ -74,7 +74,7 @@ const LayoutComponent = ({ className, children }) => {
             </NavLink>
           </Menu.Item>
           <Menu.Item key="profile">
-            <NavLink to="/profile">
+            <NavLink to="/settings/profile">
               <SettingSVG />
             </NavLink>
           </Menu.Item>
@@ -85,11 +85,11 @@ const LayoutComponent = ({ className, children }) => {
           <img src={LogoSVG} />
           <div ref={wrapperRef} className="header-menu">
             <div onClick={handleShowMenu} className="header-avatar-wrap">
-              <Avatar src={AvatarImg} size={58}/>
+              <Avatar src={user?.image || AvatarImg} size={58}/>
               <ArrowDownIcon />
             </div>
             {showMenu && <div className="header-menu-content">
-              <NavLink to="/profile" className="ant-btn ant-btn-text">
+              <NavLink to="/settings/profile" className="ant-btn ant-btn-text">
                 Profile
               </NavLink>
               <Button type="text" onClick={handleLogout}>Log out</Button>

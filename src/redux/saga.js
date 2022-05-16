@@ -13,6 +13,7 @@ import {
   watchResendVerifyEmailSaga,
   watchResetUserSaga,
   watchResetPasswordSaga,
+  watchUpdateAvatarSaga,
 } from "./userReducer";
 import { watchAddPaymentMethodSaga } from './paymentReducer';
 
@@ -31,6 +32,7 @@ export default function* rootSaga() {
     watchResendVerifyEmailSaga(),
     watchResetUserSaga(),
     watchResetPasswordSaga(),
+    watchUpdateAvatarSaga,
 
     watchAddPaymentMethodSaga(),
   ]);

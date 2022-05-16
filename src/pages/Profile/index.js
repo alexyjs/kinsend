@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import { Divider, Avatar, Form, Input, Button, Row, Col } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectUsers, patchUserAsync, resetPasswordAsync } from "../../redux/userReducer";
+import { selectUsers, patchUserAsync, resetPasswordAsync, updateAvatarAsync } from "../../redux/userReducer";
 import AvatarImg from "../../assets/svg/avatar.png";
+import { CameraIcon } from "../../assets/svg";
 import LayoutComponent from "../../components/Layout";
 import { PASSWORD_REGEX } from "../../utils/constants";
+import { handleFetchAPI, uploadFileWithProgress } from '../../utils';
+import VCard from './VCard';
 import "./styles.less";
 
 const layout = {
@@ -19,6 +22,8 @@ const Profile = () => {
   const [formReset] = Form.useForm();
   const { user } = useSelector(selectUsers);
   const dispatch = useDispatch();
+  const inputFileRef = React.useRef();
+  const [selectedFile, setSelectedFile] = useState();
 
   const onSubmitProfile = (values) => {
     dispatch(patchUserAsync(values));
@@ -26,6 +31,24 @@ const Profile = () => {
 
   const onResetPassword = (values) => {
     dispatch(resetPasswordAsync(values));
+  };
+
+  const onFileChange = async event => {
+    // const formData = new FormData();
+    // formData.append(
+    //   "file",
+    //   event.target.files[0],
+    //   event.target.files[0].name
+    // );
+    // // dispatch(updateAvatarAsync(formData));
+    // try {
+    //   const response = await uploadFileWithProgress('users/me/photo', 'PUT', formData);
+    // } catch {
+    // }
+  };
+
+  const onBtnClick = () => {
+    inputFileRef.current.click();
   };
 
   useEffect(() => {
@@ -44,7 +67,18 @@ const Profile = () => {
       </h1>
       <div className="grid grid-cols-4">
         <div>
-          <Avatar src={AvatarImg} size={186} />
+          <div className="avatar-wrap">
+            <Avatar src={user?.image || AvatarImg} size={186} />
+            <input
+              className="avatar-input"
+              type="file"
+              ref={inputFileRef}
+              onChangeCapture={onFileChange}
+            />
+            <div className="icon-camera" onClick={onBtnClick}>
+              <CameraIcon />
+            </div>
+          </div>
         </div>
         <div className="col-span-2">
           <Form
@@ -71,7 +105,7 @@ const Profile = () => {
             <Row justify="end">
               <Col>
                 <Form.Item>
-                  <Button type="primary" size="large" htmlType="submit">
+                  <Button type="primary" size="large" htmlType="submit" className="w-48	">
                     Save
                   </Button>
                 </Form.Item>
@@ -168,7 +202,7 @@ const Profile = () => {
             <Row justify="end">
               <Col>
                 <Form.Item>
-                  <Button type="primary" size="large" htmlType="submit">
+                  <Button type="primary" size="large" htmlType="submit" className="w-48	">
                     Save
                   </Button>
                 </Form.Item>
@@ -177,6 +211,7 @@ const Profile = () => {
           </Form>
         </div>
       </div>
+      <VCard />
     </LayoutComponent>
   );
 };
