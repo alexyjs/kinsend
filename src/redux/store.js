@@ -5,6 +5,7 @@ import userReducer from "./userReducer";
 import phoneReducer from "./phoneReducer";
 import subscriptionReducer from "./subscriptionReducer";
 import paymentReducer from "./paymentReducer";
+import vcardReducer from "./vcardReducer";
 
 // disalbe thunk and add redux-saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -28,6 +29,7 @@ const store = configureStore({
     phones: phoneReducer,
     subscriptions: subscriptionReducer,
     payments: paymentReducer,
+    vcard: vcardReducer,
   },
   middleware,
 });
