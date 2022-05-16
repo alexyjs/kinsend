@@ -14,8 +14,13 @@ import {
   watchResetUserSaga,
   watchResetPasswordSaga,
   watchUpdateAvatarSaga,
+  watchsyncLocalUserSaga,
 } from "./userReducer";
 import { watchAddPaymentMethodSaga } from './paymentReducer';
+import {
+  watchGetVCardSaga,
+  watchUpdateVCardSaga,
+} from "./vcardReducer";
 
 export default function* rootSaga() {
   yield all([
@@ -32,8 +37,12 @@ export default function* rootSaga() {
     watchResendVerifyEmailSaga(),
     watchResetUserSaga(),
     watchResetPasswordSaga(),
-    watchUpdateAvatarSaga,
+    watchUpdateAvatarSaga(),
+    watchsyncLocalUserSaga(),
 
     watchAddPaymentMethodSaga(),
+
+    watchGetVCardSaga(),
+    watchUpdateVCardSaga(),
   ]);
 }

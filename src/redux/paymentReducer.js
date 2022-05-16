@@ -4,38 +4,8 @@ import _ from "lodash";
 import { call, put, takeLatest } from "redux-saga/effects";
 
 import { authStorage } from "./../utils";
+import { handleCallAPI } from './helpers';
 export const addPaymentMethodAsync = createAction("user/addPaymentMethodAsync");
-
-const getAuthorization = () => {
-  const headers = authStorage.get();
-  return `Bearer ${_.get(headers, "accesstoken")}`;
-};
-const getHeaders = (headers) => {
-  return {
-    "Content-Type": "application/json",
-    "x-api-key": process.env.REACT_APP_API_KEY,
-    Authorization: getAuthorization(),
-    ...headers,
-  };
-};
-
-const handleCallAPI = async (payload, headers) => {
-  try {
-    const result = await axios({
-      method: "post",
-      headers: getHeaders(),
-      ...payload,
-    });
-    return {
-      response: _.get(result, "data"),
-      headers: _.get(result, "headers"),
-    };
-  } catch (e) {
-    return {
-      errors: _.get(e, "response.data.message"),
-    };
-  }
-};
 
 export async function addPaymentMethodAPI(data) {
   const payload = {
