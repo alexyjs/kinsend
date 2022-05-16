@@ -32,7 +32,7 @@ const AvatarComponent = () => {
         ref={inputFileRef}
         onChangeCapture={onFileChange}
       />
-      <div className="icon-camera" onClick={onBtnClick}>
+      <div className="icon-camera cursor-pointer" onClick={onBtnClick}>
         <CameraIcon />
       </div>
     </div>
