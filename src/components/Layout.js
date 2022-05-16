@@ -3,22 +3,20 @@ import { Layout, Avatar, Menu, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, NavLink } from "react-router-dom";
 import classnames from "classnames";
+import { UserOutlined } from "@ant-design/icons";
 
 import { STORAGE_AUTH_KEY } from "../utils/constants";
 import useLocalStorage from "../hook/userLocalStorage";
 import { selectUsers, resetUserAsync } from "../redux/userReducer";
 import LogoSVG from "../assets/svg/logo.svg";
-import AvatarImg from "../assets/svg/avatar.png";
 import {
   NotificationSVG,
   HistorySVG,
   SettingSVG,
-
   DashboardIcon,
   ArrowDownIcon,
 } from "../assets/svg";
-import { useOutsideAlerter } from '../hook/useOutSide';
-import { authStorage } from '../utils';
+import { useOutsideAlerter } from "../hook/useOutSide";
 import "./Layout.less";
 
 const { Header, Footer, Sider, Content } = Layout;
@@ -39,13 +37,13 @@ const LayoutComponent = ({ className, children }) => {
   };
 
   const handleClickOutside = () => {
-    setShowMenu(false)
-  }
+    setShowMenu(false);
+  };
 
   const handleShowMenu = (e) => {
     e.stopPropagation();
-    setShowMenu(!showMenu)
-  }
+    setShowMenu(!showMenu);
+  };
 
   useOutsideAlerter(wrapperRef, handleClickOutside);
 
@@ -53,7 +51,7 @@ const LayoutComponent = ({ className, children }) => {
     <Layout className={classnames("layout", className)}>
       <Sider>
         <Menu
-          theme="dark"
+          theme="light"
           // mode="horizontal"
           defaultSelectedKeys={["/"]}
           selectedKeys={[location.pathname]}
@@ -74,7 +72,7 @@ const LayoutComponent = ({ className, children }) => {
             </NavLink>
           </Menu.Item>
           <Menu.Item key="profile">
-            <NavLink to="/profile">
+            <NavLink to="/settings/profile">
               <SettingSVG />
             </NavLink>
           </Menu.Item>
@@ -85,15 +83,26 @@ const LayoutComponent = ({ className, children }) => {
           <img src={LogoSVG} />
           <div ref={wrapperRef} className="header-menu">
             <div onClick={handleShowMenu} className="header-avatar-wrap">
-              <Avatar src={AvatarImg} size={58}/>
-              <ArrowDownIcon />
+              <Avatar
+                src={user?.image || ""}
+                size={58}
+                icon={<UserOutlined />}
+              />
+              <ArrowDownIcon className="arrow-down-icon" />
             </div>
-            {showMenu && <div className="header-menu-content">
-              <NavLink to="/profile" className="ant-btn ant-btn-text">
-                Profile
-              </NavLink>
-              <Button type="text" onClick={handleLogout}>Log out</Button>
-              </div>}
+            {showMenu && (
+              <div className="header-menu-content">
+                <NavLink
+                  to="/settings/profile"
+                  className="ant-btn ant-btn-text"
+                >
+                  Profile
+                </NavLink>
+                <Button type="text" onClick={handleLogout}>
+                  Log out
+                </Button>
+              </div>
+            )}
           </div>
         </Header>
         <Content>{children}</Content>

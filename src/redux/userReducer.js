@@ -5,6 +5,7 @@ import { call, put, takeLatest } from "redux-saga/effects";
 import { notification } from "antd";
 
 import { authStorage } from "./../utils";
+import { handleCallAPI, handleFileCallAPI } from './helpers';
 
 export const createUserAsync = createAction("user/createUserAsync");
 export const loginAsync = createAction("user/loginAsync");
@@ -16,37 +17,8 @@ export const patchUserAsync = createAction("user/patchUserAsync");
 export const getUserAsync = createAction("user/getUserAsync");
 export const resetUserAsync = createAction("user/resetUserAsync");
 export const resetPasswordAsync = createAction("user/resetPasswordAsync");
-
-const getAuthorization = () => {
-  const headers = authStorage.get();
-  return `Bearer ${_.get(headers, "accesstoken")}`;
-};
-const getHeaders = (headers) => {
-  return {
-    "Content-Type": "application/json",
-    "x-api-key": process.env.REACT_APP_API_KEY,
-    Authorization: getAuthorization(),
-    ...headers,
-  };
-};
-
-const handleCallAPI = async (payload, headers) => {
-  try {
-    const result = await axios({
-      method: "post",
-      headers: getHeaders(),
-      ...payload,
-    });
-    return {
-      response: _.get(result, "data"),
-      headers: _.get(result, "headers"),
-    };
-  } catch (e) {
-    return {
-      errors: _.get(e, "response.data.message"),
-    };
-  }
-};
+export const updateAvatarAsync = createAction("user/updateAvatarAsync");
+export const syncLocalUserAsync = createAction("user/syncLocalUserAsync");
 
 export async function createUserAPI(data) {
   const payload = {
@@ -112,6 +84,16 @@ export async function resetPasswordAPI(data) {
   };
 
   return handleCallAPI(payload);
+}
+
+export async function updateAvatarAPI(data) {
+  const payload = {
+    method: "Put",
+    url: `${process.env.REACT_APP_API_BASE_URL}/users/me/photo`,
+    data,
+  };
+
+  return handleFileCallAPI(payload);
 }
 
 export async function getListSubscriptionAPI(data) {
@@ -215,18 +197,39 @@ export function* patchUserSaga(action) {
 export function* resetPasswordSaga(action) {
   const { response, errors, headers } = yield call(resetPasswordAPI, action.payload);
   if (response) {
-    // authStorage.set(false);
     notification.success({
       title: "Action Completed",
       message: `Reset password successfully.`,
     });
-    // window.location.reload();
   } else {
     yield put(failed(errors));
     notification.error({
       title: "Action failed",
       message: `Reset password failed.`,
     });
+  }
+}
+
+export function* updateAvatarSaga(action) {
+  const { response, errors, headers } = yield call(updateAvatarAPI, action.payload);
+  if (response) {
+    yield put(updatedUser(response));
+    notification.success({
+      title: "Action Completed",
+      message: `Update Avatar successfully.`,
+    });
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: `Update Avatar failed.`,
+    });
+  }
+}
+
+export function* syncLocalUserSaga(action) {
+  if (action.payload) {
+    yield put(updatedUser(action.payload));
   }
 }
 
@@ -264,6 +267,14 @@ export function* watchResetUserSaga() {
 
 export function* watchResetPasswordSaga() {
   yield takeLatest(resetPasswordAsync, resetPasswordSaga);
+}
+
+export function* watchUpdateAvatarSaga() {
+  yield takeLatest(updateAvatarAsync, updateAvatarSaga);
+}
+
+export function* watchsyncLocalUserSaga() {
+  yield takeLatest(syncLocalUserAsync, updateAvatarSaga);
 }
 
 const initialState = {
@@ -307,6 +318,7 @@ export const userSlice = createSlice({
     updatedUser: (state, action) => {
       state.user = action.payload;
       state.updatedUserSuccess = true;
+      state.isLoading = false;
     },
     resendVerifyEmailSuccess: (state, action) => {
       state.resendVerifyEmailSuccess = true;

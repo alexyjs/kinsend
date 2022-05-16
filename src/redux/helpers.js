@@ -8,6 +8,16 @@ const getAuthorization = () => {
   return `Bearer ${_.get(headers, "accesstoken")}`;
 };
 
+export const getHeaders = (headers) => {
+  return {
+    "Content-Type": "application/json",
+    "x-api-key": process.env.REACT_APP_API_KEY,
+    Authorization: getAuthorization(),
+    ...headers,
+  };
+};
+
+
 export const handleCallAPI = async (payload, headers) => {
   try {
     const result = await axios({
@@ -26,11 +36,23 @@ export const handleCallAPI = async (payload, headers) => {
   }
 };
 
-export const getHeaders = (headers) => {
-  return {
-    "Content-Type": "application/json",
-    "x-api-key": process.env.REACT_APP_API_KEY,
-    Authorization: getAuthorization(),
-    ...headers,
-  };
+export const handleFileCallAPI = async (payload, headers) => {
+  try {
+    const result = await axios({
+      method: "post",
+      headers: {
+        ...getHeaders(),
+        "Content-Type": "multipart/form-data",
+      },
+      ...payload,
+    });
+    return {
+      response: _.get(result, "data"),
+      headers: _.get(result, "headers"),
+    };
+  } catch (e) {
+    return {
+      errors: _.get(e, "response.data.message"),
+    };
+  }
 };

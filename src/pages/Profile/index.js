@@ -1,12 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import _ from "lodash";
-import { Divider, Avatar, Form, Input, Button, Row, Col } from "antd";
+import { Divider, Form, Input, Button, Row, Col } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectUsers, patchUserAsync, resetPasswordAsync } from "../../redux/userReducer";
-import AvatarImg from "../../assets/svg/avatar.png";
+import {
+  selectUsers,
+  patchUserAsync,
+  resetPasswordAsync,
+} from "../../redux/userReducer";
 import LayoutComponent from "../../components/Layout";
 import { PASSWORD_REGEX } from "../../utils/constants";
+import VCard from "./VCard";
+import { AvatarComponent } from "./../../components";
 import "./styles.less";
 
 const layout = {
@@ -17,7 +22,7 @@ const layout = {
 const Profile = () => {
   const [form] = Form.useForm();
   const [formReset] = Form.useForm();
-  const { user } = useSelector(selectUsers);
+  const { user, isLoading } = useSelector(selectUsers);
   const dispatch = useDispatch();
 
   const onSubmitProfile = (values) => {
@@ -44,7 +49,7 @@ const Profile = () => {
       </h1>
       <div className="grid grid-cols-4">
         <div>
-          <Avatar src={AvatarImg} size={186} />
+          <AvatarComponent />
         </div>
         <div className="col-span-2">
           <Form
@@ -71,7 +76,12 @@ const Profile = () => {
             <Row justify="end">
               <Col>
                 <Form.Item>
-                  <Button type="primary" size="large" htmlType="submit">
+                  <Button
+                    type="primary"
+                    size="large"
+                    htmlType="submit"
+                    className="w-48	"
+                  >
                     Save
                   </Button>
                 </Form.Item>
@@ -168,7 +178,13 @@ const Profile = () => {
             <Row justify="end">
               <Col>
                 <Form.Item>
-                  <Button type="primary" size="large" htmlType="submit">
+                  <Button
+                    type="primary"
+                    size="large"
+                    htmlType="submit"
+                    className="w-48	"
+                    disabled={isLoading}
+                  >
                     Save
                   </Button>
                 </Form.Item>
@@ -177,6 +193,7 @@ const Profile = () => {
           </Form>
         </div>
       </div>
+      <VCard />
     </LayoutComponent>
   );
 };
