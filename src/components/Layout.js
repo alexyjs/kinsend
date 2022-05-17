@@ -1,5 +1,9 @@
 import React, { useState, useRef } from "react";
 import { Layout, Avatar, Menu, Button } from "antd";
+import {
+  DoubleRightOutlined,
+  DoubleLeftOutlined,
+} from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, NavLink } from "react-router-dom";
 import classnames from "classnames";
@@ -28,6 +32,12 @@ const LayoutComponent = ({ className, children }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const wrapperRef = useRef(null);
+  const [collapsed, setCollapsed] = useState(true);
+  const [isHover, setHover] = useState(false);
+
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -49,31 +59,60 @@ const LayoutComponent = ({ className, children }) => {
 
   return (
     <Layout className={classnames("layout", className)}>
-      <Sider>
+      <Sider trigger={null} collapsible collapsed={collapsed}>
+        <Button
+          className="collapsed-btn"
+          onClick={toggleCollapsed}
+          style={{ marginBottom: 16 }}
+        >
+          {collapsed ? <DoubleRightOutlined /> : <DoubleLeftOutlined />}
+        </Button>
         <Menu
           theme="light"
           // mode="horizontal"
           defaultSelectedKeys={["/"]}
           selectedKeys={[location.pathname]}
+          inlineCollapsed={collapsed}
+          className={[{ "menu-hover": isHover }]}
         >
           <Menu.Item key="dashboard">
-            <NavLink to="/dashboard">
-              <DashboardIcon />
+            <NavLink
+              to="/dashboard"
+              onMouseOver={() => setHover(true)}
+              onMouseOut={() => setHover(false)}
+            >
+              <DashboardIcon />{" "}
+              <span className="menu-item-label">Dashboard</span>
             </NavLink>
           </Menu.Item>
           <Menu.Item key="history">
-            <NavLink to="/">
+            <NavLink
+              to="/"
+              onMouseOver={() => setHover(true)}
+              onMouseOut={() => setHover(false)}
+            >
               <HistorySVG />
+              <span className="menu-item-label">Messaging</span>
             </NavLink>
           </Menu.Item>
           <Menu.Item key="notification">
-            <NavLink to="/">
+            <NavLink
+              to="/"
+              onMouseOver={() => setHover(true)}
+              onMouseOut={() => setHover(false)}
+            >
               <NotificationSVG />
+              <span className="menu-item-label">Campaigns</span>
             </NavLink>
           </Menu.Item>
           <Menu.Item key="profile">
-            <NavLink to="/settings/profile">
+            <NavLink
+              to="/settings/profile"
+              onMouseOver={() => setHover(true)}
+              onMouseOut={() => setHover(false)}
+            >
               <SettingSVG />
+              <span className="menu-item-label">Settings</span>
             </NavLink>
           </Menu.Item>
         </Menu>
