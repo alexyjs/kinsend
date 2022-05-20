@@ -79,3 +79,19 @@ export const PLANS_DATA = {
     ]
   },
 }
+
+export const OPTION_FIELDS = [
+  "Gender",
+  "Birthday",
+  "Twitter",
+  "Instagram",
+  "LinkedIn",
+  "Job Title",
+  "Company",
+  "Industry",
+];
+
+export const PLACEHOLDER_COLOR = {
+  primaryColor: 'rgba(224, 240, 250, 1)',
+  secondaryColor: 'rgba(224, 240, 250, 0.5)',
+};

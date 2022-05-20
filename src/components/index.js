@@ -9,3 +9,5 @@ export { default as SelectNumberModal } from './SelectNumberModal';
 export { default as PhoneList } from './PhoneList';
 export { default as PlanModal } from './PlanModal';
 export { default as AvatarComponent } from './AvatarComponent';
+export { default as Loading } from './Loading';
+export { default as RichText } from './RichText';

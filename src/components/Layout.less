@@ -2,6 +2,18 @@
   min-height: 100vh;
   background: #C4C4C4;
 
+  .ant-layout-sider {
+    z-index: 10;
+    flex: 0 0 auto !important;
+    max-width: none !important;
+    width: auto !important;
+
+    .ant-layout-sider-children {
+      position: fixed;
+      top: 0;
+    }
+  }
+
   &-content {
     // background: #C4C4C4;
   }
@@ -106,11 +118,21 @@
         justify-content: flex-start;
         padding-left: 40px;
 
+        .ant-menu-submenu-title {
+          padding-left: 0 !important;
+        }
+
+        .ant-menu-title-content {
+          align-items: center;
+          display: inline-flex;
+        }
+
         a {
           color: #707070;
           white-space: nowrap;
           flex-wrap: nowrap;
           display: inline-flex;
+          align-items: center;
 
           &.active {
             color: #D15D36;
@@ -118,12 +140,17 @@
         }
 
         svg {
-          margin-right: 16px;
+          // margin-right: 16px;
+
+          & + span {
+            margin-left: 16px;
+          }
         }
       }
 
       .ant-menu-item {
         padding-left: 40px !important;
+        height: 40px;
       }
 
       &.ant-menu-inline-collapsed {
