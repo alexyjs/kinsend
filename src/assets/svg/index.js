@@ -5,5 +5,6 @@ export { default as HistorySVG } from "./HistorySVG";
 export { default as NotificationSVG } from "./NotificationSVG";
 export { default as SettingSVG } from "./SettingSVG";
 export { ReactComponent as DashboardIcon } from "./Dashboard.svg";
-export { ReactComponent as ArrowDownIcon } from './ArrowDownIcon.svg';
-export { ReactComponent as CameraIcon } from './CameraIcon.svg';
+export { ReactComponent as ArrowDownIcon } from "./ArrowDownIcon.svg";
+export { ReactComponent as CameraIcon } from "./CameraIcon.svg";
+export { ReactComponent as AddIcon } from "./Add.svg";

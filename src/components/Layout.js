@@ -1,9 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Layout, Avatar, Menu, Button } from "antd";
-import {
-  DoubleRightOutlined,
-  DoubleLeftOutlined,
-} from "@ant-design/icons";
+import { DoubleRightOutlined, DoubleLeftOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, NavLink } from "react-router-dom";
 import classnames from "classnames";
@@ -105,16 +102,31 @@ const LayoutComponent = ({ className, children }) => {
               <span className="menu-item-label">Campaigns</span>
             </NavLink>
           </Menu.Item>
-          <Menu.Item key="profile">
-            <NavLink
-              to="/settings/profile"
-              onMouseOver={() => setHover(true)}
-              onMouseOut={() => setHover(false)}
-            >
-              <SettingSVG />
-              <span className="menu-item-label">Settings</span>
-            </NavLink>
-          </Menu.Item>
+          <Menu.SubMenu
+            key="profile"
+            title={
+              <div>
+                {/* onMouseOver={() => setHover(true)}
+                onMouseOut={() => setHover(false)} */}
+                <SettingSVG onMouseOver={() => setHover(true)}
+                onMouseOut={() => setHover(false)} />
+                <span className="menu-item-label">Settings</span>
+              </div>
+            }
+          >
+            <Menu.Item>
+              <NavLink
+                to="/settings/forms"
+              >
+                <span>Forms & Widgets</span>
+              </NavLink>
+            </Menu.Item>
+            <Menu.Item>
+              <NavLink to="/settings/tags">
+                <span>Tags & Segments</span>
+              </NavLink>
+            </Menu.Item>
+          </Menu.SubMenu>
         </Menu>
       </Sider>
       <Layout className="layout-content">

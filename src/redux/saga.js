@@ -22,6 +22,8 @@ import {
   watchUpdateVCardSaga,
 } from "./vcardReducer";
 
+import { watchgetTagsSaga, watchaddTagSaga } from "./settingsReducer";
+
 export default function* rootSaga() {
   yield all([
     watchGetListPhoneSaga(),
@@ -44,5 +46,9 @@ export default function* rootSaga() {
 
     watchGetVCardSaga(),
     watchUpdateVCardSaga(),
+
+    // settings
+    watchgetTagsSaga(),
+    watchaddTagSaga(),
   ]);
 }

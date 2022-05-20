@@ -94,3 +94,130 @@ h1 {
     color: #000000;
   }
 }
+
+.ant-form-item {
+  flex-direction: column;
+  align-items: flex-start;
+  
+  .ant-form-item-control {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .ant-form-item-label {
+    width: 100%;
+    max-width: 100%;
+    text-align: left;
+
+    label {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 40px;
+      height: auto;
+      flex-direction: column;
+      align-items: start;
+      span {
+        font-style: normal;
+        font-weight: 300;
+        font-size: 16px;
+        line-height: 40px;
+        display: block;
+        text-transform: initial;
+        // margin-top: -10px;
+      }
+    }
+  }
+  label {
+    &::before {
+      display: none;
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+
+  input {
+    background: #F1F2F7;
+    border: 1px solid #DCDCDC;
+    border-radius: 4px;
+    padding: 10px 24px;
+    color: #707070;
+    line-height: 40px;
+  }
+
+  .input-subfix {
+    background: #F1F2F7;
+    border: 1px solid #DCDCDC;
+    border-radius: 4px;
+    color: #707070;
+
+    display: flex;
+    align-items: center;
+
+    input {
+      flex: 1;
+      background: none;
+      border: none;
+      border-radius: 0;
+    }
+
+    button {
+      border: none;
+      background: none;
+      border-left: 0.5px solid #000000;
+      padding: 10px 20px;
+    }
+  }
+
+  .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+    height: 60px !important;
+    border: 1px solid #DCDCDC !important;
+  }
+
+  .ant-select-selector {
+    line-height: 40px;
+    padding: 10px 24px !important;
+    color: #707070;
+    background: #F1F2F7 !important;
+    align-items: center;
+  }
+}
+
+.ant-tabs-nav-list {
+  border-radius: 8px;
+  overflow: hidden;
+  .ant-tabs-tab {
+    background: #F1F2F7;
+    border: 1px solid #DCDCDC;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 40px;
+    padding-left: 40px;
+    padding-right: 40px;
+
+    &:first-of-type {
+      border-radius: 8px 0px 0px 8px;
+    }
+
+    &:last-of-type {
+      border-radius: 0px 8px 8px 0px;
+    }
+
+    & + .ant-tabs-tab {
+      margin: 0;
+    }
+  
+    &.ant-tabs-tab-active {
+      background: #FFFFFF;
+      color: #D15D36;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+    }
+  
+  }
+  
+  .ant-tabs-ink-bar {
+    background: none;
+  }
+}
