@@ -50,7 +50,7 @@ export async function resendVerifyEmailAPI(data) {
   const payload = {
     method: "get",
     url: `${process.env.REACT_APP_API_BASE_URL}/users/resend-verify-email`,
-    data,
+    params: data,
   };
 
   return handleCallAPI(payload);
@@ -163,8 +163,16 @@ export function* resendVerifyEmailSaga(action) {
 
   if (response) {
     yield put(resendVerifyEmailSuccess(response));
+    notification.success({
+      title: "Action Completed",
+      message: `Successfully! Please check your email.`,
+    });
   } else {
     yield put(failed(errors));
+    notification.error({
+      title: "Action Completed",
+      message: errors || 'Forgot password failed.',
+    });
   }
 }
 

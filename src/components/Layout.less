@@ -58,25 +58,91 @@
     background: #FFFFFF;
     border-right: 1px solid #DBDBDB;
     width: 115px;
+
+    .ant-layout-sider-children {
+      display: inline-block;
+      position: relative;
+    }
+
+    .collapsed-btn {
+      position: absolute;
+      top: 50px;
+      left: calc(100% - 16px);
+      width: 10px;
+      align-items: center;
+      display: inline-flex;
+      justify-content: center;
+      overflow: hidden;
+      background: #FFFFFF;
+      border-radius: 50%;
+      z-index: 10;
+      overflow: hidden;
+      
+      span {
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          border-radius: 50%;
+          background: #FFFFFF;
+        }
+      }
+      svg {
+        font-size: 16px;
+      }
+    }
     
     ul {
       height: 100vh;
+      min-width: 255px;
+      transition: all 0.2s;
+
       li {
         margin-top: 90px !important;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
+        padding-left: 40px;
 
         a {
           color: #707070;
+          white-space: nowrap;
+          flex-wrap: nowrap;
+          display: inline-flex;
+
           &.active {
             color: #D15D36;
           }
         }
+
+        svg {
+          margin-right: 16px;
+        }
+      }
+
+      .ant-menu-item {
+        padding-left: 40px !important;
+      }
+
+      &.ant-menu-inline-collapsed {
+        &:not(.menu-hover){
+          min-width: 115px;
+          .menu-item-label {
+            display: none;
+          }
+        }
       }
     }
+
   }
 
   main {
     padding: 75px 68px;
   }
+}
+
+.ant-menu-inline-collapsed-tooltip {
+  display: none !important;
 }
