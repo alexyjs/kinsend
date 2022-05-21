@@ -13,8 +13,8 @@ import en from "world_countries_lists/data/countries/en/world.json";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
-import Settings from "./pages/Settings";
-import AddNewForm from "./pages/Settings/AddNewForm";
+import FormManage from "./pages/Settings/Form";
+import AddNewForm from "./pages/Settings/Form/AddNewForm";
 import TagsManage from "./pages/Settings/TagsManage";
 import "./styles/antd.less";
 import "./styles/tailwind.css";
@@ -62,9 +62,9 @@ function App() {
 
           {isAuth && <Route path="/settings/tags" element={<TagsManage />} />}
 
-          {isAuth && <Route path="/settings/forms" element={<Settings />} />}
+          {isAuth && <Route path="/settings/forms" element={<FormManage />} />}
           {isAuth && <Route path="/settings/forms/new" element={<AddNewForm />} />}
-          {isAuth && <Route path="/settings/custom-fields" element={<Settings />} />}
+          {/* {isAuth && <Route path="/settings/custom-fields" element={<FormManage />} />} */}
           {isAuth ? (
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
             ) : (

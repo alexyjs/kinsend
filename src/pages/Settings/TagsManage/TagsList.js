@@ -32,7 +32,7 @@ const columns = [
   },
 ];
 
-const TagsComponent = () => {
+const TagsList = () => {
   const { close, show, visible } = useModal();
   const { tags, addnewTag } = useSelector(selectSettings);
   const dispatch = useDispatch();
@@ -88,4 +88,4 @@ const TagsComponent = () => {
   );
 };
 
-export default TagsComponent;
+export default TagsList;

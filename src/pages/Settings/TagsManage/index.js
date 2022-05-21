@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Row, Col, Form, Input, Button, Select, Option, Tabs } from "antd";
 
 import LayoutComponent from "../../../components/Layout";
-import TagsComponent from "./TagsComponent";
+import TagsList from "./TagsList";
 
 const layout = {
   labelCol: { span: 8 },
@@ -20,9 +20,9 @@ const TagsManage = () => {
       <h1>
         Tags & Segments <span>SETTINGS</span>
       </h1>
-      <Tabs defaultActiveKey="1" onChange={callback}>
+      <Tabs defaultActiveKey="1" onChange={callback} className="mt-10">
         <Tabs.TabPane tab=" 2 Tags" key="1">
-          <TagsComponent />
+          <TagsList />
         </Tabs.TabPane>
         <Tabs.TabPane tab="0 Segments" key="2">
           Segments
