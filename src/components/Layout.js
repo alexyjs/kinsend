@@ -1,6 +1,9 @@
 import React, { useState, useRef } from "react";
 import { Layout, Avatar, Menu, Button } from "antd";
-import { DoubleRightOutlined, DoubleLeftOutlined } from "@ant-design/icons";
+import {
+  DoubleRightOutlined,
+  DoubleLeftOutlined,
+} from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, NavLink } from "react-router-dom";
 import classnames from "classnames";
