@@ -54,8 +54,6 @@ const VCard = () => {
     dispatch(getVCardAsync());
   }, []);
 
-  console.log("###vcard", vcardData);
-
   return (
     <div className="vcard">
       <Row justify="center" className="text-center">

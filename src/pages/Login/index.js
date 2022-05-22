@@ -99,7 +99,7 @@ const Login = () => {
                 <p>
                   Forgot your password?{" "}
                   <span
-                    className="text-primary font-bold underline"
+                    className="text-primary font-bold underline cursor-pointer"
                     onClick={show}
                   >
                     Request a new one

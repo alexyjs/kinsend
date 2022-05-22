@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { Row, Col, Form, Input, Button, Select, Option } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
-import LayoutComponent from '../../components/Layout';
-import { AvatarComponent, RichText } from "../../components";
-import { OPTION_FIELDS } from "../../utils/constants";
+import LayoutComponent from '../../../components/Layout';
+import { AvatarComponent, RichText } from "../../../components";
+import { OPTION_FIELDS } from "../../../utils/constants";
 
 const layout = {
   labelCol: { span: 8 },
@@ -52,7 +52,6 @@ const AddNewForm = () => {
             <Form.Item
               name="lastName"
               label={<>INBOUND TAG<span>Choose which tag(s) get applied to incoming contacts</span></>}
-              shouldUpdate={(prevValues, currentValues) => prevValues.gender !== currentValues.gender}
             >
               <Select
                 placeholder="Choose tag..."
