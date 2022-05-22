@@ -5,7 +5,7 @@ import { call, put, takeLatest } from "redux-saga/effects";
 import { notification } from "antd";
 
 import { authStorage } from "./../utils";
-import { handleCallAPI, handleFileCallAPI } from './helpers';
+import { handleCallAPI, handleFileCallAPI } from "./helpers";
 
 export const createUserAsync = createAction("user/createUserAsync");
 export const loginAsync = createAction("user/loginAsync");
@@ -171,7 +171,7 @@ export function* resendVerifyEmailSaga(action) {
     yield put(failed(errors));
     notification.error({
       title: "Action Completed",
-      message: errors || 'Forgot password failed.',
+      message: errors || "Forgot password failed.",
     });
   }
 }
@@ -186,7 +186,10 @@ export function* getUserSaga(action) {
 }
 
 export function* patchUserSaga(action) {
-  const { response, errors, headers } = yield call(patchUserAPI, action.payload);
+  const { response, errors, headers } = yield call(
+    patchUserAPI,
+    action.payload
+  );
   if (response) {
     yield put(updatedUser(response));
     notification.success({
@@ -203,7 +206,10 @@ export function* patchUserSaga(action) {
 }
 
 export function* resetPasswordSaga(action) {
-  const { response, errors, headers } = yield call(resetPasswordAPI, action.payload);
+  const { response, errors, headers } = yield call(
+    resetPasswordAPI,
+    action.payload
+  );
   if (response) {
     notification.success({
       title: "Action Completed",
@@ -219,7 +225,10 @@ export function* resetPasswordSaga(action) {
 }
 
 export function* updateAvatarSaga(action) {
-  const { response, errors, headers } = yield call(updateAvatarAPI, action.payload);
+  const { response, errors, headers } = yield call(
+    updateAvatarAPI,
+    action.payload
+  );
   if (response) {
     yield put(updatedUser(response));
     notification.success({

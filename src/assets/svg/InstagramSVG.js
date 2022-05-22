@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const InstagramSVG = ({ isActive }) => {
-  const color = isActive ? '#D15D36' : '#BABABA'
+  const color = isActive ? "#D15D36" : "#BABABA";
   return (
     <svg
       width="22"
@@ -10,7 +10,7 @@ const InstagramSVG = ({ isActive }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       style={{
-        display: 'inline-block',
+        display: "inline-block",
       }}
     >
       <path
@@ -35,7 +35,7 @@ const InstagramSVG = ({ isActive }) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default InstagramSVG
+export default InstagramSVG;

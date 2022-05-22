@@ -14,7 +14,6 @@ function callback(key) {
 }
 
 const TagsManage = () => {
-
   return (
     <LayoutComponent className="settings-page">
       <h1>

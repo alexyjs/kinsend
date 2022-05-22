@@ -5,7 +5,10 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { selectUsers } from "../redux/userReducer";
-import { addPaymentMethodAsync, selectAddPayment } from "../redux/paymentReducer";
+import {
+  addPaymentMethodAsync,
+  selectAddPayment,
+} from "../redux/paymentReducer";
 import { PlanModal } from "./";
 import { useModal } from "../hook/useModal";
 import {

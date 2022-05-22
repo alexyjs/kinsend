@@ -1,11 +1,11 @@
 import React, { Component, useState, useRef } from "react";
 import _ from "lodash";
-import ReactQuill from 'react-quill';
+import ReactQuill from "react-quill";
 import QuillDelta from "quill-delta";
 
 import { handleUploadImageCallAPI } from "../redux/helpers";
 
-import 'react-quill/dist/quill.snow.css';
+import "react-quill/dist/quill.snow.css";
 import "./RichText.less";
 
 const RichText = ({ value, onChange, className, disabled }) => {
@@ -28,7 +28,7 @@ const RichText = ({ value, onChange, className, disabled }) => {
         handleUploadImageCallAPI(formData, false)
           .then((res) => {
             // insert content with attributes
-            console.log('###check', quillRef, editor);
+            console.log("###check", quillRef, editor);
             // editor.updateContents(
             //   new QuillDelta()
             //     .retain(range.index)
@@ -43,8 +43,7 @@ const RichText = ({ value, onChange, className, disabled }) => {
             // const range = editor.getEditorSelection();
             // editor.insertEmbed(range.index, 'image', res);
             // quillRef.current.setSelection(range.index + 1);
-            console.log('###done')
-
+            console.log("###done");
 
             // const range = quillRef.current.getEditorSelection();
             // quillRef.current.setEditorContents(range.index, 'image', res);
@@ -54,7 +53,7 @@ const RichText = ({ value, onChange, className, disabled }) => {
       }
     });
     fInput.click();
-  }
+  };
 
   const modules = {
     toolbar: {
@@ -70,26 +69,30 @@ const RichText = ({ value, onChange, className, disabled }) => {
           { indent: "+1" },
         ],
         // ['link', 'image'],
-        ['link'],
+        ["link"],
       ],
       handlers: {
         // TODO: enable later
         // image: handleUploadImage,
       },
-    }
-  }
+    },
+  };
 
-  return <ReactQuill
-    blur={(value) => {console.log('###blur', value)}}
-    className={className}
-    theme="snow"
-    modules={modules}
-    defaultValue={value}
-    onChange={onChange}
-    readOnly={disabled}
-    placeholder="Enter text..."
-    ref={quillRef}
-  />
-}
+  return (
+    <ReactQuill
+      blur={(value) => {
+        console.log("###blur", value);
+      }}
+      className={className}
+      theme="snow"
+      modules={modules}
+      defaultValue={value}
+      onChange={onChange}
+      readOnly={disabled}
+      placeholder="Enter text..."
+      ref={quillRef}
+    />
+  );
+};
 
 export default RichText;

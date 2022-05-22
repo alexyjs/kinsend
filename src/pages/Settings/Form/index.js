@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Row, Col, Form, Input, Button, Select, Option, Tabs } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
-import LayoutComponent from './../../../components/Layout';
+import LayoutComponent from "./../../../components/Layout";
 import CustomField from "../CustomField";
 import FormList from "./FormList";
 import { getTagsAsync, selectSettings } from "../../../redux/settingsReducer";
@@ -26,7 +26,7 @@ const Settings = () => {
   }, [useDispatch]);
 
   return (
-    <LayoutComponent  className="settings-page">
+    <LayoutComponent className="settings-page">
       <h1>
         Forms & Widgets <span>SETTINGS</span>
       </h1>
@@ -37,7 +37,10 @@ const Settings = () => {
         <Tabs.TabPane tab="0 Widget" key="2">
           Widget
         </Tabs.TabPane>
-        <Tabs.TabPane tab={`${customFields?.length || 0} Custom fields`} key="3">
+        <Tabs.TabPane
+          tab={`${customFields?.length || 0} Custom fields`}
+          key="3"
+        >
           <CustomField />
         </Tabs.TabPane>
       </Tabs>

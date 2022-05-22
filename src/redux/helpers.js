@@ -17,7 +17,6 @@ export const getHeaders = (headers) => {
   };
 };
 
-
 export const handleCallAPI = async (payload, headers) => {
   try {
     const result = await axios({
@@ -80,4 +79,4 @@ export const handleUploadImageCallAPI = async (data) => {
       errors: _.get(e, "response.data.message"),
     };
   }
-}
+};

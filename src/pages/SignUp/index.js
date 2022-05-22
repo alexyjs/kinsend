@@ -53,8 +53,7 @@ function SlideBackButton() {
 
 const SignUp = () => {
   const [isEnd, setIsEnd] = useState(false);
-  const { isLoading, signupSuccess } =
-    useSelector(selectCreateUser);
+  const { isLoading, signupSuccess } = useSelector(selectCreateUser);
   const swiperRef = React.useRef(null);
   const dispatch = useDispatch();
   const { close, show, visible } = useModal();
@@ -98,7 +97,8 @@ const SignUp = () => {
         <Title className="text-center">Sign Up for KinSend</Title>
         <Typography className={`mb-8 text-center ${isEnd ? "invisible" : ""}`}>
           <p>
-            Thank you for your interest in the KinSend Starter Plan<br />
+            Thank you for your interest in the KinSend Starter Plan
+            <br />
             starting at $20.00/month{" "}
             <span
               className="text-primary font-bold cursor-pointer"

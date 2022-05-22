@@ -30,10 +30,8 @@ const AddNewForm = () => {
   const { tags, customFields, addedForm } = useSelector(selectSettings);
 
   const onSubmitAddNewForm = (values) => {
-    dispatch(
-      addFormAsync({values})
-    );
-  }
+    dispatch(addFormAsync({ values }));
+  };
 
   useEffect(() => {
     dispatch(getCustomFieldsAsync());
@@ -95,9 +93,15 @@ const AddNewForm = () => {
                 // onChange={onTagChange}
                 allowClear
               >
-                {tags && tags.map((option) => (
-                  <Select.Option key={`option-new-form-${option.id}`} value={option.id}>{option.name}</Select.Option>
-                ))}
+                {tags &&
+                  tags.map((option) => (
+                    <Select.Option
+                      key={`option-new-form-${option.id}`}
+                      value={option.id}
+                    >
+                      {option.name}
+                    </Select.Option>
+                  ))}
               </Select>
             </Form.Item>
             <Form.Item name="TITLE" label="TITLE" rules={[{ required: true }]}>
@@ -131,7 +135,9 @@ const AddNewForm = () => {
                 allowClear
               >
                 {OPTION_FIELDS.map((option) => (
-                  <Select.Option key={`option-field-${option}`} value={option}>{option}</Select.Option>
+                  <Select.Option key={`option-field-${option}`} value={option}>
+                    {option}
+                  </Select.Option>
                 ))}
               </Select>
             </Form.Item>
@@ -141,15 +147,25 @@ const AddNewForm = () => {
                 // onChange={onTagChange}
                 allowClear
               >
-                {customFields && customFields.map((option) => (
-                  <Select.Option key={option.id} value={option.id}>
-                    {option.label}
-                  </Select.Option>
-                ))}
+                {customFields &&
+                  customFields.map((option) => (
+                    <Select.Option key={option.id} value={option.id}>
+                      {option.label}
+                    </Select.Option>
+                  ))}
               </Select>
             </Form.Item>
-            <Form.Item name="FORM SUBMISSION"
-              label={<>FORM SUBMISSION<span>When the user completes your form, KinSend™ will send this message via SMS.</span></>}
+            <Form.Item
+              name="FORM SUBMISSION"
+              label={
+                <>
+                  FORM SUBMISSION
+                  <span>
+                    When the user completes your form, KinSend™ will send this
+                    message via SMS.
+                  </span>
+                </>
+              }
             >
               <Input.TextArea placeholder="Send new messenge ..." />
             </Form.Item>
@@ -181,11 +197,7 @@ const AddNewForm = () => {
         <Row justify="end" className="mt-12">
           <Col>
             <NavLink to="/settings/forms">
-              <Button
-                className="md:min-w-200"
-                type="text"
-                size="large"
-              >
+              <Button className="md:min-w-200" type="text" size="large">
                 Cancel
               </Button>
             </NavLink>

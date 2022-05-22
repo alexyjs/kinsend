@@ -1,6 +1,6 @@
 import { Button, Divider, Form, Input, Typography } from "antd";
 import _ from "lodash";
-import React, { memo,useEffect } from "react";
+import React, { memo, useEffect } from "react";
 import { GoogleLogin } from "react-google-login";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -49,7 +49,7 @@ const Login = () => {
   useEffect(() => {
     if (user) {
       if (user?.isEnabledBuyPlan) {
-        navigate('/dashboard');
+        navigate("/dashboard");
       } else {
         navigate("/payment-setup");
       }
