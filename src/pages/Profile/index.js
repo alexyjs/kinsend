@@ -7,11 +7,13 @@ import {
   selectUsers,
   patchUserAsync,
   resetPasswordAsync,
+  updateAvatarAsync,
 } from "../../redux/userReducer";
 import LayoutComponent from "../../components/Layout";
 import { PASSWORD_REGEX } from "../../utils/constants";
 import VCard from "./VCard";
 import { AvatarComponent } from "./../../components";
+
 import "./styles.less";
 
 const layout = {
@@ -24,6 +26,12 @@ const Profile = () => {
   const [formReset] = Form.useForm();
   const { user, isLoading } = useSelector(selectUsers);
   const dispatch = useDispatch();
+
+  const onFileChange = async (event) => {
+    const formData = new FormData();
+    formData.append("file", event.target.files[0], event.target.files[0].name);
+    dispatch(updateAvatarAsync(formData));
+  };
 
   const onSubmitProfile = (values) => {
     dispatch(patchUserAsync(values));
@@ -49,7 +57,7 @@ const Profile = () => {
       </h1>
       <div className="grid grid-cols-4">
         <div>
-          <AvatarComponent />
+          <AvatarComponent onFileChange={onFileChange} imgSrc={user?.image} />
         </div>
         <div className="col-span-2">
           <Form
@@ -193,7 +201,7 @@ const Profile = () => {
           </Form>
         </div>
       </div>
-      <VCard />
+      <VCard onFileChange={onFileChange} imgSrc={user?.image} />
     </LayoutComponent>
   );
 };

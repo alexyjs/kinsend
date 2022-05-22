@@ -61,3 +61,4 @@ export const phoneRequireValidator = {
     return Promise.reject(new Error("This field is required"));
   },
 };
+

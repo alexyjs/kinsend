@@ -11,9 +11,11 @@ import {
 } from "../../../redux/settingsReducer";
 import { CUSTOM_FIELD_ICON, CUSTOM_FIELD_LABEL, CUSTOM_FIELD_OPTIONS } from "../../../utils/constants";
 
+import "./styles.less";
+
 const CustomFieldsList = () => {
   const { close, show, visible } = useModal();
-  const { customFields, addCustomField } = useSelector(selectSettings);
+  const { customFields, addedCustomField } = useSelector(selectSettings);
   const dispatch = useDispatch();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
@@ -31,11 +33,10 @@ const CustomFieldsList = () => {
   }, [useDispatch]);
 
   useEffect(() => {
-    if (addCustomField) {
-      console.log('###addCustomFieldSuccess', addCustomField);
+    if (addedCustomField) {
       close();
     }
-  }, [addCustomField, close]);
+  }, [addedCustomField, close]);
 
   return (
     <div>
@@ -54,19 +55,21 @@ const CustomFieldsList = () => {
           <AddIcon className="mr-2" /> New
         </Button>
       </div>
-      <div>
+      <div className="custom-field-list">
         {customFields?.length ? (
           customFields.map((customField, index) => {
             const activeCustomField = CUSTOM_FIELD_OPTIONS.find(itemOption => customField?.type === itemOption.type)
             return <div
             key={`custom-field-list-${index}`}
-            className="custom-field flex items-center justify-between"
+            className="custom-field flex items-center"
           >
             <span className="inline-flex items-center">
               <activeCustomField.icon className="mr-2" />
-              {activeCustomField.label}
+              <span>
+                <span className="custom-field-type">{activeCustomField.label}<br /></span>
+                {customField.label}
+              </span>
             </span>
-            <span>{customField.label}</span>
           </div>})
         ) : (
           <span>You don’t have custom fields</span>

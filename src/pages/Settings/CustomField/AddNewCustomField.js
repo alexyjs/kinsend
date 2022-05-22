@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Button, Col, Form, Input, Modal, Row, Select, Radio } from "antd";
+import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,8 +12,6 @@ import {
   CUSTOM_FIELD_OPTIONS,
 } from "../../../utils/constants";
 
-import "./AddNewCustomField.less";
-
 const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
@@ -23,6 +22,12 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
     dispatch(
       addCustomFieldAsync({
         ...values,
+        isRequired: false,
+        tag:
+          customFieldType.type === CUSTOM_FIELD_TYPE.INPUT ||
+          customFieldType.type === CUSTOM_FIELD_TYPE.INPUT
+            ? [values.tag]
+            : values.tag,
         type: customFieldType.type,
       })
     );
@@ -47,7 +52,10 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
       return;
     }
 
-    if (customFieldType.type === CUSTOM_FIELD_TYPE.INPUT || customFieldType.type === CUSTOM_FIELD_TYPE.TEXTAREA) {
+    if (
+      customFieldType.type === CUSTOM_FIELD_TYPE.INPUT ||
+      customFieldType.type === CUSTOM_FIELD_TYPE.TEXTAREA
+    ) {
       return (
         <>
           <Form.Item
@@ -103,11 +111,6 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
           >
             <Input size="large" placeholder="Favorite color?" />
           </Form.Item>
-          <Form.Item name="isRequired" label="">
-            <Radio.Group>
-              <Radio value={true}>Required</Radio>
-            </Radio.Group>
-          </Form.Item>
         </>
       );
     }
@@ -117,13 +120,13 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
 
     // if (customFieldType.type === CUSTOM_FIELD_TYPE.SELECT) {
     // }
-
+    hadnleUpdateField("options", [""]);
     // default checkbox
     return (
       <>
         <Form.Item
-          name="name"
-          label="new tag name"
+          name="label"
+          label="LABEL QUESTION"
           rules={[
             {
               required: true,
@@ -131,11 +134,113 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
             },
           ]}
         >
-          <Input size="large" placeholder="New tag name" />
+          <Input size="large" placeholder="Copy NEW Salon Today Magazine" />
         </Form.Item>
+        <Row>
+          <Col span={12}>
+            <Form.List
+              name="options"
+              rules={[
+                {
+                  validator: async (_, names) => {
+                    if (!names || names.length < 1) {
+                      return Promise.reject(new Error("At least 1 option"));
+                    }
+                  },
+                },
+              ]}
+              shouldUpdate={(prevValues, currentValues) =>
+                prevValues.options !== currentValues.options
+              }
+            >
+              {(fields, { add, remove }, { errors }) => (
+                <>
+                  {fields.map((field, index) => (
+                    <Form.Item
+                      label={index === 0 ? "Options" : ""}
+                      required={false}
+                      key={`option-new-${field.key}`}
+                    >
+                      <Form.Item
+                        {...field}
+                        validateTrigger={["onChange", "onBlur"]}
+                        rules={[
+                          {
+                            required: true,
+                            whitespace: true,
+                            message:
+                              "Please input option's name or delete this field.",
+                          },
+                        ]}
+                        noStyle
+                      >
+                        <Input placeholder={`Options ${index}`} />
+                      </Form.Item>
+                      {fields.length > 1 ? (
+                        <MinusCircleOutlined
+                          className="dynamic-delete-button"
+                          onClick={() => remove(field.name)}
+                        />
+                      ) : null}
+                    </Form.Item>
+                  ))}
+                  <Form.Item>
+                    <Button
+                      type="dashed"
+                      onClick={() => add()}
+                      style={{ width: "60%" }}
+                      icon={<PlusOutlined />}
+                    >
+                      Add more options
+                    </Button>
+                    {/* <Button
+                    type="dashed"
+                    onClick={() => {
+                      add("The head item", 0);
+                    }}
+                    style={{ width: "60%", marginTop: "20px" }}
+                    icon={<PlusOutlined />}
+                  >
+                    Add field at head
+                  </Button> */}
+                    <Form.ErrorList errors={errors} />
+                  </Form.Item>
+                </>
+              )}
+            </Form.List>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name="tag"
+              label={<>INBOUND TAG</>}
+              rules={[
+                {
+                  required: true,
+                  message: "This field is required",
+                },
+              ]}
+              shouldUpdate={(prevValues, currentValues) =>
+                prevValues.name !== currentValues.name
+              }
+            >
+              <Select mode="multiple" placeholder="Choose tag..." allowClear>
+                {tags &&
+                  tags.map((tag) => (
+                    <Select.Option key={`tag-new-${tag.id}`} value={tag.id}>
+                      {tag.name}
+                    </Select.Option>
+                  ))}
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
       </>
     );
   }, [customFieldType, tags]);
+
+  useEffect(() => {
+    setType(null);
+  }, [visible]);
 
   return (
     <Modal
@@ -179,6 +284,11 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
               </span>
             </div>
             {renderBody}
+            <Form.Item name="isRequired" label="">
+              <Radio.Group>
+                <Radio value={true}>Required</Radio>
+              </Radio.Group>
+            </Form.Item>
             <Row justify="end" className="mt-12">
               <Col>
                 <Form.Item noStyle>
