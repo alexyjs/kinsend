@@ -9,7 +9,11 @@ import {
   getCustomFieldsAsync,
   selectSettings,
 } from "../../../redux/settingsReducer";
-import { CUSTOM_FIELD_ICON, CUSTOM_FIELD_LABEL, CUSTOM_FIELD_OPTIONS } from "../../../utils/constants";
+import {
+  CUSTOM_FIELD_ICON,
+  CUSTOM_FIELD_LABEL,
+  CUSTOM_FIELD_OPTIONS,
+} from "../../../utils/constants";
 
 import "./styles.less";
 
@@ -58,19 +62,27 @@ const CustomFieldsList = () => {
       <div className="custom-field-list">
         {customFields?.length ? (
           customFields.map((customField, index) => {
-            const activeCustomField = CUSTOM_FIELD_OPTIONS.find(itemOption => customField?.type === itemOption.type)
-            return <div
-            key={`custom-field-list-${index}`}
-            className="custom-field flex items-center"
-          >
-            <span className="inline-flex items-center">
-              <activeCustomField.icon className="mr-2" />
-              <span>
-                <span className="custom-field-type">{activeCustomField.label}<br /></span>
-                {customField.label}
-              </span>
-            </span>
-          </div>})
+            const activeCustomField = CUSTOM_FIELD_OPTIONS.find(
+              (itemOption) => customField?.type === itemOption.type
+            );
+            return (
+              <div
+                key={`custom-field-list-${index}`}
+                className="custom-field flex items-center"
+              >
+                <span className="inline-flex items-center">
+                  <activeCustomField.icon className="mr-2" />
+                  <span>
+                    <span className="custom-field-type">
+                      {activeCustomField.label}
+                      <br />
+                    </span>
+                    {customField.label}
+                  </span>
+                </span>
+              </div>
+            );
+          })
         ) : (
           <span>You don’t have custom fields</span>
         )}

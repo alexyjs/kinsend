@@ -17,10 +17,7 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 
-const VCard = ({
-  onFileChange,
-  imgSrc,
-}) => {
+const VCard = ({ onFileChange, imgSrc }) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const { user } = useSelector(selectUsers);
@@ -126,7 +123,7 @@ const VCard = ({
                   },
                 },
               ]}
-              >
+            >
               <Input placeholder="EMAIL" />
             </Form.Item>
           </Col>

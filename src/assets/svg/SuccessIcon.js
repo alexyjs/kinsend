@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const SuccessIcon = (props) => {
   return (
@@ -26,7 +26,7 @@ const SuccessIcon = (props) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default SuccessIcon
+export default SuccessIcon;

@@ -10,7 +10,7 @@ const AddNewTag = ({ visible, handleOk, handleCancel }) => {
   const handleFinish = (values) => {
     dispatch(addTagAsync(values));
   };
-  
+
   return (
     <Modal
       visible={visible}
@@ -22,9 +22,7 @@ const AddNewTag = ({ visible, handleOk, handleCancel }) => {
       centered
       className="reset-modal"
     >
-      <h3 className="font-bold text-center text-4xl mb-5">
-        Add tag
-      </h3>
+      <h3 className="font-bold text-center text-4xl mb-5">Add tag</h3>
       <p className="text-center pb-5">Chose a name for the new tag</p>
       <Form layout="vertical" onFinish={handleFinish} initialValues={{}}>
         <Form.Item
@@ -34,7 +32,7 @@ const AddNewTag = ({ visible, handleOk, handleCancel }) => {
             {
               required: true,
               message: "This field is required",
-            }
+            },
           ]}
         >
           <Input size="large" placeholder="New tag name" />

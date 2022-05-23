@@ -40,11 +40,11 @@ const TagsList = () => {
 
   const handleSelectKey = (raw, raw1) => {
     setSelectedRowKeys(raw);
-  }
+  };
 
   const rowSelection = {
     selectedRowKeys,
-    onChange: handleSelectKey
+    onChange: handleSelectKey,
   };
 
   useEffect(() => {

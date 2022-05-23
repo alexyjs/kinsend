@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
 export const useModal = (config = {}) => {
   const { defaultVisible = false } = config;

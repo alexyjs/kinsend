@@ -3,10 +3,12 @@ import _ from "lodash";
 import { call, put, takeLatest } from "redux-saga/effects";
 import { notification } from "antd";
 
-import { handleCallAPI } from './helpers';
+import { handleCallAPI } from "./helpers";
 export const getTagsAsync = createAction("settings/getTagsAsync");
 export const addTagAsync = createAction("settings/addTagAsync");
-export const getCustomFieldsAsync = createAction("settings/getCustomFieldsAsync");
+export const getCustomFieldsAsync = createAction(
+  "settings/getCustomFieldsAsync"
+);
 export const addCustomFieldAsync = createAction("settings/addCustomFieldAsync");
 export const getFormsAsync = createAction("settings/getFormsAsync");
 export const addFormAsync = createAction("settings/addFormAsync");
@@ -75,12 +77,12 @@ export async function addForm(data) {
 export function* getTagsSaga(action) {
   const { response, errors } = yield call(getTags, action.payload);
   if (response) {
-    const newResponse = response.map(item => {
+    const newResponse = response.map((item) => {
       return {
         ...item,
         key: item.id,
-      }
-    })
+      };
+    });
     yield put(getTagsSuccess(newResponse));
   } else {
     yield put(failed(errors));
@@ -237,7 +239,15 @@ export const settingsSlice = createSlice({
   },
 });
 
-export const { getTagsSuccess, failed, addTagSuccess, getCustomFieldsSuccess, addCustomFieldSuccess, getFormsSuccess, addFormSuccess } = settingsSlice.actions;
+export const {
+  getTagsSuccess,
+  failed,
+  addTagSuccess,
+  getCustomFieldsSuccess,
+  addCustomFieldSuccess,
+  getFormsSuccess,
+  addFormSuccess,
+} = settingsSlice.actions;
 
 export const selectSettings = ({ settings }) => {
   return {

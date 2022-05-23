@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const TwitterSVG = ({ isActive }) => {
-  const color = isActive ? '#D15D36' : '#BABABA'
+  const color = isActive ? "#D15D36" : "#BABABA";
   return (
     <svg
       width="27"
@@ -10,7 +10,7 @@ const TwitterSVG = ({ isActive }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       style={{
-        display: 'inline-block',
+        display: "inline-block",
       }}
     >
       <path
@@ -21,7 +21,7 @@ const TwitterSVG = ({ isActive }) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default TwitterSVG
+export default TwitterSVG;

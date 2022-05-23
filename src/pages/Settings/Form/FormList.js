@@ -6,7 +6,12 @@ import { NavLink } from "react-router-dom";
 import { useModal } from "../../../hook/useModal";
 import AddNewForm from "./AddNewForm";
 import { AddIcon } from "../../../assets/svg";
-import { getFormsAsync, selectSettings, getCustomFieldsAsync, getTagsAsync } from "../../../redux/settingsReducer";
+import {
+  getFormsAsync,
+  selectSettings,
+  getCustomFieldsAsync,
+  getTagsAsync,
+} from "../../../redux/settingsReducer";
 
 const columns = [
   {
