@@ -24,8 +24,8 @@ const layout = {
 const Profile = () => {
   const [form] = Form.useForm();
   const [formReset] = Form.useForm();
-  const { user, isLoading } = useSelector(selectUsers);
   const dispatch = useDispatch();
+  const { user, isLoading } = useSelector(selectUsers);
 
   const onFileChange = async (event) => {
     const formData = new FormData();

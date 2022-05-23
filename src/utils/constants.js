@@ -88,17 +88,27 @@ export const PLANS_DATA = {
   },
 };
 
+// export const OPTION_FIELDS = [
+//   "Gender",
+//   "Birthday",
+//   "Twitter",
+//   "Instagram",
+//   "LinkedIn",
+//   "Job Title",
+//   "Company",
+//   "Industry",
+// ];
 export const OPTION_FIELDS = [
-  "Gender",
-  "Birthday",
-  "Twitter",
-  "Instagram",
-  "LinkedIn",
-  "Job Title",
-  "Company",
-  "Industry",
+  "GENDER",
+  "BIRTHDAY",
+  "TWITTER",
+  "INSTAGRAM",
+  "LINKEDIN",
+  "JOB",
+  "TITLE",
+  "COMPANY",
+  "INDUSTRY",
 ];
-
 export const PLACEHOLDER_COLOR = {
   primaryColor: "rgba(224, 240, 250, 1)",
   secondaryColor: "rgba(224, 240, 250, 0.5)",
@@ -106,7 +116,7 @@ export const PLACEHOLDER_COLOR = {
 
 export const CUSTOM_FIELD_TYPE = {
   INPUT: "SINGLE_TEXT",
-  TEXTAREA: "PARAGRAPH_TEXT",
+  PARAGRAPH_TEXT: "PARAGRAPH_TEXT",
   RADIO: "RADIO",
   SELECT: "SELECT",
   CHECKBOX: "CHECK_BOXS",
@@ -114,7 +124,7 @@ export const CUSTOM_FIELD_TYPE = {
 
 export const CUSTOM_FIELD_ICON = {
   INPUT: SingleLineTextCFIcon,
-  TEXTAREA: ParagraphCFIcon,
+  PARAGRAPH_TEXT: ParagraphCFIcon,
   RADIO: SingleChoiceRadioCFIcon,
   SELECT: SingleChoiceSelectCFIcon,
   CHECKBOX: CheckBoxCFIcon,
@@ -122,7 +132,7 @@ export const CUSTOM_FIELD_ICON = {
 
 export const CUSTOM_FIELD_LABEL = {
   INPUT: "single line text",
-  TEXTAREA: "paragraph text",
+  PARAGRAPH_TEXT: "paragraph text",
   RADIO: "single choice (radio)",
   SELECT: "single choice (select)",
   CHECKBOX: "checkboxes",
@@ -135,9 +145,9 @@ export const CUSTOM_FIELD_OPTIONS = [
     label: CUSTOM_FIELD_LABEL.INPUT,
   },
   {
-    icon: CUSTOM_FIELD_ICON.TEXTAREA,
-    type: CUSTOM_FIELD_TYPE.TEXTAREA,
-    label: CUSTOM_FIELD_LABEL.TEXTAREA,
+    icon: CUSTOM_FIELD_ICON.PARAGRAPH_TEXT,
+    type: CUSTOM_FIELD_TYPE.PARAGRAPH_TEXT,
+    label: CUSTOM_FIELD_LABEL.PARAGRAPH_TEXT,
   },
   {
     icon: CUSTOM_FIELD_ICON.RADIO,

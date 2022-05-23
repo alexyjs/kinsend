@@ -61,3 +61,21 @@ export const phoneRequireValidator = {
     return Promise.reject(new Error("This field is required"));
   },
 };
+
+export const getBase64 = (file, cb) => {
+  let reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function () {
+    cb(reader.result);
+  };
+  reader.onerror = function (error) {
+    console.log("Error: ", error);
+  };
+};
+
+export const parseFormDataValue = (value) => {
+  if (typeof value === "string" || value instanceof String) {
+  }
+
+  return JSON.stringify(value);
+};
