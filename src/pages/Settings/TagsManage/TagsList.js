@@ -34,7 +34,7 @@ const columns = [
 
 const TagsList = () => {
   const { close, show, visible } = useModal();
-  const { tags, addnewTag } = useSelector(selectSettings);
+  const { tags, addedNewTag } = useSelector(selectSettings);
   const dispatch = useDispatch();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
@@ -52,10 +52,10 @@ const TagsList = () => {
   }, [useDispatch]);
 
   useEffect(() => {
-    if (addnewTag) {
+    if (addedNewTag) {
       close();
     }
-  }, [addnewTag, close]);
+  }, [addedNewTag, close]);
 
   return (
     <div>
