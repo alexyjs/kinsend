@@ -14,3 +14,4 @@ export { ReactComponent as ParagraphCFIcon } from "./Paragraph_CF.svg";
 export { ReactComponent as SingleChoiceRadioCFIcon } from "./SingleChoiceRadio_CF.svg";
 export { ReactComponent as SingleChoiceSelectCFIcon } from "./SingleChoiceSelect_CF.svg";
 export { ReactComponent as CheckBoxCFIcon } from "./CheckBox_CF.svg";
+export { ReactComponent as CloseModalIcon } from "./CloseModal.svg";
