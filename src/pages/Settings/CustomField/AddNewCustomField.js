@@ -136,102 +136,97 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
         >
           <Input size="large" placeholder="Copy NEW Salon Today Magazine" />
         </Form.Item>
-        <Row gutter={16}>
-          <Col span={12} gut>
-            <Form.List
-              name="options"
-              rules={[
-                {
-                  validator: async (_, names) => {
-                    if (!names || names.length < 1) {
-                      return Promise.reject(new Error("At least 1 option"));
-                    }
-                  },
-                },
-              ]}
-              // shouldUpdate={(prevValues, currentValues) =>
-              //   prevValues.options !== currentValues.options
-              // }
-            >
-              {(fields, { add, remove }, { errors }) => (
-                <>
-                  {fields.map((field, index) => (
-                    <Form.Item
-                      label={index === 0 ? "Options" : ""}
-                      required={false}
-                      key={`option-new-${field.key}`}
-                    >
-                      <Form.Item
-                        {...field}
-                        validateTrigger={["onChange", "onBlur"]}
-                        rules={[
-                          {
-                            required: true,
-                            whitespace: true,
-                            message:
-                              "Please input option's name or delete this field.",
-                          },
-                        ]}
-                        noStyle
-                      >
-                        <Input placeholder={`Options ${index}`} />
-                      </Form.Item>
-                      {fields.length > 1 ? (
-                        <MinusCircleOutlined
-                          className="dynamic-delete-button"
-                          onClick={() => remove(field.name)}
-                        />
-                      ) : null}
-                    </Form.Item>
-                  ))}
-                  <Form.Item>
-                    <Button
-                      type="dashed"
-                      onClick={() => add()}
-                      icon={<PlusOutlined />}
-                    >
-                      Add more options
-                    </Button>
-                    {/* <Button
-                    type="dashed"
-                    onClick={() => {
-                      add("The head item", 0);
-                    }}
-                    icon={<PlusOutlined />}
+        <Form.List
+          name="options"
+          rules={[
+            {
+              validator: async (_, names) => {
+                if (!names || names.length < 1) {
+                  return Promise.reject(new Error("At least 1 option"));
+                }
+              },
+            },
+          ]}
+        >
+          {(fields, { add, remove }, { errors }) => (
+            <>
+              {fields.map((field, index) => {
+                console.log("###");
+                return (
+                  <Form.Item
+                    label={index === 0 ? "Options" : ""}
+                    required={false}
+                    key={`option-new-${field.key}`}
                   >
-                    Add field at head
-                  </Button> */}
-                    <Form.ErrorList errors={errors} />
+                    <Row gutter={16} className="w-full">
+                      <Col span={12}>
+                        <Form.Item
+                          {...field}
+                          name={[field.name, "label"]}
+                          validateTrigger={["onChange", "onBlur"]}
+                          rules={[
+                            {
+                              required: true,
+                              whitespace: true,
+                              message:
+                                "Please input option's name or delete this field.",
+                            },
+                          ]}
+                          noStyle
+                        >
+                          <Input placeholder={`Options ${index}`} />
+                        </Form.Item>
+                      </Col>
+                      <Col span={12}>
+                        <Form.Item
+                          {...field}
+                          name={[field.name, "tag"]}
+                          validateTrigger={["onChange", "onBlur"]}
+                          rules={[
+                            {
+                              required: true,
+                              whitespace: true,
+                              message: "Please select or delete this field.",
+                            },
+                          ]}
+                          noStyle
+                        >
+                          <Select placeholder="Choose tag..." allowClear>
+                            {tags &&
+                              tags.map((tag) => (
+                                <Select.Option
+                                  key={`tag-new-${tag.id}`}
+                                  value={tag.id}
+                                >
+                                  {tag.name}
+                                </Select.Option>
+                              ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                    {fields.length > 1 ? (
+                      <MinusCircleOutlined
+                        className="dynamic-delete-button"
+                        onClick={() => remove(field.name)}
+                      />
+                    ) : null}
                   </Form.Item>
-                </>
-              )}
-            </Form.List>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="tag"
-              label={<>INBOUND TAG</>}
-              rules={[
-                {
-                  required: true,
-                  message: "This field is required",
-                },
-              ]}
-              shouldUpdate={(prevValues, currentValues) =>
-                prevValues.name !== currentValues.name
-              }
-            >
-              <Select mode="multiple" placeholder="Choose tag..." allowClear>
-                {tags &&
-                  tags.map((tag) => (
-                    <Select.Option key={`tag-new-${tag.id}`} value={tag.id}>
-                      {tag.name}
-                    </Select.Option>
-                  ))}
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
+                );
+              })}
+              <Form.Item>
+                <Button
+                  type="dashed"
+                  onClick={() => add()}
+                  icon={<PlusOutlined />}
+                >
+                  Add more options
+                </Button>
+                <Form.ErrorList errors={errors} />
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
       </>
     );
   }, [customFieldType, tags]);
@@ -239,6 +234,10 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
   useEffect(() => {
     setType(null);
   }, [visible]);
+
+  useEffect(() => {
+    return onReset();
+  }, []);
 
   return (
     <Modal
