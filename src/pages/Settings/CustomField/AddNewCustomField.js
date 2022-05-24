@@ -11,6 +11,7 @@ import {
   CUSTOM_FIELD_TYPE,
   CUSTOM_FIELD_OPTIONS,
 } from "../../../utils/constants";
+import { CloseModalIcon } from "../../../assets/svg";
 
 const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
   const [form] = Form.useForm();
@@ -246,6 +247,7 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
       onCancel={handleCancel}
       footer={null}
       // closable={false}
+      closeIcon={<CloseModalIcon />}
       destroyOnClose={true}
       centered
       className="reset-modal"

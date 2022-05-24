@@ -3,6 +3,7 @@ import { Button, Col, Form, Input, Modal, Row } from "antd";
 
 import { useDispatch } from "react-redux";
 import { addTagAsync } from "../../../redux/settingsReducer";
+import { CloseModalIcon } from "../../../assets/svg";
 
 const AddNewTag = ({ visible, handleOk, handleCancel }) => {
   const [form] = Form.useForm();
@@ -17,7 +18,9 @@ const AddNewTag = ({ visible, handleOk, handleCancel }) => {
       onOk={handleOk}
       onCancel={handleCancel}
       footer={null}
-      closable={false}
+      // closable={false}
+      // TODO: move this one to common
+      closeIcon={<CloseModalIcon />}
       destroyOnClose={true}
       centered
       className="reset-modal"
