@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Form, Input, Button, Select, Option, Radio } from "antd";
+import {
+  Row,
+  Col,
+  Form,
+  Input,
+  Button,
+  Select,
+  Option,
+  Radio,
+  Checkbox,
+  notification,
+} from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router";
-import { notification } from "antd";
 
 import LayoutComponent from "../../../components/Layout";
 import { AvatarComponent, RichText } from "../../../components";
@@ -48,7 +58,7 @@ const AddNewForm = () => {
     formData.append("tagId", values.tagId);
     formData.append("customFieldsId", values.customFieldsId);
     formData.append("url", values.url);
-    formData.append("title", values.title + ".superphone.io");
+    formData.append("title", values.title + ".kinsend.io");
     formData.append("browserTitle", values.browserTitle);
     formData.append("redirectUrl", values.redirectUrl);
     formData.append("description", values.description);
@@ -117,7 +127,7 @@ const AddNewForm = () => {
               name="url"
               label={
                 <div>
-                  SUPERPHONE URL{" "}
+                  KINSEND URL{" "}
                   <span>A public url to your address book form.</span>
                 </div>
               }
@@ -125,7 +135,7 @@ const AddNewForm = () => {
             >
               <div className="input-subfix">
                 <Input placeholder="" />
-                <button type="text">.superphone.io</button>
+                <button type="text">.kinsend.io</button>
               </div>
             </Form.Item>
             <Form.Item
@@ -230,16 +240,12 @@ const AddNewForm = () => {
             <Row>
               <Col span={6}>
                 <Form.Item name="isEnabled" label="">
-                  <Radio.Group>
-                    <Radio value={true}>Enabled</Radio>
-                  </Radio.Group>
+                  <Checkbox>Enabled</Checkbox>
                 </Form.Item>
               </Col>
               <Col span={6}>
                 <Form.Item name="isVcardSend" label="">
-                  <Radio.Group>
-                    <Radio value={true}>vCard send</Radio>
-                  </Radio.Group>
+                  <Checkbox>vCard send</Checkbox>
                 </Form.Item>
               </Col>
             </Row>

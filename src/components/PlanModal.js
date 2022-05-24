@@ -25,7 +25,7 @@ const PlanModal = ({
       width="80%"
     >
       <Typography.Title level={1} className="text-center">
-        Get Started with SuperPhone
+        Get Started with Kinsend
       </Typography.Title>
       <Typography className={`mb-4 text-center`}>
         <p>
