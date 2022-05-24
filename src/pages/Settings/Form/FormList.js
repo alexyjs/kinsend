@@ -16,8 +16,8 @@ import {
 const columns = [
   {
     title: "NAME",
-    dataIndex: "name",
-    key: "name",
+    dataIndex: "title",
+    key: "title",
     render: (text) => <span className="font-bold">{text}</span>,
   },
   {
@@ -28,13 +28,8 @@ const columns = [
   },
   {
     title: "CONTACTS",
-    dataIndex: "contacts",
-    key: "contacts",
-  },
-  {
-    title: "UNKNOWN",
-    dataIndex: "unknown",
-    key: "unknown",
+    dataIndex: "url",
+    key: "url",
   },
 ];
 

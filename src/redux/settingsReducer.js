@@ -3,7 +3,7 @@ import _ from "lodash";
 import { call, put, takeLatest } from "redux-saga/effects";
 import { notification } from "antd";
 
-import { handleCallAPI } from "./helpers";
+import { handleCallAPI, handleFileCallAPI } from "./helpers";
 export const getTagsAsync = createAction("settings/getTagsAsync");
 export const addTagAsync = createAction("settings/addTagAsync");
 export const getCustomFieldsAsync = createAction(
@@ -56,7 +56,7 @@ export async function addCustomField(data) {
 export async function getForms(data) {
   const payload = {
     method: "GET",
-    url: `${process.env.REACT_APP_API_BASE_URL}/tags`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/forms`,
     data,
   };
 
@@ -66,11 +66,11 @@ export async function getForms(data) {
 export async function addForm(data) {
   const payload = {
     method: "POST",
-    url: `${process.env.REACT_APP_API_BASE_URL}/tags`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/forms`,
     data,
   };
 
-  return handleCallAPI(payload);
+  return handleFileCallAPI(payload);
 }
 
 // saga
@@ -136,28 +136,28 @@ export function* addCustomFieldSaga(action) {
 }
 
 export function* getFormsSaga(action) {
-  const { response, errors } = yield call(getCustomFields, action.payload);
+  const { response, errors } = yield call(getForms, action.payload);
   if (response) {
-    yield put(getCustomFieldsSuccess(response));
+    yield put(getFormsSuccess(response));
   } else {
     yield put(failed(errors));
   }
 }
 
 export function* addFormSaga(action) {
-  const { response, errors } = yield call(addCustomField, action.payload);
+  const { response, errors } = yield call(addForm, action.payload);
   if (response) {
-    yield call(getCustomFieldsSaga, {});
-    yield put(addCustomFieldSuccess(response));
+    yield call(getFormsSaga, {});
+    yield put(addFormSuccess(response));
     notification.success({
       title: "Action Completed",
-      message: `The custom field has been created.`,
+      message: `The form has been created.`,
     });
   } else {
     yield put(failed(errors));
     notification.error({
       title: "Action failed",
-      message: `Can't create new custom field.`,
+      message: errors || `Can't create new form`,
     });
   }
 }
@@ -178,6 +178,14 @@ export function* watchAddCustomFieldSaga() {
   yield takeLatest(addCustomFieldAsync, addCustomFieldSaga);
 }
 
+export function* watchGetFormsSaga() {
+  yield takeLatest(getFormsAsync, getFormsSaga);
+}
+
+export function* watchAddFormSaga() {
+  yield takeLatest(addFormAsync, addFormSaga);
+}
+
 const initialState = {
   isLoading: false,
   errors: [],
@@ -187,6 +195,7 @@ const initialState = {
   addedCustomField: null,
   forms: [],
   addedForm: null,
+  isNewFormLoading: false,
 };
 
 export const settingsSlice = createSlice({
@@ -216,9 +225,11 @@ export const settingsSlice = createSlice({
     },
     addFormSuccess: (state, action) => {
       state.addedForm = action.payload;
+      state.isNewFormLoading = false;
     },
     failed: (state, action) => {
       state.isLoading = false;
+      state.isNewFormLoading = false;
       state.errors = action.payload;
     },
   },
@@ -235,6 +246,9 @@ export const settingsSlice = createSlice({
       .addCase(getFormsAsync, (state) => {
         state.isLoading = true;
         state.errors = [];
+      })
+      .addCase(addFormAsync, (state) => {
+        state.isNewFormLoading = true;
       });
   },
 });
@@ -258,6 +272,7 @@ export const selectSettings = ({ settings }) => {
     addedCustomField: settings.addedCustomField,
     forms: settings.forms,
     addedForm: settings.addedForm,
+    isNewFormLoading: settings.isNewFormLoading,
   };
 };
 

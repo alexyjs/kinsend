@@ -3,6 +3,7 @@ import { Row, Col, Form, Input, Button, Select, Option, Radio } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router";
+import { notification } from "antd";
 
 import LayoutComponent from "../../../components/Layout";
 import { AvatarComponent, RichText } from "../../../components";
@@ -14,6 +15,7 @@ import {
   getTagsAsync,
   addFormAsync,
 } from "../../../redux/settingsReducer";
+import { parseFormDataValue } from "../../../utils";
 
 import "./AddNewForm.less";
 
@@ -27,10 +29,44 @@ const AddNewForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [desc, setDescription] = useState("");
-  const { tags, customFields, addedForm } = useSelector(selectSettings);
+  const [image, setImage] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
+  const { tags, customFields, addedForm, isNewFormLoading } =
+    useSelector(selectSettings);
 
   const onSubmitAddNewForm = (values) => {
-    dispatch(addFormAsync({ values }));
+    if (!image) {
+      notification.error({
+        title: "Action failed",
+        message: `Please upload your image`,
+      });
+      return;
+    }
+    const formData = new FormData();
+    formData.append("file", image, image.name);
+
+    formData.append("tagId", values.tagId);
+    formData.append("customFieldsId", values.customFieldsId);
+    formData.append("url", values.url);
+    formData.append("title", values.title + ".superphone.io");
+    formData.append("browserTitle", values.browserTitle);
+    formData.append("redirectUrl", values.redirectUrl);
+    formData.append("description", values.description);
+    values?.optionalFields?.forEach((option) => {
+      formData.append("optionalFields[]", option);
+    });
+
+    formData.append("submisstion", values.submisstion);
+    formData.append("isEnabled", parseFormDataValue(values.isEnabled));
+    formData.append("isVcardSend", JSON.stringify(values.isVcardSend));
+    formData.append("message", values.message);
+
+    dispatch(addFormAsync(formData));
+  };
+
+  const onFileChange = async (event) => {
+    console.log("###onFileChange", event);
+    setImage(event.target.files[0]);
   };
 
   useEffect(() => {
@@ -44,6 +80,18 @@ const AddNewForm = () => {
       navigate("/settings/forms", { replace: true });
     }
   }, [addedForm]);
+
+  useEffect(() => {
+    if (!image) {
+      setPreviewImage(undefined);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(image);
+    setPreviewImage(objectUrl);
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [image]);
 
   return (
     <LayoutComponent className="settings-page add-new-form-page">
@@ -59,11 +107,14 @@ const AddNewForm = () => {
       >
         <Row className="mt-6" gutter={24}>
           <Col sm={6} md={6}>
-            <AvatarComponent />
+            <AvatarComponent
+              onFileChange={onFileChange}
+              imgSrc={previewImage}
+            />
           </Col>
           <Col sm={18}>
             <Form.Item
-              name="lastName"
+              name="url"
               label={
                 <div>
                   SUPERPHONE URL{" "}
@@ -73,12 +124,12 @@ const AddNewForm = () => {
               rules={[{ required: true }]}
             >
               <div className="input-subfix">
-                <Input placeholder="LAST NAME" />
+                <Input placeholder="" />
                 <button type="text">.superphone.io</button>
               </div>
             </Form.Item>
             <Form.Item
-              name="INBOUND TAG"
+              name="tagId"
               label={
                 <>
                   INBOUND TAG
@@ -89,9 +140,9 @@ const AddNewForm = () => {
               }
             >
               <Select
-                placeholder="Choose tag..."
-                // onChange={onTagChange}
                 allowClear
+                // onChange={onTagChange}
+                placeholder="Choose tag..."
               >
                 {tags &&
                   tags.map((option) => (
@@ -104,32 +155,39 @@ const AddNewForm = () => {
                   ))}
               </Select>
             </Form.Item>
-            <Form.Item name="TITLE" label="TITLE" rules={[{ required: true }]}>
+            <Form.Item name="title" label="TITLE" rules={[{ required: true }]}>
               <Input placeholder="Add title" />
             </Form.Item>
             <Form.Item
-              name="BROWSER TITLE"
+              name="browserTitle"
               label="BROWSER TITLE"
               rules={[{ required: true }]}
             >
               <Input placeholder="Add title browser title" />
             </Form.Item>
             <Form.Item
-              name="CUSTOM REDIRECT URL"
+              name="redirectUrl"
               label="CUSTOM REDIRECT URL"
               rules={[{ required: true }]}
             >
               <Input placeholder="http//.." />
             </Form.Item>
-            <RichText
-              className="mb-2"
-              value={desc}
-              onChange={(value) => {
-                setDescription(value);
-              }}
-            />
-            <Form.Item name="tags" label="OPTIONAL FIELDS">
+            <Form.Item
+              name="discription"
+              label="DESCRIPTION"
+              rules={[{ required: true }]}
+            >
+              <RichText
+                className="mb-2"
+                value={desc}
+                onChange={(value) => {
+                  setDescription(value);
+                }}
+              />
+            </Form.Item>
+            <Form.Item name="optionalFields" label="OPTIONAL FIELDS">
               <Select
+                mode="multiple"
                 placeholder="Search..."
                 // onChange={onTagChange}
                 allowClear
@@ -141,7 +199,7 @@ const AddNewForm = () => {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item name="customFields" label="CUSTOM FIELDS">
+            <Form.Item name="customFieldsId" label="CUSTOM FIELDS">
               <Select
                 placeholder="Add custom fields..."
                 // onChange={onTagChange}
@@ -156,7 +214,7 @@ const AddNewForm = () => {
               </Select>
             </Form.Item>
             <Form.Item
-              name="FORM SUBMISSION"
+              name="submisstion"
               label={
                 <>
                   FORM SUBMISSION
@@ -169,14 +227,24 @@ const AddNewForm = () => {
             >
               <Input.TextArea placeholder="Send new messenge ..." />
             </Form.Item>
-            <Form.Item name="isRequired-vcard" label="">
-              <Radio.Group>
-                <Radio value="enable">Enabled</Radio>
-                <Radio value="vcard">vCard send</Radio>
-              </Radio.Group>
-            </Form.Item>
+            <Row>
+              <Col span={6}>
+                <Form.Item name="isEnabled" label="">
+                  <Radio.Group>
+                    <Radio value={true}>Enabled</Radio>
+                  </Radio.Group>
+                </Form.Item>
+              </Col>
+              <Col span={6}>
+                <Form.Item name="isVcardSend" label="">
+                  <Radio.Group>
+                    <Radio value={true}>vCard send</Radio>
+                  </Radio.Group>
+                </Form.Item>
+              </Col>
+            </Row>
             <Form.Item
-              name="SUBMISSION_Message"
+              name="message"
               label={
                 <>
                   FORM SUBMISSION SUCCESS PAGE MESSAGE{" "}
@@ -210,6 +278,7 @@ const AddNewForm = () => {
                 size="large"
                 htmlType="submit"
                 block
+                disabled={isNewFormLoading}
               >
                 Save
               </Button>

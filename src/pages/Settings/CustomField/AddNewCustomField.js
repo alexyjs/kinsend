@@ -19,18 +19,17 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
   const { tags } = useSelector(selectSettings);
 
   const handleFinish = (values) => {
-    dispatch(
-      addCustomFieldAsync({
-        ...values,
-        isRequired: false,
-        tag:
-          customFieldType.type === CUSTOM_FIELD_TYPE.INPUT ||
-          customFieldType.type === CUSTOM_FIELD_TYPE.INPUT
-            ? [values.tag]
-            : values.tag,
-        type: customFieldType.type,
-      })
-    );
+    let params = {
+      ...values,
+      isRequired: false,
+      tags:
+        customFieldType.type === CUSTOM_FIELD_TYPE.INPUT ||
+        customFieldType.type === CUSTOM_FIELD_TYPE.PARAGRAPH_TEXT
+          ? [values.tag]
+          : values.tag,
+      type: customFieldType.type,
+    };
+    dispatch(addCustomFieldAsync(params));
   };
 
   const onReset = () => {
@@ -54,7 +53,7 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
 
     if (
       customFieldType.type === CUSTOM_FIELD_TYPE.INPUT ||
-      customFieldType.type === CUSTOM_FIELD_TYPE.TEXTAREA
+      customFieldType.type === CUSTOM_FIELD_TYPE.PARAGRAPH_TEXT
     ) {
       return (
         <>
@@ -120,7 +119,7 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
 
     // if (customFieldType.type === CUSTOM_FIELD_TYPE.SELECT) {
     // }
-    hadnleUpdateField("options", [""]);
+    // hadnleUpdateField("options", [""]);
     // default checkbox
     return (
       <>
@@ -136,8 +135,8 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
         >
           <Input size="large" placeholder="Copy NEW Salon Today Magazine" />
         </Form.Item>
-        <Row>
-          <Col span={12}>
+        <Row gutter={16}>
+          <Col span={12} gut>
             <Form.List
               name="options"
               rules={[
@@ -149,9 +148,9 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
                   },
                 },
               ]}
-              shouldUpdate={(prevValues, currentValues) =>
-                prevValues.options !== currentValues.options
-              }
+              // shouldUpdate={(prevValues, currentValues) =>
+              //   prevValues.options !== currentValues.options
+              // }
             >
               {(fields, { add, remove }, { errors }) => (
                 <>
@@ -188,7 +187,6 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
                     <Button
                       type="dashed"
                       onClick={() => add()}
-                      style={{ width: "60%" }}
                       icon={<PlusOutlined />}
                     >
                       Add more options
@@ -198,7 +196,6 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
                     onClick={() => {
                       add("The head item", 0);
                     }}
-                    style={{ width: "60%", marginTop: "20px" }}
                     icon={<PlusOutlined />}
                   >
                     Add field at head
