@@ -1,22 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Avatar } from "antd";
-import { useDispatch, useSelector } from "react-redux";
 import { UserOutlined } from "@ant-design/icons";
 
 import { CameraIcon } from "../assets/svg";
-import { selectUsers, updateAvatarAsync } from "../redux/userReducer";
 import "./AvatarComponent.less";
 
-// TODO: move avatar to common component
-const AvatarComponent = () => {
-  const { user } = useSelector(selectUsers);
-  const dispatch = useDispatch();
+const AvatarComponent = ({ onFileChange, imgSrc }) => {
   const inputFileRef = React.useRef();
 
-  const onFileChange = async (event) => {
-    const formData = new FormData();
-    formData.append("file", event.target.files[0], event.target.files[0].name);
-    dispatch(updateAvatarAsync(formData));
+  const hanldeFileChange = async (event) => {
+    onFileChange(event);
   };
 
   const onBtnClick = () => {
@@ -25,12 +18,12 @@ const AvatarComponent = () => {
 
   return (
     <div className="avatar-wrap">
-      <Avatar src={user?.image || ""} size={186} icon={<UserOutlined />} />
+      <Avatar src={imgSrc || ""} size={186} icon={<UserOutlined />} />
       <input
         className="avatar-input"
         type="file"
         ref={inputFileRef}
-        onChangeCapture={onFileChange}
+        onChangeCapture={hanldeFileChange}
       />
       <div className="icon-camera cursor-pointer" onClick={onBtnClick}>
         <CameraIcon />

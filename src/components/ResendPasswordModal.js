@@ -1,20 +1,24 @@
-import { Button, Col, Form, Input, Modal, Row } from 'antd'
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { resendVerifyEmailAsync, resetResendVerifyEmail, selectUsers } from '../redux/userReducer'
-import { EMAIL_REGEX } from '../utils/constants'
+import { Button, Col, Form, Input, Modal, Row } from "antd";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  resendVerifyEmailAsync,
+  resetResendVerifyEmail,
+  selectUsers,
+} from "../redux/userReducer";
+import { EMAIL_REGEX } from "../utils/constants";
 import "./ResendPasswordModal.less";
 
 const ResendPasswordModal = ({ visible, handleOk, handleCancel }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { resendVerifyEmailSuccess } = useSelector(selectUsers);
   const handleFinish = (values) => {
-    dispatch(resendVerifyEmailAsync(values))
-  }
+    dispatch(resendVerifyEmailAsync(values));
+  };
 
   useEffect(() => {
     if (resendVerifyEmailSuccess) {
-      handleOk && handleOk()
+      handleOk && handleOk();
     }
 
     return () => dispatch(resetResendVerifyEmail());
@@ -41,14 +45,14 @@ const ResendPasswordModal = ({ visible, handleOk, handleCancel }) => {
           rules={[
             {
               required: true,
-              message: 'This field is required',
+              message: "This field is required",
             },
             {
               validator(_, value) {
                 if (EMAIL_REGEX.test(value) || !value) {
-                  return Promise.resolve()
+                  return Promise.resolve();
                 }
-                return Promise.reject(new Error('The email is invalid'))
+                return Promise.reject(new Error("The email is invalid"));
               },
             },
           ]}
@@ -84,7 +88,7 @@ const ResendPasswordModal = ({ visible, handleOk, handleCancel }) => {
         </Row>
       </Form>
     </Modal>
-  )
-}
+  );
+};
 
-export default ResendPasswordModal
+export default ResendPasswordModal;

@@ -17,7 +17,7 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 
-const VCard = () => {
+const VCard = ({ onFileChange, imgSrc }) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const { user } = useSelector(selectUsers);
@@ -54,8 +54,6 @@ const VCard = () => {
     dispatch(getVCardAsync());
   }, []);
 
-  console.log("###vcard", vcardData);
-
   return (
     <div className="vcard">
       <Row justify="center" className="text-center">
@@ -64,7 +62,7 @@ const VCard = () => {
           <p className="pt-1.5	pb-14">
             Send a vCard that includes the number a contact has been assigned.
           </p>
-          <AvatarComponent />
+          <AvatarComponent onFileChange={onFileChange} imgSrc={imgSrc} />
         </Col>
       </Row>
       <Form
@@ -125,7 +123,7 @@ const VCard = () => {
                   },
                 },
               ]}
-              >
+            >
               <Input placeholder="EMAIL" />
             </Form.Item>
           </Col>

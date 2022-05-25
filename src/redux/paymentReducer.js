@@ -4,7 +4,7 @@ import _ from "lodash";
 import { call, put, takeLatest } from "redux-saga/effects";
 
 import { authStorage } from "./../utils";
-import { handleCallAPI } from './helpers';
+import { handleCallAPI } from "./helpers";
 export const addPaymentMethodAsync = createAction("user/addPaymentMethodAsync");
 
 export async function addPaymentMethodAPI(data) {
@@ -22,7 +22,7 @@ export async function confirmPaymentMethodAPI(paymentMethodId, setupIntentId) {
     method: "POST",
     url: `${process.env.REACT_APP_API_BASE_URL}/payments/credit-card/setup-intent/${setupIntentId}/confirm`,
     data: {
-      paymentMethodId
+      paymentMethodId,
     },
   };
 
@@ -62,8 +62,8 @@ export async function createPaymentSubscription(stripeCustomerUserId, priceID) {
       items: [
         {
           price: priceID,
-        }
-      ]
+        },
+      ],
     },
   };
 
@@ -90,8 +90,12 @@ export function* addPaymentMethodSaga(action) {
     paymentMethodId: paymentMethod.id,
     type: paymentMethod.type,
   });
-  const { responseDefaultPayment, errorsDefaultPayment } = yield call(makeDefaultPaymentMethodAPI, response.stripePaymentMethodId);
-  const { response: responseSubscription, errors: errorsSubscription } = yield call(createPaymentSubscription, user.stripeCustomerUserId, priceID);
+  const { responseDefaultPayment, errorsDefaultPayment } = yield call(
+    makeDefaultPaymentMethodAPI,
+    response.stripePaymentMethodId
+  );
+  const { response: responseSubscription, errors: errorsSubscription } =
+    yield call(createPaymentSubscription, user.stripeCustomerUserId, priceID);
   if (responseSubscription) {
     yield put(addPaymentSuccess(responseSubscription));
   } else {
@@ -125,15 +129,15 @@ export const paymentSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(addPaymentMethodAsync, (state) => {
-        state.isLoading = true;
-        state.errors = [];
-      });
+    builder.addCase(addPaymentMethodAsync, (state) => {
+      state.isLoading = true;
+      state.errors = [];
+    });
   },
 });
 
-export const { addPaymentStart, addPaymentSuccess, failed } = paymentSlice.actions;
+export const { addPaymentStart, addPaymentSuccess, failed } =
+  paymentSlice.actions;
 
 export const selectUpdatedUserSuccess = ({ payments }) => {
   return {

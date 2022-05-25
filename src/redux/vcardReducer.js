@@ -3,7 +3,7 @@ import _ from "lodash";
 import { call, put, takeLatest } from "redux-saga/effects";
 import { notification } from "antd";
 
-import { handleCallAPI } from './helpers';
+import { handleCallAPI } from "./helpers";
 export const getVCardAsync = createAction("user/getVCardAsync");
 export const updateVCardAsync = createAction("user/updateVCardAsync");
 

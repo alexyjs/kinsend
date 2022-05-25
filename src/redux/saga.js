@@ -16,16 +16,22 @@ import {
   watchUpdateAvatarSaga,
   watchsyncLocalUserSaga,
 } from "./userReducer";
-import { watchAddPaymentMethodSaga } from './paymentReducer';
+import { watchAddPaymentMethodSaga } from "./paymentReducer";
+import { watchGetVCardSaga, watchUpdateVCardSaga } from "./vcardReducer";
+
 import {
-  watchGetVCardSaga,
-  watchUpdateVCardSaga,
-} from "./vcardReducer";
+  watchgetTagsSaga,
+  watchaddTagSaga,
+  watchGetCustomFieldsSaga,
+  watchAddCustomFieldSaga,
+  watchGetFormsSaga,
+  watchAddFormSaga,
+} from "./settingsReducer";
 
 export default function* rootSaga() {
   yield all([
     watchGetListPhoneSaga(),
-  
+
     watchGetListSubscriptionSaga(),
     watchGetListSubscriptionPricesSaga(),
 
@@ -44,5 +50,13 @@ export default function* rootSaga() {
 
     watchGetVCardSaga(),
     watchUpdateVCardSaga(),
+
+    // settings
+    watchgetTagsSaga(),
+    watchaddTagSaga(),
+    watchGetCustomFieldsSaga(),
+    watchAddCustomFieldSaga(),
+    watchGetFormsSaga(),
+    watchAddFormSaga(),
   ]);
 }

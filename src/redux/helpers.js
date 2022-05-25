@@ -17,7 +17,6 @@ export const getHeaders = (headers) => {
   };
 };
 
-
 export const handleCallAPI = async (payload, headers) => {
   try {
     const result = await axios({
@@ -36,12 +35,21 @@ export const handleCallAPI = async (payload, headers) => {
   }
 };
 
+export const getHeaderFiles = (headers) => {
+  return {
+    "x-api-key": process.env.REACT_APP_API_KEY,
+    Authorization: getAuthorization(),
+    ...headers,
+  };
+};
+
 export const handleFileCallAPI = async (payload, headers) => {
   try {
     const result = await axios({
       method: "post",
       headers: {
         ...getHeaders(),
+        // ...getHeaderFiles(),
         "Content-Type": "multipart/form-data",
       },
       ...payload,
@@ -50,6 +58,22 @@ export const handleFileCallAPI = async (payload, headers) => {
       response: _.get(result, "data"),
       headers: _.get(result, "headers"),
     };
+  } catch (e) {
+    return {
+      errors: _.get(e, "response.data.message"),
+    };
+  }
+};
+
+export const handleUploadImageCallAPI = async (data) => {
+  try {
+    const payload = {
+      method: "POST",
+      url: `${process.env.REACT_APP_API_BASE_URL}/images`,
+      data,
+    };
+    const { response } = await handleFileCallAPI(payload);
+    return response;
   } catch (e) {
     return {
       errors: _.get(e, "response.data.message"),

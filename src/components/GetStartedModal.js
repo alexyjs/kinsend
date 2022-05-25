@@ -1,10 +1,10 @@
-import { Button, Form, Input, Modal } from 'antd'
-import React from 'react'
-import { phoneValidator } from '../utils'
-import PhoneInput from './InputPhone'
+import { Button, Form, Input, Modal } from "antd";
+import React from "react";
+import { phoneValidator } from "../utils";
+import PhoneInput from "./InputPhone";
 
 const GetStartedModal = ({ visible, handleOk, handleCancel }) => {
-  const handleFinish = () => {}
+  const handleFinish = () => {};
   return (
     <Modal
       visible={visible}
@@ -19,13 +19,7 @@ const GetStartedModal = ({ visible, handleOk, handleCancel }) => {
         Get started with KinSend
       </h3>
       <Form layout="vertical" onFinish={handleFinish} initialValues={{}}>
-        <Form.Item
-          name="phoneNumber"
-          label="Phone"
-          rules={[
-            phoneValidator,
-          ]}
-        >
+        <Form.Item name="phoneNumber" label="Phone" rules={[phoneValidator]}>
           <PhoneInput placeholder="Enter phone number" />
         </Form.Item>
         <Form.Item noStyle shouldUpdate>
@@ -41,7 +35,7 @@ const GetStartedModal = ({ visible, handleOk, handleCancel }) => {
         </Form.Item>
       </Form>
     </Modal>
-  )
-}
+  );
+};
 
-export default GetStartedModal
+export default GetStartedModal;
