@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { useModal } from "../../../hook/useModal";
 import AddNewCustomField from "./AddNewCustomField";
+import EditCustomField from "./EditCustomField";
 import { AddIcon } from "../../../assets/svg";
 import {
   getCustomFieldsAsync,
@@ -19,9 +20,12 @@ import "./styles.less";
 
 const CustomFieldsList = () => {
   const { close, show, visible } = useModal();
-  const { customFields, addedCustomField } = useSelector(selectSettings);
+  const { close: closeEdit, show: showEdit, visible: visibleEdit } = useModal();
+  const { customFields, addedCustomField, updatededCustomField } =
+    useSelector(selectSettings);
   const dispatch = useDispatch();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [editData, setEditData] = useState({});
 
   const handleSelectKey = (raw, raw1) => {
     setSelectedRowKeys(raw);
@@ -30,6 +34,16 @@ const CustomFieldsList = () => {
   const rowSelection = {
     selectedRowKeys,
     onChange: handleSelectKey,
+  };
+
+  const handleEdit = (value) => {
+    setEditData(value);
+    showEdit(true);
+  };
+
+  const handleCloseEdit = () => {
+    setEditData(null);
+    closeEdit();
   };
 
   useEffect(() => {
@@ -41,6 +55,11 @@ const CustomFieldsList = () => {
       close();
     }
   }, [addedCustomField, close]);
+  useEffect(() => {
+    if (updatededCustomField) {
+      handleCloseEdit();
+    }
+  }, [updatededCustomField]);
 
   return (
     <div>
@@ -68,7 +87,7 @@ const CustomFieldsList = () => {
             return (
               <div
                 key={`custom-field-list-${index}`}
-                className="custom-field flex items-center"
+                className="custom-field flex items-center justify-between"
               >
                 <span className="inline-flex items-center">
                   <activeCustomField.icon className="mr-2" />
@@ -80,6 +99,24 @@ const CustomFieldsList = () => {
                     {customField.label}
                   </span>
                 </span>
+                <div className="actions">
+                  <Button
+                    type="primary"
+                    size="middle"
+                    className="inline-flex items-center px-5"
+                    onClick={() => handleEdit(customField)}
+                  >
+                    Edit
+                  </Button>
+                  {/* <button
+                    type="primary"
+                    size="large"
+                    className="inline-flex items-center px-10"
+                    onClick={show}
+                  >
+                    Edit
+                  </button> */}
+                </div>
               </div>
             );
           })
@@ -91,6 +128,12 @@ const CustomFieldsList = () => {
         handleCancel={close}
         handleOk={close}
         visible={visible}
+      />
+      <EditCustomField
+        handleCancel={handleCloseEdit}
+        handleOk={handleCloseEdit}
+        visible={visibleEdit}
+        data={editData}
       />
     </div>
   );
