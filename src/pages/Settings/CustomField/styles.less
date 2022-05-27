@@ -1,9 +1,6 @@
 .custom-field {
   padding-left: 20px;
   padding-right: 20px;
-  background: #ffffff;
-  border: 1px solid #f1f2f7;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.06);
   border-radius: 3px;
   height: 60px;
 
@@ -11,7 +8,13 @@
     margin-top: 6px;
   }
 
+  .add-custom-field-modal {
+  }
+
   .custom-field-list & {
+    background: #ffffff;
+    border: 1px solid #f1f2f7;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.06);
     span {
       line-height: 1;
       font-size: 16px;
@@ -22,6 +25,11 @@
         margin-bottom: 4px;
         display: block;
       }
+    }
+
+    button {
+      border: 1px solid #d15d36;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.06);
     }
   }
 
@@ -49,4 +57,15 @@
     background: none;
     border: none;
   }
+}
+
+.select-custom-field-btn {
+  background: #ffffff;
+  border: 1px solid #f1f2f7;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.06);
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.custom-field-dropdown-item {
 }
