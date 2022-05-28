@@ -320,6 +320,7 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
           layout="vertical"
           onFinish={handleFinish}
           initialValues={{ ...initialValues }}
+          form={form}
         >
           {/* step 2 */}
           {customFieldType && (
