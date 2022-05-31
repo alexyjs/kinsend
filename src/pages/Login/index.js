@@ -3,7 +3,7 @@ import _ from "lodash";
 import React, { memo, useEffect } from "react";
 import { GoogleLogin } from "react-google-login";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -97,13 +97,15 @@ const Login = () => {
             <div>
               <Typography className={`mb-8`}>
                 <p>
-                  Forgot your password?{" "}
                   <span
-                    className="text-primary font-bold underline cursor-pointer"
+                    className="underline cursor-pointer no-underline"
                     onClick={show}
                   >
-                    Request a new one
+                    Forgot your password?{" "}
                   </span>
+                  <NavLink to="/sign-up" className="text-primary font-bold">
+                    Request a new one
+                  </NavLink>
                   <ResendPasswordModal
                     handleCancel={close}
                     handleOk={close}

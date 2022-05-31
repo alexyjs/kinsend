@@ -60,8 +60,9 @@ const TagsList = () => {
         <span className="max-w-xl">
           Create public facing contact forms for new contacts to fill out their
           personal details. Share your form on social channels using each form's
-          unique URL or specify a form in your widget auto responses. Learn more
-          about Forms
+          unique URL or specify a form in your widget auto responses.
+          {/* TODO: show later */}
+          {/* Learn more about Forms */}
         </span>
         <NavLink to="/settings/forms/new">
           <Button

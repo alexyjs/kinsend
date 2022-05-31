@@ -22,7 +22,7 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addCustomFieldAsync,
+  updateCustomFieldAsync,
   selectSettings,
 } from "../../../redux/settingsReducer";
 import {
@@ -40,7 +40,7 @@ const initialValues = {
   options: [],
 };
 
-const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
+const EditCustomField = ({ visible, handleOk, handleCancel, data = {} }) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const [customFieldType, setType] = useState(null);
@@ -57,13 +57,13 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
           : values.tag,
       type: customFieldType.type,
     };
-    dispatch(addCustomFieldAsync(params));
+    delete params.id;
+    dispatch(updateCustomFieldAsync({ dataUpdate: params, id: data.id }));
   };
 
   const onReset = () => {
     form.resetFields();
-    // form.resetFields(["label", "placeholder", "isRequired", "options", "tag", "tags"]);
-    // form.setFieldsValue({...initialValues});
+    form.setFieldsValue(initialValues);
   };
 
   const handleSelectType = (item) => {
@@ -93,7 +93,7 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
     if (!customFieldType?.type) {
       return;
     }
-    console.log('###customFieldType', customFieldType);
+
     if (
       customFieldType.type === CUSTOM_FIELD_TYPE.INPUT ||
       customFieldType.type === CUSTOM_FIELD_TYPE.PARAGRAPH_TEXT
@@ -211,7 +211,10 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
                           ]}
                           noStyle
                         >
-                          <Input placeholder={`Options ${index}`} />
+                          <Input
+                            placeholder={`Options ${index}`}
+                            defaultValue={data.options[index].label}
+                          />
                         </Form.Item>
                       </Col>
                       <Col span={12}>
@@ -273,96 +276,94 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
   }, [visible]);
 
   useEffect(() => {
-    if (customFieldType) {
-      onReset();
+    if (data) {
+      const obj = CUSTOM_FIELD_OPTIONS.filter(
+        (item) => item.type === data.type
+      )[0];
+      setType(obj);
+      form.setFieldsValue({ ...data });
     }
-  }, [customFieldType]);
+  }, [data]);
+
+  useEffect(() => {
+    return onReset();
+  }, []);
 
   return (
-    <Modal
-      visible={visible}
-      onOk={handleOk}
-      onCancel={handleCancel}
-      footer={null}
-      // closable={false}
-      closeIcon={<CloseModalIcon />}
-      destroyOnClose={true}
-      centered
-      className="small-modal add-custom-field-modal"
-    >
-      <h3 className="font-bold text-center text-4xl mb-5">Custom Fields</h3>
-      <p className="text-center pb-5">
-        Collect specific information from your contacts using custom fields.
-      </p>
-      <div className="small-body-modal">
-        <div className="flex">
-          <Dropdown overlay={menu} trigger={["click"]} className="w-full">
-            <a onClick={(e) => e.preventDefault()}>
-              <Space
-                className={cl(
-                  "flex-1 select-custom-field-btn custom-field flex items-center justify-between"
-                )}
-              >
-                {customFieldType ? (
-                  <span className="inline-flex items-center">
-                    <customFieldType.icon className="mr-2" />
-                    {customFieldType.label}
-                  </span>
-                ) : (
-                  <span className="font-bold text-l">SELECT TYPE</span>
-                )}
-                <DownOutlined className="flex align-center" />
-              </Space>
-            </a>
-          </Dropdown>
+    data && (
+      <Modal
+        visible={visible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}
+        // closable={false}
+        closeIcon={<CloseModalIcon />}
+        destroyOnClose={true}
+        centered
+        className="small-modal add-custom-field-modal"
+      >
+        <h3 className="font-bold text-center text-4xl mb-5">Custom Fields</h3>
+        <p className="text-center pb-5">
+          Collect specific information from your contacts using custom fields.
+        </p>
+        <div className="small-body-modal">
+          <div className="flex">
+            {customFieldType && (
+              <div className="select-custom-field-btn  custom-field flex w-full">
+                <span className="inline-flex items-center">
+                  <customFieldType.icon className="mr-2" />
+                  {customFieldType.label}
+                </span>
+              </div>
+            )}
+          </div>
+          <Form
+            layout="vertical"
+            onFinish={handleFinish}
+            initialValues={{ ...data }}
+          >
+            {/* step 2 */}
+            {customFieldType && (
+              <>
+                {renderBody}
+                <Form.Item name="isRequired" valuePropName="checked" label="">
+                  <Checkbox>Required</Checkbox>
+                </Form.Item>
+                <Row justify="end" className="mt-12">
+                  <Col>
+                    <Form.Item noStyle>
+                      <Button
+                        className="md:min-w-200"
+                        type="text"
+                        size="large"
+                        // onClick={() => setType(null) && onReset()}
+                        onClick={handleCancel}
+                      >
+                        Cancel
+                      </Button>
+                    </Form.Item>
+                  </Col>
+                  <Col>
+                    <Form.Item noStyle shouldUpdate>
+                      <Button
+                        className="md:min-w-200"
+                        type="primary"
+                        size="large"
+                        htmlType="submit"
+                        block
+                      >
+                        Save
+                      </Button>
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </>
+            )}
+          </Form>
         </div>
-        <Form
-          layout="vertical"
-          onFinish={handleFinish}
-          initialValues={{ ...initialValues }}
-          form={form}
-        >
-          {/* step 2 */}
-          {customFieldType && (
-            <>
-              {renderBody}
-              <Form.Item name="isRequired" valuePropName="checked" label="">
-                <Checkbox>Required</Checkbox>
-              </Form.Item>
-              <Row justify="end" className="mt-12">
-                <Col>
-                  <Form.Item noStyle>
-                    <Button
-                      className="md:min-w-200"
-                      type="text"
-                      size="large"
-                      // onClick={() => setType(null) && onReset()}
-                      onClick={handleCancel}
-                    >
-                      Cancel
-                    </Button>
-                  </Form.Item>
-                </Col>
-                <Col>
-                  <Form.Item noStyle shouldUpdate>
-                    <Button
-                      className="md:min-w-200"
-                      type="primary"
-                      size="large"
-                      htmlType="submit"
-                      block
-                    >
-                      Save
-                    </Button>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </>
-          )}
-        </Form>
-      </div>
-    </Modal>
+      </Modal>
+    )
   );
 };
 
-export default AddNewCustomField;
+export default EditCustomField;

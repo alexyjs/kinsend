@@ -10,6 +10,9 @@ export const getCustomFieldsAsync = createAction(
   "settings/getCustomFieldsAsync"
 );
 export const addCustomFieldAsync = createAction("settings/addCustomFieldAsync");
+export const updateCustomFieldAsync = createAction(
+  "settings/updateCustomFieldAsync"
+);
 export const getFormsAsync = createAction("settings/getFormsAsync");
 export const addFormAsync = createAction("settings/addFormAsync");
 
@@ -47,6 +50,16 @@ export async function addCustomField(data) {
   const payload = {
     method: "POST",
     url: `${process.env.REACT_APP_API_BASE_URL}/custom-fields`,
+    data,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function updateCustomField(data, id) {
+  const payload = {
+    method: "PUT",
+    url: `${process.env.REACT_APP_API_BASE_URL}/custom-fields/${id}`,
     data,
   };
 
@@ -135,6 +148,28 @@ export function* addCustomFieldSaga(action) {
   }
 }
 
+export function* updateCustomFieldSaga(action) {
+  const { response, errors } = yield call(
+    updateCustomField,
+    action.payload.dataUpdate,
+    action.payload.id
+  );
+  if (response) {
+    yield call(getCustomFieldsSaga, {});
+    yield put(updateCustomFieldSuccess(response));
+    notification.success({
+      title: "Action Completed",
+      message: `The custom field has been updated.`,
+    });
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: `Can't update custom field.`,
+    });
+  }
+}
+
 export function* getFormsSaga(action) {
   const { response, errors } = yield call(getForms, action.payload);
   if (response) {
@@ -178,6 +213,10 @@ export function* watchAddCustomFieldSaga() {
   yield takeLatest(addCustomFieldAsync, addCustomFieldSaga);
 }
 
+export function* watchUpdateCustomFieldSaga() {
+  yield takeLatest(updateCustomFieldAsync, updateCustomFieldSaga);
+}
+
 export function* watchGetFormsSaga() {
   yield takeLatest(getFormsAsync, getFormsSaga);
 }
@@ -193,6 +232,7 @@ const initialState = {
   addedNewTag: null,
   customFields: null,
   addedCustomField: null,
+  updatededCustomField: null,
   forms: [],
   addedForm: null,
   isNewFormLoading: false,
@@ -217,6 +257,9 @@ export const settingsSlice = createSlice({
     },
     addCustomFieldSuccess: (state, action) => {
       state.addedCustomField = action.payload;
+    },
+    updateCustomFieldSuccess: (state, action) => {
+      state.updatededCustomField = action.payload;
     },
     getFormsSuccess: (state, action) => {
       state.forms = action.payload;
@@ -259,6 +302,7 @@ export const {
   addTagSuccess,
   getCustomFieldsSuccess,
   addCustomFieldSuccess,
+  updateCustomFieldSuccess,
   getFormsSuccess,
   addFormSuccess,
 } = settingsSlice.actions;
@@ -270,6 +314,7 @@ export const selectSettings = ({ settings }) => {
     addedNewTag: settings.addedNewTag,
     customFields: settings.customFields,
     addedCustomField: settings.addedCustomField,
+    updatededCustomField: settings.updatededCustomField,
     forms: settings.forms,
     addedForm: settings.addedForm,
     isNewFormLoading: settings.isNewFormLoading,

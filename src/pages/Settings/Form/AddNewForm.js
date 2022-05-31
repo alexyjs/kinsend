@@ -75,7 +75,6 @@ const AddNewForm = () => {
   };
 
   const onFileChange = async (event) => {
-    console.log("###onFileChange", event);
     setImage(event.target.files[0]);
   };
 

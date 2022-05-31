@@ -34,9 +34,9 @@ const Settings = () => {
         <Tabs.TabPane tab={`${forms?.length || 0} Form`} key="1">
           <FormList />
         </Tabs.TabPane>
-        <Tabs.TabPane tab="0 Widget" key="2">
+        {/* <Tabs.TabPane tab="0 Widget" key="2">
           Widget
-        </Tabs.TabPane>
+        </Tabs.TabPane> */}
         <Tabs.TabPane
           tab={`${customFields?.length || 0} Custom fields`}
           key="3"
