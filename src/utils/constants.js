@@ -109,6 +109,85 @@ export const OPTION_FIELDS = [
   "COMPANY",
   "INDUSTRY",
 ];
+
+export const INDUSTRY = ["Tech", "Music", "Fashion", "Other"];
+
+export const getDays = () => {
+  const result = [];
+  for (let i = 1; i <= 31; i++) {
+    result.push(i);
+  }
+  return result;
+};
+
+export const getMonths = () => {
+  const result = [
+    {
+      value: 1,
+      label: "January",
+    },
+    {
+      value: 2,
+      label: "February",
+    },
+    {
+      value: 3,
+      label: "March",
+    },
+    {
+      value: 4,
+      label: "April",
+    },
+    {
+      value: 5,
+      label: "May",
+    },
+    {
+      value: 6,
+      label: "June",
+    },
+    {
+      value: 7,
+      label: "July",
+    },
+    {
+      value: 8,
+      label: "August",
+    },
+    {
+      value: 9,
+      label: "September",
+    },
+    {
+      value: 10,
+      label: "October",
+    },
+    {
+      value: 11,
+      label: "November",
+    },
+    {
+      value: 12,
+      label: "December",
+    },
+    {
+      value: 1,
+      label: "December",
+    },
+  ];
+  return result;
+};
+
+export const getYears = () => {
+  const result = [];
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  for (let i = currentYear; i > 1900; i--) {
+    result.push(i);
+  }
+  return result;
+};
+
 export const PLACEHOLDER_COLOR = {
   primaryColor: "rgba(224, 240, 250, 1)",
   secondaryColor: "rgba(224, 240, 250, 0.5)",
@@ -121,6 +200,8 @@ export const CUSTOM_FIELD_TYPE = {
   SELECT: "SELECT",
   CHECKBOX: "CHECK_BOXS",
 };
+
+export const GENDER_OPTIONS = ["Male", "Female", "Other"];
 
 export const CUSTOM_FIELD_ICON = {
   INPUT: SingleLineTextCFIcon,

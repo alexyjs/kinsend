@@ -11,3 +11,5 @@ export { default as PlanModal } from "./PlanModal";
 export { default as AvatarComponent } from "./AvatarComponent";
 export { default as Loading } from "./Loading";
 export { default as RichText } from "./RichText";
+export { default as CustomFieldsComponent } from "./CustomFields";
+export { default as OptionFieldsComponent } from "./OptionFields";

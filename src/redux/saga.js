@@ -29,6 +29,11 @@ import {
   watchAddFormSaga,
 } from "./settingsReducer";
 
+import {
+  watchGetFormSettingDetailSaga,
+  watchAddFormSubmissionSaga,
+} from "./publicReducer";
+
 export default function* rootSaga() {
   yield all([
     watchGetListPhoneSaga(),
@@ -60,5 +65,9 @@ export default function* rootSaga() {
     watchUpdateCustomFieldSaga(),
     watchGetFormsSaga(),
     watchAddFormSaga(),
+
+    // public
+    watchGetFormSettingDetailSaga(),
+    watchAddFormSubmissionSaga(),
   ]);
 }

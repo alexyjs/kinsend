@@ -31,6 +31,18 @@ const columns = [
     dataIndex: "url",
     key: "url",
   },
+  {
+    title: "Actions",
+    render: (item) => (
+      <a
+        href={`${window.origin}/f/${item.id}`}
+        target="_blank"
+        className="font-bold"
+      >
+        Link Submission
+      </a>
+    ),
+  },
 ];
 
 const TagsList = () => {

@@ -55,20 +55,24 @@ const AddNewForm = () => {
     const formData = new FormData();
     formData.append("file", image, image.name);
 
-    formData.append("tagId", values.tagId);
-    formData.append("customFieldsId", values.customFieldsId);
-    formData.append("url", values.url);
-    formData.append("title", values.title + ".kinsend.io");
-    formData.append("browserTitle", values.browserTitle);
-    formData.append("redirectUrl", values.redirectUrl);
-    formData.append("description", values.description);
+    formData.append("tagId", values.tagId || "");
+    // formData.append("customFieldsId", values.customFieldsId);
+    formData.append("url", values.url + ".kinsend.io");
+    formData.append("title", values.title || "");
+    formData.append("browserTitle", values.browserTitle || "");
+    formData.append("redirectUrl", values.redirectUrl || "");
+    formData.append("description", values.description || "");
     values?.optionalFields?.forEach((option) => {
       formData.append("optionalFields[]", option);
     });
 
-    formData.append("submisstion", values.submisstion);
-    formData.append("isEnabled", parseFormDataValue(values.isEnabled));
-    formData.append("isVcardSend", JSON.stringify(values.isVcardSend));
+    values?.customFieldsIds?.forEach((option) => {
+      formData.append("customFieldsIds[]", option);
+    });
+
+    formData.append("submission", values.submission || "");
+    formData.append("isEnabled", values.isEnabled || false);
+    formData.append("isVcardSend", values.isVcardSend || false);
     formData.append("message", values.message);
 
     dispatch(addFormAsync(formData));
@@ -85,7 +89,6 @@ const AddNewForm = () => {
 
   useEffect(() => {
     if (addedForm) {
-      // router.push("/settings/forms");
       navigate("/settings/forms", { replace: true });
     }
   }, [addedForm]);
@@ -139,6 +142,7 @@ const AddNewForm = () => {
             </Form.Item>
             <Form.Item
               name="tagId"
+              rules={[{ required: true }]}
               label={
                 <>
                   INBOUND TAG
@@ -182,7 +186,7 @@ const AddNewForm = () => {
               <Input placeholder="http//.." />
             </Form.Item>
             <Form.Item
-              name="discription"
+              name="description"
               label="DESCRIPTION"
               rules={[{ required: true }]}
             >
@@ -208,8 +212,9 @@ const AddNewForm = () => {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item name="customFieldsId" label="CUSTOM FIELDS">
+            <Form.Item name="customFieldsIds" label="CUSTOM FIELDS">
               <Select
+                mode="multiple"
                 placeholder="Add custom fields..."
                 // onChange={onTagChange}
                 allowClear
@@ -223,7 +228,7 @@ const AddNewForm = () => {
               </Select>
             </Form.Item>
             <Form.Item
-              name="submisstion"
+              name="submission"
               label={
                 <>
                   FORM SUBMISSION
@@ -238,12 +243,12 @@ const AddNewForm = () => {
             </Form.Item>
             <Row>
               <Col span={6}>
-                <Form.Item name="isEnabled" label="">
+                <Form.Item name="isEnabled" label="" valuePropName="checked">
                   <Checkbox>Enabled</Checkbox>
                 </Form.Item>
               </Col>
               <Col span={6}>
-                <Form.Item name="isVcardSend" label="">
+                <Form.Item name="isVcardSend" label="" valuePropName="checked">
                   <Checkbox>vCard send</Checkbox>
                 </Form.Item>
               </Col>
