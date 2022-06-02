@@ -265,6 +265,9 @@ export const settingsSlice = createSlice({
       state.forms = action.payload;
       state.isLoading = false;
       state.errors = [];
+      state.addedForm = null;
+      state.customFields = null;
+      state.tags = null;
     },
     addFormSuccess: (state, action) => {
       state.addedForm = action.payload;

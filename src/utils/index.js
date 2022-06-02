@@ -74,6 +74,7 @@ export const getBase64 = (file, cb) => {
 };
 
 export const parseFormDataValue = (value) => {
+  console.log(value);
   if (typeof value === "string" || value instanceof String) {
   }
 

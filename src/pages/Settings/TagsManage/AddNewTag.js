@@ -27,7 +27,12 @@ const AddNewTag = ({ visible, handleOk, handleCancel }) => {
     >
       <h3 className="font-bold text-center text-4xl mb-5">Add tag</h3>
       <p className="text-center pb-5">Chose a name for the new tag</p>
-      <Form layout="vertical" onFinish={handleFinish} initialValues={{}} form={form}>
+      <Form
+        layout="vertical"
+        onFinish={handleFinish}
+        initialValues={{}}
+        form={form}
+      >
         <Form.Item
           name="name"
           label="new tag name"

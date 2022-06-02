@@ -12,6 +12,8 @@ import Dashboard from "./pages/Dashboard";
 import FormManage from "./pages/Settings/Form";
 import AddNewForm from "./pages/Settings/Form/AddNewForm";
 import TagsManage from "./pages/Settings/TagsManage";
+import PublicFormSumission from "./pages/Public/FormSubmission";
+import PublicThankYouSubmission from "./pages/Public/ThankYouSubmission";
 import "./styles/antd.less";
 import "./styles/tailwind.css";
 import "./App.less";
@@ -48,6 +50,8 @@ function App() {
         <Routes>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/thank-you" element={<PublicThankYouSubmission />} />
+          <Route path="/f/:id" element={<PublicFormSumission />} />
           {isAuth && <Route path="/settings/profile" element={<Profile />} />}
           {isAuth && <Route path="/payment-setup" element={<PaymentSetup />} />}
           {isAuth && <Route path="/dashboard" element={<Dashboard />} />}

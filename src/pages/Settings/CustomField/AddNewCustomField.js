@@ -93,7 +93,7 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
     if (!customFieldType?.type) {
       return;
     }
-    console.log('###customFieldType', customFieldType);
+    console.log("###customFieldType", customFieldType);
     if (
       customFieldType.type === CUSTOM_FIELD_TYPE.INPUT ||
       customFieldType.type === CUSTOM_FIELD_TYPE.PARAGRAPH_TEXT

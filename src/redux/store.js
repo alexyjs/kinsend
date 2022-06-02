@@ -7,6 +7,7 @@ import subscriptionReducer from "./subscriptionReducer";
 import paymentReducer from "./paymentReducer";
 import vcardReducer from "./vcardReducer";
 import settingsReducer from "./settingsReducer";
+import publicSlice from "./publicReducer";
 
 // disalbe thunk and add redux-saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -32,6 +33,7 @@ const store = configureStore({
     payments: paymentReducer,
     vcard: vcardReducer,
     settings: settingsReducer,
+    publicReducer: publicSlice,
   },
   middleware,
 });
