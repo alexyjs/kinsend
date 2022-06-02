@@ -26,14 +26,14 @@ const ThankYouSubmission = () => {
             Click here
           </a>
         </p>
-        <a
+        {/* <a
           className="mt-3 block font-bold"
           href={addedFormSubmission?.owner?.vCard?.url}
           download
           title={`${addedFormSubmission?.owner?.firstName}-${addedFormSubmission?.owner?.lastName}`}
         >
           Download: VCard.vcf
-        </a>
+        </a> */}
       </div>
     </div>
   );
