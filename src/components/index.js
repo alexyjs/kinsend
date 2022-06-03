@@ -13,3 +13,4 @@ export { default as Loading } from "./Loading";
 export { default as RichText } from "./RichText";
 export { default as CustomFieldsComponent } from "./CustomFields";
 export { default as OptionFieldsComponent } from "./OptionFields";
+export { default as CopyComponent } from "./CopyText";

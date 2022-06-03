@@ -12,6 +12,7 @@ import {
   getCustomFieldsAsync,
   getTagsAsync,
 } from "../../../redux/settingsReducer";
+import { CopyComponent } from "../../../components";
 
 const columns = [
   {
@@ -34,13 +35,10 @@ const columns = [
   {
     title: "Actions",
     render: (item) => (
-      <a
-        href={`${window.origin}/f/${item.id}`}
-        target="_blank"
-        className="font-bold"
-      >
-        Link Submission
-      </a>
+      <CopyComponent
+        value={`${window.origin}/f/${item.id}`}
+        title="copy link submission"
+      />
     ),
   },
 ];
