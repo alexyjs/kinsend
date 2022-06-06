@@ -15,3 +15,4 @@ export { ReactComponent as SingleChoiceRadioCFIcon } from "./SingleChoiceRadio_C
 export { ReactComponent as SingleChoiceSelectCFIcon } from "./SingleChoiceSelect_CF.svg";
 export { ReactComponent as CheckBoxCFIcon } from "./CheckBox_CF.svg";
 export { ReactComponent as CloseModalIcon } from "./CloseModal.svg";
+export { ReactComponent as LogoIcon } from "./logo.svg";
