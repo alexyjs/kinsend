@@ -8,9 +8,9 @@ import {
   selectVCard,
   updateVCardAsync,
 } from "../../redux/vcardReducer";
-import { AvatarComponent } from "./../../components";
+import { AvatarComponent } from "..";
 import { EMAIL_REGEX } from "../../utils/constants";
-import "./VCard.less";
+import "./styles.less";
 
 const layout = {
   labelCol: { span: 8 },

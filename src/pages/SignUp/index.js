@@ -52,6 +52,7 @@ function SlideBackButton() {
 }
 
 const SignUp = () => {
+  const [form] = Form.useForm();
   const [isEnd, setIsEnd] = useState(false);
   const { isLoading, signupSuccess } = useSelector(selectCreateUser);
   const swiperRef = React.useRef(null);
@@ -81,6 +82,13 @@ const SignUp = () => {
     }
   };
 
+  const validateFirstScreen = () => {
+    form.validateFields().then(() => {
+      swiperRef.current.swiper.slideNext();
+    }).catch(() => {
+    });
+  }
+
   useEffect(() => {
     if (signupSuccess) {
       swiperRef.current.swiper.slideNext();
@@ -89,6 +97,9 @@ const SignUp = () => {
 
   useEffect(() => {
     dispatch(getListSubscriptionPricesAsync());
+    if (swiperRef?.current?.swiper) {
+      swiperRef.current.swiper.slideTo(0, 0);
+    }
   }, []);
 
   return (
@@ -109,6 +120,7 @@ const SignUp = () => {
           </p>
         </Typography>
         <Form
+          form={form}
           layout="vertical"
           onFinish={handleFinish}
           initialValues={{
@@ -276,7 +288,7 @@ const SignUp = () => {
                         type="primary"
                         size="large"
                         // htmlType="submit"
-                        onClick={() => swiperRef.current.swiper.slideNext()}
+                        onClick={() => validateFirstScreen()}
                       >
                         Next
                       </Button>
