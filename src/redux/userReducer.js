@@ -118,9 +118,10 @@ export function* createUserSaga(action) {
     });
   } else {
     yield put(createUserFailed(errors));
+    console.log('###errors', errors);
     notification.error({
       title: "Action failed",
-      message: `Can't create new user.`,
+      message: errors || `Can't create new user.`,
     });
   }
 }
@@ -151,10 +152,14 @@ export function* loginWithGoogleSaga(action) {
     yield put(login(response));
     notification.success({
       title: "Action Completed",
-      message: `Login With Google successfully.`,
+      message: errors || `Login With Google successfully.`,
     });
   } else {
     yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || "Login With Google failed.",
+    });
   }
 }
 
@@ -170,7 +175,7 @@ export function* resendVerifyEmailSaga(action) {
   } else {
     yield put(failed(errors));
     notification.error({
-      title: "Action Completed",
+      title: "Action failed",
       message: errors || "Forgot password failed.",
     });
   }
@@ -200,7 +205,7 @@ export function* patchUserSaga(action) {
     yield put(failed(errors));
     notification.error({
       title: "Action failed",
-      message: `Update profile failed.`,
+      message: errors || `Update profile failed.`,
     });
   }
 }
@@ -219,7 +224,7 @@ export function* resetPasswordSaga(action) {
     yield put(failed(errors));
     notification.error({
       title: "Action failed",
-      message: `Reset password failed.`,
+      message: errors || `Reset password failed.`,
     });
   }
 }
@@ -239,7 +244,7 @@ export function* updateAvatarSaga(action) {
     yield put(failed(errors));
     notification.error({
       title: "Action failed",
-      message: `Update Avatar failed.`,
+      message: errors || `Update Avatar failed.`,
     });
   }
 }

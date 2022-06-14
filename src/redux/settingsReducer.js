@@ -115,7 +115,7 @@ export function* addTagSaga(action) {
     yield put(failed(errors));
     notification.error({
       title: "Action failed",
-      message: `Can't create new tag.`,
+      message: errors || `Can't create new tag.`,
     });
   }
 }
@@ -143,7 +143,7 @@ export function* addCustomFieldSaga(action) {
     yield put(failed(errors));
     notification.error({
       title: "Action failed",
-      message: `Can't create new custom field.`,
+      message: errors || `Can't create new custom field.`,
     });
   }
 }
@@ -165,7 +165,7 @@ export function* updateCustomFieldSaga(action) {
     yield put(failed(errors));
     notification.error({
       title: "Action failed",
-      message: `Can't update custom field.`,
+      message: errors || `Can't update custom field.`,
     });
   }
 }
