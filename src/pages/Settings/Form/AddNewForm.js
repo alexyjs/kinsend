@@ -10,13 +10,15 @@ import {
   Radio,
   Checkbox,
   notification,
+  Modal,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router";
 
+import { useModal } from "../../../hook/useModal";
 import LayoutComponent from "../../../components/Layout";
-import { AvatarComponent, RichText } from "../../../components";
+import { AvatarComponent, RichText, VCardComponent } from "../../../components";
 import { OPTION_FIELDS } from "../../../utils/constants";
 import {
   getFormsAsync,
@@ -25,7 +27,12 @@ import {
   getTagsAsync,
   addFormAsync,
 } from "../../../redux/settingsReducer";
-import { parseFormDataValue } from "../../../utils";
+import {
+  selectUsers,
+  getUserAsync,
+  updateAvatarAsync,
+} from "../../../redux/userReducer";
+import { selectVCard, getVCardAsync } from "../../../redux/vcardReducer";
 
 import "./AddNewForm.less";
 
@@ -43,6 +50,13 @@ const AddNewForm = () => {
   const [previewImage, setPreviewImage] = useState("");
   const { tags, customFields, addedForm, isNewFormLoading } =
     useSelector(selectSettings);
+  const { user } = useSelector(selectUsers);
+  const { vcardData } = useSelector(selectVCard);
+  const {
+    close: closeVcard,
+    show: showVcard,
+    visible: visibleVcard,
+  } = useModal();
 
   const onSubmitAddNewForm = (values) => {
     if (!image) {
@@ -82,6 +96,20 @@ const AddNewForm = () => {
     setImage(event.target.files[0]);
   };
 
+  const onChangeAvatar = async (event) => {
+    const formData = new FormData();
+    formData.append("file", event.target.files[0], event.target.files[0].name);
+    dispatch(updateAvatarAsync(formData));
+  };
+
+  const handleVcardOk = async (event) => {
+    dispatch(getUserAsync());
+  };
+
+  const handleVcardCancel = async (event) => {
+    closeVcard();
+  };
+
   useEffect(() => {
     dispatch(getCustomFieldsAsync());
     dispatch(getTagsAsync());
@@ -104,6 +132,16 @@ const AddNewForm = () => {
     // free memory when ever this component is unmounted
     return () => URL.revokeObjectURL(objectUrl);
   }, [image]);
+
+  useEffect(() => {
+    if (vcardData?.id) {
+      closeVcard();
+    }
+  }, [vcardData]);
+
+  useEffect(() => {
+    dispatch(getVCardAsync());
+  }, []);
 
   return (
     <LayoutComponent className="settings-page add-new-form-page">
@@ -241,6 +279,18 @@ const AddNewForm = () => {
             >
               <Input.TextArea placeholder="Send new messenge ..." />
             </Form.Item>
+            {!vcardData?.id && <p className="italic">
+              You currently don't have any vCard information to send. If you
+              would like to update your vCard please click{" "}
+              <button
+                type="button"
+                className="text-primary font-bold uppercase px-1"
+                onClick={() => showVcard()}
+              >
+                here
+              </button>{" "}
+              to do so.
+            </p>}
             <Row>
               <Col span={6}>
                 <Form.Item name="isEnabled" label="" valuePropName="checked">
@@ -248,8 +298,13 @@ const AddNewForm = () => {
                 </Form.Item>
               </Col>
               <Col span={6}>
-                <Form.Item name="isVcardSend" label="" valuePropName="checked">
-                  <Checkbox>vCard send</Checkbox>
+                <Form.Item
+                  name="isVcardSend"
+                  label=""
+                  valuePropName="checked"
+                  disabled={!vcardData?.id}
+                >
+                  <Checkbox disabled={!vcardData?.id}>vCard send</Checkbox>
                 </Form.Item>
               </Col>
             </Row>
@@ -296,6 +351,19 @@ const AddNewForm = () => {
           </Col>
         </Row>
       </Form>
+      <Modal
+        visible={visibleVcard}
+        onOk={handleVcardOk}
+        onCancel={handleVcardCancel}
+        footer={null}
+        closable={false}
+        destroyOnClose={true}
+        centered
+        width={840}
+        className="vcard-modal"
+      >
+        <VCardComponent onFileChange={onChangeAvatar} imgSrc={user?.image} />
+      </Modal>
     </LayoutComponent>
   );
 };

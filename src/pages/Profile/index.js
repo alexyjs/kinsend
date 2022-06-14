@@ -11,8 +11,7 @@ import {
 } from "../../redux/userReducer";
 import LayoutComponent from "../../components/Layout";
 import { PASSWORD_REGEX } from "../../utils/constants";
-import VCard from "./VCard";
-import { AvatarComponent } from "./../../components";
+import { AvatarComponent, VCardComponent } from "./../../components";
 
 import "./styles.less";
 
@@ -201,7 +200,7 @@ const Profile = () => {
           </Form>
         </div>
       </div>
-      <VCard onFileChange={onFileChange} imgSrc={user?.image} />
+      <VCardComponent onFileChange={onFileChange} imgSrc={user?.image} />
     </LayoutComponent>
   );
 };

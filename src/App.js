@@ -1,7 +1,7 @@
 import { ConfigProvider } from "antd-country-phone-input";
 import "antd-country-phone-input/dist/index.css";
 import "flagpack/dist/flagpack.css";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
@@ -28,12 +28,20 @@ function App() {
   const [savedAuth, setAuth] = useLocalStorage(STORAGE_AUTH_KEY);
   const { user } = useSelector(selectUsers);
   const dispatch = useDispatch();
+  let navigate = useNavigate();
 
   useEffect(() => {
     if (savedAuth) {
       dispatch(getUserAsync());
     }
   }, [savedAuth]);
+
+  // useEffect(() => {
+  //   if (user && !user?.isEnabledBuyPlan) {
+  //     navigate("/payment-setup");
+  //   }
+  // }, [user]);
+
   const isAuth = authStorage.get();
 
   return (
