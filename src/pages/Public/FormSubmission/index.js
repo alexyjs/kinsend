@@ -24,7 +24,7 @@ import {
   OptionFieldsComponent,
   InputPhone,
 } from "../../../components";
-import { OPTION_FIELDS, EMAIL_REGEX } from "../../../utils/constants";
+import { EMAIL_REGEX } from "../../../utils/validations";
 import {
   getFormsSettingDetailAsync,
   addFormSubmissionAsync,

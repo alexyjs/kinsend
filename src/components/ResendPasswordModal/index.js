@@ -5,9 +5,9 @@ import {
   resendVerifyEmailAsync,
   resetResendVerifyEmail,
   selectUsers,
-} from "../redux/userReducer";
-import { EMAIL_REGEX } from "../utils/constants";
-import "./ResendPasswordModal.less";
+} from "../../redux/userReducer";
+import { EMAIL_REGEX } from "../../utils/validations";
+import "./styles.less";
 
 const ResendPasswordModal = ({ visible, handleOk, handleCancel }) => {
   const dispatch = useDispatch();

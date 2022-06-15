@@ -1,6 +1,4 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import _ from "lodash";
 import { call, put, takeLatest } from "redux-saga/effects";
 import { notification } from "antd";
 
@@ -19,6 +17,8 @@ export const resetUserAsync = createAction("user/resetUserAsync");
 export const resetPasswordAsync = createAction("user/resetPasswordAsync");
 export const updateAvatarAsync = createAction("user/updateAvatarAsync");
 export const syncLocalUserAsync = createAction("user/syncLocalUserAsync");
+export const createCNAMEAsync = createAction("user/createCNAMEAsync");
+export const updateCNAMEAsync = createAction("user/updateCNAMEAsync");
 
 export async function createUserAPI(data) {
   const payload = {
@@ -106,6 +106,27 @@ export async function getListSubscriptionAPI(data) {
   return handleCallAPI(payload);
 }
 
+// cname
+export async function createCNAMEAPI(data) {
+  const payload = {
+    method: "POST",
+    url: `${process.env.REACT_APP_API_BASE_URL}/cnames`,
+    data,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function updateCNAMEAPI(data, id) {
+  const payload = {
+    method: "Put",
+    url: `${process.env.REACT_APP_API_BASE_URL}/cnames/${id}`,
+    data,
+  };
+
+  return handleCallAPI(payload);
+}
+
 // saga
 export function* createUserSaga(action) {
   const { response, errors } = yield call(createUserAPI, action.payload);
@@ -118,7 +139,7 @@ export function* createUserSaga(action) {
     });
   } else {
     yield put(createUserFailed(errors));
-    console.log('###errors', errors);
+    console.log("###errors", errors);
     notification.error({
       title: "Action failed",
       message: errors || `Can't create new user.`,
@@ -249,6 +270,48 @@ export function* updateAvatarSaga(action) {
   }
 }
 
+// cname
+export function* createCNAMESaga(action) {
+  const { response, errors, headers } = yield call(
+    createCNAMEAPI,
+    action.payload
+  );
+  if (response) {
+    yield put(CNAMESuccess(response));
+    notification.success({
+      title: "Action Completed",
+      message: `Add CNAME successfully.`,
+    });
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || `Add CNAME failed.`,
+    });
+  }
+}
+
+export function* updateCNAMESaga(action) {
+  const { response, errors, headers } = yield call(
+    updateCNAMEAPI,
+    action.payload
+  );
+  if (response) {
+    yield put(CNAMESuccess(response));
+    notification.success({
+      title: "Action Completed",
+      message: `Update CNAME successfully.`,
+    });
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || `Update CNAME failed.`,
+    });
+  }
+}
+
+// Saga
 export function* syncLocalUserSaga(action) {
   if (action.payload) {
     yield put(updatedUser(action.payload));
@@ -299,6 +362,14 @@ export function* watchsyncLocalUserSaga() {
   yield takeLatest(syncLocalUserAsync, updateAvatarSaga);
 }
 
+export function* watchCreateCNAMESaga() {
+  yield takeLatest(createCNAMEAsync, createCNAMESaga);
+}
+
+export function* watchUpdateCNAMESaga() {
+  yield takeLatest(updateCNAMEAsync, updateAvatarSaga);
+}
+
 const initialState = {
   isLoading: false,
   user: null,
@@ -308,6 +379,7 @@ const initialState = {
   resendVerifyEmailSuccess: false,
   signupSuccess: false,
   signupfailed: false,
+  cnameSuccess: false,
 };
 
 export const userSlice = createSlice({
@@ -348,6 +420,20 @@ export const userSlice = createSlice({
     resetResendVerifyEmail: (state, action) => {
       state.resendVerifyEmailSuccess = false;
     },
+    updatedCNAME: (state, action) => {},
+    CNAMESuccess: (state, action) => {
+      state.cnameSuccess = true;
+      state.user.cname = {
+        ...(state.user.cname || {}),
+        createdAt: action.payload.createdAt,
+        title: action.payload.title,
+        updatedAt: action.payload.updatedAt,
+        value: action.payload.value,
+      }
+    },
+    resetCNAME: (state, action) => {
+      state.cnameSuccess = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -363,7 +449,7 @@ export const userSlice = createSlice({
   },
 });
 
-const { resendVerifyEmailSuccess } = userSlice.actions;
+const { CNAMESuccess, resendVerifyEmailSuccess } = userSlice.actions;
 export const {
   createUser,
   createUserFailed,
@@ -372,6 +458,8 @@ export const {
   updatedUser,
   resetResendVerifyEmail,
   reset,
+  updatedCNAME,
+  resetCNAME,
 } = userSlice.actions;
 
 export const selectUsers = (state) => {
