@@ -18,7 +18,12 @@ import { useNavigate } from "react-router";
 
 import { useModal } from "../../../hook/useModal";
 import LayoutComponent from "../../../components/Layout";
-import { AvatarComponent, RichText, VCardComponent } from "../../../components";
+import {
+  AvatarComponent,
+  RichText,
+  VCardComponent,
+  CNameModal,
+} from "../../../components";
 import { OPTION_FIELDS } from "../../../utils/constants";
 import {
   getFormsAsync,
@@ -56,6 +61,11 @@ const AddNewForm = () => {
     close: closeVcard,
     show: showVcard,
     visible: visibleVcard,
+  } = useModal();
+  const {
+    close: closeCName,
+    show: showCName,
+    visible: visibleCName,
   } = useModal();
 
   const onSubmitAddNewForm = (values) => {
@@ -143,11 +153,25 @@ const AddNewForm = () => {
     dispatch(getVCardAsync());
   }, []);
 
+  useEffect(() => {
+    if (user && !user.cname) {
+      showCName();
+    }
+    if (user && user.cname) {
+      closeCName();
+    }
+  }, [user]);
+
   return (
     <LayoutComponent className="settings-page add-new-form-page">
       <h1>
         Settings <span>SETTINGS</span>
       </h1>
+      <CNameModal
+        // handleCancel={closeCName}
+        handleOk={closeCName}
+        visible={visibleCName}
+      />
       <Form
         {...layout}
         form={form}
@@ -279,18 +303,20 @@ const AddNewForm = () => {
             >
               <Input.TextArea placeholder="Send new messenge ..." />
             </Form.Item>
-            {!vcardData?.id && <p className="italic">
-              You currently don't have any vCard information to send. If you
-              would like to update your vCard please click{" "}
-              <button
-                type="button"
-                className="text-primary font-bold uppercase px-1"
-                onClick={() => showVcard()}
-              >
-                here
-              </button>{" "}
-              to do so.
-            </p>}
+            {!vcardData?.id && (
+              <p className="italic">
+                You currently don't have any vCard information to send. If you
+                would like to update your vCard please click{" "}
+                <button
+                  type="button"
+                  className="text-primary font-bold uppercase px-1"
+                  onClick={() => showVcard()}
+                >
+                  here
+                </button>{" "}
+                to do so.
+              </p>
+            )}
             <Row>
               <Col span={6}>
                 <Form.Item name="isEnabled" label="" valuePropName="checked">

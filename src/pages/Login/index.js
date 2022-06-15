@@ -12,7 +12,7 @@ import {
   loginWithGoogleAsync,
   selectUsers,
 } from "../../redux/userReducer";
-import { EMAIL_REGEX } from "../../utils/constants";
+import { EMAIL_REGEX } from "../../utils/validations";
 import { ResendPasswordModal } from "../../components";
 import { useModal } from "../../hook/useModal";
 import "./styles.less";

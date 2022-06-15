@@ -15,6 +15,8 @@ import {
   watchResetPasswordSaga,
   watchUpdateAvatarSaga,
   watchsyncLocalUserSaga,
+  watchCreateCNAMESaga,
+  watchUpdateCNAMESaga,
 } from "./userReducer";
 import { watchAddPaymentMethodSaga } from "./paymentReducer";
 import { watchGetVCardSaga, watchUpdateVCardSaga } from "./vcardReducer";
@@ -56,6 +58,8 @@ export default function* rootSaga() {
 
     watchGetVCardSaga(),
     watchUpdateVCardSaga(),
+    watchCreateCNAMESaga(),
+    watchUpdateCNAMESaga(),
 
     // settings
     watchgetTagsSaga(),

@@ -1,7 +1,6 @@
 import _ from "lodash";
-import axios from "axios";
 
-import { PHONE_REGEX } from "./constants";
+import { PHONE_REGEX } from "./validations";
 import { storage } from "../hook/userLocalStorage";
 import { STORAGE_AUTH_KEY } from "../utils/constants";
 

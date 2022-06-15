@@ -6,19 +6,19 @@ import { useLocation, NavLink } from "react-router-dom";
 import classnames from "classnames";
 import { UserOutlined } from "@ant-design/icons";
 
-import { STORAGE_AUTH_KEY } from "../utils/constants";
-import useLocalStorage from "../hook/userLocalStorage";
-import { selectUsers, resetUserAsync } from "../redux/userReducer";
-import LogoSVG from "../assets/svg/logo.svg";
+import { STORAGE_AUTH_KEY } from "../../utils/constants";
+import useLocalStorage from "../../hook/userLocalStorage";
+import { selectUsers, resetUserAsync } from "../../redux/userReducer";
+import LogoSVG from "../../assets/svg/logo.svg";
 import {
   NotificationSVG,
   HistorySVG,
   SettingSVG,
   DashboardIcon,
   ArrowDownIcon,
-} from "../assets/svg";
-import { useOutsideAlerter } from "../hook/useOutSide";
-import "./Layout.less";
+} from "../../assets/svg";
+import { useOutsideAlerter } from "../../hook/useOutSide";
+import "./styles.less";
 
 const { Header, Footer, Sider, Content } = Layout;
 

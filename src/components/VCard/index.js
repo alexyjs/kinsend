@@ -9,7 +9,7 @@ import {
   updateVCardAsync,
 } from "../../redux/vcardReducer";
 import { AvatarComponent } from "..";
-import { EMAIL_REGEX } from "../../utils/constants";
+import { EMAIL_REGEX } from "../../utils/validations";
 import "./styles.less";
 
 const layout = {

@@ -3,10 +3,10 @@ import _ from "lodash";
 import ReactQuill from "react-quill";
 import QuillDelta from "quill-delta";
 
-import { handleUploadImageCallAPI } from "../redux/helpers";
+import { handleUploadImageCallAPI } from "../../redux/helpers";
 
 import "react-quill/dist/quill.snow.css";
-import "./RichText.less";
+import "./styles.less";
 
 const RichText = ({ value, onChange, className, disabled }) => {
   const [submitting, setSubmitting] = useState(false);

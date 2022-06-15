@@ -22,7 +22,8 @@ import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import { SuccessIcon } from "../../assets/svg";
 import { createUserAsync, selectCreateUser } from "../../redux/userReducer";
 import { phoneValidator } from "../../utils";
-import { EMAIL_REGEX, INFO_FROM, PASSWORD_REGEX } from "../../utils/constants";
+import { INFO_FROM } from "../../utils/constants";
+import { EMAIL_REGEX, PASSWORD_REGEX } from "../../utils/validations";
 import { InputPhone, InputSocial, PlanModal } from "../../components";
 import { useModal } from "../../hook/useModal";
 import {
@@ -83,11 +84,13 @@ const SignUp = () => {
   };
 
   const validateFirstScreen = () => {
-    form.validateFields().then(() => {
-      swiperRef.current.swiper.slideNext();
-    }).catch(() => {
-    });
-  }
+    form
+      .validateFields()
+      .then(() => {
+        swiperRef.current.swiper.slideNext();
+      })
+      .catch(() => {});
+  };
 
   useEffect(() => {
     if (signupSuccess) {
