@@ -36,6 +36,10 @@ import {
   watchAddFormSubmissionSaga,
 } from "./publicReducer";
 
+import {
+  watchGetAutomationListSaga,
+} from "./automationReducer";
+
 export default function* rootSaga() {
   yield all([
     watchGetListPhoneSaga(),
@@ -73,5 +77,8 @@ export default function* rootSaga() {
     // public
     watchGetFormSettingDetailSaga(),
     watchAddFormSubmissionSaga(),
+
+    // automation
+    watchGetAutomationListSaga(),
   ]);
 }
