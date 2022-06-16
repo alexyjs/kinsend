@@ -14,6 +14,7 @@ import AddNewForm from "./pages/Settings/Form/AddNewForm";
 import TagsManage from "./pages/Settings/TagsManage";
 import PublicFormSumission from "./pages/Public/FormSubmission";
 import PublicThankYouSubmission from "./pages/Public/ThankYouSubmission";
+import Automation from "./pages/Automation";
 import "./styles/antd.less";
 import "./styles/tailwind.css";
 import "./App.less";
@@ -71,7 +72,9 @@ function App() {
           {isAuth && (
             <Route path="/settings/forms/new" element={<AddNewForm />} />
           )}
-          {/* {isAuth && <Route path="/settings/custom-fields" element={<FormManage />} />} */}
+          {isAuth && (
+            <Route path="/automation/:tabname" element={<Automation />} />
+          )}
           {isAuth ? (
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           ) : (

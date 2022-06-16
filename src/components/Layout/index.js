@@ -146,6 +146,12 @@ const LayoutComponent = ({ className, children }) => {
                 >
                   Profile
                 </NavLink>
+                <NavLink
+                  to="/automation/myautomation"
+                  className="ant-btn ant-btn-text"
+                >
+                  My Automation
+                </NavLink>
                 <Button type="text" onClick={handleLogout}>
                   Log out
                 </Button>
