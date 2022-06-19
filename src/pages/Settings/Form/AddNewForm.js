@@ -154,7 +154,7 @@ const AddNewForm = () => {
   }, []);
 
   useEffect(() => {
-    if (user && !user.cname) {
+    if (!user?.cname) {
       showCName();
     }
     if (user && user.cname) {

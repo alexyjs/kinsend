@@ -1,6 +1,7 @@
 import { Button, Col, Form, Input, Modal, Row } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 import {
   createCNAMEAsync,
   updateCNAMEAPI,
@@ -54,20 +55,8 @@ const CNameModal = ({ visible, handleOk, handleCancel }) => {
       <h3 className="font-bold text-center text-2xl mb-9">CNAME Management</h3>
       <Form layout="vertical" onFinish={handleFinish} initialValues={{}} form={form}>
         <Form.Item
-          name="title"
-          label="title"
-          rules={[
-            {
-              required: true,
-              message: "This field is required",
-            },
-          ]}
-        >
-          <Input size="large" placeholder="Enter title" />
-        </Form.Item>
-        <Form.Item
           name="value"
-          label="cname"
+          label="Your Subdomain"
           rules={[
             {
               required: true,
@@ -83,9 +72,24 @@ const CNameModal = ({ visible, handleOk, handleCancel }) => {
             },
           ]}
         >
-          <Input size="large" placeholder="Enter your cname" />
+          <div className="input-subfix">
+            <Input size="large" placeholder="Enter your subdomain" />
+            <button type="text">.kinsend.io</button>
+          </div>
         </Form.Item>
-        <Row justify="end" className="mt-12">
+        <Row justify="space-around" className="mt-12">
+          <Col>
+            <Form.Item noStyle>
+              <NavLink
+                className="ant-btn ant-btn-primary ant-btn-lg ant-btn-block md:min-w-200 text-white	"
+                type="text"
+                size="large"
+                to="/settings/forms"
+                >
+                Cancel
+              </NavLink>
+            </Form.Item>
+          </Col>
           <Col>
             <Form.Item noStyle shouldUpdate>
               <Button

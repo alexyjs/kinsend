@@ -24,14 +24,14 @@ const Automation = () => {
         </Button>
       </div>
       <Tabs
-        defaultActiveKey="myautomation"
+        defaultActiveKey="active"
         onChange={handleChangeTab}
         className="mt-10"
       >
         <Tabs.TabPane tab="Explore" key="explore" disabled>
           Explore
         </Tabs.TabPane>
-        <Tabs.TabPane tab="My Automation" key="myautomation">
+        <Tabs.TabPane tab="My Automation" key="active">
           <Dashboard />
         </Tabs.TabPane>
       </Tabs>

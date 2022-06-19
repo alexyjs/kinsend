@@ -73,7 +73,9 @@ function App() {
             <Route path="/settings/forms/new" element={<AddNewForm />} />
           )}
           {isAuth && (
-            <Route path="/automation/:tabname" element={<Automation />} />
+            // path="/automation/:tabname"
+            // explore | new | âctive
+            <Route path="/automation/:active" element={<Automation />} />
           )}
           {isAuth ? (
             <Route path="*" element={<Navigate to="/dashboard" replace />} />

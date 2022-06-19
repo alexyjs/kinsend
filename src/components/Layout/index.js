@@ -147,7 +147,7 @@ const LayoutComponent = ({ className, children }) => {
                   Profile
                 </NavLink>
                 <NavLink
-                  to="/automation/myautomation"
+                  to="/automation/active"
                   className="ant-btn ant-btn-text"
                 >
                   My Automation
