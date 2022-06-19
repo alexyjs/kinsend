@@ -14,11 +14,13 @@ const Dashboard = () => {
               <LogoSmallIcon />
             </div>
             <div>
-              Lorem Ipsum Lorem
-              Lorem Ipsum Lorem<br/>
+              Lorem Ipsum Lorem Lorem Ipsum Lorem
+              <br />
               Lorem Ipsum Lorem
             </div>
-            <button className="absolute right-3 bottom-2 text-primary text-base underline">Customize</button>
+            <button className="absolute right-3 bottom-2 text-primary text-base underline">
+              Customize
+            </button>
           </Card>
         </Col>
         <Col span={8}>
@@ -28,11 +30,13 @@ const Dashboard = () => {
               <LogoSmallIcon />
             </div>
             <div>
-              Lorem Ipsum Lorem
-              Lorem Ipsum Lorem<br/>
+              Lorem Ipsum Lorem Lorem Ipsum Lorem
+              <br />
               Lorem Ipsum Lorem
             </div>
-            <button className="absolute right-3 bottom-2 text-primary text-base underline">Customize</button>
+            <button className="absolute right-3 bottom-2 text-primary text-base underline">
+              Customize
+            </button>
           </Card>
         </Col>
         <Col span={8}>
@@ -42,11 +46,13 @@ const Dashboard = () => {
               <LogoSmallIcon />
             </div>
             <div>
-              Lorem Ipsum Lorem
-              Lorem Ipsum Lorem<br/>
+              Lorem Ipsum Lorem Lorem Ipsum Lorem
+              <br />
               Lorem Ipsum Lorem
             </div>
-            <button className="absolute right-3 bottom-2 text-primary text-base underline">Customize</button>
+            <button className="absolute right-3 bottom-2 text-primary text-base underline">
+              Customize
+            </button>
           </Card>
         </Col>
       </Row>

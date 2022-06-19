@@ -32,6 +32,7 @@ import {
 import { CloseModalIcon } from "../../../assets/svg";
 
 import "antd/dist/antd.css";
+import "./EditCustomField.less";
 
 const initialValues = {
   tag: "",

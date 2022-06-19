@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Tabs, Button } from "antd";
 
 import LayoutComponent from "../../components/Layout";
-import Dashboard from "./Dashboard"
+import Dashboard from "./Dashboard";
 
 const Automation = () => {
   let { tabname } = useParams();
@@ -12,14 +12,8 @@ const Automation = () => {
   return (
     <LayoutComponent className="settings-page">
       <div className="flex justify-between items-center">
-        <h1>
-          Automation
-        </h1>
-        <Button
-          type="primary"
-          size="large"
-          className="w-48	"
-        >
+        <h1>Automation</h1>
+        <Button type="primary" size="large" className="w-48	">
           New
         </Button>
       </div>

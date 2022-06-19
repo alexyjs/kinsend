@@ -168,7 +168,7 @@ const AddNewForm = () => {
         Settings <span>SETTINGS</span>
       </h1>
       <CNameModal
-        // handleCancel={closeCName}
+        handleCancel={() => navigate("/settings/forms", { replace: true })}
         handleOk={closeCName}
         visible={visibleCName}
       />
@@ -199,7 +199,7 @@ const AddNewForm = () => {
             >
               <div className="input-subfix">
                 <Input placeholder="" />
-                <button type="text">.kinsend.io</button>
+                <span type="text">.kinsend.io</span>
               </div>
             </Form.Item>
             <Form.Item

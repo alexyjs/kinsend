@@ -74,7 +74,7 @@ function App() {
           )}
           {isAuth && (
             // path="/automation/:tabname"
-            // explore | new | âctive
+            // explore | new | active
             <Route path="/automation/:active" element={<Automation />} />
           )}
           {isAuth ? (

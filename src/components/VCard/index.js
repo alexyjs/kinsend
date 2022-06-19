@@ -28,7 +28,6 @@ const VCard = ({ onFileChange, imgSrc }) => {
 
   useEffect(() => {
     if (vcardData) {
-      // form.setFieldsValue({ ...vcardData?.);
       form.setFieldsValue({
         firstName: vcardData?.firstName,
         lastName: vcardData?.lastName,

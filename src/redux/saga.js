@@ -36,9 +36,7 @@ import {
   watchAddFormSubmissionSaga,
 } from "./publicReducer";
 
-import {
-  watchGetAutomationListSaga,
-} from "./automationReducer";
+import { watchGetAutomationListSaga } from "./automationReducer";
 
 export default function* rootSaga() {
   yield all([

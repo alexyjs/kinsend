@@ -43,11 +43,10 @@ export const automationSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(getAutomationList, (state) => {
-        state.isLoading = true;
-        state.errors = [];
-      });
+    builder.addCase(getAutomationList, (state) => {
+      state.isLoading = true;
+      state.errors = [];
+    });
   },
 });
 
