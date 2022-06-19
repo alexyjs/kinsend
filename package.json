@@ -11,7 +11,7 @@
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
     "accounting": "^0.4.1",
-    "antd": "^4.19.5",
+    "antd": "^4.21.3",
     "antd-country-phone-input": "^4.3.1",
     "axios": "^0.26.1",
     "classnames": "^2.3.1",

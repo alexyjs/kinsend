@@ -1,4 +1,5 @@
 ## Quick start
+
 ```bash
   npm install
   npm run start
@@ -6,12 +7,16 @@
 ```
 
 ## subdomain on local
+
 If you are using Macbook Device
+
 ```bash
   sudo nano /etc/hosts
 ```
+
 Add Host
 [cnametext] depend your CNAME. This is an example only.
+
 ```bash
   127.0.0.1 kinsend.co cnametext.kinsend.co
 ```

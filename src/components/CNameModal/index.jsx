@@ -1,10 +1,10 @@
 import { Button, Col, Form, Input, Modal, Row } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, history } from "react-router-dom";
 import {
   createCNAMEAsync,
-  updateCNAMEAPI,
+  updateCNAMEAsync,
   resetCNAME,
   selectUsers,
 } from "../../redux/userReducer";
@@ -15,9 +15,16 @@ const CNameModal = ({ visible, handleOk, handleCancel }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { user, cnameSuccess } = useSelector(selectUsers);
+  const cnameTitle = Form.useWatch("title", form);
+
   const handleFinish = (values) => {
     if (user?.cname) {
-      dispatch(updateCNAMEAPI(values, user.cname.id));
+      dispatch(
+        updateCNAMEAsync({
+          dataUpdate: values,
+          id: user.cname.id,
+        })
+      );
     } else {
       dispatch(createCNAMEAsync(values));
     }
@@ -31,15 +38,13 @@ const CNameModal = ({ visible, handleOk, handleCancel }) => {
     return () => dispatch(resetCNAME());
   }, [cnameSuccess, handleOk, dispatch]);
 
-
   useEffect(() => {
-    if (user?.cname) {
+    if (visible && form && user?.cname) {
       form.setFieldsValue({
-        value: user.cname.value,
-        title: user.cname.title,
+        title: user?.cname?.title,
       });
     }
-  }, [user]);
+  }, [user, form, visible]);
 
   return (
     <Modal
@@ -50,44 +55,55 @@ const CNameModal = ({ visible, handleOk, handleCancel }) => {
       closable={false}
       destroyOnClose={true}
       centered
-      // className="reset-modal"
     >
       <h3 className="font-bold text-center text-2xl mb-9">CNAME Management</h3>
-      <Form layout="vertical" onFinish={handleFinish} initialValues={{}} form={form}>
-        <Form.Item
-          name="value"
-          label="Your Subdomain"
-          rules={[
-            {
-              required: true,
-              message: "This field is required",
-            },
-            {
-              validator(_, value) {
-                if (CNAME_REGEX.test(value) || !value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(new Error("The cname is invalid"));
+      <Form
+        layout="vertical"
+        onFinish={handleFinish}
+        name="control-hooks"
+        // initialValues={{...{
+        //   title: user?.cname?.title || '',
+        // }}}
+        form={form}
+      >
+        <div>
+          <Form.Item
+            name="title"
+            label="Your Subdomain"
+            rules={[
+              {
+                required: true,
+                message: "This field is required",
               },
-            },
-          ]}
-        >
-          <div className="input-subfix">
+              {
+                validator(_, value) {
+                  if (CNAME_REGEX.test(value) || !value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error("The cname is invalid"));
+                },
+              },
+            ]}
+            shouldUpdate
+          >
             <Input size="large" placeholder="Enter your subdomain" />
-            <button type="text">.kinsend.io</button>
-          </div>
-        </Form.Item>
+          </Form.Item>
+          <span type="text">
+            Example link: https://{cnameTitle}.{window.location.host}
+          </span>
+        </div>
         <Row justify="space-around" className="mt-12">
           <Col>
             <Form.Item noStyle>
-              <NavLink
-                className="ant-btn ant-btn-primary ant-btn-lg ant-btn-block md:min-w-200 text-white	"
-                type="text"
+              <Button
+                className="md:min-w-200"
+                type="primary"
                 size="large"
-                to="/settings/forms"
-                >
+                onClick={handleCancel}
+                block
+              >
                 Cancel
-              </NavLink>
+              </Button>
             </Form.Item>
           </Col>
           <Col>

@@ -294,7 +294,8 @@ export function* createCNAMESaga(action) {
 export function* updateCNAMESaga(action) {
   const { response, errors, headers } = yield call(
     updateCNAMEAPI,
-    action.payload
+    action.payload.dataUpdate,
+    action.payload.id
   );
   if (response) {
     yield put(CNAMESuccess(response));
@@ -367,7 +368,7 @@ export function* watchCreateCNAMESaga() {
 }
 
 export function* watchUpdateCNAMESaga() {
-  yield takeLatest(updateCNAMEAsync, updateAvatarSaga);
+  yield takeLatest(updateCNAMEAsync, updateCNAMESaga);
 }
 
 const initialState = {
@@ -429,7 +430,7 @@ export const userSlice = createSlice({
         title: action.payload.title,
         updatedAt: action.payload.updatedAt,
         value: action.payload.value,
-      }
+      };
     },
     resetCNAME: (state, action) => {
       state.cnameSuccess = false;
