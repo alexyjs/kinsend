@@ -1,7 +1,7 @@
 import { ConfigProvider } from "antd-country-phone-input";
 import "antd-country-phone-input/dist/index.css";
 import "flagpack/dist/flagpack.css";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
@@ -14,6 +14,7 @@ import AddNewForm from "./pages/Settings/Form/AddNewForm";
 import TagsManage from "./pages/Settings/TagsManage";
 import PublicFormSumission from "./pages/Public/FormSubmission";
 import PublicThankYouSubmission from "./pages/Public/ThankYouSubmission";
+import Automation from "./pages/Automation";
 import "./styles/antd.less";
 import "./styles/tailwind.css";
 import "./App.less";
@@ -28,12 +29,20 @@ function App() {
   const [savedAuth, setAuth] = useLocalStorage(STORAGE_AUTH_KEY);
   const { user } = useSelector(selectUsers);
   const dispatch = useDispatch();
+  let navigate = useNavigate();
 
   useEffect(() => {
     if (savedAuth) {
       dispatch(getUserAsync());
     }
   }, [savedAuth]);
+
+  // useEffect(() => {
+  //   if (user && !user?.isEnabledBuyPlan) {
+  //     navigate("/payment-setup");
+  //   }
+  // }, [user]);
+
   const isAuth = authStorage.get();
 
   return (
@@ -63,7 +72,11 @@ function App() {
           {isAuth && (
             <Route path="/settings/forms/new" element={<AddNewForm />} />
           )}
-          {/* {isAuth && <Route path="/settings/custom-fields" element={<FormManage />} />} */}
+          {isAuth && (
+            // path="/automation/:tabname"
+            // explore | new | active
+            <Route path="/automation/:active" element={<Automation />} />
+          )}
           {isAuth ? (
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           ) : (

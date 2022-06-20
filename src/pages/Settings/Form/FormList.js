@@ -12,42 +12,44 @@ import {
   getCustomFieldsAsync,
   getTagsAsync,
 } from "../../../redux/settingsReducer";
+import { selectUsers } from "../../../redux/userReducer";
 import { CopyComponent } from "../../../components";
-
-const columns = [
-  {
-    title: "NAME",
-    dataIndex: "title",
-    key: "title",
-    render: (text) => <span className="font-bold">{text}</span>,
-  },
-  {
-    title: "CREATED",
-    dataIndex: "createdAt",
-    key: "createdAt",
-    render: (text) => <span>{text}</span>,
-  },
-  {
-    title: "CONTACTS",
-    dataIndex: "url",
-    key: "url",
-  },
-  {
-    title: "Actions",
-    render: (item) => (
-      <CopyComponent
-        value={`${window.origin}/f/${item.id}`}
-        title="copy link submission"
-      />
-    ),
-  },
-];
 
 const TagsList = () => {
   const { close, show, visible } = useModal();
   const { forms, tags, customFields } = useSelector(selectSettings);
+  const { user } = useSelector(selectUsers);
   const dispatch = useDispatch();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const columns = [
+    {
+      title: "NAME",
+      dataIndex: "title",
+      key: "title",
+      render: (text) => <span className="font-bold">{text}</span>,
+    },
+    {
+      title: "CREATED",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (text) => <span>{text}</span>,
+    },
+    {
+      title: "CONTACTS",
+      dataIndex: "url",
+      key: "url",
+    },
+    {
+      title: "Actions",
+      render: (item) => (
+        <CopyComponent
+          value={`${user?.cname?.title}.${user?.cname?.domain}/f/${item.id}`}
+          title="copy link submission"
+        />
+      ),
+    },
+  ];
 
   const handleSelectKey = (raw, raw1) => {
     setSelectedRowKeys(raw);

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
-import { CameraIcon } from "../assets/svg";
-import "./AvatarComponent.less";
+import { CameraIcon } from "../../assets/svg";
+import "./styles.less";
 
 const AvatarComponent = ({ onFileChange, imgSrc }) => {
   const inputFileRef = React.useRef();

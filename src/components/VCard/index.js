@@ -8,9 +8,9 @@ import {
   selectVCard,
   updateVCardAsync,
 } from "../../redux/vcardReducer";
-import { AvatarComponent } from "./../../components";
-import { EMAIL_REGEX } from "../../utils/constants";
-import "./VCard.less";
+import { AvatarComponent } from "..";
+import { EMAIL_REGEX } from "../../utils/validations";
+import "./styles.less";
 
 const layout = {
   labelCol: { span: 8 },
@@ -28,7 +28,6 @@ const VCard = ({ onFileChange, imgSrc }) => {
 
   useEffect(() => {
     if (vcardData) {
-      // form.setFieldsValue({ ...vcardData?.);
       form.setFieldsValue({
         firstName: vcardData?.firstName,
         lastName: vcardData?.lastName,

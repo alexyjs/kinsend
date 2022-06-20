@@ -22,7 +22,8 @@ import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import { SuccessIcon } from "../../assets/svg";
 import { createUserAsync, selectCreateUser } from "../../redux/userReducer";
 import { phoneValidator } from "../../utils";
-import { EMAIL_REGEX, INFO_FROM, PASSWORD_REGEX } from "../../utils/constants";
+import { INFO_FROM } from "../../utils/constants";
+import { EMAIL_REGEX, PASSWORD_REGEX } from "../../utils/validations";
 import { InputPhone, InputSocial, PlanModal } from "../../components";
 import { useModal } from "../../hook/useModal";
 import {
@@ -52,6 +53,7 @@ function SlideBackButton() {
 }
 
 const SignUp = () => {
+  const [form] = Form.useForm();
   const [isEnd, setIsEnd] = useState(false);
   const { isLoading, signupSuccess } = useSelector(selectCreateUser);
   const swiperRef = React.useRef(null);
@@ -81,6 +83,15 @@ const SignUp = () => {
     }
   };
 
+  const validateFirstScreen = () => {
+    form
+      .validateFields()
+      .then(() => {
+        swiperRef.current.swiper.slideNext();
+      })
+      .catch(() => {});
+  };
+
   useEffect(() => {
     if (signupSuccess) {
       swiperRef.current.swiper.slideNext();
@@ -89,6 +100,9 @@ const SignUp = () => {
 
   useEffect(() => {
     dispatch(getListSubscriptionPricesAsync());
+    if (swiperRef?.current?.swiper) {
+      swiperRef.current.swiper.slideTo(0, 0);
+    }
   }, []);
 
   return (
@@ -109,6 +123,7 @@ const SignUp = () => {
           </p>
         </Typography>
         <Form
+          form={form}
           layout="vertical"
           onFinish={handleFinish}
           initialValues={{
@@ -276,7 +291,7 @@ const SignUp = () => {
                         type="primary"
                         size="large"
                         // htmlType="submit"
-                        onClick={() => swiperRef.current.swiper.slideNext()}
+                        onClick={() => validateFirstScreen()}
                       >
                         Next
                       </Button>

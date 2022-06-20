@@ -15,6 +15,8 @@ import {
   watchResetPasswordSaga,
   watchUpdateAvatarSaga,
   watchsyncLocalUserSaga,
+  watchCreateCNAMESaga,
+  watchUpdateCNAMESaga,
 } from "./userReducer";
 import { watchAddPaymentMethodSaga } from "./paymentReducer";
 import { watchGetVCardSaga, watchUpdateVCardSaga } from "./vcardReducer";
@@ -33,6 +35,8 @@ import {
   watchGetFormSettingDetailSaga,
   watchAddFormSubmissionSaga,
 } from "./publicReducer";
+
+import { watchGetAutomationListSaga } from "./automationReducer";
 
 export default function* rootSaga() {
   yield all([
@@ -56,6 +60,8 @@ export default function* rootSaga() {
 
     watchGetVCardSaga(),
     watchUpdateVCardSaga(),
+    watchCreateCNAMESaga(),
+    watchUpdateCNAMESaga(),
 
     // settings
     watchgetTagsSaga(),
@@ -69,5 +75,8 @@ export default function* rootSaga() {
     // public
     watchGetFormSettingDetailSaga(),
     watchAddFormSubmissionSaga(),
+
+    // automation
+    watchGetAutomationListSaga(),
   ]);
 }

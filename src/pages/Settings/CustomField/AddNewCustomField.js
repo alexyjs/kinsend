@@ -62,8 +62,6 @@ const AddNewCustomField = ({ visible, handleOk, handleCancel }) => {
 
   const onReset = () => {
     form.resetFields();
-    // form.resetFields(["label", "placeholder", "isRequired", "options", "tag", "tags"]);
-    // form.setFieldsValue({...initialValues});
   };
 
   const handleSelectType = (item) => {
