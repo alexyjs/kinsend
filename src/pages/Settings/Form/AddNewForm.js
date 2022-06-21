@@ -158,6 +158,9 @@ const AddNewForm = () => {
       showCName();
     }
     if (user && user.cname) {
+      form.setFieldsValue({
+        url: user?.cname?.title || '',
+      })
       closeCName();
     }
   }, [user]);
@@ -187,21 +190,23 @@ const AddNewForm = () => {
             />
           </Col>
           <Col sm={18}>
-            <Form.Item
-              name="url"
-              label={
-                <div>
-                  KINSEND URL{" "}
-                  <span>A public url to your address book form.</span>
-                </div>
-              }
-              rules={[{ required: true }]}
-            >
-              <div className="input-subfix">
-                <Input placeholder="" />
-                <span type="text">.kinsend.io</span>
-              </div>
-            </Form.Item>
+            <div className="input-subfix flex items-end">
+              <Form.Item
+                name="url"
+                label={
+                  <div>
+                    KINSEND URL{" "}
+                    <span>A public url to your address book form.</span>
+                  </div>
+                }
+                rules={[{ required: true }]}
+                disabled
+                className="flex-1"
+              >
+                <Input className="prefix-input-domain" placeholder="" disabled />
+              </Form.Item>
+              <span className="flex items-center mb-6 suffix-domain text-primary" type="text">.kinsend.io</span>
+            </div>
             <Form.Item
               name="tagId"
               rules={[{ required: true }]}
