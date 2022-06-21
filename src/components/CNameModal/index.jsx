@@ -89,7 +89,7 @@ const CNameModal = ({ visible, handleOk, handleCancel }) => {
            <Input className="prefix-input-domain" size="large" placeholder="Enter your subdomain" />
           </Form.Item>
           <span className="flex items-center mb-6 suffix-domain text-primary" type="text">
-            .{window.location.host}
+            .kinsend.io
           </span>
         </div>
         <Row justify="space-around" className="mt-12">
