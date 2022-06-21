@@ -66,7 +66,7 @@ const CNameModal = ({ visible, handleOk, handleCancel }) => {
         // }}}
         form={form}
       >
-        <div>
+        <div className="input-subfix flex items-end">
           <Form.Item
             name="title"
             label="Your Subdomain"
@@ -84,12 +84,12 @@ const CNameModal = ({ visible, handleOk, handleCancel }) => {
                 },
               },
             ]}
-            shouldUpdate
+            className="flex-1"
           >
-            <Input size="large" placeholder="Enter your subdomain" />
+           <Input className="prefix-input-domain" size="large" placeholder="Enter your subdomain" />
           </Form.Item>
-          <span type="text">
-            Example link: https://{cnameTitle}.{window.location.host}
+          <span className="flex items-center mb-6 suffix-domain text-primary" type="text">
+            .kinsend.io
           </span>
         </div>
         <Row justify="space-around" className="mt-12">
