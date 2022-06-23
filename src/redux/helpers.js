@@ -29,6 +29,13 @@ export const handleCallAPI = async (payload, headers) => {
       headers: _.get(result, "headers"),
     };
   } catch (e) {
+    const statusCode = _.get(e, "response.data.statusCode");
+    if (statusCode === 401) {
+      setTimeout(() => {
+        authStorage.set('');
+        window.location.reload();
+      }, 5000);
+    }
     return {
       errors: _.get(e, "response.data.message"),
     };
