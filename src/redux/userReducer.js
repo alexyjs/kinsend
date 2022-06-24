@@ -208,6 +208,10 @@ export function* getUserSaga(action) {
     yield put(updatedUser(response));
   } else {
     yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || `Get Update profile failed.`,
+    });
   }
 }
 
@@ -426,10 +430,7 @@ export const userSlice = createSlice({
       state.cnameSuccess = true;
       state.user.cname = {
         ...(state.user.cname || {}),
-        createdAt: action.payload.createdAt,
-        title: action.payload.title,
-        updatedAt: action.payload.updatedAt,
-        value: action.payload.value,
+        ...action.payload,
       };
     },
     resetCNAME: (state, action) => {
