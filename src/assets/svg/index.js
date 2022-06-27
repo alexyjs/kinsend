@@ -28,3 +28,5 @@ export { ReactComponent as AutomationActionMaxMessageIcon } from "./AutomationAc
 export { ReactComponent as AttachmentIcon } from "./AttachmentIcon.svg";
 export { ReactComponent as UploadFileIcon } from "./UploadFileIcon.svg";
 export { ReactComponent as EmojiIcon } from "./EmojiIcon.svg";
+export { ReactComponent as AutomationAddIcon } from "./AutomationAddIcon.svg";
+export { ReactComponent as AutomationAddStopIcon } from "./AutomationAddStopIcon.svg";
