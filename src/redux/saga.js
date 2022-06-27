@@ -36,7 +36,10 @@ import {
   watchAddFormSubmissionSaga,
 } from "./publicReducer";
 
-import { watchGetAutomationListSaga } from "./automationReducer";
+import {
+  watchGetAutomationListSaga,
+  watchCreateAutomationSaga,
+} from "./automationReducer";
 
 export default function* rootSaga() {
   yield all([
@@ -78,5 +81,6 @@ export default function* rootSaga() {
 
     // automation
     watchGetAutomationListSaga(),
+    watchCreateAutomationSaga(),
   ]);
 }

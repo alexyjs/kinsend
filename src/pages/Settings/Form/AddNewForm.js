@@ -159,8 +159,8 @@ const AddNewForm = () => {
     }
     if (user && user.cname) {
       form.setFieldsValue({
-        url: user?.cname?.title || '',
-      })
+        url: user?.cname?.title || "",
+      });
       closeCName();
     }
   }, [user]);
@@ -203,9 +203,18 @@ const AddNewForm = () => {
                 disabled
                 className="flex-1"
               >
-                <Input className="prefix-input-domain" placeholder="" disabled />
+                <Input
+                  className="prefix-input-domain"
+                  placeholder=""
+                  disabled
+                />
               </Form.Item>
-              <span className="flex items-center mb-6 suffix-domain text-primary" type="text">.kinsend.io</span>
+              <span
+                className="flex items-center mb-6 suffix-domain text-primary"
+                type="text"
+              >
+                .kinsend.io
+              </span>
             </div>
             <Form.Item
               name="tagId"

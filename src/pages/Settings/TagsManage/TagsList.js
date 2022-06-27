@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, Tag, Space } from "antd";
+import { Button, Table } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useModal } from "../../../hook/useModal";

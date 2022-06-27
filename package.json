@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.4.3",
+    "@emoji-mart/data": "^1.0.2",
     "@reduxjs/toolkit": "^1.8.1",
     "@stripe/react-stripe-js": "^1.7.2",
     "@stripe/stripe-js": "^1.29.0",
@@ -16,6 +17,7 @@
     "axios": "^0.26.1",
     "classnames": "^2.3.1",
     "craco-less": "^2.0.0",
+    "emoji-mart": "^5.1.0",
     "flagpack": "^1.0.5",
     "lodash": "^4.17.21",
     "node-sass": "^7.0.1",

@@ -86,9 +86,16 @@ const CNameModal = ({ visible, handleOk, handleCancel }) => {
             ]}
             className="flex-1"
           >
-           <Input className="prefix-input-domain" size="large" placeholder="Enter your subdomain" />
+            <Input
+              className="prefix-input-domain"
+              size="large"
+              placeholder="Enter your subdomain"
+            />
           </Form.Item>
-          <span className="flex items-center mb-6 suffix-domain text-primary" type="text">
+          <span
+            className="flex items-center mb-6 suffix-domain text-primary"
+            type="text"
+          >
             .kinsend.io
           </span>
         </div>

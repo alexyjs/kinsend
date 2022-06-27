@@ -32,7 +32,7 @@ export const handleCallAPI = async (payload, headers) => {
     const statusCode = _.get(e, "response.data.statusCode");
     if (statusCode === 401) {
       setTimeout(() => {
-        authStorage.set('');
+        authStorage.set("");
         window.location.reload();
       }, 5000);
     }

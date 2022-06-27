@@ -15,6 +15,7 @@ import TagsManage from "./pages/Settings/TagsManage";
 import PublicFormSumission from "./pages/Public/FormSubmission";
 import PublicThankYouSubmission from "./pages/Public/ThankYouSubmission";
 import Automation from "./pages/Automation";
+import AddNewAutomation from "./pages/Automation/AddNewAutomation";
 import "./styles/antd.less";
 import "./styles/tailwind.css";
 import "./App.less";
@@ -45,6 +46,40 @@ function App() {
 
   const isAuth = authStorage.get();
 
+  if (isAuth) {
+    return (
+      <main>
+        <ConfigProvider
+          locale={en}
+          areaMapper={(area) => {
+            return {
+              ...area,
+              emoji: <span className={`fp ${area.short.toLowerCase()}`} />,
+            };
+          }}
+        >
+          <Routes>
+            <Route path="/f/:id" element={<PublicFormSumission />} />
+            <Route path="/settings/profile" element={<Profile />} />
+            <Route path="/payment-setup" element={<PaymentSetup />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+
+            <Route path="/settings/tags" element={<TagsManage />} />
+
+            <Route path="/settings/forms" element={<FormManage />} />
+            <Route path="/settings/forms/new" element={<AddNewForm />} />
+
+            {/* path="/automation/:tabname" */}
+            {/* explore | new | active */}
+            <Route path="/automation/new" element={<AddNewAutomation />} />
+            <Route path="/automation/:tabname" element={<Automation />} />
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </Routes>
+        </ConfigProvider>
+      </main>
+    );
+  }
+
   return (
     <main>
       <ConfigProvider
@@ -61,27 +96,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/thank-you" element={<PublicThankYouSubmission />} />
           <Route path="/f/:id" element={<PublicFormSumission />} />
-          {isAuth && <Route path="/settings/profile" element={<Profile />} />}
-          {isAuth && <Route path="/payment-setup" element={<PaymentSetup />} />}
-          {isAuth && <Route path="/dashboard" element={<Dashboard />} />}
-          {/* {isAuth && <Route path="/settings/forms" element={<Dashboard />} />} */}
-
-          {isAuth && <Route path="/settings/tags" element={<TagsManage />} />}
-
-          {isAuth && <Route path="/settings/forms" element={<FormManage />} />}
-          {isAuth && (
-            <Route path="/settings/forms/new" element={<AddNewForm />} />
-          )}
-          {isAuth && (
-            // path="/automation/:tabname"
-            // explore | new | active
-            <Route path="/automation/:active" element={<Automation />} />
-          )}
-          {isAuth ? (
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
-          ) : (
-            <Route path="*" element={<Navigate to="/login" replace />} />
-          )}
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </ConfigProvider>
     </main>
