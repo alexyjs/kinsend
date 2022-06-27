@@ -1,16 +1,11 @@
 import React, { useEffect } from "react";
-import { Row, Col, Form, Input, Button, Select, Option, Tabs } from "antd";
+import { Form, Tabs } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
 import LayoutComponent from "./../../../components/Layout";
 import CustomField from "../CustomField";
 import FormList from "./FormList";
 import { getTagsAsync, selectSettings } from "../../../redux/settingsReducer";
-
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
 
 function callback(key) {
   console.log(key);

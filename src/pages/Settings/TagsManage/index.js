@@ -1,13 +1,8 @@
-import React, { useEffect } from "react";
-import { Row, Col, Form, Input, Button, Select, Option, Tabs } from "antd";
+import React from "react";
+import { Tabs } from "antd";
 
 import LayoutComponent from "../../../components/Layout";
 import TagsList from "./TagsList";
-
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
 
 function callback(key) {
   console.log(key);

@@ -16,3 +16,6 @@ export { default as OptionFieldsComponent } from "./OptionFields";
 export { default as CopyComponent } from "./CopyText";
 export { default as VCardComponent } from "./VCard";
 export { default as CNameModal } from "./CNameModal";
+export { default as LayoutComponent } from "./Layout";
+export { default as UploadFileModal } from "./UploadFileModal";
+export { default as EmojiPicker } from "./EmojiPicker";
