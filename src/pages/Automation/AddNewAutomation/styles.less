@@ -46,16 +46,22 @@
 }
 
 .automation-action-item {
-  width: 305px;
-  height: 98px;
-  background: #ffffff;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
-  border-radius: 24px;
+  position: relative;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  .automation-action-item-content {
+    width: 305px;
+    height: 98px;
+    background: #ffffff;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
+    border-radius: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+  }
 
   & + & {
     margin-top: 72px;
@@ -69,21 +75,82 @@
     font-size: 18px;
     line-height: 40px;
   }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    right: 50%;
+    transform: translateX(-50%);
+
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #d15d36;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    right: 50%;
+    transform: translateX(-50%);
+
+    width: 1px;
+    height: 1px;
+    height: 72px;
+    border-left: 1px solid #d15d36;
+    border-style: dashed;
+    background: transparent;
+  }
+
+  &:last-child {
+    &::after {
+      display: none;
+    }
+
+    &::before {
+      display: none;
+    }
+  }
 }
 
 .automation-action-add {
+  &::after {
+    background-color: #000000;
+  }
+  &::after {
+    border-color: #000000;
+  }
 }
 
 .automation-action-stop {
-  background: #0f1018;
-  color: #ffffff;
+  .automation-action-item-content {
+    background: #0f1018;
+    color: #ffffff;
+  }
 }
 
 .automation-action-delay {
-  background: #0f1018;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
-  border-radius: 24px;
-  color: #ffffff;
+  .automation-action-item-content {
+    background: #0f1018;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
+    border-radius: 24px;
+    color: #ffffff;
+  }
+}
+
+.automation-action-task {
+  .automation-action-item-content {
+    background: #d15d36;
+    color: #ffffff;
+  }
+
+  h4 {
+    color: #ffffff;
+  }
 }
 
 .action-detail-wrap {

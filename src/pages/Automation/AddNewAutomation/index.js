@@ -7,7 +7,13 @@ import TriggerModal from "../components/TriggerModal";
 import StopTriggerModal from "../components/StopTriggerModal";
 import ActionModal from "../components/ActionModal";
 import { useModal } from "../../../hook/useModal";
-import { AutomationTriggerIcon } from "../../../assets/svg";
+import {
+  AutomationTriggerIcon,
+  AutomationAddIcon,
+  AutomationDelayIcon,
+  AutomationActionIcon,
+  AutomationAddStopIcon,
+} from "../../../assets/svg";
 
 import { getTagsAsync } from "../../../redux/settingsReducer";
 import { createAutomationAsync } from "../../../redux/automationReducer";
@@ -58,21 +64,24 @@ const AddNewAutomation = () => {
           className="automation-action-add automation-action-item"
           onClick={() => handleShowAction(index)}
         >
-          <h4>Add Task</h4>
+          <div className="automation-action-item-content">
+            <h4 className="inline-flex items-center">
+              <AutomationAddIcon className="mr-2" />
+              Add Task
+            </h4>
+          </div>
         </div>
       </>
     );
   };
 
   const handleEditAction = (item, index, updatedData) => {
-    console.log("###handleEditAction", item, index, updatedData);
-    const prefixArr = tasks.slice(0, index);
-    const suffixArr = tasks.slice(index, tasks.length);
+    const prefixArr = tasks.slice(0, index) || [];
+    const suffixArr = tasks.slice(index, tasks.length) || [];
     let newTasks = [...tasks];
-    if (item) {
+    if (item?.type) {
       newTasks[index] = updatedData;
     } else {
-      let newTasks = [...tasks];
       newTasks = [...prefixArr, updatedData, ...suffixArr];
     }
     closeAction();
@@ -94,17 +103,27 @@ const AddNewAutomation = () => {
         className="automation-action-delay automation-action-item"
         onClick={showTrigger}
       >
-        <h4>Delay</h4>
-        <span>time</span>
+        <div className="automation-action-item-content">
+          <h4 className="inline-flex items-center">
+            <AutomationDelayIcon className="mr-2" />
+            Delay
+          </h4>
+          <span>time</span>
+        </div>
       </div>;
     }
     return (
       <div
-        className="automation-action-add automation-action-item"
+        className="automation-action-task automation-action-item"
         onClick={showTrigger}
       >
-        <h4>Action</h4>
-        <span>First messenge</span>
+        <div className="automation-action-item-content">
+          <h4 className="inline-flex items-center">
+            <AutomationActionIcon className="mr-2" />
+            Action
+          </h4>
+          <span>First messenge</span>
+        </div>
       </div>
     );
   };
@@ -149,42 +168,49 @@ const AddNewAutomation = () => {
               className="automation-action-add automation-action-item"
               onClick={showTrigger}
             >
-              <h3 className="inline-flex items-center">
-                <AutomationTriggerIcon className="mr-2" />
-                Trigger
-              </h3>
-              <span>
-                {trigger?.type === "first_message"
-                  ? "First messenge"
-                  : trigger?.type === "contact_created"
-                  ? "Contact Created"
-                  : "Contact Tagged"}
-              </span>
+              <div className="automation-action-item-content">
+                <h3 className="inline-flex items-center">
+                  <AutomationTriggerIcon className="mr-2" />
+                  Trigger
+                </h3>
+                <span>
+                  {trigger?.type === "first_message"
+                    ? "First messenge"
+                    : trigger?.type === "contact_created"
+                    ? "Contact Created"
+                    : "Contact Tagged"}
+                </span>
+              </div>
             </div>
             <div
               className="automation-action-stop automation-action-item"
               onClick={showStop}
             >
-              <h4 className="text-white">Add stop trigger</h4>
-              <span className="text-white">
-                {stop?.type === "first_message"
-                  ? "First messenge"
-                  : stop?.type === "contact_created"
-                  ? "Contact Created"
-                  : "Contact Tagged"}
-              </span>
+              <div className="automation-action-item-content">
+                <h4 className="text-white inline-flex items-center">
+                  <AutomationAddStopIcon className="mr-2" />
+                  Add stop trigger
+                </h4>
+                <span className="text-white">
+                  {stop?.type === "first_message"
+                    ? "First messenge"
+                    : stop?.type === "contact_created"
+                    ? "Contact Created"
+                    : "Contact Tagged"}
+                </span>
+              </div>
             </div>
           </>
         )}
         {trigger && tasks.length
           ? tasks.map((item, index) => (
-              <div>
+              <>
                 {emptyTask(index)}
                 {renderTask(item, index)}
-              </div>
+              </>
             ))
           : null}
-        {trigger && emptyTask()}
+        {trigger && emptyTask(tasks.length + 1)}
       </div>
       {/* TODO: Update later. we will duplicate this one in the first version */}
       <TriggerModal
