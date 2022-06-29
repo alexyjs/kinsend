@@ -24,6 +24,17 @@ export const handleCallAPI = async (payload, headers) => {
       headers: getHeaders(),
       ...payload,
     });
+
+    if (result.status === 204) {
+      return {
+        response: {
+          status: 204,
+          message: "success",
+        },
+        headers: _.get(result, "headers"),
+      };
+    }
+
     return {
       response: _.get(result, "data"),
       headers: _.get(result, "headers"),

@@ -1,22 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "antd";
+import { useNavigate, useParams } from "react-router-dom";
+import { get as _get, truncate } from "lodash";
 
 import { LayoutComponent } from "../../../components";
 import TriggerModal from "../components/TriggerModal";
 import StopTriggerModal from "../components/StopTriggerModal";
 import ActionModal from "../components/ActionModal";
+import TitleModal from "../components/TitleModal";
 import { useModal } from "../../../hook/useModal";
+import { formatArray, clearEmptyField } from "../../../utils";
 import {
   AutomationTriggerIcon,
   AutomationAddIcon,
   AutomationDelayIcon,
   AutomationActionIcon,
   AutomationAddStopIcon,
+  AutomationActionRemove,
 } from "../../../assets/svg";
 
 import { getTagsAsync } from "../../../redux/settingsReducer";
-import { createAutomationAsync } from "../../../redux/automationReducer";
+import { handleCallAPI } from "../../../redux/helpers";
+import {
+  createAutomationAsync,
+  selectAutomation,
+  resetAutomationAsync,
+  updateAutomationAsync,
+} from "../../../redux/automationReducer";
 
 import "./styles.less";
 
@@ -32,29 +43,65 @@ const AddNewAutomation = () => {
     show: showAction,
     visible: visibleAction,
   } = useModal();
+  const {
+    close: closeTitle,
+    show: showTitle,
+    visible: visibleTitle,
+  } = useModal();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  let { id } = useParams();
+
+  const [title, setTitle] = useState("");
   const [trigger, setTrigger] = useState(null);
   const [stop, setStop] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [selectedAction, setSelectedAction] = useState({});
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const dispatch = useDispatch();
+  const { newAutomation } = useSelector(selectAutomation);
+
+  const handleChangeTitle = (value) => {
+    setTitle(value);
+    closeTitle();
+  };
 
   const handleSelectTrigger = (value) => {
-    console.log("###handleSelectTrigger:", value);
     setTrigger(value);
     closeTrigger();
   };
 
   const handleSelectStopTrigger = (value) => {
-    console.log("###handleSelectStopTrigger:", value);
     setStop(value);
     closeStop();
   };
 
   const handleShowAction = (index) => {
-    // setSelectedAction(selected);
+    setSelectedAction(null);
     showAction();
     setSelectedIndex(index);
+  };
+
+  const handleRemoveStop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    setStop(null);
+  };
+
+  const hadnleRemoveTask = (e, index) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const newTask = [...tasks];
+    newTask.splice(index, 1);
+    setTasks(newTask);
+  };
+
+  const hadnleShowEditAction = (item, index) => {
+    setSelectedAction(item);
+    setSelectedIndex(index);
+    showAction();
   };
 
   const emptyTask = (index) => {
@@ -75,6 +122,50 @@ const AddNewAutomation = () => {
     );
   };
 
+  const renderTask = (item, index) => {
+    if (item.type === "DELAY") {
+      return (
+        <div
+          className="automation-action-delay automation-action-item"
+          onClick={() => hadnleShowEditAction(item, index)}
+        >
+          <div
+            className="automation-action-item-remove"
+            onClick={(e) => hadnleRemoveTask(e, index)}
+          >
+            <AutomationActionRemove />
+          </div>
+          <div className="automation-action-item-content">
+            <h4 className="inline-flex items-center text-white">
+              <AutomationDelayIcon className="mr-2" />
+              Delay
+            </h4>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div
+        className="automation-action-task automation-action-item"
+        onClick={() => hadnleShowEditAction(item, index)}
+      >
+        <div
+          className="automation-action-item-remove"
+          onClick={(e) => hadnleRemoveTask(e, index)}
+        >
+          <AutomationActionRemove />
+        </div>
+        <div className="automation-action-item-content">
+          <h4 className="inline-flex items-center">
+            <AutomationActionIcon className="mr-2" />
+            Action
+          </h4>
+          <span>{truncate(item?.message, 50)}</span>
+        </div>
+      </div>
+    );
+  };
+
   const handleEditAction = (item, index, updatedData) => {
     const prefixArr = tasks.slice(0, index) || [];
     const suffixArr = tasks.slice(index, tasks.length) || [];
@@ -88,46 +179,107 @@ const AddNewAutomation = () => {
     setTasks(newTasks);
   };
 
-  const handleSubmit = () => {
-    const params = {};
-    dispatch(createAutomationAsync(params));
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const params = {
+      title: title,
+      triggerType: trigger.type,
+      taggedTagIds: formatArray(trigger?.taggedTagIds || []),
+      stopTriggerType: stop?.type || null,
+      stopTaggedTagIds: formatArray(stop?.taggedTagIds || []),
+      tasks: tasks.map((item) => {
+        return {
+          type: item.type,
+          message: item.message,
+          fileAttached: item?.fileAttached?.url || null,
+          delay: clearEmptyField(item.delay),
+        };
+      }),
+    };
+
+    if (id) {
+      dispatch(
+        updateAutomationAsync({
+          dataUpdate: params,
+          id: id,
+        })
+      );
+    } else {
+      dispatch(createAutomationAsync(params));
+    }
   };
 
   useEffect(() => {
     dispatch(getTagsAsync());
-  });
+  }, []);
 
-  const renderTask = (item, index) => {
-    if (item.type === "delay") {
-      <div
-        className="automation-action-delay automation-action-item"
-        onClick={showTrigger}
-      >
-        <div className="automation-action-item-content">
-          <h4 className="inline-flex items-center">
-            <AutomationDelayIcon className="mr-2" />
-            Delay
-          </h4>
-          <span>time</span>
-        </div>
-      </div>;
+  useEffect(() => {
+    if (newAutomation) {
+      navigate("/automation/active");
+      dispatch(resetAutomationAsync());
     }
-    return (
-      <div
-        className="automation-action-task automation-action-item"
-        onClick={showTrigger}
-      >
-        <div className="automation-action-item-content">
-          <h4 className="inline-flex items-center">
-            <AutomationActionIcon className="mr-2" />
-            Action
-          </h4>
-          <span>First messenge</span>
-        </div>
-      </div>
-    );
-  };
-  console.log("##automation add:", trigger, stop, tasks);
+  }, [navigate, newAutomation]);
+
+  const resetData = useCallback(() => {
+    setTitle("New automation");
+    setTrigger(null);
+    setStop(null);
+    setTasks([]);
+    setSelectedAction({});
+    setSelectedIndex(0);
+  }, []);
+
+  useEffect(() => {
+    if (id) {
+      const payload = {
+        method: "GET",
+        url: `${process.env.REACT_APP_API_BASE_URL}/automations/${id}`,
+      };
+      handleCallAPI(payload).then((res) => {
+        const data = _get(res, "response", {});
+        setTitle(data.title);
+        setTrigger(
+          data.triggerType
+            ? {
+                type: data.triggerType,
+                // taggedTagIds: data.taggedTagIds,
+                taggedTagIds: data.taggedTags,
+              }
+            : {}
+        );
+        setStop(
+          data.stopTriggerType
+            ? {
+                type: data.stopTriggerType,
+                // taggedTagIds: data.stopTaggedTagIds,
+                taggedTagIds: data.stopTaggedTags,
+              }
+            : {}
+        );
+        setTasks(
+          data?.tasks.map((item) => {
+            return {
+              message: item.message,
+              fileAttached: item?.fileAttached
+                ? {
+                    url: item?.fileAttached,
+                    name: item?.fileAttached,
+                  }
+                : null,
+              type: item.type,
+              delay: item?.delay || {},
+            };
+          })
+        );
+        setSelectedAction({});
+        setSelectedIndex(0);
+      });
+    } else {
+      resetData();
+    }
+  }, [id]);
+
   return (
     <LayoutComponent className="create-automation-page">
       <div className="flex justify-between items-center">
@@ -138,12 +290,15 @@ const AddNewAutomation = () => {
           type="primary"
           size="large"
           className="min-w-200"
-          onSubmit={handleSubmit}
+          onClick={handleSubmit}
           disabled={!tasks?.length}
         >
           SAVE
         </Button>
       </div>
+      <Button type="primary" className="min-w-200 mt-3" onClick={showTitle}>
+        Change title
+      </Button>
       {!trigger && (
         <div className="flex justify-center items-center flex-col add-automation-empty">
           <AutomationTriggerIcon />
@@ -174,9 +329,9 @@ const AddNewAutomation = () => {
                   Trigger
                 </h3>
                 <span>
-                  {trigger?.type === "first_message"
+                  {trigger?.type === "FIRST_MESSAGE"
                     ? "First messenge"
-                    : trigger?.type === "contact_created"
+                    : trigger?.type === "CONTACT_CREATED"
                     ? "Contact Created"
                     : "Contact Tagged"}
                 </span>
@@ -186,17 +341,27 @@ const AddNewAutomation = () => {
               className="automation-action-stop automation-action-item"
               onClick={showStop}
             >
+              {stop?.type && (
+                <div
+                  className="automation-action-item-remove"
+                  onClick={handleRemoveStop}
+                >
+                  <AutomationActionRemove />
+                </div>
+              )}
               <div className="automation-action-item-content">
                 <h4 className="text-white inline-flex items-center">
                   <AutomationAddStopIcon className="mr-2" />
                   Add stop trigger
                 </h4>
                 <span className="text-white">
-                  {stop?.type === "first_message"
+                  {stop?.type === "FIRST_MESSAGE"
                     ? "First messenge"
-                    : stop?.type === "contact_created"
+                    : stop?.type === "CONTACT_CREATED"
                     ? "Contact Created"
-                    : "Contact Tagged"}
+                    : stop?.type === "CONTACT_TAGGED"
+                    ? "Contact Tagged"
+                    : ""}
                 </span>
               </div>
             </div>
@@ -204,10 +369,10 @@ const AddNewAutomation = () => {
         )}
         {trigger && tasks.length
           ? tasks.map((item, index) => (
-              <>
+              <React.Fragment key={`automation-task-${index}`}>
                 {emptyTask(index)}
                 {renderTask(item, index)}
-              </>
+              </React.Fragment>
             ))
           : null}
         {trigger && emptyTask(tasks.length + 1)}
@@ -229,6 +394,12 @@ const AddNewAutomation = () => {
         handleCancel={closeAction}
         data={selectedAction}
         index={selectedIndex}
+      />
+      <TitleModal
+        visible={visibleTitle}
+        handleOk={handleChangeTitle}
+        handleCancel={closeTitle}
+        title={title}
       />
     </LayoutComponent>
   );
