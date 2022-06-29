@@ -8,7 +8,9 @@ import {
   getAutomationListAsync,
   selectAutomation,
   deleteAutomationAsync,
+  updatestatusAutomationAsync,
 } from "../../../redux/automationReducer";
+import { AUTOMATION_STATUS } from "../../../utils/constants";
 
 import { LogoSmallIcon } from "../../../assets/svg";
 
@@ -16,7 +18,12 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const { automationList } = useSelector(selectAutomation);
 
-  const handleEnableDisable = (checked) => {};
+  const handleEnableDisable = (id, checked) => {
+    dispatch(updatestatusAutomationAsync({
+      id: id,
+      status: checked ? AUTOMATION_STATUS.ENABLE : AUTOMATION_STATUS.DISABLE
+    }))
+  };
   const handleDeleteAutomation = (id) => {
     dispatch(deleteAutomationAsync(id));
   };
@@ -75,7 +82,7 @@ const Dashboard = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-                <Switch defaultChecked onChange={handleEnableDisable} />
+                <Switch defaultChecked={item.status === AUTOMATION_STATUS.ENABLE} onChange={(value) => handleEnableDisable(item.id, value)} />
               </div>
             </Card>
           </Col>
