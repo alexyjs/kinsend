@@ -76,6 +76,30 @@
     line-height: 40px;
   }
 
+  .automation-action-item-remove {
+    background: #d15d36;
+    border: 2px solid rgb(251, 251, 251);
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    justify-content: space-around;
+    cursor: pointer;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    visibility: hidden;
+    z-index: 2;
+  }
+
+  &:hover {
+    .automation-action-item-remove {
+      visibility: visible;
+    }
+  }
+
   &::after {
     content: "";
     position: absolute;

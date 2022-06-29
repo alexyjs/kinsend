@@ -241,3 +241,116 @@ export const CUSTOM_FIELD_OPTIONS = [
     label: CUSTOM_FIELD_LABEL.CHECKBOX,
   },
 ];
+
+export const DURATION_TYPE = {
+  TIME_FROM_TRIGGER: "TIME_FROM_TRIGGER",
+  UNTIL_NEXT_DAY: "UNTIL_NEXT_DAY",
+  UNTIL_NEXT_DAY_OF_WEEK: "UNTIL_NEXT_DAY_OF_WEEK",
+  UNTIL_NEXT_DAY_OF_MONTH: "UNTIL_NEXT_DAY_OF_MONTH",
+  UNTIL_DATE: "UNTIL_DATE",
+};
+
+export const DELAY_TYPE = [
+  {
+    label: "Time from trigger",
+    value: DURATION_TYPE.TIME_FROM_TRIGGER,
+  },
+  {
+    label: "Until Next Day",
+    value: DURATION_TYPE.UNTIL_NEXT_DAY,
+  },
+  {
+    label: "Until Next Day of Week",
+    value: DURATION_TYPE.UNTIL_NEXT_DAY_OF_WEEK,
+  },
+  {
+    label: "Until Next Day of Month",
+    value: DURATION_TYPE.UNTIL_NEXT_DAY_OF_MONTH,
+  },
+  {
+    label: "Until Date",
+    value: DURATION_TYPE.UNTIL_DATE,
+  },
+];
+
+export const DAY_OF_WEEK_TYPE = [
+  {
+    label: "Sunday",
+    value: "Sunday",
+  },
+  {
+    label: "Monday",
+    value: "Monday",
+  },
+  {
+    label: "Tuesday",
+    value: "Tuesday",
+  },
+  {
+    label: "Wednesday",
+    value: "Wednesday",
+  },
+  {
+    label: "Thursday",
+    value: "Thursday",
+  },
+  {
+    label: "Friday",
+    value: "Friday",
+  },
+  {
+    label: "Saturday",
+    value: "Saturday",
+  },
+];
+
+export const MONTH_TYPE = [
+  {
+    label: "Jan",
+    value: "Jan",
+  },
+  {
+    label: "Feb",
+    value: "Feb",
+  },
+  {
+    label: "Mar",
+    value: "Mar",
+  },
+  {
+    label: "Apr",
+    value: "Apr",
+  },
+  {
+    label: "May",
+    value: "May",
+  },
+  {
+    label: "Jun",
+    value: "Jun",
+  },
+  {
+    label: "Jul",
+    value: "Jul",
+  },
+  {
+    label: "Aug",
+    value: "Aug",
+  },
+  {
+    label: "Sep",
+    value: "Sep",
+  },
+  {
+    label: "Oct",
+    value: "Oct",
+  },
+  {
+    label: "Nov",
+    value: "Nov",
+  },
+  {
+    label: "Dec",
+    value: "Dec",
+  },
+];

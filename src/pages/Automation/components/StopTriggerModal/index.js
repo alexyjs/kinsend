@@ -14,11 +14,11 @@ import "./styles.less";
 
 const StopTriggerModal = ({ visible, handleOk, handleCancel }) => {
   const [trigger, setTrigger] = useState("");
-  const [tagged, setTagged] = useState([]);
+  const [taggedTagIds, setTagged] = useState([]);
   const { tags } = useSelector(selectSettings);
   const handleSelectTrigger = (value) => {
     setTrigger(value);
-    if (value !== "contact_tagged") {
+    if (value !== "CONTACT_TAGGED") {
       handleOk({
         type: value,
       });
@@ -36,7 +36,7 @@ const StopTriggerModal = ({ visible, handleOk, handleCancel }) => {
   const handleSelectTagged = (value) => {
     handleOk({
       type: trigger,
-      tagged: tagged,
+      taggedTagIds: taggedTagIds,
     });
   };
 
@@ -57,7 +57,7 @@ const StopTriggerModal = ({ visible, handleOk, handleCancel }) => {
         <p className="text-center">
           Triggers are events that start your automation{" "}
         </p>
-        {trigger && trigger === "contact_tagged" ? (
+        {trigger && trigger === "CONTACT_TAGGED" ? (
           <div className="action-detail-wrap">
             <div className="flex justify-between items-center action-detail-input">
               <span>Contact Tagged</span>
@@ -100,23 +100,23 @@ const StopTriggerModal = ({ visible, handleOk, handleCancel }) => {
               <Action
                 Icon={FirstMessageIcon}
                 label="first message"
-                value="first_message"
+                value="FIRST_MESSAGE"
                 onClick={handleSelectTrigger}
               />
             </Col>
             <Col>
               <Action
                 Icon={ContactCreatedIcon}
-                label="contact_created"
-                value="contact_created"
+                label="CONTACT_CREATED"
+                value="CONTACT_CREATED"
                 onClick={handleSelectTrigger}
               />
             </Col>
             <Col>
               <Action
                 Icon={ContactTagged}
-                label="contact_tagged"
-                value="contact_tagged"
+                label="CONTACT_TAGGED"
+                value="CONTACT_TAGGED"
                 onClick={handleSelectTrigger}
               />
             </Col>

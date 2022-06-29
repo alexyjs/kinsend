@@ -70,7 +70,6 @@ const FormSubmission = () => {
       location: values.location,
       metaData: JSON.stringify(metaData),
     }
-    console.log("###onSubmitAddNewForm", values, params);
     dispatch(addFormSubmissionAsync(params));
   };
 
@@ -83,7 +82,7 @@ const FormSubmission = () => {
   useEffect(() => {
     dispatch(getFormsSettingDetailAsync(id));
   }, [useDispatch]);
-  console.log("###formSettingDetail", formSettingDetail);
+
   return (
     <div className="settings-page add-new-form-page pb-5">
       <div className="max-w-screen-md	mx-auto mb-5 mt-14">

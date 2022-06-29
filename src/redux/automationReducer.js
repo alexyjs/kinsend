@@ -7,9 +7,17 @@ import { handleCallAPI } from "./helpers";
 export const getAutomationListAsync = createAction(
   "automation/getAutomationListAsync"
 );
-
 export const createAutomationAsync = createAction(
   "automation/createAutomationAsync"
+);
+export const updateAutomationAsync = createAction(
+  "automation/updateAutomationAsync"
+);
+export const deleteAutomationAsync = createAction(
+  "automation/deleteAutomationAsync"
+);
+export const resetAutomationAsync = createAction(
+  "automation/resetAutomationAsync"
 );
 
 export async function getAutomationList() {
@@ -21,10 +29,30 @@ export async function getAutomationList() {
   return handleCallAPI(payload);
 }
 
-export async function createAutomation() {
+export async function createAutomation(data) {
   const payload = {
     method: "POST",
     url: `${process.env.REACT_APP_API_BASE_URL}/automations`,
+    data,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function updateAutomation(data, id) {
+  const payload = {
+    method: "PUT",
+    url: `${process.env.REACT_APP_API_BASE_URL}/automations/${id}`,
+    data,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function deleteAutomation(id) {
+  const payload = {
+    method: "DELETE",
+    url: `${process.env.REACT_APP_API_BASE_URL}/automations/${id}`,
   };
 
   return handleCallAPI(payload);
@@ -63,12 +91,65 @@ export function* addAutomationSaga(action) {
   }
 }
 
+export function* updateAutomationSaga(action) {
+  const { response, errors } = yield call(
+    updateAutomation,
+    action.payload.dataUpdate,
+    action.payload.id
+  );
+  if (response) {
+    yield put(addAutomationSuccess(response));
+    notification.success({
+      title: "Action Completed",
+      message: `The automation has been updated.`,
+    });
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || `Can't update new automation.`,
+    });
+  }
+}
+
+export function* deleteAutomationSaga(action) {
+  const { response, errors } = yield call(deleteAutomation, action.payload);
+  if (response) {
+    yield call(getAutomationsSaga, {});
+    notification.success({
+      title: "Action Completed",
+      message: `The automation has been deleted.`,
+    });
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || `Can't delete new automation.`,
+    });
+  }
+}
+
+export function* resetAutomationSaga() {
+  yield put(resetAutomationSuccess());
+}
+
 export function* watchGetAutomationListSaga() {
   yield takeLatest(getAutomationListAsync, getAutomationsSaga);
 }
 
 export function* watchCreateAutomationSaga() {
   yield takeLatest(createAutomationAsync, addAutomationSaga);
+}
+
+export function* watchUpdateAutomationSaga() {
+  yield takeLatest(updateAutomationAsync, updateAutomationSaga);
+}
+export function* watchDeleteAutomationSaga() {
+  yield takeLatest(deleteAutomationAsync, deleteAutomationSaga);
+}
+
+export function* watchResetAutomationSaga() {
+  yield takeLatest(resetAutomationAsync, resetAutomationSaga);
 }
 
 const initialState = {
@@ -96,6 +177,11 @@ export const automationSlice = createSlice({
       state.isLoading = false;
       state.errors = [];
     },
+    resetAutomationSuccess: (state, action) => {
+      state.newAutomation = null;
+      state.isLoading = false;
+      state.errors = [];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getAutomationList, (state) => {
@@ -105,13 +191,18 @@ export const automationSlice = createSlice({
   },
 });
 
-export const { failed, getAutomationListSuccess, addAutomationSuccess } =
-  automationSlice.actions;
+export const {
+  failed,
+  getAutomationListSuccess,
+  addAutomationSuccess,
+  resetAutomationSuccess,
+} = automationSlice.actions;
 
-export const selectautomation = ({ automationReducer }) => {
+export const selectAutomation = ({ automationReducer }) => {
   return {
     isLoading: automationReducer.isLoading,
     automationList: automationReducer.automationList,
+    newAutomation: automationReducer.newAutomation,
   };
 };
 

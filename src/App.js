@@ -72,6 +72,7 @@ function App() {
             {/* path="/automation/:tabname" */}
             {/* explore | new | active */}
             <Route path="/automation/new" element={<AddNewAutomation />} />
+            <Route path="/automation/edit/:id" element={<AddNewAutomation />} />
             <Route path="/automation/:tabname" element={<Automation />} />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>

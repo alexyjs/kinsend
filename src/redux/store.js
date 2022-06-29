@@ -8,6 +8,7 @@ import paymentReducer from "./paymentReducer";
 import vcardReducer from "./vcardReducer";
 import settingsReducer from "./settingsReducer";
 import publicSlice from "./publicReducer";
+import automationSlice from "./automationReducer";
 
 // disalbe thunk and add redux-saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -34,6 +35,7 @@ const store = configureStore({
     vcard: vcardReducer,
     settings: settingsReducer,
     publicReducer: publicSlice,
+    automationReducer: automationSlice,
   },
   middleware,
 });

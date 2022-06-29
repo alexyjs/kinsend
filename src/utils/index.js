@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { get as _get, isEqual, isEmpty } from "lodash";
 
 import { PHONE_REGEX } from "./validations";
 import { storage } from "../hook/userLocalStorage";
@@ -23,7 +23,7 @@ let formatPhoneNumber = (str) => {
 };
 
 export const displayPhoneNumber = (phoneNumber) => {
-  if (_.isEmpty(phoneNumber)) {
+  if (isEmpty(phoneNumber)) {
     return "";
   }
 
@@ -33,8 +33,8 @@ export const displayPhoneNumber = (phoneNumber) => {
 
 export const phoneValidator = {
   validator: async (rule, value) => {
-    const phone = _.get(value, "phone");
-    const code = _.get(value, "code");
+    const phone = _get(value, "phone");
+    const code = _get(value, "code");
 
     if (!code && !phone) {
       return Promise.resolve();
@@ -49,9 +49,9 @@ export const phoneValidator = {
 
 export const phoneRequireValidator = {
   validator: async (rule, value) => {
-    const phone = _.get(value, "phone");
-    const code = _.get(value, "code");
-    const short = _.get(value, "short");
+    const phone = _get(value, "phone");
+    const code = _get(value, "code");
+    const short = _get(value, "short");
 
     if (code && phone && short) {
       return Promise.resolve();
@@ -78,4 +78,26 @@ export const parseFormDataValue = (value) => {
   }
 
   return JSON.stringify(value);
+};
+
+export const formatArray = (value) => {
+  if (typeof value === "string") {
+    return [value];
+  }
+
+  return value;
+};
+
+export const clearEmptyField = (object) => {
+  let result = {};
+  for (const property in object) {
+    if (object[property]) {
+      result[property] = object[property];
+    }
+  }
+  if (isEqual(result, {})) {
+    return null;
+  }
+
+  return result;
 };
