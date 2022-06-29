@@ -19,6 +19,9 @@ export const deleteAutomationAsync = createAction(
 export const resetAutomationAsync = createAction(
   "automation/resetAutomationAsync"
 );
+export const updatestatusAutomationAsync = createAction(
+  "automation/updatestatusAutomationAsync"
+);
 
 export async function getAutomationList() {
   const payload = {
@@ -53,6 +56,18 @@ export async function deleteAutomation(id) {
   const payload = {
     method: "DELETE",
     url: `${process.env.REACT_APP_API_BASE_URL}/automations/${id}`,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function updateStatusAutomation(id, status) {
+  const payload = {
+    method: "PUT",
+    url: `${process.env.REACT_APP_API_BASE_URL}/automations/status/${id}`,
+    data: {
+      status,
+    },
   };
 
   return handleCallAPI(payload);
@@ -107,7 +122,7 @@ export function* updateAutomationSaga(action) {
     yield put(failed(errors));
     notification.error({
       title: "Action failed",
-      message: errors || `Can't update new automation.`,
+      message: errors || `Can't update the automation.`,
     });
   }
 }
@@ -124,7 +139,24 @@ export function* deleteAutomationSaga(action) {
     yield put(failed(errors));
     notification.error({
       title: "Action failed",
-      message: errors || `Can't delete new automation.`,
+      message: errors || `Can't delete the automation.`,
+    });
+  }
+}
+
+export function* updateStatusAutomationSaga(action) {
+  const { response, errors } = yield call(updateStatusAutomation, action.payload.id, action.payload.status);
+  if (response) {
+    yield call(getAutomationsSaga, {});
+    notification.success({
+      title: "Action Completed",
+      message: `The automation has been ${action.payload.status}.`,
+    });
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || `Can't ${action.payload.status} the automation.`,
     });
   }
 }
@@ -150,6 +182,11 @@ export function* watchDeleteAutomationSaga() {
 
 export function* watchResetAutomationSaga() {
   yield takeLatest(resetAutomationAsync, resetAutomationSaga);
+}
+
+
+export function* watchUpdateStatusAutomationSaga() {
+  yield takeLatest(updatestatusAutomationAsync, updateStatusAutomationSaga);
 }
 
 const initialState = {

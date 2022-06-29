@@ -42,6 +42,7 @@ import {
   watchUpdateAutomationSaga,
   watchDeleteAutomationSaga,
   watchResetAutomationSaga,
+  watchUpdateStatusAutomationSaga,
 } from "./automationReducer";
 
 export default function* rootSaga() {
@@ -88,5 +89,6 @@ export default function* rootSaga() {
     watchUpdateAutomationSaga(),
     watchDeleteAutomationSaga(),
     watchResetAutomationSaga(),
+    watchUpdateStatusAutomationSaga(),
   ]);
 }
