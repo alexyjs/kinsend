@@ -160,7 +160,12 @@ const AddNewAutomation = () => {
             <AutomationActionIcon className="mr-2" />
             Action
           </h4>
-          <span>{truncate(item?.message, 50)}</span>
+          <span>
+            {truncate(item?.message, {
+              length: 30,
+              omission: "...",
+            })}
+          </span>
         </div>
       </div>
     );
@@ -244,7 +249,7 @@ const AddNewAutomation = () => {
             ? {
                 type: data.triggerType,
                 // taggedTagIds: data.taggedTagIds,
-                taggedTagIds: (data.taggedTags || []).map(item => item.id),
+                taggedTagIds: (data.taggedTags || []).map((item) => item.id),
               }
             : {}
         );
@@ -253,7 +258,9 @@ const AddNewAutomation = () => {
             ? {
                 type: data.stopTriggerType,
                 // taggedTagIds: data.stopTaggedTagIds,
-                taggedTagIds: (data.stopTaggedTags || []).map(item => item.id),
+                taggedTagIds: (data.stopTaggedTags || []).map(
+                  (item) => item.id
+                ),
               }
             : {}
         );
