@@ -12,7 +12,7 @@ import { selectSettings } from "../../../../redux/settingsReducer";
 import Action from "../Action";
 import "./styles.less";
 
-const StopTriggerModal = ({ visible, handleOk, handleCancel }) => {
+const StopTriggerModal = ({ visible, handleOk, handleCancel, data }) => {
   const [trigger, setTrigger] = useState("");
   const [taggedTagIds, setTagged] = useState([]);
   const { tags } = useSelector(selectSettings);
@@ -39,6 +39,12 @@ const StopTriggerModal = ({ visible, handleOk, handleCancel }) => {
       taggedTagIds: taggedTagIds,
     });
   };
+
+  useEffect(() => {
+    setTrigger(data?.type || '');
+    setTagged(data?.taggedTagIds || []);
+  }, [data]);
+
 
   return (
     <>
@@ -72,6 +78,7 @@ const StopTriggerModal = ({ visible, handleOk, handleCancel }) => {
               allowClear
               onChange={onTagChange}
               placeholder="Choose tag..."
+              valu={taggedTagIds}
             >
               {tags &&
                 tags.map((option) => (
@@ -107,7 +114,7 @@ const StopTriggerModal = ({ visible, handleOk, handleCancel }) => {
             <Col>
               <Action
                 Icon={ContactCreatedIcon}
-                label="CONTACT_CREATED"
+                label="CONTACT CREATED"
                 value="CONTACT_CREATED"
                 onClick={handleSelectTrigger}
               />
@@ -115,7 +122,7 @@ const StopTriggerModal = ({ visible, handleOk, handleCancel }) => {
             <Col>
               <Action
                 Icon={ContactTagged}
-                label="CONTACT_TAGGED"
+                label="CONTACT TAGGED"
                 value="CONTACT_TAGGED"
                 onClick={handleSelectTrigger}
               />

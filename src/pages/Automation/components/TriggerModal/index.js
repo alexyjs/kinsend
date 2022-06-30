@@ -12,7 +12,7 @@ import { selectSettings } from "../../../../redux/settingsReducer";
 import Action from "../Action";
 import "./styles.less";
 
-const TriggerModal = ({ visible, handleOk, handleCancel }) => {
+const TriggerModal = ({ visible, handleOk, handleCancel, data }) => {
   const [trigger, setTrigger] = useState("");
   const [taggedTagIds, setTagged] = useState([]);
   const { tags } = useSelector(selectSettings);
@@ -39,6 +39,11 @@ const TriggerModal = ({ visible, handleOk, handleCancel }) => {
       taggedTagIds: taggedTagIds,
     });
   };
+
+  useEffect(() => {
+    setTrigger(data?.type || '');
+    setTagged(data?.taggedTagIds || []);
+  }, [data]);
 
   return (
     <>
@@ -72,6 +77,7 @@ const TriggerModal = ({ visible, handleOk, handleCancel }) => {
               allowClear
               onChange={onTagChange}
               placeholder="Choose tag..."
+              value={taggedTagIds}
             >
               {tags &&
                 tags.map((option) => (
