@@ -38,11 +38,11 @@ function App() {
     }
   }, [savedAuth]);
 
-  // useEffect(() => {
-  //   if (user && !user?.isEnabledBuyPlan) {
-  //     navigate("/payment-setup");
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (user && user.id && !user?.isEnabledBuyPlan) {
+      navigate("/payment-setup");
+    }
+  }, [user]);
 
   const isAuth = authStorage.get();
 
