@@ -91,7 +91,7 @@ export const formatArray = (value) => {
 export const clearEmptyField = (object) => {
   let result = {};
   for (const property in object) {
-    if (object[property]) {
+    if (!isEmpty(object[property])) {
       result[property] = object[property];
     }
   }

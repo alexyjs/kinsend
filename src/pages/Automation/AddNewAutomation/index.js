@@ -182,7 +182,7 @@ const AddNewAutomation = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const params = {
+    const params = clearEmptyField({
       title: title,
       triggerType: trigger.type,
       taggedTagIds: formatArray(trigger?.taggedTagIds || []),
@@ -196,7 +196,7 @@ const AddNewAutomation = () => {
           delay: clearEmptyField(item.delay),
         };
       }),
-    };
+    });
 
     if (id) {
       dispatch(
@@ -244,7 +244,7 @@ const AddNewAutomation = () => {
             ? {
                 type: data.triggerType,
                 // taggedTagIds: data.taggedTagIds,
-                taggedTagIds: data.taggedTags,
+                taggedTagIds: (data.taggedTags || []).map(item => item.id),
               }
             : {}
         );
@@ -253,7 +253,7 @@ const AddNewAutomation = () => {
             ? {
                 type: data.stopTriggerType,
                 // taggedTagIds: data.stopTaggedTagIds,
-                taggedTagIds: data.stopTaggedTags,
+                taggedTagIds: (data.stopTaggedTags || []).map(item => item.id),
               }
             : {}
         );
@@ -382,11 +382,13 @@ const AddNewAutomation = () => {
         visible={visibleTrigger}
         handleOk={handleSelectTrigger}
         handleCancel={closeTrigger}
+        data={trigger}
       />
       <StopTriggerModal
         visible={visibleStop}
         handleOk={handleSelectStopTrigger}
         handleCancel={closeStop}
+        data={stop}
       />
       <ActionModal
         visible={visibleAction}
