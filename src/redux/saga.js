@@ -1,5 +1,5 @@
 import { all } from "redux-saga/effects";
-import { watchGetListPhoneSaga } from "./phoneReducer";
+import { watchGetListPhoneSaga, watchAddPhoneSaga } from "./phoneReducer";
 import {
   watchGetListSubscriptionPricesSaga,
   watchGetListSubscriptionSaga,
@@ -48,6 +48,7 @@ import {
 export default function* rootSaga() {
   yield all([
     watchGetListPhoneSaga(),
+    watchAddPhoneSaga(),
 
     watchGetListSubscriptionSaga(),
     watchGetListSubscriptionPricesSaga(),

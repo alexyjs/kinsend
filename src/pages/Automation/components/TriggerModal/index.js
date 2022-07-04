@@ -41,7 +41,7 @@ const TriggerModal = ({ visible, handleOk, handleCancel, data }) => {
   };
 
   useEffect(() => {
-    setTrigger(data?.type || '');
+    setTrigger(data?.type || "");
     setTagged(data?.taggedTagIds || []);
   }, [data]);
 

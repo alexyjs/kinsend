@@ -286,8 +286,10 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
       <div>
         <label>DATE / TIME</label>
         <DatePicker
+          showTimeSelect
           selected={datetime}
           onChange={(date) => setDatetime(date)}
+          dateFormat="MMMM d, yyyy h:mm aa"
         />
       </div>
     );

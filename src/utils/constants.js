@@ -356,6 +356,6 @@ export const MONTH_TYPE = [
 ];
 
 export const AUTOMATION_STATUS = {
-  ENABLE: 'ENABLE',
-  DISABLE: 'DISABLE',
-}
+  ENABLE: "ENABLE",
+  DISABLE: "DISABLE",
+};

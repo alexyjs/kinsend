@@ -21,10 +21,11 @@ const PaymentSetup = () => {
     visible: visibleAccountModal,
   } = useModal();
 
-  // TODO: refactor. we need to handle by step. we will add these step to array
   const handleOkAccountModal = () => {
-    showPhoneNumber();
     closeAccountModal();
+    if (user && !user?.phoneSystem?.length) {
+      showPhoneNumber();
+    }
   };
 
   const handleCancelAccountModal = () => {
