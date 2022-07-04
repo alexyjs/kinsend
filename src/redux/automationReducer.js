@@ -145,7 +145,11 @@ export function* deleteAutomationSaga(action) {
 }
 
 export function* updateStatusAutomationSaga(action) {
-  const { response, errors } = yield call(updateStatusAutomation, action.payload.id, action.payload.status);
+  const { response, errors } = yield call(
+    updateStatusAutomation,
+    action.payload.id,
+    action.payload.status
+  );
   if (response) {
     yield call(getAutomationsSaga, {});
     notification.success({
@@ -183,7 +187,6 @@ export function* watchDeleteAutomationSaga() {
 export function* watchResetAutomationSaga() {
   yield takeLatest(resetAutomationAsync, resetAutomationSaga);
 }
-
 
 export function* watchUpdateStatusAutomationSaga() {
   yield takeLatest(updatestatusAutomationAsync, updateStatusAutomationSaga);

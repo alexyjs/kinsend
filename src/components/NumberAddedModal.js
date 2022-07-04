@@ -1,14 +1,19 @@
 import { Button, Col, Form, Modal, Row } from "antd";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { displayPhoneNumber } from "../utils";
+import { addPhoneAsync, selectPhones } from "../redux/phoneReducer";
 
 const NumberAddedModal = ({ visible, handleOk, handleCancel, phoneNumber }) => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector(selectPhones);
   const handleFinish = () => {
-    handleOk();
-    navigate("/dashboard");
+    dispatch(
+      addPhoneAsync({
+        phoneNumbers: [phoneNumber],
+      })
+    );
   };
 
   return (
@@ -60,6 +65,7 @@ const NumberAddedModal = ({ visible, handleOk, handleCancel, phoneNumber }) => {
               type="text"
               size="large"
               onClick={handleCancel}
+              disabled={isLoading}
             >
               Cancel
             </Button>
@@ -72,6 +78,7 @@ const NumberAddedModal = ({ visible, handleOk, handleCancel, phoneNumber }) => {
               type="primary"
               size="large"
               onClick={handleFinish}
+              disabled={isLoading}
             >
               Continue to app
             </Button>

@@ -19,10 +19,12 @@ const Dashboard = () => {
   const { automationList } = useSelector(selectAutomation);
 
   const handleEnableDisable = (id, checked) => {
-    dispatch(updatestatusAutomationAsync({
-      id: id,
-      status: checked ? AUTOMATION_STATUS.ENABLE : AUTOMATION_STATUS.DISABLE
-    }))
+    dispatch(
+      updatestatusAutomationAsync({
+        id: id,
+        status: checked ? AUTOMATION_STATUS.ENABLE : AUTOMATION_STATUS.DISABLE,
+      })
+    );
   };
   const handleDeleteAutomation = (id) => {
     dispatch(deleteAutomationAsync(id));
@@ -82,7 +84,10 @@ const Dashboard = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-                <Switch defaultChecked={item.status === AUTOMATION_STATUS.ENABLE} onChange={(value) => handleEnableDisable(item.id, value)} />
+                <Switch
+                  defaultChecked={item.status === AUTOMATION_STATUS.ENABLE}
+                  onChange={(value) => handleEnableDisable(item.id, value)}
+                />
               </div>
             </Card>
           </Col>
