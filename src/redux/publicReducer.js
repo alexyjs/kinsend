@@ -1,9 +1,8 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
-import _ from "lodash";
 import { call, put, takeLatest } from "redux-saga/effects";
 import { notification } from "antd";
 
-import { handleCallAPI, handleFileCallAPI } from "./helpers";
+import { handleCallAPI } from "./helpers";
 
 export const getFormsSettingDetailAsync = createAction(
   "public/getFormsSettingDetailAsync"

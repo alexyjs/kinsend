@@ -1,5 +1,5 @@
 import { all } from "redux-saga/effects";
-import { watchGetListPhoneSaga } from "./phoneReducer";
+import { watchGetListPhoneSaga, watchAddPhoneSaga } from "./phoneReducer";
 import {
   watchGetListSubscriptionPricesSaga,
   watchGetListSubscriptionSaga,
@@ -36,11 +36,19 @@ import {
   watchAddFormSubmissionSaga,
 } from "./publicReducer";
 
-import { watchGetAutomationListSaga } from "./automationReducer";
+import {
+  watchGetAutomationListSaga,
+  watchCreateAutomationSaga,
+  watchUpdateAutomationSaga,
+  watchDeleteAutomationSaga,
+  watchResetAutomationSaga,
+  watchUpdateStatusAutomationSaga,
+} from "./automationReducer";
 
 export default function* rootSaga() {
   yield all([
     watchGetListPhoneSaga(),
+    watchAddPhoneSaga(),
 
     watchGetListSubscriptionSaga(),
     watchGetListSubscriptionPricesSaga(),
@@ -78,5 +86,10 @@ export default function* rootSaga() {
 
     // automation
     watchGetAutomationListSaga(),
+    watchCreateAutomationSaga(),
+    watchUpdateAutomationSaga(),
+    watchDeleteAutomationSaga(),
+    watchResetAutomationSaga(),
+    watchUpdateStatusAutomationSaga(),
   ]);
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, NavLink } from "react-router-dom";
 import { Tabs, Button } from "antd";
 
 import LayoutComponent from "../../components/Layout";
@@ -13,9 +13,11 @@ const Automation = () => {
     <LayoutComponent className="settings-page">
       <div className="flex justify-between items-center">
         <h1>Automation</h1>
-        <Button type="primary" size="large" className="w-48	">
-          New
-        </Button>
+        <NavLink to="/automation/new">
+          <Button type="primary" size="large" className="w-48	">
+            New
+          </Button>
+        </NavLink>
       </div>
       <Tabs
         defaultActiveKey="active"
