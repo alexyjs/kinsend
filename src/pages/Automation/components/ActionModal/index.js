@@ -88,20 +88,20 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
     } else if (duration === DURATION_TYPE.UNTIL_NEXT_DAY) {
       delay = {
         time: time || null,
-        timeZone: selectedTimezone || null,
+        timezone: selectedTimezone || null,
       };
     } else if (duration === DURATION_TYPE.UNTIL_NEXT_DAY_OF_WEEK) {
       delay = {
         dayOfWeek: dayOfWeek || null,
         time: time || null,
-        timeZone: selectedTimezone || null,
+        timezone: selectedTimezone || null,
       };
     } else if (duration === DURATION_TYPE.UNTIL_NEXT_DAY_OF_MONTH) {
       delay = {
         dayOfMonth: dayOfMonth || null,
         month: month || null,
         time: time || null,
-        timeZone: selectedTimezone || null,
+        timezone: selectedTimezone || null,
       };
     } else if (duration === DURATION_TYPE.UNTIL_DATE) {
       delay = {
@@ -361,7 +361,7 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
         setHoursState(data.delay?.hours || "");
         setMinutesState(data.delay?.minutes || "");
         setSecondsState(data.delay?.seconds || "");
-        setSelectedTimezone(data.delay?.timeZone || {});
+        setSelectedTimezone(data.delay?.timezone || data.delay?.timeZone || {});
       }
     }
   }, [visible, data]);
