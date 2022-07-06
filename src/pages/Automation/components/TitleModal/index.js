@@ -25,7 +25,7 @@ const TitleModal = ({ visible, handleOk, handleCancel, title }) => {
       closable={false}
       destroyOnClose={true}
       centered
-      className="uploadfile-modal"
+      className=""
     >
       <h3 className="font-bold text-center text-2xl mb-9">Change Title</h3>
       <p className="text-center pb-5">

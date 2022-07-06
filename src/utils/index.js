@@ -90,14 +90,33 @@ export const formatArray = (value) => {
 
 export const clearEmptyField = (object) => {
   let result = {};
-  for (const property in object) {
-    if (!isEmpty(object[property])) {
+  for (const property of Object.keys(object)) {
+    if (object[property] && !isEqual(object[property], {}) && !isEqual(object[property], [])) {
       result[property] = object[property];
     }
   }
+
   if (isEqual(result, {})) {
     return null;
   }
 
   return result;
+};
+
+export const getCname = () => {
+  const host = window.location.host;
+  if (
+    (host !== "dev.kinsend.io" &&
+      // prod
+      host !== "kinsend.io" &&
+      host.includes(".kinsend.io")) ||
+    // development
+    (host !== "localhost:3000" && host.includes(".localhost:3000"))
+  ) {
+    return host
+      .replace(".dev.kinsend.io", "")
+      .replace(".kinsend.io", "")
+      .replace(".localhost:3000", "");
+  }
+  return "";
 };

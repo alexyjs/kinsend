@@ -16,6 +16,7 @@ import {
   SettingSVG,
   DashboardIcon,
   ArrowDownIcon,
+  AutomationRobotIcon,
 } from "../../assets/svg";
 import { useOutsideAlerter } from "../../hook/useOutSide";
 import "./styles.less";
@@ -102,6 +103,16 @@ const LayoutComponent = ({ className, children }) => {
               <span className="menu-item-label">Campaigns</span>
             </NavLink>
           </Menu.Item>
+          <Menu.Item key="automation">
+            <NavLink
+              to="/automation/active"
+              onMouseOver={() => setHover(true)}
+              onMouseOut={() => setHover(false)}
+            >
+              <AutomationRobotIcon />
+              <span className="menu-item-label">Automations</span>
+            </NavLink>
+          </Menu.Item>
           <Menu.SubMenu
             title={
               <div>
@@ -145,12 +156,6 @@ const LayoutComponent = ({ className, children }) => {
                   className="ant-btn ant-btn-text"
                 >
                   Profile
-                </NavLink>
-                <NavLink
-                  to="/automation/active"
-                  className="ant-btn ant-btn-text"
-                >
-                  My Automation
                 </NavLink>
                 <Button type="text" onClick={handleLogout}>
                   Log out

@@ -77,22 +77,45 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
   };
 
   const handleSubmitDelay = () => {
-    const newData = {
-      type: actionType,
-      delay: clearEmptyField({
-        duration: duration,
-        datetime: datetime || null,
-        dayOfMonth: dayOfMonth || null,
-        month: month || null,
-        dayOfWeek: dayOfWeek || null,
-        time: time || null,
+    let delay = {};
+    if (duration === DURATION_TYPE.TIME_FROM_TRIGGER) {
+      delay = {
         days: parseInt(days) || null,
         hours: parseInt(hours) || null,
         minutes: parseInt(minutes) || null,
         seconds: parseInt(seconds) || null,
-        timeZone: selectedTimezone || null,
+      };
+    } else if (duration === DURATION_TYPE.UNTIL_NEXT_DAY) {
+      delay = {
+        time: time || null,
+        timezone: selectedTimezone || null,
+      };
+    } else if (duration === DURATION_TYPE.UNTIL_NEXT_DAY_OF_WEEK) {
+      delay = {
+        dayOfWeek: dayOfWeek || null,
+        time: time || null,
+        timezone: selectedTimezone || null,
+      };
+    } else if (duration === DURATION_TYPE.UNTIL_NEXT_DAY_OF_MONTH) {
+      delay = {
+        dayOfMonth: dayOfMonth || null,
+        month: month || null,
+        time: time || null,
+        timezone: selectedTimezone || null,
+      };
+    } else if (duration === DURATION_TYPE.UNTIL_DATE) {
+      delay = {
+        datetime: datetime || null,
+      };
+    }
+    const newData = {
+      type: actionType,
+      delay: clearEmptyField({
+        duration: duration,
+        ...delay,
       }),
     };
+    console.log('###handleOk', data, index, newData);
     handleOk(data, index, newData);
   };
 
@@ -110,7 +133,6 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
   };
 
   const handleSelectTimeZome = (e) => {
-    // console.log('###handleSelectTimeZome', e);
     setSelectedTimezone(e);
   };
 
@@ -322,6 +344,7 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
       });
 
       if (data.type === "DELAY") {
+        console.log('###data.delay', data.delay);
         setDuration(data.delay?.duration || DELAY_TYPE[0].value);
         setDatetime(
           data.delay?.datetime ? new Date(data.delay?.datetime) : new Date()
@@ -338,11 +361,7 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
         setHoursState(data.delay?.hours || "");
         setMinutesState(data.delay?.minutes || "");
         setSecondsState(data.delay?.seconds || "");
-        setSelectedTimezone(
-          isObject(data.delay?.timezone)
-            ? data.delay?.timezone
-            : { value: data.delay?.timezone }
-        );
+        setSelectedTimezone(data.delay?.timezone || data.delay?.timeZone || {});
       }
     }
   }, [visible, data]);

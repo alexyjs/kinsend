@@ -11,12 +11,7 @@ import {
 } from "../../redux/userReducer";
 import LayoutComponent from "../../components/Layout";
 import { PASSWORD_REGEX } from "../../utils/validations";
-import {
-  AvatarComponent,
-  VCardComponent,
-  CNameModal,
-} from "./../../components";
-import { useModal } from "../../hook/useModal";
+import { AvatarComponent, VCardComponent } from "./../../components";
 
 import "./styles.less";
 
@@ -30,11 +25,6 @@ const Profile = () => {
   const [formReset] = Form.useForm();
   const dispatch = useDispatch();
   const { user, isLoading } = useSelector(selectUsers);
-  const {
-    close: closeCName,
-    show: showCName,
-    visible: visibleCName,
-  } = useModal();
 
   const onFileChange = async (event) => {
     const formData = new FormData();
@@ -105,23 +95,6 @@ const Profile = () => {
               </Col>
             </Row>
           </Form>
-          <Row justify="end">
-            <Col>
-              <Button
-                type="primary"
-                size="large"
-                onClick={() => showCName()}
-                // className="w-48"
-              >
-                Open CNAME Management
-              </Button>
-              <CNameModal
-                handleCancel={closeCName}
-                handleOk={closeCName}
-                visible={visibleCName}
-              />
-            </Col>
-          </Row>
         </div>
       </div>
       <Divider />

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Row,
   Col,
@@ -13,24 +13,22 @@ import {
   Modal,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useNavigate } from "react-router";
+import { get as _get } from "lodash";
 
 import { useModal } from "../../../hook/useModal";
 import LayoutComponent from "../../../components/Layout";
-import {
-  AvatarComponent,
-  RichText,
-  VCardComponent,
-  CNameModal,
-} from "../../../components";
+import { AvatarComponent, RichText, VCardComponent } from "../../../components";
 import { OPTION_FIELDS } from "../../../utils/constants";
+import { handleCallAPI } from "../../../redux/helpers";
 import {
-  getFormsAsync,
+  getFormDetail,
   selectSettings,
   getCustomFieldsAsync,
   getTagsAsync,
   addFormAsync,
+  updateFormAsync,
 } from "../../../redux/settingsReducer";
 import {
   selectUsers,
@@ -46,7 +44,23 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 
+const initialValues = {
+  tagId: [],
+  cnameTitle: "",
+  title: "",
+  browserTitle: "",
+  redirectUrl: "",
+  description: "",
+  optionalFields: [],
+  customFieldsIds: [],
+  submission: "",
+  isEnabled: false,
+  isVcardSend: false,
+  message: "",
+};
+
 const AddNewForm = () => {
+  const { id } = useParams();
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,14 +76,9 @@ const AddNewForm = () => {
     show: showVcard,
     visible: visibleVcard,
   } = useModal();
-  const {
-    close: closeCName,
-    show: showCName,
-    visible: visibleCName,
-  } = useModal();
 
   const onSubmitAddNewForm = (values) => {
-    if (!image) {
+    if (!image && !id) {
       notification.error({
         title: "Action failed",
         message: `Please upload your image`,
@@ -77,11 +86,12 @@ const AddNewForm = () => {
       return;
     }
     const formData = new FormData();
-    formData.append("file", image, image.name);
-
+    if (image) {
+      formData.append("file", image, image.name);
+    }
     formData.append("tagId", values.tagId || "");
-    // formData.append("customFieldsId", values.customFieldsId);
-    formData.append("url", values.url + ".kinsend.io");
+    formData.append("cnameTitle", values.cnameTitle);
+    formData.append("url", values.cnameTitle);
     formData.append("title", values.title || "");
     formData.append("browserTitle", values.browserTitle || "");
     formData.append("redirectUrl", values.redirectUrl || "");
@@ -98,8 +108,16 @@ const AddNewForm = () => {
     formData.append("isEnabled", values.isEnabled || false);
     formData.append("isVcardSend", values.isVcardSend || false);
     formData.append("message", values.message);
-
-    dispatch(addFormAsync(formData));
+    if (id) {
+      dispatch(
+        updateFormAsync({
+          dataUpdate: formData,
+          id: id,
+        })
+      );
+    } else {
+      dispatch(addFormAsync(formData));
+    }
   };
 
   const onFileChange = async (event) => {
@@ -119,6 +137,15 @@ const AddNewForm = () => {
   const handleVcardCancel = async (event) => {
     closeVcard();
   };
+
+  const resetData = useCallback(() => {
+    form.setFieldsValue({
+      ...initialValues,
+    });
+    setPreviewImage("");
+    setImage("");
+    setDescription("");
+  }, []);
 
   useEffect(() => {
     dispatch(getCustomFieldsAsync());
@@ -154,29 +181,36 @@ const AddNewForm = () => {
   }, []);
 
   useEffect(() => {
-    if (!user?.cname) {
-      showCName();
-    }
-    if (user && user.cname) {
-      form.setFieldsValue({
-        url: user?.cname?.title || "",
+    if (id) {
+      const payload = {
+        method: "GET",
+        url: `${process.env.REACT_APP_API_BASE_URL}/forms/${id}`,
+      };
+      handleCallAPI(payload).then((res) => {
+        const data = _get(res, "response", {});
+        form.setFieldsValue({
+          ...data,
+          customFieldsIds: (data?.customFields || []).map((item) => item.id),
+          tagId: data?.tags?.id,
+          cnameTitle: data?.cnameTitle ? data?.cnameTitle : data?.url,
+        });
+        setImage("");
+        setPreviewImage(data.image);
+        setDescription(data.description);
       });
-      closeCName();
+    } else {
+      resetData();
     }
-  }, [user]);
+  }, [id]);
 
   return (
     <LayoutComponent className="settings-page add-new-form-page">
       <h1>
         Settings <span>SETTINGS</span>
       </h1>
-      <CNameModal
-        handleCancel={() => navigate("/settings/forms", { replace: true })}
-        handleOk={closeCName}
-        visible={visibleCName}
-      />
       <Form
         {...layout}
+        initialValues={initialValues}
         form={form}
         name="control-hooks"
         onFinish={onSubmitAddNewForm}
@@ -192,7 +226,7 @@ const AddNewForm = () => {
           <Col sm={18}>
             <div className="input-subfix flex items-end">
               <Form.Item
-                name="url"
+                name="cnameTitle"
                 label={
                   <div>
                     KINSEND URL{" "}
@@ -200,20 +234,15 @@ const AddNewForm = () => {
                   </div>
                 }
                 rules={[{ required: true }]}
-                disabled
                 className="flex-1"
               >
-                <Input
-                  className="prefix-input-domain"
-                  placeholder=""
-                  disabled
-                />
+                <Input className="prefix-input-domain" placeholder="" />
               </Form.Item>
               <span
                 className="flex items-center mb-6 suffix-domain text-primary"
                 type="text"
               >
-                .kinsend.io
+                .{window.location.host}
               </span>
             </div>
             <Form.Item

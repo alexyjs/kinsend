@@ -29,6 +29,7 @@ import {
   watchUpdateCustomFieldSaga,
   watchGetFormsSaga,
   watchAddFormSaga,
+  watchUpdateFormSaga,
 } from "./settingsReducer";
 
 import {
@@ -79,6 +80,7 @@ export default function* rootSaga() {
     watchUpdateCustomFieldSaga(),
     watchGetFormsSaga(),
     watchAddFormSaga(),
+    watchUpdateFormSaga(),
 
     // public
     watchGetFormSettingDetailSaga(),
