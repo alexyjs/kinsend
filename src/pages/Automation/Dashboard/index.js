@@ -63,9 +63,9 @@ const Dashboard = () => {
             <Card bordered={true} className="rounded-3xl h-60">
               <div className="flex justify-between items-center">
                 <span>
-                  {item?.type === "FIRST_MESSAGE"
+                  {item?.triggerType === "FIRST_MESSAGE"
                     ? "First messenge"
-                    : item?.type === "CONTACT_CREATED"
+                    : item?.triggerType === "CONTACT_CREATED"
                     ? "Contact Created"
                     : "Contact Tagged"}
                 </span>
