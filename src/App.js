@@ -24,7 +24,7 @@ import useLocalStorage from "./hook/userLocalStorage";
 import PaymentSetup from "./pages/PaymentSetup";
 import Profile from "./pages/Profile";
 import { getUserAsync, selectUsers } from "./redux/userReducer";
-import { authStorage } from "./utils";
+import { authStorage, getCname } from "./utils";
 
 function App() {
   const [savedAuth, setAuth] = useLocalStorage(STORAGE_AUTH_KEY);
@@ -45,6 +45,7 @@ function App() {
   }, [user]);
 
   const isAuth = authStorage.get();
+  const cname = getCname();
 
   if (isAuth) {
     return (
@@ -68,6 +69,7 @@ function App() {
 
             <Route path="/settings/forms" element={<FormManage />} />
             <Route path="/settings/forms/new" element={<AddNewForm />} />
+            <Route path="/settings/forms/edit/:id" element={<AddNewForm />} />
 
             {/* path="/automation/:tabname" */}
             {/* explore | new | active */}
@@ -75,6 +77,27 @@ function App() {
             <Route path="/automation/edit/:id" element={<AddNewAutomation />} />
             <Route path="/automation/:tabname" element={<Automation />} />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </Routes>
+        </ConfigProvider>
+      </main>
+    );
+  }
+
+  if (cname) {
+    return (
+      <main>
+        <ConfigProvider
+          locale={en}
+          areaMapper={(area) => {
+            return {
+              ...area,
+              emoji: <span className={`fp ${area.short.toLowerCase()}`} />,
+            };
+          }}
+        >
+          <Routes>
+            <Route path="/f/:id" element={<PublicFormSumission />} />
+            <Route path="*" element={<PublicFormSumission />} />
           </Routes>
         </ConfigProvider>
       </main>

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, Tag, Space } from "antd";
+import { Button, Table } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 import { useModal } from "../../../hook/useModal";
-import AddNewForm from "./AddNewForm";
 import { AddIcon } from "../../../assets/svg";
 import {
   getFormsAsync,
@@ -17,7 +16,7 @@ import { CopyComponent } from "../../../components";
 
 const TagsList = () => {
   const { close, show, visible } = useModal();
-  const { forms, tags, customFields } = useSelector(selectSettings);
+  const { forms } = useSelector(selectSettings);
   const { user } = useSelector(selectUsers);
   const dispatch = useDispatch();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -37,16 +36,28 @@ const TagsList = () => {
     },
     {
       title: "CONTACTS",
-      dataIndex: "url",
-      key: "url",
+      render: (item) => <span></span>,
     },
     {
       title: "Actions",
       render: (item) => (
-        <CopyComponent
-          value={`${user?.cname?.title}.${user?.cname?.domain}/f/${item.id}`}
-          title="copy link submission"
-        />
+        <span className="flex items-center">
+          <CopyComponent
+            value={`${item.url}.${window.location.host}/f/${item.id}`}
+            title="copy link submission"
+          />
+          {/* <NavLink to={`/settings/forms/edit/${item.id}`}>
+            <Button
+              type="primary"
+              size="small"
+              className="inline-flex items-center ml-4 border-0 bg-none"
+              // onClick={show}
+            >
+              {" "}
+              Edit
+            </Button>
+          </NavLink> */}
+        </span>
       ),
     },
   ];

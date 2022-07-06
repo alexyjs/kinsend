@@ -17,7 +17,7 @@ const Copy = ({ value, title }) => {
   };
 
   return (
-    <span className="copy-component">
+    <span className="copy-component inline-flex items-center">
       <CopyOutlined
         onClick={handleCopy}
         // title={title}

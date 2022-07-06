@@ -14,6 +14,7 @@ export const updateCustomFieldAsync = createAction(
 );
 export const getFormsAsync = createAction("settings/getFormsAsync");
 export const addFormAsync = createAction("settings/addFormAsync");
+export const updateFormAsync = createAction("settings/updateFormAsync");
 
 export async function getTags(data) {
   const payload = {
@@ -79,6 +80,25 @@ export async function addForm(data) {
   const payload = {
     method: "POST",
     url: `${process.env.REACT_APP_API_BASE_URL}/forms`,
+    data,
+  };
+
+  return handleFileCallAPI(payload);
+}
+
+export async function getFormDetail(id) {
+  const payload = {
+    method: "GET",
+    url: `${process.env.REACT_APP_API_BASE_URL}/forms/${id}`,
+  };
+
+  return handleFileCallAPI(payload);
+}
+
+export async function updateForm(data, id) {
+  const payload = {
+    method: "PUT",
+    url: `${process.env.REACT_APP_API_BASE_URL}/forms/${id}`,
     data,
   };
 
@@ -196,6 +216,28 @@ export function* addFormSaga(action) {
   }
 }
 
+export function* updateFormSaga(action) {
+  const { response, errors } = yield call(
+    updateForm,
+    action.payload.dataUpdate,
+    action.payload.id
+  );
+  if (response) {
+    yield call(getFormsSaga, {});
+    yield put(addFormSuccess(response));
+    notification.success({
+      title: "Action Completed",
+      message: `The form has been updated.`,
+    });
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || `Can't update new form`,
+    });
+  }
+}
+
 export function* watchgetTagsSaga() {
   yield takeLatest(getTagsAsync, getTagsSaga);
 }
@@ -222,6 +264,10 @@ export function* watchGetFormsSaga() {
 
 export function* watchAddFormSaga() {
   yield takeLatest(addFormAsync, addFormSaga);
+}
+
+export function* watchUpdateFormSaga() {
+  yield takeLatest(updateFormAsync, updateFormSaga);
 }
 
 const initialState = {

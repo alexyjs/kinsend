@@ -96,7 +96,7 @@ const CNameModal = ({ visible, handleOk, handleCancel }) => {
             className="flex items-center mb-6 suffix-domain text-primary"
             type="text"
           >
-            .kinsend.io
+            .{window.location.host}
           </span>
         </div>
         <Row justify="space-around" className="mt-12">
