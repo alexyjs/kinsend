@@ -31,3 +31,4 @@ export { ReactComponent as EmojiIcon } from "./EmojiIcon.svg";
 export { ReactComponent as AutomationAddIcon } from "./AutomationAddIcon.svg";
 export { ReactComponent as AutomationAddStopIcon } from "./AutomationAddStopIcon.svg";
 export { ReactComponent as AutomationActionRemove } from "./AutomationActionRemove.svg";
+export { ReactComponent as AutomationRobotIcon } from "./AutomationRobotIcon.svg";
