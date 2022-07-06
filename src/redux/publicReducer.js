@@ -7,6 +7,7 @@ import { handleCallAPI } from "./helpers";
 export const getFormsSettingDetailAsync = createAction(
   "public/getFormsSettingDetailAsync"
 );
+
 export const addFormSubmissionAsync = createAction(
   "public/addFormSubmissionAsync"
 );
@@ -30,7 +31,7 @@ export async function addFormSubmission(data) {
   return handleCallAPI(payload);
 }
 
-export function* getFormsSaga(action) {
+export function* getFormDetailSaga(action) {
   const { response, errors } = yield call(getFormSettingDetail, action.payload);
   if (response) {
     yield put(getFormsSettingDetailSuccess(response));
@@ -57,7 +58,7 @@ export function* addFormSubmissionSaga(action) {
 }
 
 export function* watchGetFormSettingDetailSaga() {
-  yield takeLatest(getFormsSettingDetailAsync, getFormsSaga);
+  yield takeLatest(getFormsSettingDetailAsync, getFormDetailSaga);
 }
 
 export function* watchAddFormSubmissionSaga() {

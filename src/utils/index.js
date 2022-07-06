@@ -101,3 +101,21 @@ export const clearEmptyField = (object) => {
 
   return result;
 };
+
+export const getCname = () => {
+  const host = window.location.host;
+  if (
+    (host !== "dev.kinsend.io" &&
+      // prod
+      host !== "kinsend.io" &&
+      host.includes(".kinsend.io")) ||
+    // development
+    (host !== "localhost:3000" && host.includes(".localhost:3000"))
+  ) {
+    return host
+      .replace(".dev.kinsend.io", "")
+      .replace(".kinsend.io", "")
+      .replace(".localhost:3000", "");
+  }
+  return "";
+};

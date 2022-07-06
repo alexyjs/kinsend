@@ -51,7 +51,7 @@ const AddNewAutomation = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let { id } = useParams();
+  const { id } = useParams();
 
   const [title, setTitle] = useState("");
   const [trigger, setTrigger] = useState(null);
@@ -291,7 +291,8 @@ const AddNewAutomation = () => {
     <LayoutComponent className="create-automation-page">
       <div className="flex justify-between items-center">
         <h1>
-          <span className="text-primary">New</span>&nbsp;Automation
+          <span className="text-primary">{id ? "Edit" : "New"}</span>
+          &nbsp;Automation
         </h1>
         <Button
           type="primary"

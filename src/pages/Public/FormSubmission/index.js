@@ -5,21 +5,14 @@ import {
   Form,
   Input,
   Button,
-  Select,
-  Option,
-  Radio,
-  Checkbox,
-  notification,
   Avatar,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router";
 
 import {
-  AvatarComponent,
-  RichText,
   CustomFieldsComponent,
   OptionFieldsComponent,
   InputPhone,
@@ -30,7 +23,7 @@ import {
   addFormSubmissionAsync,
   selectPublic,
 } from "../../../redux/publicReducer";
-import { parseFormDataValue, phoneValidator } from "../../../utils";
+import { parseFormDataValue, phoneValidator, getCname } from "../../../utils";
 
 import "./styles.less";
 
@@ -44,6 +37,7 @@ const FormSubmission = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let { id } = useParams();
+  const cname = getCname();
 
   const { addedFormSubmission, formSettingDetail, addedForm, isNewFormLoading } =
     useSelector(selectPublic);
@@ -61,11 +55,10 @@ const FormSubmission = () => {
     delete metaData.phoneNumber
     delete metaData.location
     let params = {
-      formId: id,
+      formId: formSettingDetail.id,
       email: values.email,
       firstName: values.firstName,
       lastName: values.lastName,
-      // phoneNumber: values.phoneNumber,
       phoneNumber: values.phoneNumber,
       location: values.location,
       metaData: JSON.stringify(metaData),
@@ -80,7 +73,13 @@ const FormSubmission = () => {
   }, [addedFormSubmission, useDispatch]);
 
   useEffect(() => {
-    dispatch(getFormsSettingDetailAsync(id));
+    if (formSettingDetail?.id) {
+      navigate(`/f/${formSettingDetail.id}`);
+    }
+  }, [formSettingDetail]);
+
+  useEffect(() => {
+    dispatch(getFormsSettingDetailAsync(id || cname));
   }, [useDispatch]);
 
   return (
