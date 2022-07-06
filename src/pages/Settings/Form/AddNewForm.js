@@ -46,7 +46,7 @@ const layout = {
 
 const initialValues = {
   tagId: [],
-  url: "",
+  cnameTitle: "",
   title: "",
   browserTitle: "",
   redirectUrl: "",
@@ -90,7 +90,8 @@ const AddNewForm = () => {
       formData.append("file", image, image.name);
     }
     formData.append("tagId", values.tagId || "");
-    formData.append("url", values.url);
+    formData.append("cnameTitle", values.cnameTitle);
+    formData.append("url", values.cnameTitle);
     formData.append("title", values.title || "");
     formData.append("browserTitle", values.browserTitle || "");
     formData.append("redirectUrl", values.redirectUrl || "");
@@ -191,6 +192,7 @@ const AddNewForm = () => {
           ...data,
           customFieldsIds: (data?.customFields || []).map((item) => item.id),
           tagId: data?.tags?.id,
+          cnameTitle: data?.cnameTitle ? data?.cnameTitle : data?.url,
         });
         setImage("");
         setPreviewImage(data.image);
@@ -224,7 +226,7 @@ const AddNewForm = () => {
           <Col sm={18}>
             <div className="input-subfix flex items-end">
               <Form.Item
-                name="url"
+                name="cnameTitle"
                 label={
                   <div>
                     KINSEND URL{" "}
