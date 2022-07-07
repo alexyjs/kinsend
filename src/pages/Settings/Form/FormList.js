@@ -46,7 +46,7 @@ const TagsList = () => {
             value={`${item.url}.${window.location.host}/f/${item.id}`}
             title="copy link submission"
           />
-          {/* <NavLink to={`/settings/forms/edit/${item.id}`}>
+          <NavLink to={`/settings/forms/edit/${item.id}`}>
             <Button
               type="primary"
               size="small"
@@ -56,7 +56,7 @@ const TagsList = () => {
               {" "}
               Edit
             </Button>
-          </NavLink> */}
+          </NavLink>
         </span>
       ),
     },
