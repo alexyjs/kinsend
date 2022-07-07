@@ -11,18 +11,18 @@ import "./styles.less";
 
 const ResendPasswordModal = ({ visible, handleOk, handleCancel }) => {
   const dispatch = useDispatch();
-  const { resendVerifyEmailSuccess } = useSelector(selectUsers);
+  // const { resendVerifyEmailSuccess } = useSelector(selectUsers);
   const handleFinish = (values) => {
     dispatch(resendPasswordAsync(values));
   };
 
-  useEffect(() => {
-    if (resendVerifyEmailSuccess) {
-      handleOk && handleOk();
-    }
+  // useEffect(() => {
+  //   if (resendVerifyEmailSuccess) {
+  //     handleOk && handleOk();
+  //   }
 
-    return () => dispatch(resetResendVerifyEmail());
-  }, [resendVerifyEmailSuccess, handleOk, dispatch]);
+  //   return () => dispatch(resetResendVerifyEmail());
+  // }, [resendVerifyEmailSuccess, handleOk, dispatch]);
 
   return (
     <Modal
