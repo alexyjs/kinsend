@@ -15,7 +15,9 @@ const ThankYouSubmission = () => {
       <div className="thank-you-box text-center">
         <p className="text-center mb-4 text-2xl font-bold">
           {addedFormSubmission?.form?.message ||
-            "Thank you for adding yourself to my phone book!"}
+            "Thank you for adding yourself to my phone book!"} {
+              addedFormSubmission?.form?.redirectUrl && <a className="text-primary" href={addedFormSubmission?.form?.redirectUrl} target="_blank">{addedFormSubmission?.form?.redirectUrl}</a>
+            }
         </p>
         <LogoIcon />
         <p className="note inline-flex">
