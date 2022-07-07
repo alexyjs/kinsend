@@ -90,7 +90,7 @@ export const formatArray = (value) => {
 
 export const clearEmptyField = (object) => {
   let result = {};
-  for (const property of Object.keys(object)) {
+  for (const property in object) {
     if (object[property] && !isEqual(object[property], {}) && !isEqual(object[property], [])) {
       result[property] = object[property];
     }

@@ -10,6 +10,9 @@ export const loginAsync = createAction("user/loginAsync");
 export const resendVerifyEmailAsync = createAction(
   "user/resendVerifyEmailAsync"
 );
+export const resendPasswordAsync = createAction(
+  "user/resendPasswordAsync"
+);
 export const loginWithGoogleAsync = createAction("user/loginWithGoogleAsync");
 export const patchUserAsync = createAction("user/patchUserAsync");
 export const getUserAsync = createAction("user/getUserAsync");
@@ -197,6 +200,24 @@ export function* resendVerifyEmailSaga(action) {
     yield put(failed(errors));
     notification.error({
       title: "Action failed",
+      message: errors || "Resend verify email failed.",
+    });
+  }
+}
+
+// TODO: update later, we are mising this API
+export function* resendPasswordSaga(action) {
+  const { response, errors } = yield call(resendVerifyEmailAPI, action.payload);
+
+  if (response) {
+    notification.success({
+      title: "Action Completed",
+      message: `Successfully! Please check your email.`,
+    });
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
       message: errors || "Forgot password failed.",
     });
   }
@@ -341,6 +362,10 @@ export function* watchLoginWithGoogleAsyncSaga() {
 
 export function* watchResendVerifyEmailSaga() {
   yield takeLatest(resendVerifyEmailAsync, resendVerifyEmailSaga);
+}
+
+export function* watchResendPassworSaga() {
+  yield takeLatest(resendPasswordAsync, resendPasswordSaga);
 }
 
 export function* watchPatchUserSaga() {
