@@ -60,6 +60,7 @@ function App() {
           }}
         >
           <Routes>
+            <Route path="/thank-you" element={<PublicThankYouSubmission />} />
             <Route path="/f/:id" element={<PublicFormSumission />} />
             <Route path="/settings/profile" element={<Profile />} />
             <Route path="/payment-setup" element={<PaymentSetup />} />

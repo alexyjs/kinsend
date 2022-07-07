@@ -120,3 +120,17 @@ export const getCname = () => {
   }
   return "";
 };
+
+
+export const getMainDomain = () => {
+  const host = window.location.host;
+  if ( host.includes("dev.kinsend.io")) {
+    return 'https://dev.kinsend.io'
+  }
+
+  if ( host.includes("kinsend.io")) {
+    return 'https://kinsend.io'
+  }
+
+  return "http://localhost:3000";
+};
