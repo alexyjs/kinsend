@@ -286,7 +286,6 @@ const AddNewForm = () => {
             <Form.Item
               name="redirectUrl"
               label="CUSTOM REDIRECT URL"
-              rules={[{ required: true }]}
             >
               <Input placeholder="http//.." />
             </Form.Item>
@@ -390,7 +389,6 @@ const AddNewForm = () => {
                   </span>
                 </>
               }
-              rules={[{ required: true }]}
             >
               <Input placeholder="Thank you for adding yourself to my phone book!" />
             </Form.Item>
