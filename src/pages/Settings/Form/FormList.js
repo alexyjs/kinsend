@@ -43,7 +43,7 @@ const TagsList = () => {
       render: (item) => (
         <span className="flex items-center">
           <CopyComponent
-            value={`${item.url}.${window.location.host}/f/${item.id}`}
+            value={`${item.url}.${window.location.host.includes('dev.kinsend.io') ? 'dev.kinsend.io': window.location.host}/f/${item.id}`}
             title="copy link submission"
           />
           <NavLink to={`/settings/forms/edit/${item.id}`}>
