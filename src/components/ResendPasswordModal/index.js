@@ -2,7 +2,7 @@ import { Button, Col, Form, Input, Modal, Row } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  resendVerifyEmailAsync,
+  resendPasswordAsync,
   resetResendVerifyEmail,
   selectUsers,
 } from "../../redux/userReducer";
@@ -13,7 +13,7 @@ const ResendPasswordModal = ({ visible, handleOk, handleCancel }) => {
   const dispatch = useDispatch();
   const { resendVerifyEmailSuccess } = useSelector(selectUsers);
   const handleFinish = (values) => {
-    dispatch(resendVerifyEmailAsync(values));
+    dispatch(resendPasswordAsync(values));
   };
 
   useEffect(() => {
