@@ -68,7 +68,7 @@ const FormSubmission = () => {
 
   useEffect(() => {
     if (addedFormSubmission) {
-      navigate("/thank-you", { replace: true });
+      navigate(`/thank-you`, { replace: true });
     }
   }, [addedFormSubmission, useDispatch]);
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { CheckCircleOutlined } from "@ant-design/icons";
+
 import { LogoIcon } from "../../../assets/svg";
 
 import { selectPublic } from "../../../redux/publicReducer";
@@ -8,7 +8,6 @@ import "./styles.less";
 
 const ThankYouSubmission = () => {
   const { addedFormSubmission } = useSelector(selectPublic);
-
   return (
     <div className="thank-you-page">
       <div className="thank-you-box text-center">

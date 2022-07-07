@@ -106,7 +106,7 @@ export const clearEmptyField = (object) => {
 export const getCname = () => {
   const host = window.location.host;
   if (
-    (host !== "dev.kinsend.io" &&
+    (host !== "www.dev.kinsend.io" && host !== "dev.kinsend.io" &&
       // prod
       host !== "kinsend.io" &&
       host.includes(".kinsend.io")) ||
@@ -119,4 +119,18 @@ export const getCname = () => {
       .replace(".localhost:3000", "");
   }
   return "";
+};
+
+
+export const getMainDomain = () => {
+  const host = window.location.host;
+  if ( host.includes("dev.kinsend.io")) {
+    return 'https://dev.kinsend.io'
+  }
+
+  if ( host.includes("kinsend.io")) {
+    return 'https://kinsend.io'
+  }
+
+  return "http://localhost:3000";
 };
