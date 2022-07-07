@@ -23,7 +23,7 @@ import {
   addFormSubmissionAsync,
   selectPublic,
 } from "../../../redux/publicReducer";
-import { parseFormDataValue, phoneValidator, getCname, getMainDomain } from "../../../utils";
+import { parseFormDataValue, phoneValidator, getCname } from "../../../utils";
 
 import "./styles.less";
 
@@ -38,7 +38,6 @@ const FormSubmission = () => {
   const navigate = useNavigate();
   let { id } = useParams();
   const cname = getCname();
-  const mainDomain = getMainDomain();
 
   const { addedFormSubmission, formSettingDetail, addedForm, isNewFormLoading } =
     useSelector(selectPublic);
@@ -69,8 +68,7 @@ const FormSubmission = () => {
 
   useEffect(() => {
     if (addedFormSubmission) {
-      // navigate(`${mainDomain}/thank-you`, { replace: true });
-      window.location.href = `${mainDomain}/thank-you`;
+      navigate(`${mainDomain}/thank-you`, { replace: true });
     }
   }, [addedFormSubmission, useDispatch]);
 
@@ -83,10 +81,6 @@ const FormSubmission = () => {
   useEffect(() => {
     dispatch(getFormsSettingDetailAsync(id || cname));
   }, [useDispatch]);
-
-  useEffect(() => {
-    window.location.href = `${mainDomain}/thank-you?ref=nghia.dinh@gmail.com`;
-  }, []);
 
   return (
     <div className="settings-page add-new-form-page pb-5">
