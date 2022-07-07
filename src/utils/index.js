@@ -106,7 +106,7 @@ export const clearEmptyField = (object) => {
 export const getCname = () => {
   const host = window.location.host;
   if (
-    (host !== "dev.kinsend.io" &&
+    (host !== "www.dev.kinsend.io" && host !== "dev.kinsend.io" &&
       // prod
       host !== "kinsend.io" &&
       host.includes(".kinsend.io")) ||
