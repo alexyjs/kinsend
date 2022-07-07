@@ -242,7 +242,7 @@ const AddNewForm = () => {
                 className="flex items-center mb-6 suffix-domain text-primary"
                 type="text"
               >
-                .{window.location.host}
+                .{window.location.host.replace('www.', '')}
               </span>
             </div>
             <Form.Item
