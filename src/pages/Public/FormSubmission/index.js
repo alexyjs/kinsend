@@ -68,7 +68,11 @@ const FormSubmission = () => {
 
   useEffect(() => {
     if (addedFormSubmission) {
-      navigate(`/thank-you`, { replace: true });
+      if (addedFormSubmission?.form?.redirectUrl) {
+        window.location.href = addedFormSubmission?.form?.redirectUrl;
+      } else {
+        navigate(`/thank-you`, { replace: true });
+      }
     }
   }, [addedFormSubmission, useDispatch]);
 
