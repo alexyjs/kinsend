@@ -291,8 +291,14 @@ const AddNewAutomation = () => {
     <LayoutComponent className="create-automation-page">
       <div className="flex justify-between items-center">
         <h1>
-          <span className="text-primary">{id ? "Edit" : "New"}</span>
-          &nbsp;Automation
+          {!id && title === "New automation" ? (
+            <>
+              <span className="text-primary">New</span>
+              &nbsp;Automation
+            </>
+          ) : (
+            title
+          )}
         </h1>
         <Button
           type="primary"
