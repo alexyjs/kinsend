@@ -36,7 +36,7 @@ const TagsList = () => {
     },
     {
       title: "CONTACTS",
-      render: (item) => <span></span>,
+      render: (item) => <span>{item?.totalSubscriber || 0}</span>,
     },
     {
       title: "Actions",
