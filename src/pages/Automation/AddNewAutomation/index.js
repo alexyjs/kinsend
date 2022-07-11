@@ -293,7 +293,7 @@ const AddNewAutomation = () => {
         <h1>
           {!id && title === "New automation" ? (
             <>
-              <span className="text-primary">{id ? "Edit" : "New"}</span>
+              <span className="text-primary">New</span>
               &nbsp;Automation
             </>
           ) : (
