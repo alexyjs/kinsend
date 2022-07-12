@@ -126,7 +126,7 @@ const Login = () => {
               </Button>
             </Form.Item>
             <Divider>
-              <span className="text-primary">or</span>
+              <span className="text-primary or-diveder">or</span>
             </Divider>
             <div className="text-center">
               <GoogleLogin
