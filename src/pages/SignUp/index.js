@@ -337,7 +337,7 @@ const SignUp = () => {
                     <Checkbox.Group name="what">
                       <Space direction="vertical">
                         <Checkbox value="1">
-                          I would like to collect data on my customers and rurn
+                          I would like to collect data on my customers and turn
                           them into phone contacts
                         </Checkbox>
                         <Checkbox value="2">
@@ -416,7 +416,7 @@ const SignUp = () => {
                     </Typography>
                     <Typography className="text-center">
                       <span className="text-primary font-bold underline uppercase cursor-pointer" onClick={handleResendVerifyEmail}>
-                        resent email verification
+                        resend email verification
                       </span>
                     </Typography>
                   </Space>

@@ -98,14 +98,13 @@ const Login = () => {
               <Typography className={`mb-8`}>
                 <p>
                   <span
-                    className="underline cursor-pointer no-underline"
-                    onClick={show}
+                    className="underline no-underline"
                   >
                     Forgot your password?{" "}
                   </span>
-                  <NavLink to="/sign-up" className="text-primary font-bold">
+                  <span className="text-primary font-bold cursor-pointer" onClick={show}>
                     Request a new one
-                  </NavLink>
+                  </span>
                   <ResendPasswordModal
                     handleCancel={close}
                     handleOk={close}
