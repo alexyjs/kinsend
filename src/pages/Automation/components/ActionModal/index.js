@@ -115,7 +115,7 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
         ...delay,
       }),
     };
-    console.log('###handleOk', data, index, newData);
+    console.log("###handleOk", data, index, newData);
     handleOk(data, index, newData);
   };
 
@@ -344,7 +344,7 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
       });
 
       if (data.type === "DELAY") {
-        console.log('###data.delay', data.delay);
+        console.log("###data.delay", data.delay);
         setDuration(data.delay?.duration || DELAY_TYPE[0].value);
         setDatetime(
           data.delay?.datetime ? new Date(data.delay?.datetime) : new Date()

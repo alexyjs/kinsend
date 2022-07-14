@@ -242,7 +242,7 @@ const AddNewForm = () => {
                 className="flex items-center mb-6 suffix-domain text-primary"
                 type="text"
               >
-                .{window.location.host.replace('www.', '')}
+                .{window.location.host.replace("www.", "")}
               </span>
             </div>
             <Form.Item
@@ -283,10 +283,7 @@ const AddNewForm = () => {
             >
               <Input placeholder="Add title browser title" />
             </Form.Item>
-            <Form.Item
-              name="redirectUrl"
-              label="CUSTOM REDIRECT URL"
-            >
+            <Form.Item name="redirectUrl" label="CUSTOM REDIRECT URL">
               <Input placeholder="http//.." />
             </Form.Item>
             <Form.Item

@@ -86,6 +86,7 @@ const RichText = ({ value, onChange, className, disabled }) => {
       className={className}
       theme="snow"
       modules={modules}
+      value={value}
       defaultValue={value}
       onChange={onChange}
       readOnly={disabled}

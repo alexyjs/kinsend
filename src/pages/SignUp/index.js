@@ -20,7 +20,11 @@ import "swiper/css/pagination";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 
 import { SuccessIcon } from "../../assets/svg";
-import { createUserAsync, selectCreateUser, resendVerifyEmailAsync } from "../../redux/userReducer";
+import {
+  createUserAsync,
+  selectCreateUser,
+  resendVerifyEmailAsync,
+} from "../../redux/userReducer";
 import { phoneValidator } from "../../utils";
 import { INFO_FROM } from "../../utils/constants";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "../../utils/validations";
@@ -95,7 +99,7 @@ const SignUp = () => {
   const handleResendVerifyEmail = () => {
     let email = form.getFieldValue("email") || "";
     dispatch(resendVerifyEmailAsync({ email }));
-  }
+  };
 
   useEffect(() => {
     if (signupSuccess) {
@@ -337,7 +341,7 @@ const SignUp = () => {
                     <Checkbox.Group name="what">
                       <Space direction="vertical">
                         <Checkbox value="1">
-                          I would like to collect data on my customers and rurn
+                          I would like to collect data on my customers and turn
                           them into phone contacts
                         </Checkbox>
                         <Checkbox value="2">
@@ -415,8 +419,11 @@ const SignUp = () => {
                       </p>
                     </Typography>
                     <Typography className="text-center">
-                      <span className="text-primary font-bold underline uppercase cursor-pointer" onClick={handleResendVerifyEmail}>
-                        resent email verification
+                      <span
+                        className="text-primary font-bold underline uppercase cursor-pointer"
+                        onClick={handleResendVerifyEmail}
+                      >
+                        resend email verification
                       </span>
                     </Typography>
                   </Space>

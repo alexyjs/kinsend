@@ -31,7 +31,9 @@ const Login = () => {
   };
 
   const responseGoogle = (response) => {
-    handleLogin(response);
+    if (response?.accessToken) {
+      handleLogin(response);
+    }
   };
 
   const handleLogin = (googleData) => {
@@ -97,15 +99,15 @@ const Login = () => {
             <div>
               <Typography className={`mb-8`}>
                 <p>
-                  <span
-                    className="underline cursor-pointer no-underline"
-                    onClick={show}
-                  >
+                  <span className="underline no-underline">
                     Forgot your password?{" "}
                   </span>
-                  <NavLink to="/sign-up" className="text-primary font-bold">
+                  <span
+                    className="text-primary font-bold cursor-pointer"
+                    onClick={show}
+                  >
                     Request a new one
-                  </NavLink>
+                  </span>
                   <ResendPasswordModal
                     handleCancel={close}
                     handleOk={close}
@@ -127,7 +129,7 @@ const Login = () => {
               </Button>
             </Form.Item>
             <Divider>
-              <span className="text-primary">or</span>
+              <span className="text-primary or-diveder">or</span>
             </Divider>
             <div className="text-center">
               <GoogleLogin

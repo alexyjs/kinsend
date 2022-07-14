@@ -10,9 +10,11 @@ import {
   selectSettings,
   getCustomFieldsAsync,
   getTagsAsync,
+  updateStatusFormAsync,
 } from "../../../redux/settingsReducer";
 import { selectUsers } from "../../../redux/userReducer";
 import { CopyComponent } from "../../../components";
+import { FORM_SETTINGS_STATUS } from "../../../utils/constants";
 
 const TagsList = () => {
   const { close, show, visible } = useModal();
@@ -36,14 +38,16 @@ const TagsList = () => {
     },
     {
       title: "CONTACTS",
-      render: (item) => <span></span>,
+      render: (item) => <span>{item?.totalSubscriber || 0}</span>,
     },
     {
       title: "Actions",
       render: (item) => (
         <span className="flex items-center">
           <CopyComponent
-            value={`${item.url}.${window.location.host.replace('www.', '')}/f/${item.id}`}
+            value={`${item.url}.${window.location.host.replace("www.", "")}/f/${
+              item.id
+            }`}
             title="copy link submission"
           />
           <NavLink to={`/settings/forms/edit/${item.id}`}>
@@ -57,10 +61,37 @@ const TagsList = () => {
               Edit
             </Button>
           </NavLink>
+          <Button
+            type="primary"
+            size="small"
+            className="inline-flex items-center ml-4 border-0 bg-none"
+            onClick={() => handleUpdateStatusForm(item)}
+          >
+            {" "}
+            {item.status === undefined ||
+            item.status === null ||
+            item.status === FORM_SETTINGS_STATUS.ENABLE
+              ? "Disable"
+              : "Enable"}
+          </Button>
         </span>
       ),
     },
   ];
+
+  const handleUpdateStatusForm = (itemSelected) => {
+    dispatch(
+      updateStatusFormAsync({
+        id: itemSelected.id,
+        status:
+          itemSelected.status === undefined ||
+          itemSelected.status === null ||
+          itemSelected.status === FORM_SETTINGS_STATUS.ENABLE
+            ? FORM_SETTINGS_STATUS.DISABLE
+            : FORM_SETTINGS_STATUS.ENABLE,
+      })
+    );
+  };
 
   const handleSelectKey = (raw, raw1) => {
     setSelectedRowKeys(raw);

@@ -10,9 +10,7 @@ export const loginAsync = createAction("user/loginAsync");
 export const resendVerifyEmailAsync = createAction(
   "user/resendVerifyEmailAsync"
 );
-export const resendPasswordAsync = createAction(
-  "user/resendPasswordAsync"
-);
+export const resendPasswordAsync = createAction("user/resendPasswordAsync");
 export const loginWithGoogleAsync = createAction("user/loginWithGoogleAsync");
 export const patchUserAsync = createAction("user/patchUserAsync");
 export const getUserAsync = createAction("user/getUserAsync");
@@ -170,9 +168,13 @@ export function* loginSaga(action) {
 }
 
 export function* loginWithGoogleSaga(action) {
-  const { response, errors } = yield call(loginWithGoogleAPI, action.payload);
+  const { response, errors, headers } = yield call(
+    loginWithGoogleAPI,
+    action.payload
+  );
 
   if (response) {
+    authStorage.set(headers);
     yield put(login(response));
     notification.success({
       title: "Action Completed",
