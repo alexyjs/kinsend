@@ -91,7 +91,11 @@ export const formatArray = (value) => {
 export const clearEmptyField = (object) => {
   let result = {};
   for (const property in object) {
-    if (object[property] && !isEqual(object[property], {}) && !isEqual(object[property], [])) {
+    if (
+      object[property] &&
+      !isEqual(object[property], {}) &&
+      !isEqual(object[property], [])
+    ) {
       result[property] = object[property];
     }
   }
@@ -106,7 +110,8 @@ export const clearEmptyField = (object) => {
 export const getCname = () => {
   const host = window.location.host;
   if (
-    (host !== "www.dev.kinsend.io" && host !== "dev.kinsend.io" &&
+    (host !== "www.dev.kinsend.io" &&
+      host !== "dev.kinsend.io" &&
       // prod
       host !== "kinsend.io" &&
       host.includes(".kinsend.io")) ||
@@ -121,15 +126,14 @@ export const getCname = () => {
   return "";
 };
 
-
 export const getMainDomain = () => {
   const host = window.location.host;
-  if ( host.includes("dev.kinsend.io")) {
-    return 'https://dev.kinsend.io'
+  if (host.includes("dev.kinsend.io")) {
+    return "https://dev.kinsend.io";
   }
 
-  if ( host.includes("kinsend.io")) {
-    return 'https://kinsend.io'
+  if (host.includes("kinsend.io")) {
+    return "https://kinsend.io";
   }
 
   return "http://localhost:3000";

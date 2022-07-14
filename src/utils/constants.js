@@ -359,3 +359,8 @@ export const AUTOMATION_STATUS = {
   ENABLE: "ENABLE",
   DISABLE: "DISABLE",
 };
+
+export const FORM_SETTINGS_STATUS = {
+  ENABLE: "ENABLE",
+  DISABLE: "DISABLE",
+};
