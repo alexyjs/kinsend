@@ -15,6 +15,9 @@ export const updateCustomFieldAsync = createAction(
 export const getFormsAsync = createAction("settings/getFormsAsync");
 export const addFormAsync = createAction("settings/addFormAsync");
 export const updateFormAsync = createAction("settings/updateFormAsync");
+export const updateStatusFormAsync = createAction(
+  "automation/updateStatusFormAsync"
+);
 
 export async function getTags(data) {
   const payload = {
@@ -103,6 +106,18 @@ export async function updateForm(data, id) {
   };
 
   return handleFileCallAPI(payload);
+}
+
+export async function updateStatusForm(id, status) {
+  const payload = {
+    method: "PUT",
+    url: `${process.env.REACT_APP_API_BASE_URL}/forms/status/${id}`,
+    data: {
+      status,
+    },
+  };
+
+  return handleCallAPI(payload);
 }
 
 // saga
@@ -238,6 +253,27 @@ export function* updateFormSaga(action) {
   }
 }
 
+export function* updateStatusFormSaga(action) {
+  const { response, errors } = yield call(
+    updateStatusForm,
+    action.payload.id,
+    action.payload.status
+  );
+  if (response) {
+    yield call(getFormsSaga, {});
+    notification.success({
+      title: "Action Completed",
+      message: `The status has been updated.`,
+    });
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || `Can't updated the status`,
+    });
+  }
+}
+
 export function* watchgetTagsSaga() {
   yield takeLatest(getTagsAsync, getTagsSaga);
 }
@@ -268,6 +304,10 @@ export function* watchAddFormSaga() {
 
 export function* watchUpdateFormSaga() {
   yield takeLatest(updateFormAsync, updateFormSaga);
+}
+
+export function* watcUpdateStatusFormSaga() {
+  yield takeLatest(updateStatusFormAsync, updateStatusFormSaga);
 }
 
 const initialState = {

@@ -23,7 +23,8 @@ import {
   addFormSubmissionAsync,
   selectPublic,
 } from "../../../redux/publicReducer";
-import { parseFormDataValue, phoneValidator, getCname } from "../../../utils";
+import { parseFormDataValue, phoneValidator, getCname, getMainDomain } from "../../../utils";
+import { FORM_SETTINGS_STATUS } from '../../../utils/constants';
 
 import "./styles.less";
 
@@ -38,6 +39,7 @@ const FormSubmission = () => {
   const navigate = useNavigate();
   let { id } = useParams();
   const cname = getCname();
+  const mainDomain = getMainDomain();
 
   const { addedFormSubmission, formSettingDetail, addedForm, isNewFormLoading } =
     useSelector(selectPublic);
@@ -81,6 +83,12 @@ const FormSubmission = () => {
       navigate(`/f/${formSettingDetail.id}`);
     }
   }, [formSettingDetail]);
+
+  useEffect(() => {
+    if (formSettingDetail?.status === FORM_SETTINGS_STATUS.DISABLE) {
+      window.location.href = mainDomain;
+    }
+  }, [formSettingDetail, mainDomain]);
 
   useEffect(() => {
     dispatch(getFormsSettingDetailAsync(id || cname));

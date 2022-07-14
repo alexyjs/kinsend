@@ -31,7 +31,9 @@ const Login = () => {
   };
 
   const responseGoogle = (response) => {
-    handleLogin(response);
+    if (response?.accessToken) {
+      handleLogin(response);
+    }
   };
 
   const handleLogin = (googleData) => {
@@ -97,12 +99,13 @@ const Login = () => {
             <div>
               <Typography className={`mb-8`}>
                 <p>
-                  <span
-                    className="underline no-underline"
-                  >
+                  <span className="underline no-underline">
                     Forgot your password?{" "}
                   </span>
-                  <span className="text-primary font-bold cursor-pointer" onClick={show}>
+                  <span
+                    className="text-primary font-bold cursor-pointer"
+                    onClick={show}
+                  >
                     Request a new one
                   </span>
                   <ResendPasswordModal
