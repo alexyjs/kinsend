@@ -16,6 +16,9 @@ import PublicFormSumission from "./pages/Public/FormSubmission";
 import PublicThankYouSubmission from "./pages/Public/ThankYouSubmission";
 import Automation from "./pages/Automation";
 import AddNewAutomation from "./pages/Automation/AddNewAutomation";
+import UpdatesDashboard from "./pages/Updates";
+import AddNewUpdates from "./pages/Updates/AddNewUpdates";
+import EditUpdates from "./pages/Updates/UpdateUpdates";
 import "./styles/antd.less";
 import "./styles/tailwind.css";
 import "./App.less";
@@ -77,6 +80,10 @@ function App() {
             <Route path="/automation/new" element={<AddNewAutomation />} />
             <Route path="/automation/edit/:id" element={<AddNewAutomation />} />
             <Route path="/automation/:tabname" element={<Automation />} />
+
+            <Route path="/updates" element={<UpdatesDashboard />} />
+            <Route path="/updates/scheduled/new" element={<AddNewUpdates />} />
+            <Route path="/updates/edit/:id" element={<EditUpdates />} />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>
         </ConfigProvider>

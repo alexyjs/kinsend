@@ -48,6 +48,8 @@ import {
   watchUpdateStatusAutomationSaga,
 } from "./automationReducer";
 
+import { watchGetSegmentSaga, watchAddSegmentSaga } from "./updatesReducer";
+
 export default function* rootSaga() {
   yield all([
     watchGetListPhoneSaga(),
@@ -97,5 +99,9 @@ export default function* rootSaga() {
     watchDeleteAutomationSaga(),
     watchResetAutomationSaga(),
     watchUpdateStatusAutomationSaga(),
+
+    // update
+    watchGetSegmentSaga(),
+    watchAddSegmentSaga(),
   ]);
 }

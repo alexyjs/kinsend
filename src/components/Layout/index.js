@@ -95,12 +95,12 @@ const LayoutComponent = ({ className, children }) => {
           </Menu.Item>
           <Menu.Item key="notification">
             <NavLink
-              to="/"
+              to="/updates"
               onMouseOver={() => setHover(true)}
               onMouseOut={() => setHover(false)}
             >
               <NotificationSVG />
-              <span className="menu-item-label">Campaigns</span>
+              <span className="menu-item-label">updates</span>
             </NavLink>
           </Menu.Item>
           <Menu.Item key="automation">
