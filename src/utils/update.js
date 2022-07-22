@@ -1,3 +1,38 @@
+export const UPDATE_TRIGGER_TYPE = [
+  {
+    label: "Once",
+    value: "ONCE",
+  },
+  {
+    label: "Every day",
+    value: "EVERY_DAY",
+  },
+  {
+    label: "Every other day",
+    value: "EVERY_OTHER_DAY",
+  },
+  {
+    label: "Every week",
+    value: "EVERY_WEEK",
+  },
+  {
+    label: "Every other week",
+    value: "EVERY_OTHER_WEEK",
+  },
+  {
+    label: "Every month",
+    value: "EVERY_MONTH",
+  },
+  {
+    label: "Every 3 months",
+    value: "EVERY_3_MONTHS",
+  },
+  {
+    label: "Every year",
+    value: "EVERY_YEAR",
+  },
+];
+
 export const RECIPIENTS_TYPE = [
   {
     label: "Added Last Month",

@@ -5,8 +5,13 @@ import { notification } from "antd";
 import { handleCallAPI } from "./helpers";
 
 export const getSegmentAsync = createAction("public/getSegmentAsync");
-
 export const addSegmentAsync = createAction("public/addSegmentAsync");
+
+export const getUpdatesAsync = createAction("public/getUpdatesAsync");
+export const getUpdatesDetailAsync = createAction(
+  "public/getUpdatesDetailAsync"
+);
+export const addUpdatesAsync = createAction("public/addUpdatesAsync");
 
 export async function getSegment() {
   const payload = {
@@ -21,6 +26,34 @@ export async function addSegment(data) {
   const payload = {
     method: "POST",
     url: `${process.env.REACT_APP_API_BASE_URL}/segments`,
+    data,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function getUpdates() {
+  const payload = {
+    method: "GET",
+    url: `${process.env.REACT_APP_API_BASE_URL}/updates`,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function getUpdatesDetail(id) {
+  const payload = {
+    method: "GET",
+    url: `${process.env.REACT_APP_API_BASE_URL}/updates/${id}`,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function addUpdates(data) {
+  const payload = {
+    method: "POST",
+    url: `${process.env.REACT_APP_API_BASE_URL}/updates`,
     data,
   };
 
@@ -55,6 +88,42 @@ export function* addSegmentSaga(action) {
   }
 }
 
+export function* getUpdatesSaga(action) {
+  const { response, errors } = yield call(getSegment);
+  if (response) {
+    yield put(getUpdatesSuccess(response));
+  } else {
+    yield put(failed(errors));
+  }
+}
+
+export function* getUpdatesDetailSaga(action) {
+  const { response, errors } = yield call(getSegment, action.payload);
+  if (response) {
+    yield put(getUpdatesDetailSuccess(response));
+  } else {
+    yield put(failed(errors));
+  }
+}
+
+export function* addUpdatesSaga(action) {
+  const { response, errors } = yield call(addUpdates, action.payload);
+  if (response) {
+    yield call(getUpdatesSaga, {});
+    yield put(addUpdatesSuccess(response));
+    notification.success({
+      title: "Action Completed",
+      message: `The UPDATES has been created`,
+    });
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || `Can't create the UPDATES`,
+    });
+  }
+}
+
 export function* watchGetSegmentSaga() {
   yield takeLatest(getSegmentAsync, getSegmentSaga);
 }
@@ -63,10 +132,24 @@ export function* watchAddSegmentSaga() {
   yield takeLatest(addSegmentAsync, addSegmentSaga);
 }
 
+export function* watchGetUpdatesSaga() {
+  yield takeLatest(getUpdatesAsync, getUpdatesSaga);
+}
+
+export function* watchGetUpdatesDetailSaga() {
+  yield takeLatest(getUpdatesDetailAsync, getUpdatesDetailSaga);
+}
+
+export function* watchAddUpdatesSaga() {
+  yield takeLatest(addUpdatesAsync, addUpdatesSaga);
+}
+
 const initialState = {
   isLoading: false,
   errors: [],
   segments: [],
+  updates: [],
+  updatesDetail: null,
 };
 
 export const updatesSlice = createSlice({
@@ -87,6 +170,19 @@ export const updatesSlice = createSlice({
     addSegmentSuccess: (state, action) => {
       state.isLoading = false;
     },
+    getUpdatesSuccess: (state, action) => {
+      state.updates = action.payload;
+      state.isLoading = false;
+      state.errors = [];
+    },
+    getUpdatesDetailSuccess: (state, action) => {
+      state.updatesDetail = action.payload;
+      state.isLoading = false;
+      state.errors = [];
+    },
+    addUpdatesSuccess: (state, action) => {
+      state.isLoading = false;
+    },
     failed: (state, action) => {
       state.isLoading = false;
       state.errors = action.payload;
@@ -104,8 +200,14 @@ export const updatesSlice = createSlice({
   },
 });
 
-export const { failed, getSegmentSuccess, addSegmentSuccess } =
-  updatesSlice.actions;
+export const {
+  failed,
+  getSegmentSuccess,
+  addSegmentSuccess,
+  getUpdatesSuccess,
+  getUpdatesDetailSuccess,
+  addUpdatesSuccess,
+} = updatesSlice.actions;
 
 export const selectUpdates = (state) => {
   return {
