@@ -1,0 +1,79 @@
+.add-updates-page {
+  .phone-image-frame {
+    max-width: 256px;
+    margin-right: 56px;
+  }
+
+  .custom-textarea-wrap {
+    position: relative;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+    .hint {
+      position: absolute;
+      z-index: 1;
+      top: 40px;
+      right: 10px;
+      display: inline-flex;
+      align-items: center;
+
+      button {
+        display: inline-flex;
+        background: #f1f2f7;
+        opacity: 0.5;
+        border: 1px solid #dcdcdc;
+        border-radius: 8px;
+        align-items: center;
+
+        & + button {
+          margin-left: 10px;
+        }
+      }
+    }
+
+    textarea {
+      padding-right: 150px;
+      border: 0;
+
+      &.ant-input:hover,
+      &.ant-input:focus,
+      &.ant-input-focused {
+        box-shadow: none;
+      }
+    }
+
+    .textarea-actions {
+      position: absolute;
+      z-index: 1;
+      bottom: 10px;
+      right: 20px;
+      display: inline-flex;
+      align-items: center;
+
+      svg {
+        cursor: pointer;
+
+        & + svg {
+          margin-left: 10px;
+        }
+      }
+    }
+
+    .ant-form-item-has-error {
+      & + .textarea-actions {
+        bottom: 40px;
+      }
+    }
+  }
+
+  .recipients {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+
+  .datetime {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 40px;
+    margin-top: 20px;
+  }
+}
