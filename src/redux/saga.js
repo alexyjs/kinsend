@@ -48,7 +48,13 @@ import {
   watchUpdateStatusAutomationSaga,
 } from "./automationReducer";
 
-import { watchGetSegmentSaga, watchAddSegmentSaga } from "./updatesReducer";
+import {
+  watchGetSegmentSaga,
+  watchAddSegmentSaga,
+  watchGetUpdatesSaga,
+  watchGetUpdatesDetailSaga,
+  watchAddUpdatesSaga,
+} from "./updatesReducer";
 
 export default function* rootSaga() {
   yield all([
@@ -103,5 +109,8 @@ export default function* rootSaga() {
     // update
     watchGetSegmentSaga(),
     watchAddSegmentSaga(),
+    watchGetUpdatesSaga(),
+    watchGetUpdatesDetailSaga(),
+    watchAddUpdatesSaga(),
   ]);
 }

@@ -11,9 +11,11 @@ import {
   Dropdown,
   Menu,
   Space,
+  Select,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import cl from "classnames";
+import { format } from "date-fns";
 import {
   PlusOutlined,
   MinusCircleOutlined,
@@ -23,7 +25,13 @@ import { NavLink } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { selectUpdates, getSegmentAsync } from "../../../redux/updatesReducer";
+import {
+  selectUpdates,
+  getSegmentAsync,
+  addUpdatesAsync,
+} from "../../../redux/updatesReducer";
+
+import { selectUsers } from "../../../redux/userReducer";
 
 import { useModal } from "../../../hook/useModal";
 import {
@@ -39,7 +47,7 @@ import {
   DatetimeIcon,
 } from "../../../assets/svg";
 import phoneFrameImg from "../../../assets/phone-frame.png";
-import { RECIPIENTS_TYPE } from "../../../utils/update";
+import { RECIPIENTS_TYPE, UPDATE_TRIGGER_TYPE } from "../../../utils/update";
 import NewSegmentModal from "../components/NewSegmentModal";
 
 import "./styles.less";
@@ -56,7 +64,10 @@ const AddNewUpdates = () => {
   const [attachment, setAttachmentUrl] = useState({});
   const [datetime, setDatetime] = useState(new Date());
   const { segments } = useSelector(selectUpdates);
+  const { user } = useSelector(selectUsers);
   const [dataRecipients, setDataRecipients] = useState(RECIPIENTS_TYPE);
+
+  const message = Form.useWatch("message", form);
 
   const {
     close: closeSegment,
@@ -69,7 +80,7 @@ const AddNewUpdates = () => {
     show: showUpload,
     visible: visibleUpload,
   } = useModal();
-  const [showEmoji, setShowEmoji] = useState(false);
+  const [showEmoji, setShowEmoji] = useState(() => false);
 
   // const { user, isLoading } = useSelector(selectUsers);
   const handleUploadFile = (value) => {
@@ -113,12 +124,37 @@ const AddNewUpdates = () => {
     );
   }, []);
 
-  const hadnleSubmit = () => {};
+  const hadnleSubmit = (values) => {
+    // dispatch(addUpdatesAsync({
+    //   message: values.message,
+    // }));
+  };
 
   return (
     <LayoutComponent className="add-updates-page">
       <div className="flex items-center">
-        <img className="phone-image-frame" src={phoneFrameImg} />
+        <div className="phone-image-frame">
+          <div className="">
+            <div className="phone-image-header">
+              <div
+                className="thumbnail-wrapper circular"
+                style={{ width: "23px", height: "23px" }}
+              >
+                <img src={user?.image} alt="" />
+              </div>
+              <div className="phone-image-name">{user.firstName}</div>
+            </div>
+            <div className="phone-image-content">
+              <div className="phone-image-content-date">
+                {format(new Date(datetime), "MM/dd/yyyy hh:mm aa")}
+              </div>
+              <div
+                className="phone-image-content-message"
+                dangerouslySetInnerHTML={{ __html: message }}
+              ></div>
+            </div>
+          </div>
+        </div>
         <Form
           form={form}
           name="control-hooks"
@@ -224,8 +260,29 @@ const AddNewUpdates = () => {
                 selected={datetime}
                 onChange={(date) => setDatetime(date)}
                 dateFormat="MMMM d, yyyy h:mm aa"
-                className="bg-transparent	"
+                className="bg-transparent"
+                wrapperClassName="w-auto mx-3"
               />
+              <Form.Item
+                name="triggerType"
+                label=""
+                rules={[{ required: true }]}
+                className="mb-0"
+              >
+                <Select
+                  placeholder="Seelect Schedule Type"
+                  className="schedule-custom-select w-52"
+                >
+                  {UPDATE_TRIGGER_TYPE.map((item, index) => (
+                    <Select.Option
+                      key={`gender-${item}-${index}`}
+                      value={item.value}
+                    >
+                      {item.label}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
             </div>
           </div>
           <Row justify="end" className="mt-12">
