@@ -22,7 +22,7 @@ const Profile = () => {
   const { updates } = useSelector(selectUpdates);
 
   useEffect(() => {
-    dispatch(getUpdatesAsync);
+    dispatch(getUpdatesAsync());
   }, []);
 
   return (

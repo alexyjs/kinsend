@@ -3,9 +3,14 @@ import React from "react";
 
 import "./styles.less";
 
-const ConfirmScheduleModal = ({ visible, handleOk, handleCancel, dataSubmit }) => {
+const ConfirmScheduleModal = ({
+  visible,
+  handleOk,
+  handleCancel,
+  dataSubmit,
+}) => {
   if (!dataSubmit?.message) {
-    return null
+    return null;
   }
 
   return (
@@ -22,9 +27,7 @@ const ConfirmScheduleModal = ({ visible, handleOk, handleCancel, dataSubmit }) =
       width={840}
     >
       <h3 className="font-bold text-center text-2xl mb-9">Confirm Update</h3>
-      <p className="text-center pb-5">
-        Set up anAction to fire automatically
-      </p>
+      <p className="text-center pb-5">Set up anAction to fire automatically</p>
       <div className="ConfirmScheduleModal-preview">
         <h4>PREVIEW</h4>
         <div

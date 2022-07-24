@@ -134,10 +134,8 @@ const AddNewUpdates = () => {
   };
 
   const handleConfirm = () => {
-    dispatch(
-      addUpdatesAsync(dataSubmit)
-    );
-  }
+    dispatch(addUpdatesAsync(dataSubmit));
+  };
 
   const recipientsOptions = useMemo(() => {
     return [
