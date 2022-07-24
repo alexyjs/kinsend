@@ -1,23 +1,33 @@
 import React from "react";
+import { format } from "date-fns";
+import { truncate } from "lodash";
 
 import "./styles.less";
 
-const SideBarUpdate = () => {
+const SideBarUpdate = ({ data }) => {
   return (
     <div className="SideBarUpdate">
-      <div>SideBarUpdate</div>
+      {/* <div>SideBarUpdate</div> */}
       <div className="SideBarUpdate-list">
-        {[1, 2, 3, 4, 5, 6].map((item) => (
-          <div
-            className="SideBarUpdate-item"
-            key={`sidebar-update-item-${item}`}
-          >
-            <h3 className="text-ellipsis overflow-hidden truncate">
-              lorem Symone Humphrey lorem lorem Symone Humphrey lorem
-            </h3>
-            <span>Sent Oct 24,2020,11:32p. to ALL CONTACTS</span>
-          </div>
-        ))}
+        {data?.length
+          ? data.map((item) => (
+              <div
+                className="SideBarUpdate-item"
+                key={`sidebar-update-item-${item}`}
+              >
+                <h3 className="text-ellipsis overflow-hidden truncate">
+                  {truncate(item.message, {
+                    length: 30,
+                    omission: "...",
+                  })}
+                </h3>
+                <span>
+                  Sent {format(new Date(item.datetime), "MM/dd/yyyy hh:mm aa")}.
+                  to {item.triggerType}
+                </span>
+              </div>
+            ))
+          : null}
       </div>
     </div>
   );

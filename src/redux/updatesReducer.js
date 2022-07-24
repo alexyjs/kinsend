@@ -92,7 +92,7 @@ export function* addSegmentSaga(action) {
 }
 
 export function* getUpdatesSaga(action) {
-  const { response, errors } = yield call(getSegment);
+  const { response, errors } = yield call(getUpdates);
   if (response) {
     yield put(getUpdatesSuccess(response));
   } else {
