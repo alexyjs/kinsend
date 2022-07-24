@@ -58,6 +58,7 @@ import {
   getFilterUpdatesFeature,
 } from "../../../utils";
 import NewSegmentModal from "../components/NewSegmentModal";
+import ConfirmScheduleModal from "../components/ConfirmScheduleModal";
 
 import "./styles.less";
 
@@ -77,6 +78,7 @@ const AddNewUpdates = () => {
   const { tags } = useSelector(selectSettings);
   const { user } = useSelector(selectUsers);
   const [dataRecipients, setDataRecipients] = useState(RECIPIENTS_TYPE);
+  const [dataSubmit, setDataSubmit] = useState(null);
 
   const message = Form.useWatch("message", form);
 
@@ -91,6 +93,13 @@ const AddNewUpdates = () => {
     show: showUpload,
     visible: visibleUpload,
   } = useModal();
+
+  const {
+    close: closeConfirm,
+    show: showConfirm,
+    visible: visibleConfirm,
+  } = useModal();
+
   const [showEmoji, setShowEmoji] = useState(() => false);
 
   const handleUploadFile = (value) => {
@@ -114,16 +123,21 @@ const AddNewUpdates = () => {
     if (!recipients) {
       return;
     }
+    setDataSubmit({
+      message: values.message,
+      datetime: datetime,
+      triggerType: values.triggerType,
+      filter: getFilterUpdatesFeature(recipients),
+    });
 
-    dispatch(
-      addUpdatesAsync({
-        message: values.message,
-        datetime: datetime,
-        triggerType: values.triggerType,
-        filter: getFilterUpdatesFeature(recipients),
-      })
-    );
+    showConfirm();
   };
+
+  const handleConfirm = () => {
+    dispatch(
+      addUpdatesAsync(dataSubmit)
+    );
+  }
 
   const recipientsOptions = useMemo(() => {
     return [
@@ -169,7 +183,7 @@ const AddNewUpdates = () => {
 
   useEffect(() => {
     if (newUpdate) {
-      navigate("/automation/active");
+      navigate("/updates");
       dispatch(resetUpdatesAsync());
     }
   }, [navigate, newUpdate]);
@@ -341,6 +355,12 @@ const AddNewUpdates = () => {
         handleOk={closeSegment}
         handleCancel={closeSegment}
         dataSelect={recipientsOptions}
+      />
+      <ConfirmScheduleModal
+        visible={visibleConfirm}
+        handleOk={handleConfirm}
+        handleCancel={closeConfirm}
+        dataSubmit={dataSubmit}
       />
     </LayoutComponent>
   );
