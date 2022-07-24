@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import _ from "lodash";
+import { useNavigate } from "react-router-dom";
 import {
   Divider,
   Form,
@@ -14,7 +15,6 @@ import {
   Select,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import cl from "classnames";
 import { format } from "date-fns";
 import {
   PlusOutlined,
@@ -29,15 +29,16 @@ import {
   selectUpdates,
   getSegmentAsync,
   addUpdatesAsync,
+  resetUpdatesAsync,
 } from "../../../redux/updatesReducer";
-
+import { selectSettings, getTagsAsync } from "../../../redux/settingsReducer";
 import { selectUsers } from "../../../redux/userReducer";
-
 import { useModal } from "../../../hook/useModal";
 import {
   UploadFileModal,
   EmojiPicker,
   LayoutComponent,
+  DropdownGroup,
 } from "../../../components";
 import {
   AutomationActionMessageIcon,
@@ -46,8 +47,16 @@ import {
   EmojiIcon,
   DatetimeIcon,
 } from "../../../assets/svg";
-import phoneFrameImg from "../../../assets/phone-frame.png";
-import { RECIPIENTS_TYPE, UPDATE_TRIGGER_TYPE } from "../../../utils/update";
+
+import {
+  RECIPIENTS_TYPE,
+  UPDATE_TRIGGER_TYPE,
+  LIVE_IN_TYPE,
+} from "../../../utils/update";
+import {
+  formatOptionsFormDatabase,
+  getFilterUpdatesFeature,
+} from "../../../utils";
 import NewSegmentModal from "../components/NewSegmentModal";
 
 import "./styles.less";
@@ -60,10 +69,12 @@ const layout = {
 const AddNewUpdates = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [recipients, setRecipients] = useState(null);
   const [attachment, setAttachmentUrl] = useState({});
   const [datetime, setDatetime] = useState(new Date());
-  const { segments } = useSelector(selectUpdates);
+  const { newUpdate, segments } = useSelector(selectUpdates);
+  const { tags } = useSelector(selectSettings);
   const { user } = useSelector(selectUsers);
   const [dataRecipients, setDataRecipients] = useState(RECIPIENTS_TYPE);
 
@@ -82,7 +93,6 @@ const AddNewUpdates = () => {
   } = useModal();
   const [showEmoji, setShowEmoji] = useState(() => false);
 
-  // const { user, isLoading } = useSelector(selectUsers);
   const handleUploadFile = (value) => {
     setAttachmentUrl(value);
     closeUpload();
@@ -100,35 +110,69 @@ const AddNewUpdates = () => {
     setRecipients(item);
   };
 
+  const hadnleSubmit = (values) => {
+    if (!recipients) {
+      return;
+    }
+
+    dispatch(
+      addUpdatesAsync({
+        message: values.message,
+        datetime: datetime,
+        triggerType: values.triggerType,
+        filter: getFilterUpdatesFeature(recipients),
+      })
+    );
+  };
+
+  const recipientsOptions = useMemo(() => {
+    return [
+      {
+        label: "Contacts",
+        options: RECIPIENTS_TYPE,
+      },
+      {
+        label: "Segments",
+        options: formatOptionsFormDatabase({
+          data: segments,
+          prefixLabel: "Include Segment ",
+          typeOption: "isSegment",
+        }),
+      },
+      {
+        label: "Location",
+        options: formatOptionsFormDatabase({
+          data: LIVE_IN_TYPE,
+          prefixLabel: "Lives In: ",
+          typeOption: "isLocation",
+        }),
+      },
+      {
+        label: "Tags",
+        options: formatOptionsFormDatabase({
+          data: tags,
+          prefixLabel: "Is Tagged: ",
+          typeOption: "isTagged",
+        }),
+      },
+    ];
+  }, [tags, segments]);
+
   useEffect(() => {
     setDataRecipients(RECIPIENTS_TYPE.concat(segments || []));
   }, [segments]);
 
   useEffect(() => {
     dispatch(getSegmentAsync());
+    dispatch(getTagsAsync());
   }, []);
 
-  const menu = useMemo(() => {
-    return (
-      <Menu onSelect={(e) => console.log(e)}>
-        {dataRecipients.map((item, index) => (
-          <Menu.Item
-            key={`recipients-${item.value}`}
-            className="custom-field flex items-center justify-between"
-            onClick={() => handleRecipients(item)}
-          >
-            <span className="inline-flex items-center">{item.label}</span>
-          </Menu.Item>
-        ))}
-      </Menu>
-    );
-  }, []);
-
-  const hadnleSubmit = (values) => {
-    // dispatch(addUpdatesAsync({
-    //   message: values.message,
-    // }));
-  };
+  useEffect(() => {
+    if (newUpdate) {
+      navigate("/automation/active");
+      dispatch(resetUpdatesAsync());
+    }
+  }, [navigate, newUpdate]);
 
   return (
     <LayoutComponent className="add-updates-page">
@@ -142,7 +186,7 @@ const AddNewUpdates = () => {
               >
                 <img src={user?.image} alt="" />
               </div>
-              <div className="phone-image-name">{user.firstName}</div>
+              <div className="phone-image-name">{user?.firstName}</div>
             </div>
             <div className="phone-image-content">
               <div className="phone-image-content-date">
@@ -226,30 +270,10 @@ const AddNewUpdates = () => {
                 Manage
               </span>
             </div>
-            <Dropdown
-              overlay={menu}
-              trigger={["click"]}
-              className="w-full"
-              overlayClassName="max-h-60	overflow-y-auto"
-              placement="bottom"
-            >
-              <a onClick={(e) => e.preventDefault()}>
-                <Space
-                  className={cl(
-                    "flex-1 select-custom-field-btn custom-field flex items-center justify-between"
-                  )}
-                >
-                  {recipients ? (
-                    <span className="inline-flex items-center">
-                      {recipients.label}
-                    </span>
-                  ) : (
-                    <span className="font-bold text-l">Select Recipients</span>
-                  )}
-                  <DownOutlined className="flex align-center" />
-                </Space>
-              </a>
-            </Dropdown>
+            <DropdownGroup
+              data={recipientsOptions}
+              onChange={handleRecipients}
+            />
           </div>
           <div className="flex flex-col">
             SCHEDULE TIME/INTERVAL
@@ -303,7 +327,7 @@ const AddNewUpdates = () => {
                   size="large"
                   htmlType="submit"
                   block
-                  disabled
+                  disabled={!recipients}
                 >
                   Save
                 </Button>
@@ -316,6 +340,7 @@ const AddNewUpdates = () => {
         visible={visibleSegment}
         handleOk={closeSegment}
         handleCancel={closeSegment}
+        dataSelect={recipientsOptions}
       />
     </LayoutComponent>
   );

@@ -6,10 +6,7 @@ import { NavLink } from "react-router-dom";
 
 import SideBarUpdate from "./components/SideBarUpdate";
 
-// import {
-//   selectUsers,
-//   patchUserAsync,
-// } from "../../redux/userReducer";
+import { selectUpdates, getUpdatesAsync } from "../../redux/updatesReducer";
 import LayoutComponent from "../../components/Layout";
 import { UpdateDashboardEmptyIcon } from "../../assets/svg";
 
@@ -21,10 +18,12 @@ const layout = {
 };
 
 const Profile = () => {
-  const [form] = Form.useForm();
-  const [formReset] = Form.useForm();
   const dispatch = useDispatch();
-  // const { user, isLoading } = useSelector(selectUsers);
+  const { updates } = useSelector(selectUpdates);
+
+  useEffect(() => {
+    dispatch(getUpdatesAsync);
+  }, []);
 
   return (
     <LayoutComponent className="updates-page">
@@ -35,7 +34,7 @@ const Profile = () => {
           <Button type="primary">New Update</Button>
         </NavLink>
       </div>
-      <SideBarUpdate />
+      <SideBarUpdate data={updates} />
     </LayoutComponent>
   );
 };
