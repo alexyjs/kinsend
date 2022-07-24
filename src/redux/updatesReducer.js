@@ -61,6 +61,8 @@ export async function addUpdates(data) {
   return handleCallAPI(payload);
 }
 
+// send-test
+
 // saga
 export function* getSegmentSaga(action) {
   const { response, errors } = yield call(getSegment);
