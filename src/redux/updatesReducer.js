@@ -12,6 +12,7 @@ export const getUpdatesDetailAsync = createAction(
   "public/getUpdatesDetailAsync"
 );
 export const addUpdatesAsync = createAction("public/addUpdatesAsync");
+export const resetUpdatesAsync = createAction("public/resetUpdatesAsync");
 
 export async function getSegment() {
   const payload = {
@@ -124,6 +125,10 @@ export function* addUpdatesSaga(action) {
   }
 }
 
+export function* resetUpdatesSaga() {
+  yield put(resetUpdatesSuccess());
+}
+
 export function* watchGetSegmentSaga() {
   yield takeLatest(getSegmentAsync, getSegmentSaga);
 }
@@ -144,12 +149,17 @@ export function* watchAddUpdatesSaga() {
   yield takeLatest(addUpdatesAsync, addUpdatesSaga);
 }
 
+export function* watchResetUpdatesSaga() {
+  yield takeLatest(resetUpdatesAsync, resetUpdatesSaga);
+}
+
 const initialState = {
   isLoading: false,
   errors: [],
   segments: [],
   updates: [],
   updatesDetail: null,
+  newUpdate: null,
 };
 
 export const updatesSlice = createSlice({
@@ -182,6 +192,12 @@ export const updatesSlice = createSlice({
     },
     addUpdatesSuccess: (state, action) => {
       state.isLoading = false;
+      state.newUpdate = action.payload;
+    },
+    resetUpdatesSuccess: (state, action) => {
+      state.newUpdate = null;
+      state.isLoading = false;
+      state.errors = [];
     },
     failed: (state, action) => {
       state.isLoading = false;
@@ -207,6 +223,7 @@ export const {
   getUpdatesSuccess,
   getUpdatesDetailSuccess,
   addUpdatesSuccess,
+  resetUpdatesSuccess,
 } = updatesSlice.actions;
 
 export const selectUpdates = (state) => {

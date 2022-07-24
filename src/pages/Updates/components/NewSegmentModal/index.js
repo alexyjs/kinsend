@@ -1,5 +1,5 @@
-import { Button, Col, Form, Modal, Row, Input, Select } from "antd";
-import React, { useEffect } from "react";
+import { Button, Col, Form, Modal, Row, Input, Select, Divider } from "antd";
+import React, { useEffect, useState } from "react";
 import {
   PlusOutlined,
   MinusCircleOutlined,
@@ -11,32 +11,45 @@ import {
   getSegmentAsync,
   addSegmentAsync,
 } from "../../../../redux/updatesReducer";
+import { DropdownGroup } from "../../../../components";
 
-import { RECIPIENTS_TYPE } from "../../../../utils/update";
+import { getFilterUpdatesFeature } from "../../../../utils";
 
 import "./styles.less";
 
-const NewSegmentModal = ({ visible, handleOk, handleCancel, title }) => {
+const NewSegmentModal = ({ visible, handleOk, handleCancel, dataSelect }) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
+  const [filters, setFilters] = useState([]);
+
   const onFinish = (values) => {
+    if (!filters) {
+      return false;
+    }
     const params = {
       ...values,
-      filters: [values.filters],
+      filters: filters.map((item) => {
+        return item.map((itemSub) => getFilterUpdatesFeature(itemSub));
+      }),
     };
     dispatch(addSegmentAsync(params));
     handleCancel();
   };
 
+  const handleSelectFilter = (item, index) => {
+    console.log("###handleSelectFilter", item);
+    let newFilters = [...filters];
+    if (!newFilters[index]) {
+      newFilters.push([item]);
+    } else {
+      newFilters[index].push(item);
+    }
+    setFilters(newFilters);
+  };
+
   const onReset = () => {
     form.resetFields();
   };
-
-  useEffect(() => {
-    form.setFieldsValue({
-      title: title,
-    });
-  }, [title]);
 
   useEffect(() => {
     onReset();
@@ -52,7 +65,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel, title }) => {
       closable={false}
       destroyOnClose={true}
       centered
-      className=""
+      className="NewSegmentModal"
     >
       <h3 className="font-bold text-center text-2xl mb-9">New Segment</h3>
       <p className="text-center pb-5">
@@ -61,7 +74,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel, title }) => {
       <Form
         onFinish={onFinish}
         form={form}
-        initialValues={{ title: title || "" }}
+        initialValues={{}}
         name="control-hooks"
       >
         <Row gutter={16} className="w-full">
@@ -73,77 +86,30 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel, title }) => {
             >
               <Input placeholder="My New Segment" />
             </Form.Item>
-            <Form.List
-              name="filters"
-              label="FILTERS"
-              rules={[
-                {
-                  validator: async (_, names) => {
-                    if (!names || names.length < 1) {
-                      return Promise.reject(new Error("At least 1 option"));
-                    }
-                  },
-                },
-              ]}
-            >
-              {(fields, { add, remove }, { errors }) => (
-                <>
-                  {fields.map((field, index) => {
-                    return (
-                      <Form.Item
-                        label={index === 0 ? "FILTERS" : ""}
-                        required={false}
-                        key={`option-new-${field.key}`}
-                      >
-                        <div>
-                          <Form.Item
-                            {...field}
-                            name={[field.name]}
-                            validateTrigger={["onChange", "onBlur"]}
-                            rules={[
-                              {
-                                required: true,
-                                whitespace: true,
-                                message: "Please select or delete this field.",
-                              },
-                            ]}
-                            noStyle
-                          >
-                            <Select placeholder="Add filter" allowClear>
-                              {RECIPIENTS_TYPE &&
-                                RECIPIENTS_TYPE.map((recipient) => (
-                                  <Select.Option
-                                    key={`recipient-${recipient.value}`}
-                                    value={recipient.value}
-                                  >
-                                    {recipient.label}
-                                  </Select.Option>
-                                ))}
-                            </Select>
-                          </Form.Item>
-                        </div>
-                        {fields.length > 1 ? (
-                          <MinusCircleOutlined
-                            className="dynamic-delete-button text-primary"
-                            onClick={() => remove(field.name)}
-                          />
-                        ) : null}
-                      </Form.Item>
-                    );
-                  })}
-                  <Form.Item>
-                    <Button
-                      type="dashed"
-                      onClick={() => add()}
-                      icon={<PlusOutlined />}
-                    >
-                      Add more filters
-                    </Button>
-                    <Form.ErrorList errors={errors} />
-                  </Form.Item>
-                </>
-              )}
-            </Form.List>
+            {filters.map((itemFilter, index) => (
+              <React.Fragment key={`filter-dropdown-segment-${index}`}>
+                {itemFilter.map((itemFilterSub, index) => (
+                  <div
+                    key={`filter-dropdown-itemFilterSub-${index}`}
+                    className="segment-filter-item"
+                  >
+                    {itemFilterSub.label}
+                  </div>
+                ))}
+                <DropdownGroup
+                  value={null}
+                  data={dataSelect}
+                  onChange={(item) => handleSelectFilter(item, index)}
+                />
+                <Divider>
+                  <span className="text-primary or-diveder">or</span>
+                </Divider>
+              </React.Fragment>
+            ))}
+            <DropdownGroup
+              data={dataSelect}
+              onChange={(item) => handleSelectFilter(item)}
+            />
           </Col>
         </Row>
         <Row justify="space-around" className="mt-12">
