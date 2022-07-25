@@ -16,11 +16,6 @@ import {
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
-import {
-  PlusOutlined,
-  MinusCircleOutlined,
-  DownOutlined,
-} from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -30,8 +25,13 @@ import {
   getSegmentAsync,
   addUpdatesAsync,
   resetUpdatesAsync,
+  sendTestMessageAsync,
 } from "../../../redux/updatesReducer";
-import { selectSettings, getTagsAsync } from "../../../redux/settingsReducer";
+import {
+  selectSettings,
+  getTagsAsync,
+  getFormSubmissionsAsync,
+} from "../../../redux/settingsReducer";
 import { selectUsers } from "../../../redux/userReducer";
 import { useModal } from "../../../hook/useModal";
 import {
@@ -59,13 +59,9 @@ import {
 } from "../../../utils";
 import NewSegmentModal from "../components/NewSegmentModal";
 import ConfirmScheduleModal from "../components/ConfirmScheduleModal";
+import SendTestMessage from "../components/SendTestMessage";
 
 import "./styles.less";
-
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
 
 const AddNewUpdates = () => {
   const [form] = Form.useForm();
@@ -75,7 +71,7 @@ const AddNewUpdates = () => {
   const [attachment, setAttachmentUrl] = useState({});
   const [datetime, setDatetime] = useState(new Date());
   const { newUpdate, segments } = useSelector(selectUpdates);
-  const { tags } = useSelector(selectSettings);
+  const { tags, formSubmissions } = useSelector(selectSettings);
   const { user } = useSelector(selectUsers);
   const [dataRecipients, setDataRecipients] = useState(RECIPIENTS_TYPE);
   const [dataSubmit, setDataSubmit] = useState(null);
@@ -98,6 +94,12 @@ const AddNewUpdates = () => {
     close: closeConfirm,
     show: showConfirm,
     visible: visibleConfirm,
+  } = useModal();
+
+  const {
+    close: closeTestMessage,
+    show: showTestMessage,
+    visible: visibleTestMessage,
   } = useModal();
 
   const [showEmoji, setShowEmoji] = useState(() => false);
@@ -170,6 +172,29 @@ const AddNewUpdates = () => {
     ];
   }, [tags, segments]);
 
+  const phoneSubmissionOptions = useMemo(() => {
+    if (!formSubmissions?.length) {
+      return [];
+    }
+    return formSubmissions.map((item, index) => {
+      return {
+        ...item,
+        value: `###${index}###` + item?.phoneNumber?.phone,
+        label: item?.phoneNumber?.phone,
+      };
+    });
+  }, [formSubmissions]);
+
+  const handleSubmitTestMessage = (phone) => {
+    const params = {
+      message: message,
+      contactsId: phone.id,
+      phoneNumber: phone.phoneNumber,
+    };
+    dispatch(sendTestMessageAsync(params));
+    closeTestMessage();
+  };
+
   useEffect(() => {
     setDataRecipients(RECIPIENTS_TYPE.concat(segments || []));
   }, [segments]);
@@ -177,6 +202,7 @@ const AddNewUpdates = () => {
   useEffect(() => {
     dispatch(getSegmentAsync());
     dispatch(getTagsAsync());
+    dispatch(getFormSubmissionsAsync());
   }, []);
 
   useEffect(() => {
@@ -358,7 +384,15 @@ const AddNewUpdates = () => {
         visible={visibleConfirm}
         handleOk={handleConfirm}
         handleCancel={closeConfirm}
+        handleSendTest={showTestMessage}
         dataSubmit={dataSubmit}
+      />
+      <SendTestMessage
+        visible={visibleTestMessage}
+        handleOk={handleSubmitTestMessage}
+        handleCancel={closeTestMessage}
+        dataSubmit={dataSubmit}
+        phoneOptions={phoneSubmissionOptions}
       />
     </LayoutComponent>
   );

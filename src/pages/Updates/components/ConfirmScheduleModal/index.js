@@ -8,6 +8,7 @@ const ConfirmScheduleModal = ({
   handleOk,
   handleCancel,
   dataSubmit,
+  handleSendTest,
 }) => {
   if (!dataSubmit?.message) {
     return null;
@@ -42,9 +43,8 @@ const ConfirmScheduleModal = ({
               className="md:min-w-200"
               type="primary"
               size="large"
-              onClick={handleCancel}
+              onClick={handleSendTest}
               block
-              disabled
             >
               Send Test
             </Button>
