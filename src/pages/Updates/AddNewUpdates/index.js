@@ -38,7 +38,7 @@ import {
   UploadFileModal,
   EmojiPicker,
   LayoutComponent,
-  DropdownGroup,
+  DropdownReactSelect,
 } from "../../../components";
 import {
   AutomationActionMessageIcon,
@@ -308,7 +308,7 @@ const AddNewUpdates = () => {
                 Manage
               </span>
             </div>
-            <DropdownGroup
+            <DropdownReactSelect
               data={recipientsOptions}
               onChange={handleRecipients}
             />

@@ -11,7 +11,7 @@ import {
   getSegmentAsync,
   addSegmentAsync,
 } from "../../../../redux/updatesReducer";
-import { DropdownGroup } from "../../../../components";
+import { DropdownReactSelect } from "../../../../components";
 
 import { getFilterUpdatesFeature } from "../../../../utils";
 
@@ -96,7 +96,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel, dataSelect }) => {
                     {itemFilterSub.label}
                   </div>
                 ))}
-                <DropdownGroup
+                <DropdownReactSelect
                   defaultValue={null}
                   data={dataSelect}
                   onChange={(item) => handleSelectFilter(item, index)}
@@ -106,7 +106,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel, dataSelect }) => {
                 </Divider>
               </React.Fragment>
             ))}
-            <DropdownGroup
+            <DropdownReactSelect
               data={dataSelect}
               defaultValue={null}
               onChange={(item) => handleSelectFilter(item)}
