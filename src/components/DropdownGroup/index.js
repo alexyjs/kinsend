@@ -1,21 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Select, { components as ReactSelectComponent } from "react-select";
 
 import "./styles.less";
 
-const groupedOptions = [
-  {
-    label: "lable 1",
-    options: [{ label: "value 1", value: 1 }],
-  },
-  {
-    label: "lable 2",
-    options: [
-      { label: "value 1", value: 1 },
-      { label: "value 2", value: 2 },
-    ],
-  },
-];
+// const groupedOptions = [
+//   {
+//     label: "lable 1",
+//     options: [{ label: "value 1", value: 1 }],
+//   },
+//   {
+//     label: "lable 2",
+//     options: [
+//       { label: "value 1", value: 1 },
+//       { label: "value 2", value: 2 },
+//     ],
+//   },
+// ];
 
 const groupStyles = {
   display: "flex",
@@ -60,27 +60,28 @@ const Option = (props) => {
 const formatGroupLabel = (data) => (
   <div style={groupStyles} className="formatGroupLabel">
     <span>{data.label}</span>
-    {/* <span>{data.options.length}</span> */}
   </div>
 );
 
-const DropdownGroup = ({ data = [], onChange, value }) => (
-  <Select
-    // defaultValue={groupedOptions[1]}
-    value={value}
-    // menuIsOpen
-    options={data}
-    formatGroupLabel={formatGroupLabel}
-    className="DropdownGroup"
-    components={{
-      Option: (props) => (
-        <Option {...props} formatOption={(item) => item.label} />
-      ),
-    }}
-    onChange={onChange}
-  />
+const DropdownGroup = ({ data = [], onChange, defaultValue }) => {
+  return (
+    <Select
+      value={defaultValue}
+      // menuIsOpen
+      options={data}
+      formatGroupLabel={formatGroupLabel}
+      className="DropdownGroup"
+      components={{
+        Option: (props) => (
+          <Option {...props} formatOption={(item) => item.label} />
+        ),
+      }}
+      onChange={onChange}
+    />
+  );
   // hideArrow ? null : <DropdownIndicator {...props} searchable={searchable} />,
   // MenuList: props => <MenuList {...props} formatOption={optionComponent} />,
   // SingleValue: props => <SingleValue {...props} formatValue={valueComponent} />,
-);
+};
+
 export default DropdownGroup;

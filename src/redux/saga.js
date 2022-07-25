@@ -32,6 +32,7 @@ import {
   watchAddFormSaga,
   watchUpdateFormSaga,
   watcUpdateStatusFormSaga,
+  watchGetFormSubmissionsSaga,
 } from "./settingsReducer";
 
 import {
@@ -55,6 +56,7 @@ import {
   watchGetUpdatesDetailSaga,
   watchAddUpdatesSaga,
   watchResetUpdatesSaga,
+  watchSendTestMessageSaga,
 } from "./updatesReducer";
 
 export default function* rootSaga() {
@@ -94,6 +96,7 @@ export default function* rootSaga() {
     watchAddFormSaga(),
     watchUpdateFormSaga(),
     watcUpdateStatusFormSaga(),
+    watchGetFormSubmissionsSaga(),
 
     // public
     watchGetFormSettingDetailSaga(),
@@ -114,5 +117,6 @@ export default function* rootSaga() {
     watchGetUpdatesDetailSaga(),
     watchAddUpdatesSaga(),
     watchResetUpdatesSaga(),
+    watchSendTestMessageSaga(),
   ]);
 }

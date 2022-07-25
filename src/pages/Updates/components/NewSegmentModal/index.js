@@ -97,7 +97,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel, dataSelect }) => {
                   </div>
                 ))}
                 <DropdownGroup
-                  value={null}
+                  defaultValue={null}
                   data={dataSelect}
                   onChange={(item) => handleSelectFilter(item, index)}
                 />
@@ -108,6 +108,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel, dataSelect }) => {
             ))}
             <DropdownGroup
               data={dataSelect}
+              defaultValue={null}
               onChange={(item) => handleSelectFilter(item)}
             />
           </Col>

@@ -18,6 +18,9 @@ export const updateFormAsync = createAction("settings/updateFormAsync");
 export const updateStatusFormAsync = createAction(
   "automation/updateStatusFormAsync"
 );
+export const getFormSubmissionsAsync = createAction(
+  "settings/getFormSubmissionsAsync"
+);
 
 export async function getTags(data) {
   const payload = {
@@ -115,6 +118,16 @@ export async function updateStatusForm(id, status) {
     data: {
       status,
     },
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function getFormSubmissions(data) {
+  const payload = {
+    method: "GET",
+    url: `${process.env.REACT_APP_API_BASE_URL}/form-submission`,
+    data,
   };
 
   return handleCallAPI(payload);
@@ -274,6 +287,15 @@ export function* updateStatusFormSaga(action) {
   }
 }
 
+export function* getFormSubmissionsSaga(action) {
+  const { response, errors } = yield call(getFormSubmissions, action.payload);
+  if (response) {
+    yield put(getFormSubmissionsSuccess(response));
+  } else {
+    yield put(failed(errors));
+  }
+}
+
 export function* watchgetTagsSaga() {
   yield takeLatest(getTagsAsync, getTagsSaga);
 }
@@ -310,6 +332,10 @@ export function* watcUpdateStatusFormSaga() {
   yield takeLatest(updateStatusFormAsync, updateStatusFormSaga);
 }
 
+export function* watchGetFormSubmissionsSaga() {
+  yield takeLatest(getFormSubmissionsAsync, getFormSubmissionsSaga);
+}
+
 const initialState = {
   isLoading: false,
   errors: [],
@@ -321,6 +347,7 @@ const initialState = {
   forms: [],
   addedForm: null,
   isNewFormLoading: false,
+  formSubmissions: [],
 };
 
 export const settingsSlice = createSlice({
@@ -358,6 +385,11 @@ export const settingsSlice = createSlice({
       state.addedForm = action.payload;
       state.isNewFormLoading = false;
     },
+    getFormSubmissionsSuccess: (state, action) => {
+      state.formSubmissions = action.payload;
+      state.isLoading = false;
+      state.errors = [];
+    },
     failed: (state, action) => {
       state.isLoading = false;
       state.isNewFormLoading = false;
@@ -393,6 +425,7 @@ export const {
   updateCustomFieldSuccess,
   getFormsSuccess,
   addFormSuccess,
+  getFormSubmissionsSuccess,
 } = settingsSlice.actions;
 
 export const selectSettings = ({ settings }) => {
@@ -406,6 +439,7 @@ export const selectSettings = ({ settings }) => {
     forms: settings.forms,
     addedForm: settings.addedForm,
     isNewFormLoading: settings.isNewFormLoading,
+    formSubmissions: settings.formSubmissions,
   };
 };
 

@@ -20,3 +20,4 @@ export { default as LayoutComponent } from "./Layout";
 export { default as UploadFileModal } from "./UploadFileModal";
 export { default as EmojiPicker } from "./EmojiPicker";
 export { default as DropdownGroup } from "./DropdownGroup";
+export { default as DropdownReactSelect } from "./DropdownReactSelect";

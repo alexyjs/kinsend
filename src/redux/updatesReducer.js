@@ -2,7 +2,7 @@ import { createAction, createSlice } from "@reduxjs/toolkit";
 import { call, put, takeLatest } from "redux-saga/effects";
 import { notification } from "antd";
 
-import { handleCallAPI } from "./helpers";
+import { handleCallAPI, getErrorMessage } from "./helpers";
 
 export const getSegmentAsync = createAction("public/getSegmentAsync");
 export const addSegmentAsync = createAction("public/addSegmentAsync");
@@ -13,6 +13,7 @@ export const getUpdatesDetailAsync = createAction(
 );
 export const addUpdatesAsync = createAction("public/addUpdatesAsync");
 export const resetUpdatesAsync = createAction("public/resetUpdatesAsync");
+export const sendTestMessageAsync = createAction("public/sendTestMessageAsync");
 
 export async function getSegment() {
   const payload = {
@@ -55,6 +56,16 @@ export async function addUpdates(data) {
   const payload = {
     method: "POST",
     url: `${process.env.REACT_APP_API_BASE_URL}/updates`,
+    data,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function sendTestMessageAPI(data) {
+  const payload = {
+    method: "POST",
+    url: `${process.env.REACT_APP_API_BASE_URL}/updates/send-test`,
     data,
   };
 
@@ -122,7 +133,7 @@ export function* addUpdatesSaga(action) {
     yield put(failed(errors));
     notification.error({
       title: "Action failed",
-      message: errors || `Can't create the UPDATES`,
+      message: getErrorMessage(errors) || `Can't create the UPDATES`,
     });
   }
 }
@@ -130,6 +141,25 @@ export function* addUpdatesSaga(action) {
 export function* resetUpdatesSaga() {
   yield put(resetUpdatesSuccess());
 }
+
+export function* sendTestMessageSage(action) {
+  const { response, errors } = yield call(sendTestMessageAPI, action.payload);
+  if (response) {
+    // yield put(sendTestMessageSuccess(response));
+    notification.success({
+      title: "Action Completed",
+      message: `Send Test Message is successfully`,
+    });
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: getErrorMessage(errors) || `Send Test Message is failed`,
+    });
+  }
+}
+
+//
 
 export function* watchGetSegmentSaga() {
   yield takeLatest(getSegmentAsync, getSegmentSaga);
@@ -153,6 +183,10 @@ export function* watchAddUpdatesSaga() {
 
 export function* watchResetUpdatesSaga() {
   yield takeLatest(resetUpdatesAsync, resetUpdatesSaga);
+}
+
+export function* watchSendTestMessageSaga() {
+  yield takeLatest(sendTestMessageAsync, sendTestMessageSage);
 }
 
 const initialState = {
