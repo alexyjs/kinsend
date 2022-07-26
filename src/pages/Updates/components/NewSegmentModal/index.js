@@ -1,5 +1,5 @@
 import { Button, Col, Form, Modal, Row, Input, Select, Divider } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   PlusOutlined,
   MinusCircleOutlined,
@@ -8,19 +8,60 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  getSegmentAsync,
+  selectUpdates,
   addSegmentAsync,
 } from "../../../../redux/updatesReducer";
+import { selectSettings } from "../../../../redux/settingsReducer";
 import { DropdownReactSelect } from "../../../../components";
 
-import { getFilterUpdatesFeature } from "../../../../utils";
+import {
+  formatOptionsFormDatabase,
+  getFilterUpdatesFeature,
+} from "../../../../utils";
+import { SEGMENT_FILTER_TYPE } from "../../../../utils/segment";
+import { LIVE_IN_TYPE } from "../../../../utils/update";
 
 import "./styles.less";
 
-const NewSegmentModal = ({ visible, handleOk, handleCancel, dataSelect }) => {
+const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const [filters, setFilters] = useState([]);
+  const { newUpdate, segments } = useSelector(selectUpdates);
+  const { tags, formSubmissions } = useSelector(selectSettings);
+
+  const filterssOptions = useMemo(() => {
+    return [
+      {
+        label: "Contacts",
+        options: SEGMENT_FILTER_TYPE,
+      },
+      {
+        label: "Segments",
+        options: formatOptionsFormDatabase({
+          data: segments,
+          prefixLabel: "Include Segment ",
+          typeOption: "isSegment",
+        }),
+      },
+      {
+        label: "Location",
+        options: formatOptionsFormDatabase({
+          data: LIVE_IN_TYPE,
+          prefixLabel: "Lives In: ",
+          typeOption: "isLocation",
+        }),
+      },
+      {
+        label: "Tags",
+        options: formatOptionsFormDatabase({
+          data: tags,
+          prefixLabel: "Is Tagged: ",
+          typeOption: "isTagged",
+        }),
+      },
+    ];
+  }, [tags, segments]);
 
   const onFinish = (values) => {
     if (!filters) {
@@ -37,13 +78,18 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel, dataSelect }) => {
   };
 
   const handleSelectFilter = (item, index) => {
-    console.log("###handleSelectFilter", item);
     let newFilters = [...filters];
     if (!newFilters[index]) {
       newFilters.push([item]);
     } else {
       newFilters[index].push(item);
     }
+    setFilters(newFilters);
+  };
+
+  const handleRemoveFilterItem = (index, indexSub) => {
+    let newFilters = [...filters];
+    delete filters[index][indexSub];
     setFilters(newFilters);
   };
 
@@ -88,17 +134,22 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel, dataSelect }) => {
             </Form.Item>
             {filters.map((itemFilter, index) => (
               <React.Fragment key={`filter-dropdown-segment-${index}`}>
-                {itemFilter.map((itemFilterSub, index) => (
+                {itemFilter.map((itemFilterSub, indexSub) => (
                   <div
-                    key={`filter-dropdown-itemFilterSub-${index}`}
+                    key={`filter-dropdown-itemFilterSub-${indexSub}`}
                     className="segment-filter-item"
                   >
                     {itemFilterSub.label}
+
+                    <MinusCircleOutlined
+                      className="dynamic-delete-button text-primary"
+                      onClick={() => handleRemoveFilterItem(index, indexSub)}
+                    />
                   </div>
                 ))}
                 <DropdownReactSelect
                   defaultValue={null}
-                  data={dataSelect}
+                  data={filterssOptions}
                   onChange={(item) => handleSelectFilter(item, index)}
                 />
                 <Divider>
@@ -107,7 +158,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel, dataSelect }) => {
               </React.Fragment>
             ))}
             <DropdownReactSelect
-              data={dataSelect}
+              data={filterssOptions}
               defaultValue={null}
               onChange={(item) => handleSelectFilter(item)}
             />
