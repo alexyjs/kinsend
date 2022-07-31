@@ -29,6 +29,21 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
   const [filters, setFilters] = useState([]);
   const { newUpdate, segments } = useSelector(selectUpdates);
   const { tags, formSubmissions } = useSelector(selectSettings);
+  const tagsOptions = useMemo(() => {
+    return formatOptionsFormDatabase({
+      data: tags,
+      prefixLabel: "Is Tagged: ",
+      typeOption: "isTagged",
+    });
+  }, [tags]);
+
+  const segmentsOptions = useMemo(() => {
+    return formatOptionsFormDatabase({
+      data: segments,
+      prefixLabel: "Include Segment ",
+      typeOption: "isSegment",
+    });
+  }, [segments]);
 
   const filterssOptions = useMemo(() => {
     return [
@@ -38,11 +53,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
       },
       {
         label: "Segments",
-        options: formatOptionsFormDatabase({
-          data: segments,
-          prefixLabel: "Include Segment ",
-          typeOption: "isSegment",
-        }),
+        options: segmentsOptions,
       },
       {
         label: "Location",
@@ -54,14 +65,61 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
       },
       {
         label: "Tags",
-        options: formatOptionsFormDatabase({
-          data: tags,
-          prefixLabel: "Is Tagged: ",
-          typeOption: "isTagged",
-        }),
+        options: tagsOptions,
       },
     ];
-  }, [tags, segments]);
+  }, [tagsOptions, segmentsOptions]);
+
+  const renderItem = (item, index, indexSub) => {
+    if (item.typeOption === "isTagged") {
+      console.log("###renderItem tagged: ", item, tagsOptions);
+      return (
+        <div className="flex-auto">
+          <DropdownReactSelect
+            defaultValue="Is Tagged"
+            data={[
+              { label: "Is Tagged", value: "Is Tagged" },
+              { label: "Isn't Tagged", value: "Isn't Tagged" },
+            ]}
+            onChange={(item) => handleChangeTagCondition(item, index, indexSub)}
+          />
+          <DropdownReactSelect
+            defaultValue={item.value}
+            data={tagsOptions}
+            onChange={(item) => handleChangeTag(item, index, indexSub)}
+          />
+        </div>
+      );
+    }
+
+    if (item.typeOption === "isLocation") {
+      return <div>isLocation: {item.label}</div>;
+    }
+
+    if (item.typeOption === "isSegment") {
+      return <div>isSegment: {item.label}</div>;
+    }
+
+    return <div>Contact: {item.label}</div>;
+  };
+
+  const handleChangeTagCondition = (item, index, indexSub) => {
+    let newFilters = [...filters];
+    newFilters[index][indexSub] = {
+      ...newFilters[index][indexSub],
+      conditionFilter: item.value,
+    };
+    setFilters(newFilters);
+  }
+
+  const handleChangeTag = (item, index, indexSub) => {
+    let newFilters = [...filters];
+    newFilters[index][indexSub] = {
+      ...item,
+      conditionFilter: newFilters[index][indexSub].conditionFilter,
+    };
+    setFilters(newFilters);
+  }
 
   const onFinish = (values) => {
     if (!filters) {
@@ -89,7 +147,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
 
   const handleRemoveFilterItem = (index, indexSub) => {
     let newFilters = [...filters];
-    delete filters[index][indexSub];
+    delete newFilters[index][indexSub];
     setFilters(newFilters);
   };
 
@@ -100,7 +158,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
   useEffect(() => {
     onReset();
   }, []);
-
+  console.log("###filters", tagsOptions, segmentsOptions, filters);
   return (
     <Modal
       key="NewSegmentModal"
@@ -139,7 +197,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
                     key={`filter-dropdown-itemFilterSub-${indexSub}`}
                     className="segment-filter-item"
                   >
-                    {itemFilterSub.label}
+                    {renderItem(itemFilterSub, index, indexSub)}
 
                     <MinusCircleOutlined
                       className="dynamic-delete-button text-primary"
@@ -148,7 +206,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
                   </div>
                 ))}
                 <DropdownReactSelect
-                  defaultValue={null}
+                  value={null}
                   data={filterssOptions}
                   onChange={(item) => handleSelectFilter(item, index)}
                 />
@@ -158,8 +216,8 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
               </React.Fragment>
             ))}
             <DropdownReactSelect
+              value={null}
               data={filterssOptions}
-              defaultValue={null}
               onChange={(item) => handleSelectFilter(item)}
             />
           </Col>

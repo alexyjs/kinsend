@@ -112,7 +112,7 @@ export function* getUpdatesSaga(action) {
 }
 
 export function* getUpdatesDetailSaga(action) {
-  const { response, errors } = yield call(getSegment, action.payload);
+  const { response, errors } = yield call(getUpdatesDetail, action.payload);
   if (response) {
     yield put(getUpdatesDetailSuccess(response));
   } else {
