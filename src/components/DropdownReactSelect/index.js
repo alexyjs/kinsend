@@ -13,6 +13,7 @@ const groupStyles = {
 // Show the value which selected
 const SingleValue = (props) => {
   const { children, formatValue, data } = props;
+  console.log('###SingleValue', props);
   return (
     <ReactSelectComponent.SingleValue
       {...props}
@@ -64,7 +65,7 @@ const formatGroupLabel = (data) => (
   </div>
 );
 
-const DropdownReactSelect = ({ data = [], onChange, className, ...props }) => {
+const DropdownReactSelect = ({ data = [], onChange, className, value, ...props }) => {
   return (
     <Select
       isClearable

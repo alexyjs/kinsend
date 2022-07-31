@@ -18,7 +18,7 @@ import Automation from "./pages/Automation";
 import AddNewAutomation from "./pages/Automation/AddNewAutomation";
 import UpdatesDashboard from "./pages/Updates";
 import AddNewUpdates from "./pages/Updates/AddNewUpdates";
-import EditUpdates from "./pages/Updates/UpdateUpdates";
+import EditUpdates from "./pages/Updates/UpdatesDetail";
 import "./styles/antd.less";
 import "./styles/tailwind.css";
 import "./App.less";
@@ -83,7 +83,7 @@ function App() {
 
             <Route path="/updates" element={<UpdatesDashboard />} />
             <Route path="/updates/scheduled/new" element={<AddNewUpdates />} />
-            <Route path="/updates/edit/:id" element={<EditUpdates />} />
+            <Route path="/updates/detail/:updatesId" element={<EditUpdates />} />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>
         </ConfigProvider>

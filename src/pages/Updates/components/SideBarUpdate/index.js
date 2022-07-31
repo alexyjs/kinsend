@@ -85,7 +85,8 @@ const SideBarUpdate = ({ data }) => {
       <div className="SideBarUpdate-list">
         {dataShow?.length
           ? dataShow.map((item) => (
-              <div
+              <NavLink
+                to={`/updates/detail/${item.id}`}
                 className="SideBarUpdate-item"
                 key={`sidebar-update-item-${item}`}
               >
@@ -99,7 +100,7 @@ const SideBarUpdate = ({ data }) => {
                   Sent {format(new Date(item.datetime), "MM/dd/yyyy hh:mm aa")}.
                   to {item.triggerType}
                 </span>
-              </div>
+              </NavLink>
             ))
           : null}
       </div>
