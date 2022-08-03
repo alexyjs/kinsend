@@ -71,33 +71,34 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
   }, [tagsOptions, segmentsOptions]);
 
   const renderItem = (item, index, indexSub) => {
-    if (item.typeOption === "isTagged") {
+    if (item?.typeOption === "isTagged") {
       console.log("###renderItem tagged: ", item, tagsOptions);
-      return (
-        <div className="flex-auto">
-          <DropdownReactSelect
-            defaultValue="Is Tagged"
-            data={[
-              { label: "Is Tagged", value: "Is Tagged" },
-              { label: "Isn't Tagged", value: "Isn't Tagged" },
-            ]}
-            onChange={(item) => handleChangeTagCondition(item, index, indexSub)}
-          />
-          <DropdownReactSelect
-            defaultValue={item.value}
-            data={tagsOptions}
-            onChange={(item) => handleChangeTag(item, index, indexSub)}
-          />
-        </div>
-      );
+      return <div>{item.label}</div>;
+      // return (
+      //   <div className="flex-auto">
+      //     <DropdownReactSelect
+      //       defaultValue="Is Tagged"
+      //       data={[
+      //         { label: "Is Tagged", value: "Is Tagged" },
+      //         { label: "Isn't Tagged", value: "Isn't Tagged" },
+      //       ]}
+      //       onChange={(item) => handleChangeTagCondition(item, index, indexSub)}
+      //     />
+      //     <DropdownReactSelect
+      //       defaultValue={item.value}
+      //       data={tagsOptions}
+      //       onChange={(item) => handleChangeTag(item, index, indexSub)}
+      //     />
+      //   </div>
+      // );
     }
 
-    if (item.typeOption === "isLocation") {
-      return <div>isLocation: {item.label}</div>;
+    if (item?.typeOption === "isLocation") {
+      return <div>{item.label}</div>;
     }
 
-    if (item.typeOption === "isSegment") {
-      return <div>isSegment: {item.label}</div>;
+    if (item?.typeOption === "isSegment") {
+      return <div>{item.label}</div>;
     }
 
     return <div>Contact: {item.label}</div>;
@@ -110,7 +111,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
       conditionFilter: item.value,
     };
     setFilters(newFilters);
-  }
+  };
 
   const handleChangeTag = (item, index, indexSub) => {
     let newFilters = [...filters];
@@ -119,7 +120,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
       conditionFilter: newFilters[index][indexSub].conditionFilter,
     };
     setFilters(newFilters);
-  }
+  };
 
   const onFinish = (values) => {
     if (!filters) {

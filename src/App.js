@@ -83,7 +83,10 @@ function App() {
 
             <Route path="/updates" element={<UpdatesDashboard />} />
             <Route path="/updates/scheduled/new" element={<AddNewUpdates />} />
-            <Route path="/updates/detail/:updatesId" element={<EditUpdates />} />
+            <Route
+              path="/updates/detail/:updatesId"
+              element={<EditUpdates />}
+            />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>
         </ConfigProvider>
