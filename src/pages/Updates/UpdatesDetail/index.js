@@ -14,6 +14,7 @@ import {
 import { selectUsers } from "../../../redux/userReducer";
 import { LayoutComponent } from "../../../components";
 import SideBarUpdate from "../components/SideBarUpdate";
+import { LinkIcon } from "../../../assets/svg";
 
 import "./styles.less";
 
@@ -282,6 +283,7 @@ const AddNewUpdates = () => {
                   <Divider className="my-10" />
                   <div className="flex justify-between items-center">
                     <div className="flex text-primary link truncate">
+                      <LinkIcon className="mr-3" />
                       <span className="truncate">{clickedItem.link}</span>
                     </div>
                     <div className="inline-flex ml-3">
