@@ -90,11 +90,14 @@ const SideBarUpdate = ({ data }) => {
                 className="SideBarUpdate-item"
                 key={`sidebar-update-item-${item}`}
               >
-                <h3 className="text-ellipsis overflow-hidden truncate">
-                  {truncate(item.message, {
+                <h3
+                  className="text-ellipsis overflow-hidden truncate"
+                  dangerouslySetInnerHTML={{ __html: item.message }}
+                >
+                  {/* {truncate(item.message, {
                     length: 30,
                     omission: "...",
-                  })}
+                  })} */}
                 </h3>
                 <span>
                   Sent {format(new Date(item.datetime), "MM/dd/yyyy hh:mm aa")}.

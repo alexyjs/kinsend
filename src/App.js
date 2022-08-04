@@ -50,6 +50,28 @@ function App() {
   const isAuth = authStorage.get();
   const cname = getCname();
 
+  if (cname) {
+    return (
+      <main>
+        <ConfigProvider
+          locale={en}
+          areaMapper={(area) => {
+            return {
+              ...area,
+              emoji: <span className={`fp ${area.short.toLowerCase()}`} />,
+            };
+          }}
+        >
+          <Routes>
+            <Route path="/thank-you" element={<PublicThankYouSubmission />} />
+            <Route path="/f/:id" element={<PublicFormSumission />} />
+            <Route path="*" element={<PublicFormSumission />} />
+          </Routes>
+        </ConfigProvider>
+      </main>
+    );
+  }
+
   if (isAuth) {
     return (
       <main>
@@ -88,28 +110,6 @@ function App() {
               element={<EditUpdates />}
             />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
-          </Routes>
-        </ConfigProvider>
-      </main>
-    );
-  }
-
-  if (cname) {
-    return (
-      <main>
-        <ConfigProvider
-          locale={en}
-          areaMapper={(area) => {
-            return {
-              ...area,
-              emoji: <span className={`fp ${area.short.toLowerCase()}`} />,
-            };
-          }}
-        >
-          <Routes>
-            <Route path="/thank-you" element={<PublicThankYouSubmission />} />
-            <Route path="/f/:id" element={<PublicFormSumission />} />
-            <Route path="*" element={<PublicFormSumission />} />
           </Routes>
         </ConfigProvider>
       </main>

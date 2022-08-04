@@ -21,6 +21,9 @@ export const updateStatusFormAsync = createAction(
 export const getFormSubmissionsAsync = createAction(
   "settings/getFormSubmissionsAsync"
 );
+export const getSubscriberLocationsAsync = createAction(
+  "settings/getSubscriberLocationsAsync"
+);
 
 export async function getTags(data) {
   const payload = {
@@ -96,6 +99,15 @@ export async function getFormDetail(id) {
   const payload = {
     method: "GET",
     url: `${process.env.REACT_APP_API_BASE_URL}/forms/${id}`,
+  };
+
+  return handleFileCallAPI(payload);
+}
+
+export async function getSubscriberLocations() {
+  const payload = {
+    method: "GET",
+    url: `${process.env.REACT_APP_API_BASE_URL}/form-submission/locations`,
   };
 
   return handleFileCallAPI(payload);
@@ -296,6 +308,18 @@ export function* getFormSubmissionsSaga(action) {
   }
 }
 
+export function* getSubscriberSaga(action) {
+  const { response, errors } = yield call(
+    getSubscriberLocations,
+    action.payload
+  );
+  if (response) {
+    yield put(getFormSubmissionsSuccess(response));
+  } else {
+    yield put(failed(errors));
+  }
+}
+
 export function* watchgetTagsSaga() {
   yield takeLatest(getTagsAsync, getTagsSaga);
 }
@@ -336,6 +360,10 @@ export function* watchGetFormSubmissionsSaga() {
   yield takeLatest(getFormSubmissionsAsync, getFormSubmissionsSaga);
 }
 
+export function* watchGetSubscriberSaga() {
+  yield takeLatest(getSubscriberLocationsAsync, getSubscriberSaga);
+}
+
 const initialState = {
   isLoading: false,
   errors: [],
@@ -348,6 +376,7 @@ const initialState = {
   addedForm: null,
   isNewFormLoading: false,
   formSubmissions: [],
+  subscriberLocations: [],
 };
 
 export const settingsSlice = createSlice({
@@ -390,6 +419,9 @@ export const settingsSlice = createSlice({
       state.isLoading = false;
       state.errors = [];
     },
+    getFormSubscriberLocationsSuccess: (state, action) => {
+      state.subscriberLocations = action.payload;
+    },
     failed: (state, action) => {
       state.isLoading = false;
       state.isNewFormLoading = false;
@@ -426,6 +458,7 @@ export const {
   getFormsSuccess,
   addFormSuccess,
   getFormSubmissionsSuccess,
+  getFormSubscriberLocationsSuccess,
 } = settingsSlice.actions;
 
 export const selectSettings = ({ settings }) => {

@@ -31,6 +31,7 @@ import {
   selectSettings,
   getTagsAsync,
   getFormSubmissionsAsync,
+  getSubscriberLocationsAsync,
 } from "../../../redux/settingsReducer";
 import { selectUsers } from "../../../redux/userReducer";
 import { useModal } from "../../../hook/useModal";
@@ -39,6 +40,7 @@ import {
   EmojiPicker,
   LayoutComponent,
   DropdownReactSelect,
+  RichText,
 } from "../../../components";
 import {
   AutomationActionMessageIcon,
@@ -71,12 +73,14 @@ const AddNewUpdates = () => {
   const [attachment, setAttachmentUrl] = useState({});
   const [datetime, setDatetime] = useState(new Date());
   const { newUpdate, segments } = useSelector(selectUpdates);
-  const { tags, formSubmissions } = useSelector(selectSettings);
+  const { tags, formSubmissions, subscriberLocations } =
+    useSelector(selectSettings);
   const { user } = useSelector(selectUsers);
   const [dataRecipients, setDataRecipients] = useState(RECIPIENTS_TYPE);
   const [dataSubmit, setDataSubmit] = useState(null);
 
-  const message = Form.useWatch("message", form);
+  // const message = Form.useWatch("message", form);
+  const [message, setMessage] = useState("");
 
   const {
     close: closeSegment,
@@ -126,7 +130,7 @@ const AddNewUpdates = () => {
       return;
     }
     setDataSubmit({
-      message: values.message,
+      message: message,
       datetime: datetime,
       triggerType: values.triggerType,
       filter: getFilterUpdatesFeature(recipients),
@@ -170,7 +174,7 @@ const AddNewUpdates = () => {
         }),
       },
     ];
-  }, [tags, segments]);
+  }, [tags, segments, subscriberLocations]);
 
   const phoneSubmissionOptions = useMemo(() => {
     if (!formSubmissions?.length) {
@@ -195,6 +199,10 @@ const AddNewUpdates = () => {
     closeTestMessage();
   };
 
+  const hanldeChangeMessage = (e) => {
+    console.log("###hanldeChangeMessage", e);
+  };
+
   useEffect(() => {
     setDataRecipients(RECIPIENTS_TYPE.concat(segments || []));
   }, [segments]);
@@ -203,6 +211,7 @@ const AddNewUpdates = () => {
     dispatch(getSegmentAsync());
     dispatch(getTagsAsync());
     dispatch(getFormSubmissionsAsync());
+    // dispatch(getSubscriberLocationsAsync());
   }, []);
 
   useEffect(() => {
@@ -211,7 +220,7 @@ const AddNewUpdates = () => {
       dispatch(resetUpdatesAsync());
     }
   }, [navigate, newUpdate]);
-
+  console.log("###subscriberLocations", subscriberLocations);
   return (
     <LayoutComponent className="add-updates-page">
       <div className="flex items-center">
@@ -277,16 +286,24 @@ const AddNewUpdates = () => {
                 </Button>
               </Tooltip>
             </div>
-            <Form.Item
+            {/* <Form.Item
               name="message"
               label="New update"
               rules={[{ required: true, max: 160 }]}
+              onChange={hanldeChangeMessage}
             >
               <Input.TextArea
                 style={{ height: 200 }}
                 placeholder="Send new messenge ..."
               />
-            </Form.Item>
+            </Form.Item> */}
+            <RichText
+              className="mb-2"
+              value={message}
+              onChange={(value) => {
+                setMessage(value);
+              }}
+            />
             <div className="textarea-actions">
               <AttachmentIcon onClick={showUpload} />
               <EmojiIcon onClick={() => setShowEmoji(true)} />

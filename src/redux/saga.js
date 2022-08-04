@@ -33,6 +33,7 @@ import {
   watchUpdateFormSaga,
   watcUpdateStatusFormSaga,
   watchGetFormSubmissionsSaga,
+  watchGetSubscriberSaga,
 } from "./settingsReducer";
 
 import {
@@ -97,6 +98,7 @@ export default function* rootSaga() {
     watchUpdateFormSaga(),
     watcUpdateStatusFormSaga(),
     watchGetFormSubmissionsSaga(),
+    watchGetSubscriberSaga(),
 
     // public
     watchGetFormSettingDetailSaga(),
