@@ -40,7 +40,6 @@ import {
   EmojiPicker,
   LayoutComponent,
   DropdownReactSelect,
-  RichText,
 } from "../../../components";
 import {
   AutomationActionMessageIcon,
@@ -79,8 +78,7 @@ const AddNewUpdates = () => {
   const [dataRecipients, setDataRecipients] = useState(RECIPIENTS_TYPE);
   const [dataSubmit, setDataSubmit] = useState(null);
 
-  // const message = Form.useWatch("message", form);
-  const [message, setMessage] = useState("");
+  const message = Form.useWatch("message", form);
 
   const {
     close: closeSegment,
@@ -286,7 +284,7 @@ const AddNewUpdates = () => {
                 </Button>
               </Tooltip>
             </div>
-            {/* <Form.Item
+            <Form.Item
               name="message"
               label="New update"
               rules={[{ required: true, max: 160 }]}
@@ -296,14 +294,7 @@ const AddNewUpdates = () => {
                 style={{ height: 200 }}
                 placeholder="Send new messenge ..."
               />
-            </Form.Item> */}
-            <RichText
-              className="mb-2"
-              value={message}
-              onChange={(value) => {
-                setMessage(value);
-              }}
-            />
+            </Form.Item>
             <div className="textarea-actions">
               <AttachmentIcon onClick={showUpload} />
               <EmojiIcon onClick={() => setShowEmoji(true)} />
