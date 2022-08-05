@@ -27,7 +27,7 @@ const Profile = () => {
 
   return (
     <LayoutComponent className="updates-page">
-      <div className="flex-auto flex items-center justify-center flex-col	updates-page-content">
+      <div className="flex-auto flex items-center flex-col	updates-page-content p-52">
         <UpdateDashboardEmptyIcon />
         <p> You have no upcoming updates</p>
         <NavLink to="/updates/scheduled/new">
