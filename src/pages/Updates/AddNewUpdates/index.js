@@ -182,7 +182,7 @@ const AddNewUpdates = () => {
       return {
         ...item,
         value: `###${index}###` + item?.phoneNumber?.phone,
-        label: item?.phoneNumber?.phone,
+        label: `${item?.firstName} ${item?.lastName} ${item?.phoneNumber?.phone}`,
       };
     });
   }, [formSubmissions]);

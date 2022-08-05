@@ -41,11 +41,15 @@ const SideBarUpdate = ({ data }) => {
     let result = data.filter((item) => item.message.includes(searchText));
     if (filter === "Sent Updates") {
       result = result.filter((item) => {
-        return isBefore(new Date(item.datetime), new Date());
+        return (
+          item.triggerType === "Once" &&
+          isBefore(new Date(item.datetime), new Date())
+        );
       });
     } else if (filter === "Scheduled Update") {
       result = result.filter((item) => {
-        return isAfter(new Date(item.datetime), new Date());
+        return item.triggerType !== "Once";
+        // isAfter(new Date(item.datetime), new Date())
       });
     }
     setDataShow(result);
