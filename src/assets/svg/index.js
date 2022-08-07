@@ -32,3 +32,8 @@ export { ReactComponent as AutomationAddIcon } from "./AutomationAddIcon.svg";
 export { ReactComponent as AutomationAddStopIcon } from "./AutomationAddStopIcon.svg";
 export { ReactComponent as AutomationActionRemove } from "./AutomationActionRemove.svg";
 export { ReactComponent as AutomationRobotIcon } from "./AutomationRobotIcon.svg";
+export { ReactComponent as UpdateDashboardEmptyIcon } from "./UpdateDashboardEmptyIcon.svg";
+export { ReactComponent as DatetimeIcon } from "./DatetimeIcon.svg";
+export { ReactComponent as EditIcon } from "./EditIcon.svg";
+export { ReactComponent as SearchIcon } from "./SearchIcon.svg";
+export { ReactComponent as LinkIcon } from "./LinkIcon.svg";

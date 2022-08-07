@@ -16,6 +16,9 @@ import PublicFormSumission from "./pages/Public/FormSubmission";
 import PublicThankYouSubmission from "./pages/Public/ThankYouSubmission";
 import Automation from "./pages/Automation";
 import AddNewAutomation from "./pages/Automation/AddNewAutomation";
+import UpdatesDashboard from "./pages/Updates";
+import AddNewUpdates from "./pages/Updates/AddNewUpdates";
+import EditUpdates from "./pages/Updates/UpdatesDetail";
 import "./styles/antd.less";
 import "./styles/tailwind.css";
 import "./App.less";
@@ -47,6 +50,28 @@ function App() {
   const isAuth = authStorage.get();
   const cname = getCname();
 
+  if (cname) {
+    return (
+      <main>
+        <ConfigProvider
+          locale={en}
+          areaMapper={(area) => {
+            return {
+              ...area,
+              emoji: <span className={`fp ${area.short.toLowerCase()}`} />,
+            };
+          }}
+        >
+          <Routes>
+            <Route path="/thank-you" element={<PublicThankYouSubmission />} />
+            <Route path="/f/:id" element={<PublicFormSumission />} />
+            <Route path="*" element={<PublicFormSumission />} />
+          </Routes>
+        </ConfigProvider>
+      </main>
+    );
+  }
+
   if (isAuth) {
     return (
       <main>
@@ -77,29 +102,14 @@ function App() {
             <Route path="/automation/new" element={<AddNewAutomation />} />
             <Route path="/automation/edit/:id" element={<AddNewAutomation />} />
             <Route path="/automation/:tabname" element={<Automation />} />
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
-          </Routes>
-        </ConfigProvider>
-      </main>
-    );
-  }
 
-  if (cname) {
-    return (
-      <main>
-        <ConfigProvider
-          locale={en}
-          areaMapper={(area) => {
-            return {
-              ...area,
-              emoji: <span className={`fp ${area.short.toLowerCase()}`} />,
-            };
-          }}
-        >
-          <Routes>
-            <Route path="/thank-you" element={<PublicThankYouSubmission />} />
-            <Route path="/f/:id" element={<PublicFormSumission />} />
-            <Route path="*" element={<PublicFormSumission />} />
+            <Route path="/updates" element={<UpdatesDashboard />} />
+            <Route path="/updates/scheduled/new" element={<AddNewUpdates />} />
+            <Route
+              path="/updates/detail/:updatesId"
+              element={<EditUpdates />}
+            />
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>
         </ConfigProvider>
       </main>

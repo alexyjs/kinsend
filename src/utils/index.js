@@ -138,3 +138,50 @@ export const getMainDomain = () => {
 
   return "http://localhost:3000";
 };
+
+export const formatOptions = (data) => {
+  return data.map((item) => {
+    return {
+      value: item,
+      label: item,
+    };
+  });
+};
+
+export const formatOptionsFormDatabase = ({
+  data,
+  prefixLabel = "",
+  typeOption = "",
+}) => {
+  return data
+    ? data.map((item) => {
+        return {
+          ...item,
+          value: prefixLabel + (item.id || item.value),
+          label: prefixLabel + (item.name || item.label),
+          typeOption: typeOption,
+        };
+      })
+    : [];
+};
+
+export const getFilterUpdatesFeature = (data) => {
+  if (data.typeOption === "isSegment") {
+    return {
+      segmentId: data.id,
+    };
+  }
+  if (data.typeOption === "isLocation") {
+    return {
+      location: data.value,
+    };
+  }
+  if (data.typeOption === "isTagged") {
+    return {
+      tagId: data.id,
+    };
+  }
+  return {
+    contact: data.value,
+  };
+};

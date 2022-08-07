@@ -5,8 +5,6 @@ import setMinutes from "date-fns/setMinutes";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TimezoneSelect from "react-timezone-select";
-// import moment from "moment";
-import { isObject } from "lodash";
 
 import { useModal } from "../../../../hook/useModal";
 import {

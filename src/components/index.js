@@ -19,3 +19,4 @@ export { default as CNameModal } from "./CNameModal";
 export { default as LayoutComponent } from "./Layout";
 export { default as UploadFileModal } from "./UploadFileModal";
 export { default as EmojiPicker } from "./EmojiPicker";
+export { default as DropdownReactSelect } from "./DropdownReactSelect";

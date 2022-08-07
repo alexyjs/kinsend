@@ -98,3 +98,8 @@ export const handleUploadImageCallAPI = async (data) => {
     };
   }
 };
+
+export const getErrorMessage = (err) => {
+  if (_.isString(err)) return err;
+  return "Something went wrong!";
+};

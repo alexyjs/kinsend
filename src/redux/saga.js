@@ -32,6 +32,8 @@ import {
   watchAddFormSaga,
   watchUpdateFormSaga,
   watcUpdateStatusFormSaga,
+  watchGetFormSubmissionsSaga,
+  watchGetSubscriberSaga,
 } from "./settingsReducer";
 
 import {
@@ -47,6 +49,16 @@ import {
   watchResetAutomationSaga,
   watchUpdateStatusAutomationSaga,
 } from "./automationReducer";
+
+import {
+  watchGetSegmentSaga,
+  watchAddSegmentSaga,
+  watchGetUpdatesSaga,
+  watchGetUpdatesDetailSaga,
+  watchAddUpdatesSaga,
+  watchResetUpdatesSaga,
+  watchSendTestMessageSaga,
+} from "./updatesReducer";
 
 export default function* rootSaga() {
   yield all([
@@ -85,6 +97,8 @@ export default function* rootSaga() {
     watchAddFormSaga(),
     watchUpdateFormSaga(),
     watcUpdateStatusFormSaga(),
+    watchGetFormSubmissionsSaga(),
+    watchGetSubscriberSaga(),
 
     // public
     watchGetFormSettingDetailSaga(),
@@ -97,5 +111,14 @@ export default function* rootSaga() {
     watchDeleteAutomationSaga(),
     watchResetAutomationSaga(),
     watchUpdateStatusAutomationSaga(),
+
+    // update
+    watchGetSegmentSaga(),
+    watchAddSegmentSaga(),
+    watchGetUpdatesSaga(),
+    watchGetUpdatesDetailSaga(),
+    watchAddUpdatesSaga(),
+    watchResetUpdatesSaga(),
+    watchSendTestMessageSaga(),
   ]);
 }
