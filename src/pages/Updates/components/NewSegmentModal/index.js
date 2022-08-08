@@ -4,6 +4,7 @@ import {
   PlusOutlined,
   MinusCircleOutlined,
   DownOutlined,
+  CloseOutlined,
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -200,7 +201,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
                   >
                     {renderItem(itemFilterSub, index, indexSub)}
 
-                    <MinusCircleOutlined
+                    <CloseOutlined
                       className="dynamic-delete-button text-primary"
                       onClick={() => handleRemoveFilterItem(index, indexSub)}
                     />

@@ -41,7 +41,7 @@ const UploadFileModal = ({ visible, handleOk, handleCancel, onFileChange }) => {
   const hanldeFileChange = async (e) => {
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {
-      setFile(e);
+      setFile(e.target.files);
     }
   };
 
