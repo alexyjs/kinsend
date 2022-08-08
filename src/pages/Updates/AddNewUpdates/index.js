@@ -132,6 +132,7 @@ const AddNewUpdates = () => {
       datetime: datetime,
       triggerType: values.triggerType,
       filter: getFilterUpdatesFeature(recipients),
+      fileUrl: attachment?.url,
     });
 
     showConfirm();
@@ -327,6 +328,7 @@ const AddNewUpdates = () => {
               <DatetimeIcon />
               <DatePicker
                 showTimeSelect
+                timeIntervals={5}
                 selected={datetime}
                 onChange={(date) => setDatetime(date)}
                 dateFormat="MMMM d, yyyy h:mm aa"
