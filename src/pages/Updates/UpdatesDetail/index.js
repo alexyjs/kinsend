@@ -64,7 +64,7 @@ const AddNewUpdates = () => {
   }
 
   return (
-    <LayoutComponent className="updates-detail-page p-5">
+    <LayoutComponent className="updates-detail-page">
       <div className="flex">
         {/* <div className="phone-image-frame">
           <div className="">
@@ -91,7 +91,6 @@ const AddNewUpdates = () => {
         <div className="flex-auto px-3 2xl:px-5">
           <Row className="w-full">
             <Col className="w-full">
-              <Divider className="my-10" />
               <div
                 className="updates-detail-message"
                 dangerouslySetInnerHTML={{ __html: updatesDetail.message }}
