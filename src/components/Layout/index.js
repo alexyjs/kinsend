@@ -100,7 +100,7 @@ const LayoutComponent = ({ className, children }) => {
               onMouseOut={() => setHover(false)}
             >
               <NotificationSVG />
-              <span className="menu-item-label">updates</span>
+              <span className="menu-item-label">Updates</span>
             </NavLink>
           </Menu.Item>
           <Menu.Item key="automation">
