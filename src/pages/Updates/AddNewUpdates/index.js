@@ -15,7 +15,7 @@ import {
   Select,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { format } from "date-fns";
+import { format, differenceInMilliseconds, addMinutes } from "date-fns";
 import { NavLink } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -228,6 +228,27 @@ const AddNewUpdates = () => {
       dispatch(resetUpdatesAsync());
     }
   }, [navigate, newUpdate]);
+
+  // Reload datetime and update time schedule
+
+  const handleReloadtime = () => {
+    if (
+      differenceInMilliseconds(datetime, new Date()) < -60000
+    ) {
+      const newDate = addMinutes(new Date(), 1);
+      setDatetime(newDate);
+    }
+  }
+  useEffect(() => {
+    handleReloadtime();
+    const timer = setInterval(() => {
+      handleReloadtime();
+    }, 10000);
+
+    return () => {
+      clearInterval(timer);
+    }
+  }, [datetime]);
 
   return (
     <LayoutComponent className="add-updates-page">
