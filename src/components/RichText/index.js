@@ -40,7 +40,7 @@ const RichText = ({ value, onChange, className, disabled }) => {
             // move cusor
             // editor.setSelection(range.index + 1);
             // editor.setEditorContents(range.index, 'image', res);
-            // const range = editor.getEditorSelection();
+            const range = editor.getEditorSelection();
             // editor.insertEmbed(range.index, 'image', res);
             // quillRef.current.setSelection(range.index + 1);
             console.log("###done");
