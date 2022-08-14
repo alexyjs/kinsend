@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
 import {
@@ -78,6 +78,7 @@ const AddNewUpdates = () => {
   const { user } = useSelector(selectUsers);
   const [dataRecipients, setDataRecipients] = useState(RECIPIENTS_TYPE);
   const [dataSubmit, setDataSubmit] = useState(null);
+  const childRef = useRef();
 
   // const message = Form.useWatch("message", form);
   const [message, setMessage] = useState("");
@@ -121,10 +122,11 @@ const AddNewUpdates = () => {
   };
 
   const handleChangeEmoji = (emojiObj) => {
-    let message = form.getFieldValue("message") || "";
-    form.setFieldsValue({
-      message: message + emojiObj.native,
-    });
+    // let message = form.getFieldValue("message") || "";
+    // form.setFieldsValue({
+    //   message: message + emojiObj.native,
+    // });
+    childRef.current.triggerUpdateText(emojiObj.native);
     setShowEmoji(false);
   };
 
@@ -136,13 +138,19 @@ const AddNewUpdates = () => {
     if (!recipients) {
       return;
     }
-    setDataSubmit({
-      message: message,
+    const parrams = {
+      message: message
+        .replace(/<span>/gi, "")
+        .replace(/<\/span>/gi, "")
+        .replace(/&lt;/gi, "<")
+        .replace(/&gt;/gi, ">"),
       datetime: datetime,
       triggerType: values.triggerType,
       filter: getFilterUpdatesFeature(recipients),
       fileUrl: attachment?.url,
-    });
+    };
+
+    setDataSubmit(parrams);
 
     showConfirm();
   };
@@ -199,10 +207,15 @@ const AddNewUpdates = () => {
 
   const handleSubmitTestMessage = (phone) => {
     const params = {
-      message: message,
+      message: message
+        .replace(/<span>/gi, "")
+        .replace(/<\/span>/gi, "")
+        .replace(/&lt;/gi, "<")
+        .replace(/&gt;/gi, ">"),
       contactsId: phone.id,
       phoneNumber: phone.phoneNumber,
     };
+    console.log("###handleSubmitTestMessage", params);
     dispatch(sendTestMessageAsync(params));
     closeTestMessage();
   };
@@ -232,13 +245,11 @@ const AddNewUpdates = () => {
   // Reload datetime and update time schedule
 
   const handleReloadtime = () => {
-    if (
-      differenceInMilliseconds(datetime, new Date()) < -60000
-    ) {
+    if (differenceInMilliseconds(datetime, new Date()) < -60000) {
       const newDate = addMinutes(new Date(), 1);
       setDatetime(newDate);
     }
-  }
+  };
   useEffect(() => {
     handleReloadtime();
     const timer = setInterval(() => {
@@ -247,7 +258,7 @@ const AddNewUpdates = () => {
 
     return () => {
       clearInterval(timer);
-    }
+    };
   }, [datetime]);
 
   return (
@@ -337,7 +348,16 @@ const AddNewUpdates = () => {
                 placeholder="Compose your message.."
               />
             </Form.Item> */}
-            <EditableText onChange={hanldeChangeMessage} />
+            <EditableText
+              // defaultValue={message}
+              onChange={hanldeChangeMessage}
+              ref={childRef}
+            />
+            {/* <EditableText
+                className="mb-2"
+                value={message}
+                onChange={hanldeChangeMessage}
+              /> */}
             <div className="textarea-actions">
               <AttachmentIcon onClick={showUpload} />
               <EmojiIcon onClick={() => setShowEmoji(true)} />
