@@ -334,7 +334,7 @@ const AddNewUpdates = () => {
             </div>
             {showMergeField && (
               <div className="text-right text-red-600	">
-                {`To increase delivery rates, the message must contain at least one merge field. Merge fields accepted are <fname>, <lname>, <name>, <mobile> and <form>.`}
+                {`To increase delivery rates, the message must contain at least one merge field. Merge fields accepted are <fname>, <lname>, <name> and <mobile>.`}
               </div>
             )}
             {/* <Form.Item
