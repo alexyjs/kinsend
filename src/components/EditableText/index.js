@@ -28,7 +28,6 @@ const EditableText = forwardRef(
             newValue.slice(0, indexSelectedField - 1) +
             `${valueTrigger}` +
             newValue.slice(indexSelectedField);
-          console.log("###newValue add:", newValue);
           newValue = newValue
             .replace(/<fname>/gi, `&lt;fname&gt;`)
             .replace(/<lname>/gi, `&lt;lname&gt;`)
@@ -43,14 +42,10 @@ const EditableText = forwardRef(
             .replace(/<span><span>/gi, `<span>`)
             .replace(/<\/span><\/span>/gi, `<\/span><\/span>`)
             .replace(/<\/span><\/span>/gi, `</span> `);
-          console.log("###newValue end:", newValue);
           setValue(newValue);
           editableRef.current.innerHTML = newValue;
           setShowDropdown(false);
           onChange(newValue);
-          const index = getCaretCharacterOffsetWithin();
-          // console.log('###handleUpdateSelection:', index);
-          // setIndexSelectedField(index);
         },
       }),
       [value]
@@ -73,19 +68,17 @@ const EditableText = forwardRef(
       setValue(result);
       onChange(result);
       const index = getCaretCharacterOffsetWithin();
-      console.log("###handleChange:", result, index);
       setIndexSelectedField(index);
     };
     const handleKeyDown = (e) => {
       let newValue = e.target.innerText || "";
-      console.log("###handleKeyDown", newValue, e.target.innerHTML);
       if (e.keyCode === 188) {
         setShowDropdown(true);
       } else {
         setShowDropdown(false);
       }
       if (e.keyCode === 13) {
-        const index = getCaretCharacterOffsetWithin();
+        // const index = getCaretCharacterOffsetWithin();
         // let newValue = e.target.innerHTML || "";
         // let result = newValue
         //   .replace(`<fname>`, `&lt;fname&gt;`)
@@ -104,7 +97,6 @@ const EditableText = forwardRef(
     const handleFocus = () => {};
     const handleUpdateSelection = () => {
       const index = getCaretCharacterOffsetWithin();
-      console.log("###handleUpdateSelection:", index);
       setIndexSelectedField(index);
     };
 
@@ -134,7 +126,6 @@ const EditableText = forwardRef(
             .replace(/(<([^>]+)>)/gi, "")
             .replace(/&lt;/gi, "<")
             .replace(/&gt;/gi, `>`);
-          console.log("###selection", selection, selection.length);
           // caretOffset = preCaretTextRange.text.length;
           caretOffset = selection.length;
           document.getElementById("shadowEditableRef").innerHTML = "";
@@ -144,7 +135,6 @@ const EditableText = forwardRef(
         let preCaretTextRange = doc.body.createTextRange();
         preCaretTextRange.moveToElementText(element);
         preCaretTextRange.setEndPoint("EndToEnd", textRange);
-        console.log("###no wrap", preCaretTextRange.text, preCaretTextRange);
         caretOffset = preCaretTextRange.text.length;
       }
       return caretOffset;
@@ -152,23 +142,10 @@ const EditableText = forwardRef(
 
     const handleSelectField = (fieldSelected) => {
       let newValue = value.replace(/&lt;/gi, "<").replace(/&gt;/gi, `>`);
-      console.log(
-        "###newValue start:",
-        value.length,
-        newValue.length,
-        indexSelectedField,
-        "###",
-        newValue,
-        "###",
-        newValue.slice(0, indexSelectedField - 1),
-        "###",
-        newValue.slice(indexSelectedField)
-      );
       newValue =
         newValue.slice(0, indexSelectedField - 1) +
         `<span>${fieldSelected}</span>` +
         newValue.slice(indexSelectedField);
-      console.log("###newValue add:", newValue);
       newValue = newValue
         .replace(/<fname>/gi, `&lt;fname&gt;`)
         .replace(/<lname>/gi, `&lt;lname&gt;`)
@@ -183,7 +160,6 @@ const EditableText = forwardRef(
         .replace(/<span><span>/gi, `<span>`)
         .replace(/<\/span><\/span>/gi, `<\/span><\/span>`)
         .replace(/<\/span><\/span>/gi, `</span> `);
-      console.log("###newValue end:", newValue);
       setValue(newValue);
       editableRef.current.innerHTML = newValue;
       setShowDropdown(false);
@@ -192,7 +168,6 @@ const EditableText = forwardRef(
 
     useEffect(() => {
       // setValue(defaultValue?.replace("\n", "<br>") || "");
-      console.log("###defaultValue", defaultValue);
       setValue(defaultValue);
     }, [defaultValue]);
 
@@ -240,7 +215,7 @@ const EditableText = forwardRef(
                 <span className="EditableText-dropdown-item-field font-bold">{`<mobile>`}</span>
                 <span>Contact's mobile name</span>
               </div>
-              <div
+              {/* <div
                 className="EditableText-dropdown-item flex justify-between"
                 onClick={() => handleSelectField(`&lt;form&gt;`)}
               >
@@ -249,7 +224,7 @@ const EditableText = forwardRef(
                   Send a link to your default form or{" "}
                   <span className="text-primary">Select a form</span>
                 </span>
-              </div>
+              </div> */}
               <div
                 className="EditableText-dropdown-item flex justify-between"
                 onClick={() => handleSelectField(`&lt;lname&gt;`)}
