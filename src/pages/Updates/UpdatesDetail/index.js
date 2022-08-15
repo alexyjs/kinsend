@@ -78,7 +78,11 @@ const AddNewUpdates = () => {
             <Col className="w-full">
               <div
                 className="updates-detail-message"
-                dangerouslySetInnerHTML={{ __html: updatesDetail.message }}
+                dangerouslySetInnerHTML={{ __html: updatesDetail.message.replace(/<fname>/gi, `&lt;fname&gt;`)
+                  .replace(/<lname>/gi, `&lt;lname&gt;`)
+                  .replace(/<name>/gi, `&lt;name&gt;`)
+                  .replace(/<mobile>/gi, `&lt;mobile&gt;`)
+                  .replace(/<form>/gi, `&lt;form&gt;`) }}
               ></div>
               <p>
                 <span className="text-primary">Sent</span>&nbsp;
