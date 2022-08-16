@@ -35,7 +35,7 @@ const EditableText = forwardRef(
             `${valueTrigger}` +
             newValue.slice(indexSelectedField);
           setValue(newValue);
-          editableRef.current.innerText = newValue;
+          editableRef.current.innerHTML = newValue;
           setShowDropdown(false);
           onChange(newValue);
         },
@@ -46,8 +46,17 @@ const EditableText = forwardRef(
     const handleKeyUp = (e) => {};
 
     const handleChange = (e) => {
-      let newValue = e.target.innerText || "";
-      let result = newValue;
+      let newValue = e.target.innerHTML || "";
+      let result = newValue
+        .replace(`<fname>`, `&lt;fname&gt;`)
+        .replace(`<lname>`, `&lt;lname&gt;`)
+        .replace(`<name>`, `&lt;name&gt;`)
+        .replace(`<mobile>`, `&lt;mobile&gt;`)
+        .replace(`<form>`, `&lt;form&gt;`)
+        .replace(/<div><\/div>/, `\n`)
+        .replace(/<br>/g, `\n`)
+        .replace(/(<([^>]+)>)/gi, "")
+        .replace(/(<([^>]+)>)/gi, "");
       setValue(result);
       onChange(result);
       const index = getCaretCharacterOffsetWithin();
@@ -110,13 +119,18 @@ const EditableText = forwardRef(
     };
 
     const handleSelectField = (fieldSelected) => {
-      let newValue = value;
+      let newValue = value.replace(/&lt;/gi, "<").replace(/&gt;/gi, `>`);
       newValue =
         newValue.slice(0, indexSelectedField - 1) +
         `${fieldSelected} ` +
         newValue.slice(indexSelectedField);
+      newValue = newValue
+      .replace(/<fname>/gi, `&lt;fname&gt;`)
+      .replace(/<lname>/gi, `&lt;lname&gt;`)
+      .replace(/<name>/gi, `&lt;name&gt;`)
+      .replace(/<mobile>/gi, `&lt;mobile&gt;`);
       setValue(newValue);
-      editableRef.current.innerText = newValue;
+      editableRef.current.innerHTML = newValue;
       setShowDropdown(false);
       onChange(newValue);
     };
