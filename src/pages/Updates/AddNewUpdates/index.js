@@ -1,19 +1,7 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
-import {
-  Divider,
-  Form,
-  Input,
-  Button,
-  Row,
-  Col,
-  Tooltip,
-  Dropdown,
-  Menu,
-  Space,
-  Select,
-} from "antd";
+import { Form, Button, Row, Col, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { format, differenceInMilliseconds, addMinutes } from "date-fns";
 import { NavLink } from "react-router-dom";
@@ -42,13 +30,7 @@ import {
   DropdownReactSelect,
   EditableText,
 } from "../../../components";
-import {
-  AutomationActionMessageIcon,
-  AutomationActionMaxMessageIcon,
-  AttachmentIcon,
-  EmojiIcon,
-  DatetimeIcon,
-} from "../../../assets/svg";
+import { AttachmentIcon, EmojiIcon, DatetimeIcon } from "../../../assets/svg";
 
 import {
   RECIPIENTS_TYPE,
@@ -304,50 +286,11 @@ const AddNewUpdates = () => {
             </div>
           </div>
           <div className="custom-textarea-wrap">
-            <div className="hint">
-              <Tooltip
-                placement="topLeft"
-                title={
-                  <>
-                    Messages without <b>emojis & special</b> characters are sent
-                    in segments of <b>160 characters.</b>
-                  </>
-                }
-              >
-                <Button>
-                  <AutomationActionMaxMessageIcon />| 160
-                </Button>
-              </Tooltip>
-              <Tooltip
-                placement="top"
-                title={
-                  <>
-                    Carriers charge you for <b>every segment</b> they deliver to
-                    your recipient
-                  </>
-                }
-              >
-                <Button>
-                  <AutomationActionMessageIcon />
-                </Button>
-              </Tooltip>
-            </div>
             {showMergeField && (
               <div className="text-right text-red-600	">
                 {`To increase delivery rates, the message must contain at least one merge field. Merge fields accepted are <fname>, <lname>, <name> and <mobile>.`}
               </div>
             )}
-            {/* <Form.Item
-              name="message"
-              label="New update"
-              rules={[{ required: true, max: 160 }]}
-              onChange={hanldeChangeMessage}
-            >
-              <Input.TextArea
-                style={{ height: 200 }}
-                placeholder="Compose your message.."
-              />
-            </Form.Item> */}
             <EditableText
               // defaultValue={message}
               onChange={hanldeChangeMessage}

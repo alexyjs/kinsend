@@ -96,11 +96,14 @@ const SideBarUpdate = ({ data }) => {
               >
                 <h3
                   className="text-ellipsis overflow-hidden truncate"
-                  dangerouslySetInnerHTML={{ __html: item.message.replace(/<fname>/gi, `&lt;fname&gt;`)
-                    .replace(/<lname>/gi, `&lt;lname&gt;`)
-                    .replace(/<name>/gi, `&lt;name&gt;`)
-                    .replace(/<mobile>/gi, `&lt;mobile&gt;`)
-                    .replace(/<form>/gi, `&lt;form&gt;`) }}
+                  dangerouslySetInnerHTML={{
+                    __html: item.message
+                      .replace(/<fname>/gi, `&lt;fname&gt;`)
+                      .replace(/<lname>/gi, `&lt;lname&gt;`)
+                      .replace(/<name>/gi, `&lt;name&gt;`)
+                      .replace(/<mobile>/gi, `&lt;mobile&gt;`)
+                      .replace(/<form>/gi, `&lt;form&gt;`),
+                  }}
                 >
                   {/* {truncate(item.message, {
                     length: 30,
