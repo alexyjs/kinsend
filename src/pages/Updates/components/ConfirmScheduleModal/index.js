@@ -33,7 +33,14 @@ const ConfirmScheduleModal = ({
         <h4>PREVIEW</h4>
         <div
           className="phone-image-content-message"
-          dangerouslySetInnerHTML={{ __html: dataSubmit?.message }}
+          dangerouslySetInnerHTML={{
+            __html: dataSubmit?.message
+              .replace(/<fname>/gi, `&lt;fname&gt;`)
+              .replace(/<lname>/gi, `&lt;lname&gt;`)
+              .replace(/<name>/gi, `&lt;name&gt;`)
+              .replace(/<mobile>/gi, `&lt;mobile&gt;`)
+              .replace(/<form>/gi, `&lt;form&gt;`),
+          }}
         ></div>
       </div>
       <Row justify="space-around" className="mt-12">

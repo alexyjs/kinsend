@@ -29,21 +29,30 @@ const EditableText = forwardRef(
           if (!value) {
             return;
           }
-          let newValue = value;
+          let newValue = value.replace(/&lt;/gi, "<").replace(/&gt;/gi, `>`);
           newValue =
-            newValue.slice(0, indexSelectedField - 1) +
+            newValue.slice(0, indexSelectedField) +
             `${valueTrigger}` +
             newValue.slice(indexSelectedField);
+          console.log("###useImperativeHandle", indexSelectedField);
+          newValue = newValue
+            .replace(/<fname>/gi, `&lt;fname&gt;`)
+            .replace(/<lname>/gi, `&lt;lname&gt;`)
+            .replace(/<name>/gi, `&lt;name&gt;`)
+            .replace(/<mobile>/gi, `&lt;mobile&gt;`)
+            .replace(/<form>/gi, `&lt;form&gt;`);
           setValue(newValue);
           editableRef.current.innerHTML = newValue;
           setShowDropdown(false);
           onChange(newValue);
         },
       }),
-      [value]
+      [value, indexSelectedField]
     );
 
-    const handleKeyUp = (e) => {};
+    const handleKeyUp = (e) => {
+      console.log("###handleKeyUp");
+    };
 
     const handleChange = (e) => {
       let newValue = e.target.innerHTML || "";
@@ -60,6 +69,7 @@ const EditableText = forwardRef(
       setValue(result);
       onChange(result);
       const index = getCaretCharacterOffsetWithin();
+      console.log("###handleChange", index);
       setIndexSelectedField(index);
     };
     const handleKeyDown = (e) => {
@@ -71,11 +81,13 @@ const EditableText = forwardRef(
       if (e.keyCode === 13) {
       }
       handleUpdateSelection();
+      console.log("###handleKeyDown");
     };
 
     const handleFocus = () => {};
     const handleUpdateSelection = () => {
       const index = getCaretCharacterOffsetWithin();
+      console.log("###handleUpdateSelection", index);
       setIndexSelectedField(index);
     };
 
@@ -125,10 +137,10 @@ const EditableText = forwardRef(
         `${fieldSelected} ` +
         newValue.slice(indexSelectedField);
       newValue = newValue
-      .replace(/<fname>/gi, `&lt;fname&gt;`)
-      .replace(/<lname>/gi, `&lt;lname&gt;`)
-      .replace(/<name>/gi, `&lt;name&gt;`)
-      .replace(/<mobile>/gi, `&lt;mobile&gt;`);
+        .replace(/<fname>/gi, `&lt;fname&gt;`)
+        .replace(/<lname>/gi, `&lt;lname&gt;`)
+        .replace(/<name>/gi, `&lt;name&gt;`)
+        .replace(/<mobile>/gi, `&lt;mobile&gt;`);
       setValue(newValue);
       editableRef.current.innerHTML = newValue;
       setShowDropdown(false);
@@ -181,7 +193,7 @@ const EditableText = forwardRef(
             contenteditable="true"
             onInput={handleChange}
             onChange={handleChange}
-            onMouseDown={handleUpdateSelection}
+            onClick={handleUpdateSelection}
             onBlur={() => {}}
             onKeyDown={handleKeyDown}
             onKeyUp={handleKeyUp}
