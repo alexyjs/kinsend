@@ -3,7 +3,7 @@ import _ from "lodash";
 import { useNavigate } from "react-router-dom";
 import { Form, Button, Row, Col, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { format, differenceInMilliseconds, addMinutes } from "date-fns";
+import { format, differenceInMinutes, addMinutes, getMinutes } from "date-fns";
 import { NavLink } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -227,7 +227,7 @@ const AddNewUpdates = () => {
   // Reload datetime and update time schedule
 
   const handleReloadtime = () => {
-    if (differenceInMilliseconds(datetime, new Date()) < -60000) {
+    if (differenceInMinutes(datetime, new Date()) <= 0 && getMinutes(datetime) <= getMinutes(new Date())) {
       const newDate = addMinutes(new Date(), 1);
       setDatetime(newDate);
     }
@@ -236,7 +236,7 @@ const AddNewUpdates = () => {
     handleReloadtime();
     const timer = setInterval(() => {
       handleReloadtime();
-    }, 10000);
+    }, 1000);
 
     return () => {
       clearInterval(timer);
