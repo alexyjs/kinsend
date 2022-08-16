@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
 import {
@@ -15,7 +15,7 @@ import {
   Select,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { format } from "date-fns";
+import { format, differenceInMilliseconds, addMinutes } from "date-fns";
 import { NavLink } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -40,6 +40,7 @@ import {
   EmojiPicker,
   LayoutComponent,
   DropdownReactSelect,
+  EditableText,
 } from "../../../components";
 import {
   AutomationActionMessageIcon,
@@ -77,9 +78,18 @@ const AddNewUpdates = () => {
   const { user } = useSelector(selectUsers);
   const [dataRecipients, setDataRecipients] = useState(RECIPIENTS_TYPE);
   const [dataSubmit, setDataSubmit] = useState(null);
+  const childRef = useRef();
 
-  const message = Form.useWatch("message", form);
+  // const message = Form.useWatch("message", form);
+  const [message, setMessage] = useState("");
 
+  const showMergeField =
+    message &&
+    !message.includes(`&lt;fname&gt;`) &&
+    !message.includes(`&lt;lname&gt;`) &&
+    !message.includes(`&lt;name&gt;`) &&
+    !message.includes(`&lt;mobile&gt;`) &&
+    !message.includes(`&lt;form&gt;`);
   const {
     close: closeSegment,
     show: showSegment,
@@ -112,10 +122,11 @@ const AddNewUpdates = () => {
   };
 
   const handleChangeEmoji = (emojiObj) => {
-    let message = form.getFieldValue("message") || "";
-    form.setFieldsValue({
-      message: message + emojiObj.native,
-    });
+    // let message = form.getFieldValue("message") || "";
+    // form.setFieldsValue({
+    //   message: message + emojiObj.native,
+    // });
+    childRef.current.triggerUpdateText(emojiObj.native);
     setShowEmoji(false);
   };
 
@@ -127,13 +138,19 @@ const AddNewUpdates = () => {
     if (!recipients) {
       return;
     }
-    setDataSubmit({
-      message: message,
+    const parrams = {
+      message: message
+        .replace(/<span>/gi, "")
+        .replace(/<\/span>/gi, "")
+        .replace(/&lt;/gi, "<")
+        .replace(/&gt;/gi, ">"),
       datetime: datetime,
       triggerType: values.triggerType,
       filter: getFilterUpdatesFeature(recipients),
       fileUrl: attachment?.url,
-    });
+    };
+
+    setDataSubmit(parrams);
 
     showConfirm();
   };
@@ -190,16 +207,21 @@ const AddNewUpdates = () => {
 
   const handleSubmitTestMessage = (phone) => {
     const params = {
-      message: message,
+      message: message
+        .replace(/<span>/gi, "")
+        .replace(/<\/span>/gi, "")
+        .replace(/&lt;/gi, "<")
+        .replace(/&gt;/gi, ">"),
       contactsId: phone.id,
       phoneNumber: phone.phoneNumber,
     };
+    console.log("###handleSubmitTestMessage", params);
     dispatch(sendTestMessageAsync(params));
     closeTestMessage();
   };
 
-  const hanldeChangeMessage = (e) => {
-    console.log("###hanldeChangeMessage", e);
+  const hanldeChangeMessage = (messageValue) => {
+    setMessage(messageValue);
   };
 
   useEffect(() => {
@@ -219,7 +241,26 @@ const AddNewUpdates = () => {
       dispatch(resetUpdatesAsync());
     }
   }, [navigate, newUpdate]);
-  console.log("###subscriberLocations", subscriberLocations);
+
+  // Reload datetime and update time schedule
+
+  const handleReloadtime = () => {
+    if (differenceInMilliseconds(datetime, new Date()) < -60000) {
+      const newDate = addMinutes(new Date(), 1);
+      setDatetime(newDate);
+    }
+  };
+  useEffect(() => {
+    handleReloadtime();
+    const timer = setInterval(() => {
+      handleReloadtime();
+    }, 10000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [datetime]);
+
   return (
     <LayoutComponent className="add-updates-page">
       <div className="flex items-center">
@@ -238,6 +279,9 @@ const AddNewUpdates = () => {
               <div className="phone-image-content-date">
                 {format(new Date(datetime), "MM/dd/yyyy hh:mm aa")}
               </div>
+              {attachment?.url && (
+                <img src={attachment.url} className="mt-3 mb-4" />
+              )}
               <div
                 className="phone-image-content-message"
                 dangerouslySetInnerHTML={{ __html: message }}
@@ -247,6 +291,9 @@ const AddNewUpdates = () => {
         </div>
         <Form
           form={form}
+          initialValues={{
+            triggerType: UPDATE_TRIGGER_TYPE[0].value,
+          }}
           name="control-hooks"
           onFinish={hadnleSubmit}
           className="flex-auto"
@@ -285,7 +332,12 @@ const AddNewUpdates = () => {
                 </Button>
               </Tooltip>
             </div>
-            <Form.Item
+            {showMergeField && (
+              <div className="text-right text-red-600	">
+                {`To increase delivery rates, the message must contain at least one merge field. Merge fields accepted are <fname>, <lname>, <name> and <mobile>.`}
+              </div>
+            )}
+            {/* <Form.Item
               name="message"
               label="New update"
               rules={[{ required: true, max: 160 }]}
@@ -293,9 +345,19 @@ const AddNewUpdates = () => {
             >
               <Input.TextArea
                 style={{ height: 200 }}
-                placeholder="Send new messenge ..."
+                placeholder="Compose your message.."
               />
-            </Form.Item>
+            </Form.Item> */}
+            <EditableText
+              // defaultValue={message}
+              onChange={hanldeChangeMessage}
+              ref={childRef}
+            />
+            {/* <EditableText
+                className="mb-2"
+                value={message}
+                onChange={hanldeChangeMessage}
+              /> */}
             <div className="textarea-actions">
               <AttachmentIcon onClick={showUpload} />
               <EmojiIcon onClick={() => setShowEmoji(true)} />
@@ -342,7 +404,7 @@ const AddNewUpdates = () => {
                 className="mb-0"
               >
                 <Select
-                  placeholder="Seelect Schedule Type"
+                  placeholder="Select"
                   className="schedule-custom-select w-52"
                 >
                   {UPDATE_TRIGGER_TYPE.map((item, index) => (
@@ -370,7 +432,7 @@ const AddNewUpdates = () => {
             <Col>
               <Form.Item noStyle shouldUpdate>
                 <Button
-                  className="md:min-w-200 ml-5"
+                  className="md:min-w-200"
                   type="primary"
                   size="large"
                   htmlType="submit"

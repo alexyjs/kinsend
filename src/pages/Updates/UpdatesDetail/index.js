@@ -3,7 +3,7 @@ import _ from "lodash";
 import { Form, Input, Button, Row, Col, Divider } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 
 import {
@@ -64,37 +64,25 @@ const AddNewUpdates = () => {
   }
 
   return (
-    <LayoutComponent className="updates-detail-page p-5">
+    <LayoutComponent className="updates-detail-page">
       <div className="flex">
-        {/* <div className="phone-image-frame">
-          <div className="">
-            <div className="phone-image-header">
-              <div
-                className="thumbnail-wrapper circular"
-                style={{ width: "23px", height: "23px" }}
-              >
-                <img src={user?.image} alt="" />
-              </div>
-              <div className="phone-image-name">{user?.firstName}</div>
-            </div>
-            <div className="phone-image-content">
-              <div className="phone-image-content-date">
-                {format(new Date(updatesDetail.datetime), "MM/dd/yyyy hh:mm aa")}
-              </div>
-              <div
-                className="phone-image-content-message"
-                dangerouslySetInnerHTML={{ __html: updatesDetail.message }}
-              ></div>
-            </div>
-          </div>
-        </div> */}
         <div className="flex-auto px-3 2xl:px-5">
           <Row className="w-full">
+            {/* <Col>
+            <NavLink to={`/updates/scheduled/${updatesId}`}>
+              <Button type="primary" size="large" className="w-48	">
+                Edit Updates
+              </Button>
+            </NavLink>
+            </Col> */}
             <Col className="w-full">
-              <Divider className="my-10" />
               <div
                 className="updates-detail-message"
-                dangerouslySetInnerHTML={{ __html: updatesDetail.message }}
+                dangerouslySetInnerHTML={{ __html: updatesDetail.message.replace(/<fname>/gi, `&lt;fname&gt;`)
+                  .replace(/<lname>/gi, `&lt;lname&gt;`)
+                  .replace(/<name>/gi, `&lt;name&gt;`)
+                  .replace(/<mobile>/gi, `&lt;mobile&gt;`)
+                  .replace(/<form>/gi, `&lt;form&gt;`) }}
               ></div>
               <p>
                 <span className="text-primary">Sent</span>&nbsp;
