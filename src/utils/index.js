@@ -182,6 +182,6 @@ export const getFilterUpdatesFeature = (data) => {
     };
   }
   return {
-    contact: data.value,
+    key: data.value,
   };
 };

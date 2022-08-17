@@ -67,7 +67,7 @@ const AddNewUpdates = () => {
     <LayoutComponent className="updates-detail-page">
       <div className="flex">
         <div className="flex-auto px-3 2xl:px-5">
-          <Row className="w-full">
+          <Row className="w-full mt-3">
             {/* <Col>
             <NavLink to={`/updates/scheduled/${updatesId}`}>
               <Button type="primary" size="large" className="w-48	">
@@ -78,11 +78,14 @@ const AddNewUpdates = () => {
             <Col className="w-full">
               <div
                 className="updates-detail-message"
-                dangerouslySetInnerHTML={{ __html: updatesDetail.message.replace(/<fname>/gi, `&lt;fname&gt;`)
-                  .replace(/<lname>/gi, `&lt;lname&gt;`)
-                  .replace(/<name>/gi, `&lt;name&gt;`)
-                  .replace(/<mobile>/gi, `&lt;mobile&gt;`)
-                  .replace(/<form>/gi, `&lt;form&gt;`) }}
+                dangerouslySetInnerHTML={{
+                  __html: updatesDetail.message
+                    .replace(/<fname>/gi, `&lt;fname&gt;`)
+                    .replace(/<lname>/gi, `&lt;lname&gt;`)
+                    .replace(/<name>/gi, `&lt;name&gt;`)
+                    .replace(/<mobile>/gi, `&lt;mobile&gt;`)
+                    .replace(/<form>/gi, `&lt;form&gt;`),
+                }}
               ></div>
               <p>
                 <span className="text-primary">Sent</span>&nbsp;

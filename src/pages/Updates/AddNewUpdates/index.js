@@ -1,21 +1,9 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
-import {
-  Divider,
-  Form,
-  Input,
-  Button,
-  Row,
-  Col,
-  Tooltip,
-  Dropdown,
-  Menu,
-  Space,
-  Select,
-} from "antd";
+import { Form, Button, Row, Col, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { format, differenceInMilliseconds, addMinutes } from "date-fns";
+import { format, differenceInMinutes, addMinutes, getMinutes } from "date-fns";
 import { NavLink } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -42,13 +30,7 @@ import {
   DropdownReactSelect,
   EditableText,
 } from "../../../components";
-import {
-  AutomationActionMessageIcon,
-  AutomationActionMaxMessageIcon,
-  AttachmentIcon,
-  EmojiIcon,
-  DatetimeIcon,
-} from "../../../assets/svg";
+import { AttachmentIcon, EmojiIcon, DatetimeIcon } from "../../../assets/svg";
 
 import {
   RECIPIENTS_TYPE,
@@ -245,7 +227,10 @@ const AddNewUpdates = () => {
   // Reload datetime and update time schedule
 
   const handleReloadtime = () => {
-    if (differenceInMilliseconds(datetime, new Date()) < -60000) {
+    if (
+      differenceInMinutes(datetime, new Date()) <= 0 &&
+      getMinutes(datetime) <= getMinutes(new Date())
+    ) {
       const newDate = addMinutes(new Date(), 1);
       setDatetime(newDate);
     }
@@ -254,7 +239,7 @@ const AddNewUpdates = () => {
     handleReloadtime();
     const timer = setInterval(() => {
       handleReloadtime();
-    }, 10000);
+    }, 1000);
 
     return () => {
       clearInterval(timer);
@@ -304,50 +289,11 @@ const AddNewUpdates = () => {
             </div>
           </div>
           <div className="custom-textarea-wrap">
-            <div className="hint">
-              <Tooltip
-                placement="topLeft"
-                title={
-                  <>
-                    Messages without <b>emojis & special</b> characters are sent
-                    in segments of <b>160 characters.</b>
-                  </>
-                }
-              >
-                <Button>
-                  <AutomationActionMaxMessageIcon />| 160
-                </Button>
-              </Tooltip>
-              <Tooltip
-                placement="top"
-                title={
-                  <>
-                    Carriers charge you for <b>every segment</b> they deliver to
-                    your recipient
-                  </>
-                }
-              >
-                <Button>
-                  <AutomationActionMessageIcon />
-                </Button>
-              </Tooltip>
-            </div>
             {showMergeField && (
               <div className="text-right text-red-600	">
                 {`To increase delivery rates, the message must contain at least one merge field. Merge fields accepted are <fname>, <lname>, <name> and <mobile>.`}
               </div>
             )}
-            {/* <Form.Item
-              name="message"
-              label="New update"
-              rules={[{ required: true, max: 160 }]}
-              onChange={hanldeChangeMessage}
-            >
-              <Input.TextArea
-                style={{ height: 200 }}
-                placeholder="Compose your message.."
-              />
-            </Form.Item> */}
             <EditableText
               // defaultValue={message}
               onChange={hanldeChangeMessage}
@@ -419,7 +365,7 @@ const AddNewUpdates = () => {
               </Form.Item>
             </div>
           </div>
-          <Row justify="end" className="mt-12">
+          <Row justify="end" className="mt-5">
             <Col>
               <Form.Item noStyle>
                 <NavLink to="/updates">

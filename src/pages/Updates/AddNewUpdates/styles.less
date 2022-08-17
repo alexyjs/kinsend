@@ -49,28 +49,6 @@
     position: relative;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
-    .hint {
-      position: absolute;
-      z-index: 1;
-      top: 40px;
-      right: 10px;
-      display: inline-flex;
-      align-items: center;
-
-      button {
-        display: inline-flex;
-        background: #f1f2f7;
-        opacity: 0.5;
-        border: 1px solid #dcdcdc;
-        border-radius: 8px;
-        align-items: center;
-
-        & + button {
-          margin-left: 10px;
-        }
-      }
-    }
-
     textarea {
       padding-right: 150px;
       border: 0;
@@ -167,10 +145,8 @@
   }
 }
 
-@media only screen and (max-width: 1520px) {
-  .add-updates-page {
-    .ant-layout-content {
-      padding: 16px;
-    }
+.add-updates-page {
+  .ant-layout-content {
+    padding: 16px;
   }
 }

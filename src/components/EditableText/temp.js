@@ -5,20 +5,13 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { Button, Tooltip } from "antd";
 import classnames from "classnames";
-
-import {
-  AutomationActionMessageIcon,
-  AutomationActionMaxMessageIcon,
-} from "../../assets/svg";
 
 import "./styles.less";
 
 const EditableText = forwardRef(
   ({ defaultValue, onChange, className }, ref) => {
     const [value, setValue] = useState("");
-    const [offsetTopDropdown, setOffsetTopDropdown] = useState(0);
     const [showDropdown, setShowDropdown] = useState(false);
     const [indexSelectedField, setIndexSelectedField] = useState(0);
     const editableRef = useRef();
@@ -32,28 +25,33 @@ const EditableText = forwardRef(
           }
           let newValue = value.replace(/&lt;/gi, "<").replace(/&gt;/gi, `>`);
           newValue =
-            newValue.slice(0, indexSelectedField) +
+            newValue.slice(0, indexSelectedField - 1) +
             `${valueTrigger}` +
             newValue.slice(indexSelectedField);
-          console.log("###useImperativeHandle", indexSelectedField);
           newValue = newValue
             .replace(/<fname>/gi, `&lt;fname&gt;`)
             .replace(/<lname>/gi, `&lt;lname&gt;`)
             .replace(/<name>/gi, `&lt;name&gt;`)
             .replace(/<mobile>/gi, `&lt;mobile&gt;`)
-            .replace(/<form>/gi, `&lt;form&gt;`);
+            .replace(/<form>/gi, `&lt;form&gt;`)
+            .replace(/&lt;fname&gt;/gi, `<span>&lt;fname&gt;</span>`)
+            .replace(/&lt;lname&gt;/gi, `<span>&lt;lname&gt;</span>`)
+            .replace(/&lt;name&gt;/gi, `<span>&lt;name&gt;</span>`)
+            .replace(/&lt;mobile&gt;/gi, `<span>&lt;mobile&gt;</span>`)
+            .replace(/&lt;form&gt;/gi, `<span>&lt;form&gt;</span> `)
+            .replace(/<span><span>/gi, `<span>`)
+            .replace(/<\/span><\/span>/gi, `<\/span><\/span>`)
+            .replace(/<\/span><\/span>/gi, `</span> `);
           setValue(newValue);
           editableRef.current.innerHTML = newValue;
           setShowDropdown(false);
           onChange(newValue);
         },
       }),
-      [value, indexSelectedField]
+      [value]
     );
 
-    const handleKeyUp = (e) => {
-      console.log("###handleKeyUp");
-    };
+    const handleKeyUp = (e) => {};
 
     const handleChange = (e) => {
       let newValue = e.target.innerHTML || "";
@@ -67,52 +65,38 @@ const EditableText = forwardRef(
         .replace(/<br>/g, `\n`)
         .replace(/(<([^>]+)>)/gi, "")
         .replace(/(<([^>]+)>)/gi, "");
-      if (newValue?.length > 160) {
-        console.log("$$$", newValue, newValue?.length);
-        newValue = newValue.slice(0, 160);
-        editableRef.current.innerHTML = newValue;
-      }
       setValue(result);
       onChange(result);
       const index = getCaretCharacterOffsetWithin();
-      console.log("###handleChange", index);
       setIndexSelectedField(index);
     };
-
     const handleKeyDown = (e) => {
+      let newValue = e.target.innerText || "";
       if (e.keyCode === 188) {
         setShowDropdown(true);
-        const offsetTop =
-          window.getSelection().getRangeAt(0).endContainer.offsetTop ||
-          window.getSelection().getRangeAt(0).endContainer.parentElement
-            .offsetTop;
-        setOffsetTopDropdown(offsetTop);
-        console.log(
-          "###offsetTop",
-          window.getSelection().getRangeAt(0),
-          offsetTop
-        );
       } else {
         setShowDropdown(false);
       }
       if (e.keyCode === 13) {
+        // const index = getCaretCharacterOffsetWithin();
+        // let newValue = e.target.innerHTML || "";
+        // let result = newValue
+        //   .replace(`<fname>`, `&lt;fname&gt;`)
+        //   .replace(`<lname>`, `&lt;lname&gt;`)
+        //   .replace(`<name>`, `&lt;name&gt;`)
+        //   .replace(`<mobile>`, `&lt;mobile&gt;`)
+        //   .replace(`<form>`, `&lt;form&gt;`)
+        //   .replace(/<div><\/div>/, `\n`)
+        //   .replace(/<br>/g, `\n`)
+        //   .replace(/(<([^>]+)>)/gi, "")
+        //   .replace(/(<([^>]+)>)/gi, "");
       }
       handleUpdateSelection();
-      console.log("###handleKeyDown");
     };
 
-    const handleClick = () => {
-      setShowDropdown(false);
-      handleUpdateSelection();
-      const offsetTop = window.getSelection().getRangeAt(0)
-        .endContainer.offsetTop;
-      const parentElementoffsetTop = window.getSelection().getRangeAt(0)
-        .endContainer.parentElement.offsetTop;
-      console.log("###offsetTop", offsetTop, parentElementoffsetTop);
-    };
+    const handleFocus = () => {};
     const handleUpdateSelection = () => {
       const index = getCaretCharacterOffsetWithin();
-      console.log("###handleUpdateSelection", index);
       setIndexSelectedField(index);
     };
 
@@ -132,6 +116,7 @@ const EditableText = forwardRef(
           document
             .getElementById("shadowEditableRef")
             .append(preCaretRange.cloneContents());
+          // const selection = document.getElementById('shadowEditableRef').innerText;
           let selection =
             document.getElementById("shadowEditableRef").innerHTML;
           selection = selection
@@ -159,16 +144,22 @@ const EditableText = forwardRef(
       let newValue = value.replace(/&lt;/gi, "<").replace(/&gt;/gi, `>`);
       newValue =
         newValue.slice(0, indexSelectedField - 1) +
-        `${fieldSelected} ` +
+        `<span>${fieldSelected}</span>` +
         newValue.slice(indexSelectedField);
       newValue = newValue
         .replace(/<fname>/gi, `&lt;fname&gt;`)
         .replace(/<lname>/gi, `&lt;lname&gt;`)
         .replace(/<name>/gi, `&lt;name&gt;`)
-        .replace(/<mobile>/gi, `&lt;mobile&gt;`);
-      if (newValue?.length > 160) {
-        newValue = newValue.slice(0, 160);
-      }
+        .replace(/<mobile>/gi, `&lt;mobile&gt;`)
+        .replace(/<form>/gi, `&lt;form&gt;`)
+        .replace(/&lt;fname&gt;/gi, `<span>&lt;fname&gt;</span>`)
+        .replace(/&lt;lname&gt;/gi, `<span>&lt;lname&gt;</span>`)
+        .replace(/&lt;name&gt;/gi, `<span>&lt;name&gt;</span>`)
+        .replace(/&lt;mobile&gt;/gi, `<span>&lt;mobile&gt;</span>`)
+        .replace(/&lt;form&gt;/gi, `<span>&lt;form&gt;</span> `)
+        .replace(/<span><span>/gi, `<span>`)
+        .replace(/<\/span><\/span>/gi, `<\/span><\/span>`)
+        .replace(/<\/span><\/span>/gi, `</span> `);
       setValue(newValue);
       editableRef.current.innerHTML = newValue;
       setShowDropdown(false);
@@ -176,39 +167,15 @@ const EditableText = forwardRef(
     };
 
     useEffect(() => {
+      // setValue(defaultValue?.replace("\n", "<br>") || "");
       setValue(defaultValue);
     }, [defaultValue]);
 
     return (
-      <div className={classnames("EditableText", className)}>
-        <div className="hint">
-          <Tooltip
-            placement="topLeft"
-            title={
-              <>
-                Messages without <b>emojis & special</b> characters are sent in
-                segments of <b>160 characters.</b>
-              </>
-            }
-          >
-            <Button>
-              <AutomationActionMaxMessageIcon />| 160
-            </Button>
-          </Tooltip>
-          <Tooltip
-            placement="top"
-            title={
-              <>
-                Carriers charge you for <b>every segment</b> they deliver to
-                your recipient
-              </>
-            }
-          >
-            <Button>
-              <AutomationActionMessageIcon />
-            </Button>
-          </Tooltip>
-        </div>
+      <div
+        className={classnames("EditableText", className)}
+        onClick={handleFocus}
+      >
         <div className="EditableText-body">
           <pre
             ref={editableRef}
@@ -218,46 +185,49 @@ const EditableText = forwardRef(
             contenteditable="true"
             onInput={handleChange}
             onChange={handleChange}
-            onClick={handleClick}
+            onMouseDown={handleUpdateSelection}
+            // onMouseUp={handleUpdateSelection}
             onBlur={() => {}}
             onKeyDown={handleKeyDown}
             onKeyUp={handleKeyUp}
           />
-          {!value && (
-            <span className="EditableText-placeholder">
-              Compose your message.."
-            </span>
-          )}
           <div id="shadowEditableRef"></div>
           {showDropdown && (
-            <div
-              className="EditableText-dropdown"
-              style={{ top: offsetTopDropdown + 30 }}
-            >
+            <div className="EditableText-dropdown">
               <div
                 className="EditableText-dropdown-item flex justify-between"
-                onClick={() => handleSelectField(`<fname>`)}
+                onClick={() => handleSelectField(`&lt;fname&gt;`)}
               >
                 <span className="EditableText-dropdown-item-field font-bold">{`<fname>`}</span>
                 <span>Contact's first name</span>
               </div>
               <div
                 className="EditableText-dropdown-item flex justify-between"
-                onClick={() => handleSelectField(`<name>`)}
+                onClick={() => handleSelectField(`&lt;name&gt;`)}
               >
                 <span className="EditableText-dropdown-item-field font-bold">{`<name>`}</span>
                 <span>Contact's full name</span>
               </div>
               <div
                 className="EditableText-dropdown-item flex justify-between"
-                onClick={() => handleSelectField(`<mobile>`)}
+                onClick={() => handleSelectField(`&lt;mobile&gt;`)}
               >
                 <span className="EditableText-dropdown-item-field font-bold">{`<mobile>`}</span>
                 <span>Contact's mobile name</span>
               </div>
+              {/* <div
+                className="EditableText-dropdown-item flex justify-between"
+                onClick={() => handleSelectField(`&lt;form&gt;`)}
+              >
+                <span className="EditableText-dropdown-item-field font-bold">{`<form>`}</span>
+                <span>
+                  Send a link to your default form or{" "}
+                  <span className="text-primary">Select a form</span>
+                </span>
+              </div> */}
               <div
                 className="EditableText-dropdown-item flex justify-between"
-                onClick={() => handleSelectField(`<lname>`)}
+                onClick={() => handleSelectField(`&lt;lname&gt;`)}
               >
                 <span className="EditableText-dropdown-item-field font-bold">{`<lname>`}</span>
                 <span>Contact's last name</span>
