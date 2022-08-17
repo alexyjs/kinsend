@@ -18,7 +18,6 @@ import "./styles.less";
 const EditableText = forwardRef(
   ({ defaultValue, onChange, className }, ref) => {
     const [value, setValue] = useState("");
-    const [offsetTopDropdown, setOffsetTopDropdown] = useState(0);
     const [showDropdown, setShowDropdown] = useState(false);
     const [indexSelectedField, setIndexSelectedField] = useState(0);
     const editableRef = useRef();
@@ -79,19 +78,15 @@ const EditableText = forwardRef(
       setIndexSelectedField(index);
     };
 
+    const handleKeyPress = (e) => {
+      console.log("###handleKeyPress", e);
+    };
+
     const handleKeyDown = (e) => {
       if (e.keyCode === 188) {
         setShowDropdown(true);
-        const offsetTop =
-          window.getSelection().getRangeAt(0).endContainer.offsetTop ||
-          window.getSelection().getRangeAt(0).endContainer.parentElement
-            .offsetTop;
-        setOffsetTopDropdown(offsetTop);
-        console.log(
-          "###offsetTop",
-          window.getSelection().getRangeAt(0),
-          offsetTop
-        );
+        console.log(e, e.pageX, e.pageY, window.getSelection().getRangeAt(0));
+        debugger;
       } else {
         setShowDropdown(false);
       }
@@ -101,15 +96,7 @@ const EditableText = forwardRef(
       console.log("###handleKeyDown");
     };
 
-    const handleClick = () => {
-      setShowDropdown(false);
-      handleUpdateSelection();
-      const offsetTop = window.getSelection().getRangeAt(0)
-        .endContainer.offsetTop;
-      const parentElementoffsetTop = window.getSelection().getRangeAt(0)
-        .endContainer.parentElement.offsetTop;
-      console.log("###offsetTop", offsetTop, parentElementoffsetTop);
-    };
+    const handleFocus = () => {};
     const handleUpdateSelection = () => {
       const index = getCaretCharacterOffsetWithin();
       console.log("###handleUpdateSelection", index);
@@ -180,7 +167,10 @@ const EditableText = forwardRef(
     }, [defaultValue]);
 
     return (
-      <div className={classnames("EditableText", className)}>
+      <div
+        className={classnames("EditableText", className)}
+        onClick={handleFocus}
+      >
         <div className="hint">
           <Tooltip
             placement="topLeft"
@@ -218,7 +208,8 @@ const EditableText = forwardRef(
             contenteditable="true"
             onInput={handleChange}
             onChange={handleChange}
-            onClick={handleClick}
+            onClick={handleUpdateSelection}
+            onKeyPress={handleKeyPress}
             onBlur={() => {}}
             onKeyDown={handleKeyDown}
             onKeyUp={handleKeyUp}
@@ -230,10 +221,7 @@ const EditableText = forwardRef(
           )}
           <div id="shadowEditableRef"></div>
           {showDropdown && (
-            <div
-              className="EditableText-dropdown"
-              style={{ top: offsetTopDropdown + 30 }}
-            >
+            <div className="EditableText-dropdown">
               <div
                 className="EditableText-dropdown-item flex justify-between"
                 onClick={() => handleSelectField(`<fname>`)}

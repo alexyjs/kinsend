@@ -227,7 +227,10 @@ const AddNewUpdates = () => {
   // Reload datetime and update time schedule
 
   const handleReloadtime = () => {
-    if (differenceInMinutes(datetime, new Date()) <= 0 && getMinutes(datetime) <= getMinutes(new Date())) {
+    if (
+      differenceInMinutes(datetime, new Date()) <= 0 &&
+      getMinutes(datetime) <= getMinutes(new Date())
+    ) {
       const newDate = addMinutes(new Date(), 1);
       setDatetime(newDate);
     }
@@ -362,7 +365,7 @@ const AddNewUpdates = () => {
               </Form.Item>
             </div>
           </div>
-          <Row justify="end" className="mt-12">
+          <Row justify="end" className="mt-5">
             <Col>
               <Form.Item noStyle>
                 <NavLink to="/updates">
