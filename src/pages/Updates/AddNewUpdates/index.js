@@ -187,7 +187,7 @@ const AddNewUpdates = () => {
     });
   }, [formSubmissions]);
 
-  const handleSubmitTestMessage = (phone) => {
+  const handleSubmitTestMessage = ({ phone, fname, lname, name, mobile }) => {
     const params = {
       message: message
         .replace(/<span>/gi, "")
@@ -196,6 +196,10 @@ const AddNewUpdates = () => {
         .replace(/&gt;/gi, ">"),
       contactsId: phone.id,
       phoneNumber: phone.phoneNumber,
+      fname,
+      lname,
+      name,
+      mobile,
     };
     console.log("###handleSubmitTestMessage", params);
     dispatch(sendTestMessageAsync(params));
