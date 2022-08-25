@@ -1,4 +1,15 @@
-import { Button, Col, Form, Modal, Row, Input, Select, Divider } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Modal,
+  Row,
+  Input,
+  Select,
+  Divider,
+  Menu,
+  Dropdown,
+} from "antd";
 import React, { useEffect, useState, useMemo } from "react";
 import {
   PlusOutlined,
@@ -17,9 +28,18 @@ import { DropdownReactSelect } from "../../../../components";
 
 import {
   formatOptionsFormDatabase,
-  getFilterUpdatesFeature,
+  getSegmentFilterPayload,
+  formatOptions,
 } from "../../../../utils";
-import { SEGMENT_FILTER_TYPE } from "../../../../utils/segment";
+import {
+  SEGMENT_FILTER_TYPE,
+  INDUSTRY_SEGMENT_FILTER_CONDITION,
+  LOCATION_SEGMENT_FILTER_CONDITION,
+  TAG_SEGMENT_FILTER_CONDITION,
+  SEGMENT_SEGMENT_FILTER_CONDITION,
+  AGE_SEGMENT_FILTER_CONDITION,
+} from "../../../../utils/segment";
+import { MONTH_TYPE, INDUSTRY } from "../../../../utils/constants";
 import { LIVE_IN_TYPE } from "../../../../utils/update";
 
 import "./styles.less";
@@ -38,10 +58,24 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
     });
   }, [tags]);
 
+  const tagsItemOptions = useMemo(() => {
+    return formatOptionsFormDatabase({
+      data: tags,
+      typeOption: "isTagged",
+    });
+  }, [tags]);
+
   const segmentsOptions = useMemo(() => {
     return formatOptionsFormDatabase({
       data: segments,
       prefixLabel: "Include Segment ",
+      typeOption: "isSegment",
+    });
+  }, [segments]);
+
+  const segmentsItemOptions = useMemo(() => {
+    return formatOptionsFormDatabase({
+      data: segments,
       typeOption: "isSegment",
     });
   }, [segments]);
@@ -59,9 +93,10 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
       {
         label: "Location",
         options: formatOptionsFormDatabase({
-          data: LIVE_IN_TYPE,
+          data: formatOptions(LIVE_IN_TYPE),
           prefixLabel: "Lives In: ",
           typeOption: "isLocation",
+          disablePrefixValue: true,
         }),
       },
       {
@@ -71,56 +106,264 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
     ];
   }, [tagsOptions, segmentsOptions]);
 
+  const handleMenuAgeClick = (index, indexSub, key) => {
+    let newFilters = [...filters];
+    const newItem = { ...newFilters[index][indexSub] };
+    newItem["condition"] = key;
+    newFilters[index][indexSub] = newItem;
+    setFilters(newFilters);
+  };
+  const handleChangeAgeInput = (index, indexSub, value) => {
+    let newFilters = [...filters];
+    const newItem = { ...newFilters[index][indexSub] };
+    newItem["numbers"] = Number(value) || 0;
+    newFilters[index][indexSub] = newItem;
+    setFilters(newFilters);
+  };
+
+  const handleChangeCustomFilter = (index, indexSub, key, value) => {
+    let newFilters = [...filters];
+    const newItem = { ...newFilters[index][indexSub] };
+    newItem[key] = value;
+    newFilters[index][indexSub] = newItem;
+    setFilters(newFilters);
+  };
+
+  const getAgeLabel = (key) => {
+    const itme = AGE_SEGMENT_FILTER_CONDITION.find((e) => e.key === key);
+    return itme ? itme.label : "Is";
+  };
+  const menuAge = (index, indexSub) => (
+    <Menu
+      onClick={({ key }) => handleMenuAgeClick(index, indexSub, key)}
+      items={AGE_SEGMENT_FILTER_CONDITION}
+    />
+  );
+
   const renderItem = (item, index, indexSub) => {
     if (item?.typeOption === "isTagged") {
-      console.log("###renderItem tagged: ", item, tagsOptions);
-      return <div>{item.label}</div>;
-      // return (
-      //   <div className="flex-auto">
-      //     <DropdownReactSelect
-      //       defaultValue="Is Tagged"
-      //       data={[
-      //         { label: "Is Tagged", value: "Is Tagged" },
-      //         { label: "Isn't Tagged", value: "Isn't Tagged" },
-      //       ]}
-      //       onChange={(item) => handleChangeTagCondition(item, index, indexSub)}
-      //     />
-      //     <DropdownReactSelect
-      //       defaultValue={item.value}
-      //       data={tagsOptions}
-      //       onChange={(item) => handleChangeTag(item, index, indexSub)}
-      //     />
-      //   </div>
-      // );
+      return (
+        <div className="flex w-full justify-between items-center">
+          <Select
+            className="w-40 flex items-center"
+            value={item.key}
+            placeholder="Select ..."
+            onChange={(valueSelected) =>
+              handleChangeCustomFilter(index, indexSub, "key", valueSelected)
+            }
+          >
+            {TAG_SEGMENT_FILTER_CONDITION.map((itemOption) => (
+              <Select.Option value={itemOption.value}>
+                {itemOption.label}
+              </Select.Option>
+            ))}
+          </Select>
+          <Divider type="vertical" className="h-full m-0" />
+          <Select
+            className="w-40 flex items-center"
+            value={item.value}
+            placeholder="Select Tag"
+            onChange={(valueSelected) =>
+              handleChangeCustomFilter(index, indexSub, "value", valueSelected)
+            }
+          >
+            {tagsItemOptions.map((itemOption) => (
+              <Select.Option value={itemOption.id}>
+                {itemOption.label}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
+      );
     }
 
     if (item?.typeOption === "isLocation") {
-      return <div>{item.label}</div>;
+      return (
+        <div className="flex w-full justify-between items-center">
+          <Select
+            className="w-40 flex items-center"
+            value={item.key}
+            placeholder="Select ..."
+            onChange={(valueSelected) =>
+              handleChangeCustomFilter(index, indexSub, "key", valueSelected)
+            }
+          >
+            {LOCATION_SEGMENT_FILTER_CONDITION.map((itemOption) => (
+              <Select.Option value={itemOption.value}>
+                {itemOption.label}
+              </Select.Option>
+            ))}
+          </Select>
+          <Divider type="vertical" className="h-full m-0" />
+          <Select
+            className="w-40 flex items-center"
+            value={item.value}
+            placeholder="Select location"
+            onChange={(valueSelected) =>
+              handleChangeCustomFilter(index, indexSub, "value", valueSelected)
+            }
+          >
+            {formatOptions(LIVE_IN_TYPE).map((itemOption) => (
+              <Select.Option value={itemOption.value}>
+                {itemOption.label}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
+      );
     }
 
     if (item?.typeOption === "isSegment") {
-      return <div>{item.label}</div>;
+      return (
+        <div className="flex w-full justify-between items-center">
+          <Select
+            className="w-40 flex items-center"
+            value={item.key}
+            placeholder="Select ..."
+            onChange={(valueSelected) =>
+              handleChangeCustomFilter(index, indexSub, "key", valueSelected)
+            }
+          >
+            {SEGMENT_SEGMENT_FILTER_CONDITION.map((itemOption) => (
+              <Select.Option value={itemOption.value}>
+                {itemOption.label}
+              </Select.Option>
+            ))}
+          </Select>
+          <Divider type="vertical" className="h-full m-0" />
+          <Select
+            className="w-40 flex items-center"
+            value={item.value}
+            placeholder="Select Segment"
+            onChange={(valueSelected) =>
+              handleChangeCustomFilter(index, indexSub, "value", valueSelected)
+            }
+          >
+            {segmentsItemOptions.map((itemOption) => (
+              <Select.Option value={itemOption.id}>
+                {itemOption.label}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
+      );
+    }
+
+    if (item.label.toLowerCase() === "birthday") {
+      return (
+        <div className="flex w-full justify-between items-center">
+          <div className="mr-2 whitespace-nowrap	">{item.label} is</div>
+          <Divider type="vertical" className="h-full m-0" />
+          <Select
+            className="w-40 flex items-center"
+            value={item.month}
+            placeholder="Select month"
+            onChange={(valueSelected) =>
+              handleChangeCustomFilter(index, indexSub, "month", valueSelected)
+            }
+          >
+            {MONTH_TYPE.map((item) => (
+              <Select.Option value={item.value}>{item.label}</Select.Option>
+            ))}
+          </Select>
+          <Divider type="vertical" className="h-full m-0" />
+          <Input
+            max={31}
+            min={1}
+            type="number"
+            className="h-10 border-none bg-inherit"
+            placeholder="Enter a day"
+            onChange={(event) =>
+              handleChangeCustomFilter(
+                index,
+                indexSub,
+                "day",
+                event.target.value
+              )
+            }
+            value={item.day}
+          />
+        </div>
+      );
+    }
+
+    if (item.label.toLowerCase() === "industry") {
+      return (
+        <div className="flex w-full justify-between items-center">
+          <div className="mr-2 whitespace-nowrap	">{item.label}</div>
+          <Divider type="vertical" className="h-full m-0" />
+          <Select
+            className=" flex items-center"
+            value={item.month}
+            placeholder="Select ..."
+            onChange={(valueSelected) =>
+              handleChangeCustomFilter(
+                index,
+                indexSub,
+                "condition",
+                valueSelected
+              )
+            }
+          >
+            {INDUSTRY_SEGMENT_FILTER_CONDITION.map((itemOption) => (
+              <Select.Option value={itemOption.value}>
+                {itemOption.label}
+              </Select.Option>
+            ))}
+          </Select>
+          {item.condition &&
+            item.condition !== "Exist" &&
+            item.condition !== "Doesn't exist" && (
+              <>
+                <Divider type="vertical" className="h-full m-0" />
+                <Input
+                  type="text"
+                  className="h-10 border-none bg-inherit"
+                  placeholder="Enter text..."
+                  onChange={(event) =>
+                    handleChangeCustomFilter(
+                      index,
+                      indexSub,
+                      "value",
+                      event.target.value
+                    )
+                  }
+                  value={item.day}
+                />
+              </>
+            )}
+        </div>
+      );
+    }
+
+    if (item.label.toLowerCase().includes("age")) {
+      return (
+        <div className="flex w-full justify-between items-center">
+          <div className="mr-2">{item.label}</div>
+          <Divider type="vertical" className="h-full m-0" />
+          <Dropdown overlay={menuAge(index, indexSub)} className="ml-2 mr-2">
+            <a onClick={(e) => e.preventDefault()}>
+              <div className="flex items-center">
+                {getAgeLabel(item.condition)}
+                <DownOutlined className="ml-2" />
+              </div>
+            </a>
+          </Dropdown>
+          <Divider type="vertical" className="h-full m-0" />
+          <Input
+            type="number"
+            className="flex-1 h-10 border-none bg-inherit"
+            placeholder="Enter an age"
+            onChange={(event) =>
+              handleChangeAgeInput(index, indexSub, event.target.value)
+            }
+            value={item.numbers}
+          />
+        </div>
+      );
     }
 
     return <div>Contact: {item.label}</div>;
-  };
-
-  const handleChangeTagCondition = (item, index, indexSub) => {
-    let newFilters = [...filters];
-    newFilters[index][indexSub] = {
-      ...newFilters[index][indexSub],
-      conditionFilter: item.value,
-    };
-    setFilters(newFilters);
-  };
-
-  const handleChangeTag = (item, index, indexSub) => {
-    let newFilters = [...filters];
-    newFilters[index][indexSub] = {
-      ...item,
-      conditionFilter: newFilters[index][indexSub].conditionFilter,
-    };
-    setFilters(newFilters);
   };
 
   const onFinish = (values) => {
@@ -129,8 +372,9 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
     }
     const params = {
       ...values,
+      // filters,
       filters: filters.map((item) => {
-        return item.map((itemSub) => getFilterUpdatesFeature(itemSub));
+        return item.map((itemSub) => getSegmentFilterPayload(itemSub));
       }),
     };
     dispatch(addSegmentAsync(params));
@@ -139,6 +383,24 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
 
   const handleSelectFilter = (item, index) => {
     let newFilters = [...filters];
+    if (item.typeOption === "isLocation") {
+      item = {
+        ...item,
+        key: LOCATION_SEGMENT_FILTER_CONDITION[0].value,
+      };
+    } else if (item.typeOption === "isTagged") {
+      item = {
+        ...item,
+        key: TAG_SEGMENT_FILTER_CONDITION[0].value,
+        value: item.name,
+      };
+    } else if (item.typeOption === "isSegment") {
+      item = {
+        ...item,
+        key: SEGMENT_SEGMENT_FILTER_CONDITION[0].value,
+        value: item.name,
+      };
+    }
     if (!newFilters[index]) {
       newFilters.push([item]);
     } else {
@@ -160,7 +422,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
   useEffect(() => {
     onReset();
   }, []);
-  console.log("###filters", tagsOptions, segmentsOptions, filters);
+
   return (
     <Modal
       key="NewSegmentModal"

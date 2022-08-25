@@ -212,10 +212,10 @@ const AddNewUpdates = () => {
                       ) : null}
                     </div>
                     <div>
-                      <Button type="primary" className="mr-2">
+                      {/* <Button type="primary" className="mr-2">
                         View
                       </Button>
-                      <Button>Send Update</Button>
+                      <Button>Send Update</Button> */}
                     </div>
                   </div>
                 </>
@@ -232,7 +232,7 @@ const AddNewUpdates = () => {
                       {notResponse?.length > 1 ? (
                         <>
                           <div className="update-item-circle text-md text-primary ml-2 mr-3">
-                            +${notResponse?.length - 1}
+                            +{notResponse?.length - 1}
                           </div>
                           <div className="flex flex-col justify-center update-item-circle-content">
                             <span>
@@ -247,10 +247,10 @@ const AddNewUpdates = () => {
                       ) : null}
                     </div>
                     <div>
-                      <Button type="primary" className="mr-2">
+                      {/* <Button type="primary" className="mr-2">
                         View
                       </Button>
-                      <Button>Send Update</Button>
+                      <Button>Send Update</Button> */}
                     </div>
                   </div>
                 </>
@@ -282,10 +282,10 @@ const AddNewUpdates = () => {
                         {clickedItem?.clicked?.length +
                           clickedItem?.unClicked?.length}
                       </span>
-                      <Button type="primary" className="mr-2">
+                      {/* <Button type="primary" className="mr-2">
                         View
                       </Button>
-                      <Button>Send Update</Button>
+                      <Button>Send Update</Button> */}
                     </div>
                   </div>
                   {clickedItem?.clicked?.length ? (
@@ -315,10 +315,10 @@ const AddNewUpdates = () => {
                           ) : null}
                         </div>
                         <div>
-                          <Button type="primary" className="mr-2">
+                          {/* <Button type="primary" className="mr-2">
                             View
                           </Button>
-                          <Button>Send Update</Button>
+                          <Button>Send Update</Button> */}
                         </div>
                       </div>
                     </>
@@ -354,10 +354,10 @@ const AddNewUpdates = () => {
                           ) : null}
                         </div>
                         <div>
-                          <Button type="primary" className="mr-2">
+                          {/* <Button type="primary" className="mr-2">
                             View
                           </Button>
-                          <Button>Send Update</Button>
+                          <Button>Send Update</Button> */}
                         </div>
                       </div>
                     </>

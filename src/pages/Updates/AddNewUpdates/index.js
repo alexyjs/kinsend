@@ -40,6 +40,7 @@ import {
 import {
   formatOptionsFormDatabase,
   getFilterUpdatesFeature,
+  formatOptions,
 } from "../../../utils";
 import NewSegmentModal from "../components/NewSegmentModal";
 import ConfirmScheduleModal from "../components/ConfirmScheduleModal";
@@ -158,7 +159,7 @@ const AddNewUpdates = () => {
       {
         label: "Location",
         options: formatOptionsFormDatabase({
-          data: LIVE_IN_TYPE,
+          data: formatOptions(LIVE_IN_TYPE),
           prefixLabel: "Lives In: ",
           typeOption: "isLocation",
         }),

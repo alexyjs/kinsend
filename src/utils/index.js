@@ -152,12 +152,14 @@ export const formatOptionsFormDatabase = ({
   data,
   prefixLabel = "",
   typeOption = "",
+  disablePrefixValue = false,
 }) => {
   return data
     ? data.map((item) => {
         return {
           ...item,
-          value: prefixLabel + (item.id || item.value),
+          value:
+            (disablePrefixValue ? "" : prefixLabel) + (item.id || item.value),
           label: prefixLabel + (item.name || item.label),
           typeOption: typeOption,
         };
@@ -184,4 +186,20 @@ export const getFilterUpdatesFeature = (data) => {
   return {
     key: data.value,
   };
+};
+
+export const getSegmentFilterPayload = (data) => {
+  if (data.typeOption === "isSegment") {
+    return {
+      ...data,
+      segmentId: data.id,
+    };
+  }
+  if (data.typeOption === "isTagged") {
+    return {
+      ...data,
+      tagId: [data.id],
+    };
+  }
+  return data;
 };

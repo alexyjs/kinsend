@@ -47,3 +47,83 @@ export const SEGMENT_FILTER_TYPE = formatOptions([
   "Is Tagged",
   "Is VIP",
 ]);
+
+export const INDUSTRY_SEGMENT_FILTER_CONDITION = [
+  {
+    label: "Exist",
+    value: "Exist",
+  },
+  {
+    label: "Doesn't exist",
+    value: "Doesn't exist",
+  },
+  {
+    label: "Is",
+    value: "Is",
+  },
+  {
+    label: "Contains",
+    value: "Contains",
+  },
+  {
+    label: "Starts with",
+    value: "Starts with",
+  },
+];
+// "Exist", "Doesn't exist", "Is", "Contains", "Starts with"]
+
+export const LOCATION_SEGMENT_FILTER_CONDITION = [
+  {
+    label: "Lives in",
+    value: "Lives in",
+  },
+  {
+    label: "Doesn't live in",
+    value: "Doesn't live in",
+  },
+];
+
+export const TAG_SEGMENT_FILTER_CONDITION = [
+  {
+    label: "Is Tagged",
+    value: "Is Tagged",
+  },
+  {
+    label: "Isn't Tagged",
+    value: "Isn't Tagged",
+  },
+];
+
+export const SEGMENT_SEGMENT_FILTER_CONDITION = [
+  {
+    label: "Include Segment",
+    value: "Include Segment",
+  },
+  {
+    label: "Exclude Segment",
+    value: "Exclude Segment",
+  },
+];
+
+export const AGE_SEGMENT_FILTER_CONDITION = [
+  {
+    label: "Is",
+    key: "Is",
+  },
+  {
+    label: "Above",
+    key: "Above",
+  },
+  {
+    label: "Below",
+    key: "Below",
+  },
+  {
+    label: "Is & Above",
+    key: "IsAndAbove",
+  },
+  {
+    label: "Is & Below",
+    key: "IsAndBelow",
+  },
+];
