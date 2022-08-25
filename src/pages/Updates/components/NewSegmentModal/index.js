@@ -367,7 +367,9 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
     if (
       item.label.toLowerCase() === "industry" ||
       item.label === "Job Title" ||
-      item.label === "Mobile"
+      item.label === "Mobile" ||
+      item.label === "Company" ||
+      item.label === "Email"
     ) {
       return (
         <div className="flex w-full justify-between items-center">
