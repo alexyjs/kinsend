@@ -515,7 +515,6 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
 
   const handleRemoveFilterItem = (index, indexSub) => {
     let newFilters = [...filters];
-    // delete newFilters[index][indexSub];
     newFilters[index].splice(indexSub, 1);
     setFilters(newFilters);
   };
@@ -523,6 +522,10 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
   const onReset = () => {
     form.resetFields();
   };
+
+  useEffect(() => {
+    setFilters([]);
+  }, [visible]);
 
   useEffect(() => {
     onReset();
