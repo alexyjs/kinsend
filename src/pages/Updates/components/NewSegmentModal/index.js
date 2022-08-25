@@ -113,13 +113,6 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
     newFilters[index][indexSub] = newItem;
     setFilters(newFilters);
   };
-  const handleChangeAgeInput = (index, indexSub, value) => {
-    let newFilters = [...filters];
-    const newItem = { ...newFilters[index][indexSub] };
-    newItem["numbers"] = Number(value) || 0;
-    newFilters[index][indexSub] = newItem;
-    setFilters(newFilters);
-  };
 
   const handleChangeCustomFilter = (index, indexSub, key, value) => {
     let newFilters = [...filters];
@@ -355,7 +348,12 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
             className="flex-1 h-10 border-none bg-inherit"
             placeholder="Enter an age"
             onChange={(event) =>
-              handleChangeAgeInput(index, indexSub, event.target.value)
+              handleChangeCustomFilter(
+                index,
+                indexSub,
+                "value",
+                event.target.value
+              )
             }
             value={item.numbers}
           />
@@ -399,6 +397,11 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
         ...item,
         key: SEGMENT_SEGMENT_FILTER_CONDITION[0].value,
         value: item.name,
+      };
+    } else {
+      item = {
+        ...item,
+        key: item.label,
       };
     }
     if (!newFilters[index]) {
