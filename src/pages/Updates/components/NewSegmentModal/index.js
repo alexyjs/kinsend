@@ -11,6 +11,7 @@ import {
   Dropdown,
 } from "antd";
 import React, { useEffect, useState, useMemo } from "react";
+import DatePicker from "react-datepicker";
 import {
   PlusOutlined,
   MinusCircleOutlined,
@@ -32,12 +33,16 @@ import {
   formatOptions,
 } from "../../../../utils";
 import {
-  SEGMENT_FILTER_TYPE,
+  SEGMENT_CONTACT_FILTER_TYPE,
   INDUSTRY_SEGMENT_FILTER_CONDITION,
   LOCATION_SEGMENT_FILTER_CONDITION,
   TAG_SEGMENT_FILTER_CONDITION,
   SEGMENT_SEGMENT_FILTER_CONDITION,
   AGE_SEGMENT_FILTER_CONDITION,
+  JOB_SEGMENT_FILTER_CONDITION,
+  TIME_SEGMENT_FILTER_CONDITION,
+  GENDER_SEGMENT_FILTER_CONDITION,
+  GENDER_SEGMENT_FILTER_TYPE,
 } from "../../../../utils/segment";
 import { MONTH_TYPE, INDUSTRY } from "../../../../utils/constants";
 import { LIVE_IN_TYPE } from "../../../../utils/update";
@@ -84,7 +89,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
     return [
       {
         label: "Contacts",
-        options: SEGMENT_FILTER_TYPE,
+        options: SEGMENT_CONTACT_FILTER_TYPE,
       },
       {
         label: "Segments",
@@ -218,7 +223,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
             }
           >
             {SEGMENT_SEGMENT_FILTER_CONDITION.map((itemOption) => (
-              <Select.Option value={itemOption.value}>
+              <Select.Option value={itemOption.key}>
                 {itemOption.label}
               </Select.Option>
             ))}
@@ -280,13 +285,96 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
       );
     }
 
-    if (item.label.toLowerCase() === "industry") {
+    if (item.label === "Has Gender") {
+      console.log("###Has Gender", item, GENDER_SEGMENT_FILTER_CONDITION);
+      return (
+        <div className="flex w-full justify-between items-center">
+          <Select
+            className=" flex items-center"
+            value={item.key}
+            placeholder="Select ..."
+            onChange={(valueSelected) =>
+              handleChangeCustomFilter(index, indexSub, "key", valueSelected)
+            }
+          >
+            {GENDER_SEGMENT_FILTER_CONDITION.map((itemOption) => (
+              <Select.Option value={itemOption.key}>
+                {itemOption.label}
+              </Select.Option>
+            ))}
+          </Select>
+          {item.key && item.key === GENDER_SEGMENT_FILTER_CONDITION[2].key && (
+            <>
+              <Divider type="vertical" className="h-full m-0" />
+              <Select
+                className="flex-1 flex items-center"
+                value={item.month}
+                placeholder="Select ..."
+                onChange={(valueSelected) =>
+                  handleChangeCustomFilter(
+                    index,
+                    indexSub,
+                    "value",
+                    valueSelected
+                  )
+                }
+              >
+                {GENDER_SEGMENT_FILTER_TYPE.map((itemOption) => (
+                  <Select.Option value={itemOption.value}>
+                    {itemOption.label}
+                  </Select.Option>
+                ))}
+              </Select>
+            </>
+          )}
+        </div>
+      );
+    }
+
+    if (item.label === "Created Date" || item.label === "Last Updated") {
+      return (
+        <div className="flex w-full justify-between items-center">
+          <div className="mr-2 whitespace-nowrap	">{item.label} is</div>
+          <Divider type="vertical" className="h-full m-0" />
+          <Select
+            className=" flex items-center"
+            value={item.condition}
+            placeholder="Select ..."
+            onChange={(valueSelected) =>
+              handleChangeCustomFilter(index, indexSub, "key", valueSelected)
+            }
+          >
+            {TIME_SEGMENT_FILTER_CONDITION.map((itemOption) => (
+              <Select.Option value={itemOption.key}>
+                {itemOption.label}
+              </Select.Option>
+            ))}
+          </Select>
+          <Divider type="vertical" className="h-full m-0" />
+          <DatePicker
+            selected={item.value}
+            onChange={(date) =>
+              handleChangeCustomFilter(index, indexSub, "value", date)
+            }
+            dateFormat="MMMM d, yyyy"
+            className="bg-transparent"
+            wrapperClassName="w-auto mx-3"
+          />
+        </div>
+      );
+    }
+
+    if (
+      item.label.toLowerCase() === "industry" ||
+      item.label === "Job Title" ||
+      item.label === "Mobile"
+    ) {
       return (
         <div className="flex w-full justify-between items-center">
           <div className="mr-2 whitespace-nowrap	">{item.label}</div>
           <Divider type="vertical" className="h-full m-0" />
           <Select
-            className=" flex items-center"
+            className="flex-1 flex items-center"
             value={item.month}
             placeholder="Select ..."
             onChange={(valueSelected) =>
@@ -370,7 +458,6 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
     }
     const params = {
       ...values,
-      // filters,
       filters: filters.map((item) => {
         return item.map((itemSub) => getSegmentFilterPayload(itemSub));
       }),
@@ -380,6 +467,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
   };
 
   const handleSelectFilter = (item, index) => {
+    console.log("###handleSelectFilter", item);
     let newFilters = [...filters];
     if (item.typeOption === "isLocation") {
       item = {
@@ -395,8 +483,20 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
     } else if (item.typeOption === "isSegment") {
       item = {
         ...item,
-        key: SEGMENT_SEGMENT_FILTER_CONDITION[0].value,
+        key: SEGMENT_SEGMENT_FILTER_CONDITION[0].key,
         value: item.name,
+      };
+    } else if (item.value === "Has Gender") {
+      item = {
+        ...item,
+        key: GENDER_SEGMENT_FILTER_CONDITION[0].key,
+      };
+    } else if (item.value === "Created Date" || item.value === "Last Updated") {
+      item = {
+        ...item,
+        key: item.value,
+        condition: TIME_SEGMENT_FILTER_CONDITION[0].key,
+        value: new Date(),
       };
     } else {
       item = {
@@ -404,6 +504,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
         key: item.label,
       };
     }
+    console.log("###handleSelectFilter end:", item);
     if (!newFilters[index]) {
       newFilters.push([item]);
     } else {
@@ -414,7 +515,8 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
 
   const handleRemoveFilterItem = (index, indexSub) => {
     let newFilters = [...filters];
-    delete newFilters[index][indexSub];
+    // delete newFilters[index][indexSub];
+    newFilters[index].splice(indexSub, 1);
     setFilters(newFilters);
   };
 
