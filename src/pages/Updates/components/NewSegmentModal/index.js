@@ -500,6 +500,20 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
         condition: TIME_SEGMENT_FILTER_CONDITION[0].key,
         value: new Date(),
       };
+    } else if (item.label.toLowerCase() === "industry" ||
+      item.label === "Job Title" ||
+      item.label === "Mobile" ||
+      item.label === "Company" ||
+      item.label === "Email") {
+      item = {
+        ...item,
+        condition: INDUSTRY_SEGMENT_FILTER_CONDITION[0].value,
+      };
+    } else if (item.label.toLowerCase().includes("age")) {
+      item = {
+        ...item,
+        condition: AGE_SEGMENT_FILTER_CONDITION[0].key,
+      };
     } else {
       item = {
         ...item,
