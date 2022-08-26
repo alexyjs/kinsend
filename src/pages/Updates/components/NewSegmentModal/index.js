@@ -223,7 +223,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
             }
           >
             {SEGMENT_SEGMENT_FILTER_CONDITION.map((itemOption) => (
-              <Select.Option value={itemOption.key}>
+              <Select.Option value={itemOption.value}>
                 {itemOption.label}
               </Select.Option>
             ))}
@@ -485,7 +485,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
     } else if (item.typeOption === "isSegment") {
       item = {
         ...item,
-        key: SEGMENT_SEGMENT_FILTER_CONDITION[0].key,
+        key: SEGMENT_SEGMENT_FILTER_CONDITION[0].value,
         value: item.name,
       };
     } else if (item.value === "Has Gender") {
