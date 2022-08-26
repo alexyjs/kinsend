@@ -507,11 +507,13 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
       item.label === "Email") {
       item = {
         ...item,
+        key: item.value,
         condition: INDUSTRY_SEGMENT_FILTER_CONDITION[0].value,
       };
     } else if (item.label.toLowerCase().includes("age")) {
       item = {
         ...item,
+        key: item.value,
         condition: AGE_SEGMENT_FILTER_CONDITION[0].key,
       };
     } else {
