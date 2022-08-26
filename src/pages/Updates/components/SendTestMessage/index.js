@@ -178,7 +178,7 @@ const SendTestMessage = ({
               onClick={handleSubmitPhone}
               disabled={!phone}
             >
-              Schedule
+              SEND
             </Button>
           </Form.Item>
         </Col>
