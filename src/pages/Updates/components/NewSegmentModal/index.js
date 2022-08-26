@@ -377,7 +377,7 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
           <Divider type="vertical" className="h-full m-0" />
           <Select
             className="flex-1 flex items-center"
-            value={item.month}
+            value={item.condition}
             placeholder="Select ..."
             onChange={(valueSelected) =>
               handleChangeCustomFilter(
