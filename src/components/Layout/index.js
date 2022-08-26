@@ -73,7 +73,7 @@ const LayoutComponent = ({ className, children }) => {
           inlineCollapsed={collapsed}
           className={[{ "menu-hover": isHover }]}
         >
-          <Menu.Item key="dashboard">
+          {/* <Menu.Item key="dashboard">
             <NavLink
               to="/dashboard"
               onMouseOver={() => setHover(true)}
@@ -82,10 +82,10 @@ const LayoutComponent = ({ className, children }) => {
               <DashboardIcon />{" "}
               <span className="menu-item-label">Dashboard</span>
             </NavLink>
-          </Menu.Item>
-          <Menu.Item key="history">
+          </Menu.Item> */}
+          <Menu.Item key="message">
             <NavLink
-              to="/"
+              to="/message"
               onMouseOver={() => setHover(true)}
               onMouseOut={() => setHover(false)}
             >

@@ -30,7 +30,8 @@ const PaymentSetup = () => {
 
   const handleCancelAccountModal = () => {
     closeAccountModal();
-    navigate("/dashboard");
+    // navigate("/dashboard");
+    navigate("/message");
   };
 
   const handleOkPhoneModal = () => {};
@@ -46,7 +47,8 @@ const PaymentSetup = () => {
 
   useEffect(() => {
     if (user?.isEnabledBuyPlan) {
-      navigate("/dashboard");
+      // navigate("/dashboard");
+      navigate("/message");
     }
   }, [user, navigate]);
 

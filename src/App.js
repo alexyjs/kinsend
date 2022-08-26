@@ -9,6 +9,7 @@ import en from "world_countries_lists/data/countries/en/world.json";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
+import Message from "./pages/Message";
 import FormManage from "./pages/Settings/Form";
 import AddNewForm from "./pages/Settings/Form/AddNewForm";
 import TagsManage from "./pages/Settings/TagsManage";
@@ -90,6 +91,7 @@ function App() {
             <Route path="/settings/profile" element={<Profile />} />
             <Route path="/payment-setup" element={<PaymentSetup />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/message" element={<Message />} />
 
             <Route path="/settings/tags" element={<TagsManage />} />
 
@@ -110,7 +112,7 @@ function App() {
               path="/updates/detail/:updatesId"
               element={<EditUpdates />}
             />
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            <Route path="*" element={<Navigate to="/message" replace />} />
           </Routes>
         </ConfigProvider>
       </main>
