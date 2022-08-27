@@ -48,8 +48,7 @@ const SideBarUpdate = ({ data }) => {
       });
     } else if (filter === "Scheduled Update") {
       result = result.filter((item) => {
-        return item.triggerType !== "Once";
-        // isAfter(new Date(item.datetime), new Date())
+        return item.triggerType !== "Once" || (item.triggerType === "Once" && isAfter(new Date(item.datetime), new Date()))
       });
     }
     setDataShow(result);

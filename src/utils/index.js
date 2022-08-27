@@ -202,4 +202,20 @@ export const getSegmentFilterPayload = (data) => {
     };
   }
   return data;
+}
+
+export const getFilterUpdatesSelected = (value, data) => {
+  const valueSelected = value.segmentId || value.location || value.tagId || value.key;
+  let dataFilter = []
+  if (value.segmentId) {
+    dataFilter = data.filter(item => item.label === 'Segments')[0] || []
+  } else if (value.location) {
+    dataFilter = data.filter(item => item.label === 'Location')[0] || []
+  } else if (value.tagId) {
+    dataFilter = data.filter(item => item.label === 'Tags')[0] || []
+  } else {
+    dataFilter = data.filter(item => item.label === 'Contacts')[0] || []
+  };
+
+  return dataFilter.options.filter(item => item.value === valueSelected)[0]
 };

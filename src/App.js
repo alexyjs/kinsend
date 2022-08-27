@@ -106,7 +106,7 @@ function App() {
             <Route path="/automation/:tabname" element={<Automation />} />
 
             <Route path="/updates" element={<UpdatesDashboard />} />
-            <Route path="/updates/scheduled/:id" element={<AddNewUpdates />} />
+            <Route path="/updates/scheduled/:updatesId" element={<AddNewUpdates />} />
             <Route path="/updates/scheduled/new" element={<AddNewUpdates />} />
             <Route
               path="/updates/detail/:updatesId"

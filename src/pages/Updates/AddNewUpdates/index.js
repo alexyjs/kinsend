@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import _ from "lodash";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Form, Button, Row, Col, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { format, differenceInMinutes, addMinutes, getMinutes } from "date-fns";
@@ -14,6 +14,7 @@ import {
   addUpdatesAsync,
   resetUpdatesAsync,
   sendTestMessageAsync,
+  getUpdatesDetailAsync,
 } from "../../../redux/updatesReducer";
 import {
   selectSettings,
@@ -41,6 +42,7 @@ import {
   formatOptionsFormDatabase,
   getFilterUpdatesFeature,
   formatOptions,
+  getFilterUpdatesSelected,
 } from "../../../utils";
 import NewSegmentModal from "../components/NewSegmentModal";
 import ConfirmScheduleModal from "../components/ConfirmScheduleModal";
@@ -55,16 +57,18 @@ const AddNewUpdates = () => {
   const [recipients, setRecipients] = useState(null);
   const [attachment, setAttachmentUrl] = useState({});
   const [datetime, setDatetime] = useState(new Date());
-  const { newUpdate, segments } = useSelector(selectUpdates);
+  const { newUpdate, segments, updatesDetail } = useSelector(selectUpdates);
   const { tags, formSubmissions, subscriberLocations } =
     useSelector(selectSettings);
   const { user } = useSelector(selectUsers);
   const [dataRecipients, setDataRecipients] = useState(RECIPIENTS_TYPE);
   const [dataSubmit, setDataSubmit] = useState(null);
   const childRef = useRef();
+  let { updatesId } = useParams();
 
   // const message = Form.useWatch("message", form);
   const [message, setMessage] = useState("");
+  const [defaultValueMessage, setDefaultValueMessage] = useState("");
 
   const showMergeField =
     message &&
@@ -121,7 +125,7 @@ const AddNewUpdates = () => {
     if (!recipients) {
       return;
     }
-    const parrams = {
+    const params = {
       message: message
         .replace(/<span>/gi, "")
         .replace(/<\/span>/gi, "")
@@ -133,7 +137,15 @@ const AddNewUpdates = () => {
       fileUrl: attachment?.url,
     };
 
-    setDataSubmit(parrams);
+    if (updatesDetail?.id) {
+      const dataUpdate = {
+        dataUpdate: params,
+        id: updatesDetail.id,
+      }
+      setDataSubmit(dataUpdate);
+    } else {
+      setDataSubmit(params);
+    }
 
     showConfirm();
   };
@@ -251,6 +263,29 @@ const AddNewUpdates = () => {
     };
   }, [datetime]);
 
+  useEffect(() => {
+    if (updatesId && recipientsOptions) {
+      dispatch(getUpdatesDetailAsync(updatesId));
+    }
+  }, [updatesId, recipientsOptions]);
+
+  useEffect(() => {
+    if (updatesDetail) {
+      form.setFieldsValue({
+        triggerType: updatesDetail.triggerType,
+      });
+
+      setDefaultValueMessage(updatesDetail?.message);
+      setMessage(updatesDetail?.message);
+      setDatetime(new Date(updatesDetail?.datetime));
+      const recipientsSelected = getFilterUpdatesSelected(updatesDetail.filter, recipientsOptions);
+      setRecipients(recipientsSelected);
+      setAttachmentUrl({
+        url: updatesDetail?.fileUrl,
+      });
+    }
+  }, [updatesDetail, recipientsOptions]);
+  console.log('###updatesDetail:', updatesDetail);
   return (
     <LayoutComponent className="add-updates-page">
       <div className="flex items-center">
@@ -300,15 +335,10 @@ const AddNewUpdates = () => {
               </div>
             )}
             <EditableText
-              // defaultValue={message}
+              defaultValue={defaultValueMessage}
               onChange={hanldeChangeMessage}
               ref={childRef}
             />
-            {/* <EditableText
-                className="mb-2"
-                value={message}
-                onChange={hanldeChangeMessage}
-              /> */}
             <div className="textarea-actions">
               <AttachmentIcon onClick={showUpload} />
               <EmojiIcon onClick={() => setShowEmoji(true)} />
@@ -331,6 +361,7 @@ const AddNewUpdates = () => {
               </span>
             </div>
             <DropdownReactSelect
+              value={recipients}
               data={recipientsOptions}
               onChange={handleRecipients}
             />
