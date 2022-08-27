@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import _ from "lodash";
 import { Form, Input, Button, Row, Col, Divider } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { format } from "date-fns";
+import { format, isBefore, isAfter } from "date-fns";
 import { NavLink, useParams } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -49,6 +49,8 @@ const AddNewUpdates = () => {
     responsePercent,
   } = updatesDetail?.reporting || {};
 
+  const isShowEditable = updatesDetail && (updatesDetail.triggerType !== "Once" || (updatesDetail.triggerType === "Once" && isAfter(new Date(updatesDetail.datetime), new Date())))
+
   useEffect(() => {
     if (updatesId) {
       dispatch(getUpdatesDetailAsync(updatesId));
@@ -68,13 +70,16 @@ const AddNewUpdates = () => {
       <div className="flex">
         <div className="flex-auto px-3 2xl:px-5">
           <Row className="w-full mt-3">
-            {/* <Col>
-            <NavLink to={`/updates/scheduled/${updatesId}`}>
-              <Button type="primary" size="large" className="w-48	">
-                Edit Updates
-              </Button>
-            </NavLink>
-            </Col> */}
+            {/* {
+              isShowEditable &&
+              <Col className="w-full justify-end my-5">
+                <NavLink to={`/updates/scheduled/${updatesId}`}>
+                  <Button type="primary" size="large" className="w-48	">
+                    Edit Updates
+                  </Button>
+                </NavLink>
+              </Col>
+            } */}
             <Col className="w-full">
               <div
                 className="updates-detail-message"
