@@ -178,10 +178,10 @@ const EditableText = forwardRef(
     useEffect(() => {
       if (defaultValue) {
         const initValue = defaultValue
-        .replace(/<fname>/gi, `&lt;fname&gt;`)
-        .replace(/<lname>/gi, `&lt;lname&gt;`)
-        .replace(/<name>/gi, `&lt;name&gt;`)
-        .replace(/<mobile>/gi, `&lt;mobile&gt;`);
+          .replace(/<fname>/gi, `&lt;fname&gt;`)
+          .replace(/<lname>/gi, `&lt;lname&gt;`)
+          .replace(/<name>/gi, `&lt;name&gt;`)
+          .replace(/<mobile>/gi, `&lt;mobile&gt;`);
         setValue(initValue);
         editableRef.current.innerHTML = initValue;
       }

@@ -1,17 +1,16 @@
-import React, { useEffect, useState, useMemo } from "react";
-import _ from "lodash";
-import { Form, Input, Button, Row, Col, Divider } from "antd";
+import React, { useEffect } from "react";
+import { Button, Row, Col, Divider } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { format, isBefore, isAfter } from "date-fns";
-import { NavLink, useParams } from "react-router-dom";
+import { format, isAfter } from "date-fns";
+import { NavLink, useParams, useNavigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 
 import {
   selectUpdates,
   getUpdatesDetailAsync,
   getUpdatesAsync,
+  deleteUpdatesAsync,
 } from "../../../redux/updatesReducer";
-import { selectUsers } from "../../../redux/userReducer";
 import { LayoutComponent } from "../../../components";
 import SideBarUpdate from "../components/SideBarUpdate";
 import { LinkIcon } from "../../../assets/svg";
@@ -20,7 +19,7 @@ import "./styles.less";
 
 const AddNewUpdates = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector(selectUsers);
+  let navigate = useNavigate();
   let { updatesId } = useParams();
   const { updates, updatesDetail } = useSelector(selectUpdates);
   const {
@@ -49,7 +48,16 @@ const AddNewUpdates = () => {
     responsePercent,
   } = updatesDetail?.reporting || {};
 
-  const isShowEditable = updatesDetail && (updatesDetail.triggerType !== "Once" || (updatesDetail.triggerType === "Once" && isAfter(new Date(updatesDetail.datetime), new Date())))
+  const isShowEditable =
+    updatesDetail &&
+    (updatesDetail.triggerType !== "Once" ||
+      (updatesDetail.triggerType === "Once" &&
+        isAfter(new Date(updatesDetail.datetime), new Date())));
+
+  const handleDelete = () => {
+    dispatch(deleteUpdatesAsync(updatesId));
+    navigate("/updates");
+  };
 
   useEffect(() => {
     if (updatesId) {
@@ -70,16 +78,23 @@ const AddNewUpdates = () => {
       <div className="flex">
         <div className="flex-auto px-3 2xl:px-5">
           <Row className="w-full mt-3">
-            {/* {
-              isShowEditable &&
-              <Col className="w-full justify-end my-5">
+            {isShowEditable && (
+              <Col className="w-full flex justify-end my-5">
                 <NavLink to={`/updates/scheduled/${updatesId}`}>
                   <Button type="primary" size="large" className="w-48	">
-                    Edit Updates
+                    Edit Update
                   </Button>
                 </NavLink>
+                <Button
+                  type="primary"
+                  size="large"
+                  className="w-48	ml-3"
+                  onClick={handleDelete}
+                >
+                  Delete Update
+                </Button>
               </Col>
-            } */}
+            )}
             <Col className="w-full">
               <div
                 className="updates-detail-message"

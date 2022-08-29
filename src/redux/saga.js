@@ -56,7 +56,8 @@ import {
   watchGetUpdatesSaga,
   watchGetUpdatesDetailSaga,
   watchAddUpdatesSaga,
-  watchUpdateUpdatesSaga,
+  watchEditUpdatesSaga,
+  watchDeleteUpdatesSaga,
   watchResetUpdatesSaga,
   watchSendTestMessageSaga,
 } from "./updatesReducer";
@@ -119,7 +120,8 @@ export default function* rootSaga() {
     watchGetUpdatesSaga(),
     watchGetUpdatesDetailSaga(),
     watchAddUpdatesSaga(),
-    watchUpdateUpdatesSaga(),
+    watchEditUpdatesSaga(),
+    watchDeleteUpdatesSaga(),
     watchResetUpdatesSaga(),
     watchSendTestMessageSaga(),
   ]);
