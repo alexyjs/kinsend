@@ -69,7 +69,6 @@ const DropdownReactSelect = ({
   data = [],
   onChange,
   className,
-  value,
   ...props
 }) => {
   return (

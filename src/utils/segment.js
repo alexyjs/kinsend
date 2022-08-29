@@ -24,7 +24,7 @@ export const SEGMENT_FILTER_TYPE = formatOptions([
   "Is Customer",
   "Email",
   "Is Facebook Contact",
-  "Form Completed",
+  // "Form Completed",
   "Has Gender",
   "Contact is Hidden",
   "Industry",
@@ -32,18 +32,195 @@ export const SEGMENT_FILTER_TYPE = formatOptions([
   "Last Contacted",
   "Last Updated",
   "Clicked",
-  "Lives In",
-  "Messages Exchanged",
-  "Messages Incoming",
-  "Messages Outgoing",
+  // "Lives In",
+  // "Messages Exchanged",
+  // "Messages Incoming",
+  // "Messages Outgoing",
   "Mobile",
-  "Has Purchased",
-  "Purchased",
-  "Responded",
-  "Revenue",
+  // "Has Purchased",
+  // "Purchased",
+  // "Responded",
+  // "Revenue",
   "Include Segment",
-  "Sent Update",
+  // "Sent Update",
   "Is Subscribed",
   "Is Tagged",
-  "Is VIP",
+  // "Is VIP",
 ]);
+
+export const SEGMENT_CONTACT_FILTER_TYPE = formatOptions([
+  "Added Last Month",
+  "Added Last Week",
+  "Added This Month",
+  "Added This Week",
+  "Added This Year",
+  "Age",
+  "Contact is Archived",
+  "Assigned No Is",
+  "Birthday",
+  "Birthdays This Month",
+  "Birthdays This Week",
+  "Birthdays Today",
+  "Company",
+  "Has been Contacted",
+  "Contacted Last Month",
+  "Contacted Last Week",
+  "Contacted This Month",
+  "Contacted This Week",
+  "Contacted This Year",
+  "Created Date",
+  "Is Customer",
+  "Email",
+  "Is Facebook Contact",
+  // "Form Completed",
+  // "Gender is",
+  "Has Gender",
+  // "Has no Gender",
+  "Contact is Hidden",
+  "Industry",
+  "Job Title",
+  "Last Contacted",
+  "Last Updated",
+  // "Clicked",
+  // "Lives In",
+  // "Messages Exchanged",
+  // "Messages Incoming",
+  // "Messages Outgoing",
+  "Mobile",
+  // "Has Purchased",
+  // "Purchased",
+  // "Responded",
+  // "Revenue",
+  // "Include Segment",
+  // "Sent Update",
+  "Is Subscribed",
+  // "Is Tagged",
+  // "Is VIP",
+]);
+
+export const INDUSTRY_SEGMENT_FILTER_CONDITION = [
+  {
+    label: "Exist",
+    value: "Exist",
+  },
+  {
+    label: "Doesn't exist",
+    value: "Doesn't exist",
+  },
+  {
+    label: "Is",
+    value: "Is",
+  },
+  {
+    label: "Contains",
+    value: "Contains",
+  },
+  {
+    label: "Starts with",
+    value: "Starts with",
+  },
+];
+// "Exist", "Doesn't exist", "Is", "Contains", "Starts with"]
+
+export const LOCATION_SEGMENT_FILTER_CONDITION = [
+  {
+    label: "Lives in",
+    value: "Lives in",
+  },
+  {
+    label: "Doesn't live in",
+    value: "Doesn't live in",
+  },
+];
+
+export const TAG_SEGMENT_FILTER_CONDITION = [
+  {
+    label: "Is Tagged",
+    value: "Is Tagged",
+  },
+  {
+    label: "Isn't Tagged",
+    value: "Isn't Tagged",
+  },
+];
+
+export const SEGMENT_SEGMENT_FILTER_CONDITION = [
+  {
+    label: "Include Segment",
+    value: "Include Segment",
+  },
+  {
+    label: "Exclude Segment",
+    value: "Exclude Segment",
+  },
+];
+
+export const AGE_SEGMENT_FILTER_CONDITION = [
+  {
+    label: "Is",
+    key: "Is",
+  },
+  {
+    label: "Above",
+    key: "Above",
+  },
+  {
+    label: "Below",
+    key: "Below",
+  },
+  {
+    label: "Is & Above",
+    key: "IsAndAbove",
+  },
+  {
+    label: "Is & Below",
+    key: "IsAndBelow",
+  },
+];
+
+export const JOB_SEGMENT_FILTER_CONDITION = INDUSTRY_SEGMENT_FILTER_CONDITION;
+
+export const TIME_SEGMENT_FILTER_CONDITION = [
+  {
+    label: "Before",
+    key: "Before",
+  },
+  {
+    label: "On",
+    key: "On",
+  },
+  {
+    label: "After",
+    key: "After",
+  },
+];
+
+export const GENDER_SEGMENT_FILTER_CONDITION = [
+  {
+    label: "Has Gender",
+    key: "Has Gender",
+  },
+  {
+    label: "Has no Gender",
+    key: "Has no Gender",
+  },
+  {
+    label: "Gender is",
+    key: "Gender is",
+  },
+];
+
+export const GENDER_SEGMENT_FILTER_TYPE = [
+  {
+    label: "Male",
+    key: "Male",
+  },
+  {
+    label: "Famale",
+    key: "Famale",
+  },
+  {
+    label: "Other",
+    key: "Other",
+  },
+];

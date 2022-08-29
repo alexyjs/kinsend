@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import _ from "lodash";
 import { Form, Input, Button, Row, Col, Divider } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { format } from "date-fns";
+import { format, isBefore, isAfter } from "date-fns";
 import { NavLink, useParams } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -49,6 +49,8 @@ const AddNewUpdates = () => {
     responsePercent,
   } = updatesDetail?.reporting || {};
 
+  const isShowEditable = updatesDetail && (updatesDetail.triggerType !== "Once" || (updatesDetail.triggerType === "Once" && isAfter(new Date(updatesDetail.datetime), new Date())))
+
   useEffect(() => {
     if (updatesId) {
       dispatch(getUpdatesDetailAsync(updatesId));
@@ -68,13 +70,16 @@ const AddNewUpdates = () => {
       <div className="flex">
         <div className="flex-auto px-3 2xl:px-5">
           <Row className="w-full mt-3">
-            {/* <Col>
-            <NavLink to={`/updates/scheduled/${updatesId}`}>
-              <Button type="primary" size="large" className="w-48	">
-                Edit Updates
-              </Button>
-            </NavLink>
-            </Col> */}
+            {/* {
+              isShowEditable &&
+              <Col className="w-full justify-end my-5">
+                <NavLink to={`/updates/scheduled/${updatesId}`}>
+                  <Button type="primary" size="large" className="w-48	">
+                    Edit Updates
+                  </Button>
+                </NavLink>
+              </Col>
+            } */}
             <Col className="w-full">
               <div
                 className="updates-detail-message"
@@ -212,10 +217,10 @@ const AddNewUpdates = () => {
                       ) : null}
                     </div>
                     <div>
-                      <Button type="primary" className="mr-2">
+                      {/* <Button type="primary" className="mr-2">
                         View
                       </Button>
-                      <Button>Send Update</Button>
+                      <Button>Send Update</Button> */}
                     </div>
                   </div>
                 </>
@@ -232,7 +237,7 @@ const AddNewUpdates = () => {
                       {notResponse?.length > 1 ? (
                         <>
                           <div className="update-item-circle text-md text-primary ml-2 mr-3">
-                            +${notResponse?.length - 1}
+                            +{notResponse?.length - 1}
                           </div>
                           <div className="flex flex-col justify-center update-item-circle-content">
                             <span>
@@ -247,10 +252,10 @@ const AddNewUpdates = () => {
                       ) : null}
                     </div>
                     <div>
-                      <Button type="primary" className="mr-2">
+                      {/* <Button type="primary" className="mr-2">
                         View
                       </Button>
-                      <Button>Send Update</Button>
+                      <Button>Send Update</Button> */}
                     </div>
                   </div>
                 </>
@@ -282,10 +287,10 @@ const AddNewUpdates = () => {
                         {clickedItem?.clicked?.length +
                           clickedItem?.unClicked?.length}
                       </span>
-                      <Button type="primary" className="mr-2">
+                      {/* <Button type="primary" className="mr-2">
                         View
                       </Button>
-                      <Button>Send Update</Button>
+                      <Button>Send Update</Button> */}
                     </div>
                   </div>
                   {clickedItem?.clicked?.length ? (
@@ -315,10 +320,10 @@ const AddNewUpdates = () => {
                           ) : null}
                         </div>
                         <div>
-                          <Button type="primary" className="mr-2">
+                          {/* <Button type="primary" className="mr-2">
                             View
                           </Button>
-                          <Button>Send Update</Button>
+                          <Button>Send Update</Button> */}
                         </div>
                       </div>
                     </>
@@ -354,10 +359,10 @@ const AddNewUpdates = () => {
                           ) : null}
                         </div>
                         <div>
-                          <Button type="primary" className="mr-2">
+                          {/* <Button type="primary" className="mr-2">
                             View
                           </Button>
-                          <Button>Send Update</Button>
+                          <Button>Send Update</Button> */}
                         </div>
                       </div>
                     </>

@@ -51,7 +51,8 @@ const Login = () => {
   useEffect(() => {
     if (user) {
       if (user?.isEnabledBuyPlan) {
-        navigate("/dashboard");
+        // navigate("/dashboard");
+        navigate("/message");
       } else {
         navigate("/payment-setup");
       }

@@ -4,16 +4,17 @@ import { notification } from "antd";
 
 import { handleCallAPI, getErrorMessage } from "./helpers";
 
-export const getSegmentAsync = createAction("public/getSegmentAsync");
-export const addSegmentAsync = createAction("public/addSegmentAsync");
+export const getSegmentAsync = createAction("updates/getSegmentAsync");
+export const addSegmentAsync = createAction("updates/addSegmentAsync");
 
-export const getUpdatesAsync = createAction("public/getUpdatesAsync");
+export const getUpdatesAsync = createAction("updates/getUpdatesAsync");
 export const getUpdatesDetailAsync = createAction(
-  "public/getUpdatesDetailAsync"
+  "updates/getUpdatesDetailAsync"
 );
-export const addUpdatesAsync = createAction("public/addUpdatesAsync");
-export const resetUpdatesAsync = createAction("public/resetUpdatesAsync");
-export const sendTestMessageAsync = createAction("public/sendTestMessageAsync");
+export const addUpdatesAsync = createAction("updates/addUpdatesAsync");
+export const updateUpdatesAsync = createAction("updates/updateUpdatesAsync");
+export const resetUpdatesAsync = createAction("updates/resetUpdatesAsync");
+export const sendTestMessageAsync = createAction("updates/sendTestMessageAsync");
 
 export async function getSegment() {
   const payload = {
@@ -56,6 +57,16 @@ export async function addUpdates(data) {
   const payload = {
     method: "POST",
     url: `${process.env.REACT_APP_API_BASE_URL}/updates`,
+    data,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function updateUpdates(id, data) {
+  const payload = {
+    method: "PUT",
+    url: `${process.env.REACT_APP_API_BASE_URL}/updates/${id}`,
     data,
   };
 
@@ -138,6 +149,25 @@ export function* addUpdatesSaga(action) {
   }
 }
 
+export function* updateUpdatesSaga(action) {
+  const { response, errors } = yield call(updateUpdates, action.payload.dataUpdate,
+    action.payload.id);
+  if (response) {
+    yield call(getUpdatesSaga, {});
+    yield put(updateUpdatesSuccess(response));
+    notification.success({
+      title: "Action Completed",
+      message: `The UPDATES has been updated`,
+    });
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: getErrorMessage(errors) || `Can't update the UPDATES`,
+    });
+  }
+}
+
 export function* resetUpdatesSaga() {
   yield put(resetUpdatesSuccess());
 }
@@ -181,6 +211,10 @@ export function* watchAddUpdatesSaga() {
   yield takeLatest(addUpdatesAsync, addUpdatesSaga);
 }
 
+export function* watchUpdateUpdatesSaga() {
+  yield takeLatest(updateUpdatesAsync, updateUpdatesSaga);
+}
+
 export function* watchResetUpdatesSaga() {
   yield takeLatest(resetUpdatesAsync, resetUpdatesSaga);
 }
@@ -217,7 +251,9 @@ export const updatesSlice = createSlice({
       state.isLoading = false;
     },
     getUpdatesSuccess: (state, action) => {
-      state.updates = action.payload;
+      state.updates = action.payload.sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
       state.isLoading = false;
       state.errors = [];
     },
@@ -227,6 +263,10 @@ export const updatesSlice = createSlice({
       state.errors = [];
     },
     addUpdatesSuccess: (state, action) => {
+      state.isLoading = false;
+      state.newUpdate = action.payload;
+    },
+    updateUpdatesSuccess: (state, action) => {
       state.isLoading = false;
       state.newUpdate = action.payload;
     },
@@ -259,6 +299,7 @@ export const {
   getUpdatesSuccess,
   getUpdatesDetailSuccess,
   addUpdatesSuccess,
+  updateUpdatesSuccess,
   resetUpdatesSuccess,
 } = updatesSlice.actions;
 

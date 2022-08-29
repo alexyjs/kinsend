@@ -84,7 +84,7 @@ export const RECIPIENTS_TYPE = formatOptions([
   "Received Latest Update",
 ]);
 
-export const LIVE_IN_TYPE = formatOptions([
+export const LIVE_IN_TYPE = [
   // "California",
   // "New York",
   // "Florida",
@@ -147,4 +147,4 @@ export const LIVE_IN_TYPE = formatOptions([
   // "Uganda",
   // "Venezuela, Bolivarian Republic of",
   // "Zambia",
-]);
+];

@@ -165,10 +165,6 @@ export const getMonths = () => {
       value: 12,
       label: "December",
     },
-    {
-      value: 1,
-      label: "December",
-    },
   ];
   return result;
 };
