@@ -3,7 +3,7 @@ import _ from "lodash";
 import React, { memo, useEffect } from "react";
 import { GoogleLogin } from "react-google-login";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";

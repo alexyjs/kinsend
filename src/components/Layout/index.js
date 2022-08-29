@@ -14,7 +14,6 @@ import {
   NotificationSVG,
   HistorySVG,
   SettingSVG,
-  DashboardIcon,
   ArrowDownIcon,
   AutomationRobotIcon,
 } from "../../assets/svg";

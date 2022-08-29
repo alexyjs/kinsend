@@ -65,12 +65,7 @@ const formatGroupLabel = (data) => (
   </div>
 );
 
-const DropdownReactSelect = ({
-  data = [],
-  onChange,
-  className,
-  ...props
-}) => {
+const DropdownReactSelect = ({ data = [], onChange, className, ...props }) => {
   return (
     <Select
       isClearable

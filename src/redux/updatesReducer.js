@@ -12,9 +12,12 @@ export const getUpdatesDetailAsync = createAction(
   "updates/getUpdatesDetailAsync"
 );
 export const addUpdatesAsync = createAction("updates/addUpdatesAsync");
-export const updateUpdatesAsync = createAction("updates/updateUpdatesAsync");
+export const editUpdatesAsync = createAction("updates/editUpdatesAsync");
+export const deleteUpdatesAsync = createAction("updates/deleteUpdatesAsync");
 export const resetUpdatesAsync = createAction("updates/resetUpdatesAsync");
-export const sendTestMessageAsync = createAction("updates/sendTestMessageAsync");
+export const sendTestMessageAsync = createAction(
+  "updates/sendTestMessageAsync"
+);
 
 export async function getSegment() {
   const payload = {
@@ -63,11 +66,20 @@ export async function addUpdates(data) {
   return handleCallAPI(payload);
 }
 
-export async function updateUpdates(id, data) {
+export async function editUpdates(data, id) {
   const payload = {
     method: "PUT",
     url: `${process.env.REACT_APP_API_BASE_URL}/updates/${id}`,
     data,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function deleteUpdates(id) {
+  const payload = {
+    method: "DELETE",
+    url: `${process.env.REACT_APP_API_BASE_URL}/updates/${id}`,
   };
 
   return handleCallAPI(payload);
@@ -149,12 +161,15 @@ export function* addUpdatesSaga(action) {
   }
 }
 
-export function* updateUpdatesSaga(action) {
-  const { response, errors } = yield call(updateUpdates, action.payload.dataUpdate,
-    action.payload.id);
+export function* editUpdatesSaga(action) {
+  const { response, errors } = yield call(
+    editUpdates,
+    action.payload.dataUpdate,
+    action.payload.id
+  );
   if (response) {
     yield call(getUpdatesSaga, {});
-    yield put(updateUpdatesSuccess(response));
+    yield put(editUpdatesSuccess(response));
     notification.success({
       title: "Action Completed",
       message: `The UPDATES has been updated`,
@@ -164,6 +179,23 @@ export function* updateUpdatesSaga(action) {
     notification.error({
       title: "Action failed",
       message: getErrorMessage(errors) || `Can't update the UPDATES`,
+    });
+  }
+}
+
+export function* deleteUpdatesSaga(action) {
+  const { response, errors } = yield call(deleteUpdates, action.payload);
+  if (response) {
+    yield call(getUpdatesSaga, {});
+    notification.success({
+      title: "Action Completed",
+      message: `The UPDATES has been deleted`,
+    });
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: getErrorMessage(errors) || `Can't deleted the UPDATES`,
     });
   }
 }
@@ -211,8 +243,12 @@ export function* watchAddUpdatesSaga() {
   yield takeLatest(addUpdatesAsync, addUpdatesSaga);
 }
 
-export function* watchUpdateUpdatesSaga() {
-  yield takeLatest(updateUpdatesAsync, updateUpdatesSaga);
+export function* watchEditUpdatesSaga() {
+  yield takeLatest(editUpdatesAsync, editUpdatesSaga);
+}
+
+export function* watchDeleteUpdatesSaga() {
+  yield takeLatest(deleteUpdatesAsync, deleteUpdatesSaga);
 }
 
 export function* watchResetUpdatesSaga() {
@@ -266,7 +302,7 @@ export const updatesSlice = createSlice({
       state.isLoading = false;
       state.newUpdate = action.payload;
     },
-    updateUpdatesSuccess: (state, action) => {
+    editUpdatesSuccess: (state, action) => {
       state.isLoading = false;
       state.newUpdate = action.payload;
     },
@@ -299,7 +335,7 @@ export const {
   getUpdatesSuccess,
   getUpdatesDetailSuccess,
   addUpdatesSuccess,
-  updateUpdatesSuccess,
+  editUpdatesSuccess,
   resetUpdatesSuccess,
 } = updatesSlice.actions;
 

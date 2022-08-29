@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
-import _ from "lodash";
 import { useNavigate, useParams } from "react-router-dom";
 import { Form, Button, Row, Col, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,12 +14,12 @@ import {
   resetUpdatesAsync,
   sendTestMessageAsync,
   getUpdatesDetailAsync,
+  editUpdatesAsync,
 } from "../../../redux/updatesReducer";
 import {
   selectSettings,
   getTagsAsync,
   getFormSubmissionsAsync,
-  getSubscriberLocationsAsync,
 } from "../../../redux/settingsReducer";
 import { selectUsers } from "../../../redux/userReducer";
 import { useModal } from "../../../hook/useModal";
@@ -61,7 +60,6 @@ const AddNewUpdates = () => {
   const { tags, formSubmissions, subscriberLocations } =
     useSelector(selectSettings);
   const { user } = useSelector(selectUsers);
-  const [dataRecipients, setDataRecipients] = useState(RECIPIENTS_TYPE);
   const [dataSubmit, setDataSubmit] = useState(null);
   const childRef = useRef();
   let { updatesId } = useParams();
@@ -137,21 +135,18 @@ const AddNewUpdates = () => {
       fileUrl: attachment?.url,
     };
 
-    if (updatesDetail?.id) {
-      const dataUpdate = {
-        dataUpdate: params,
-        id: updatesDetail.id,
-      }
-      setDataSubmit(dataUpdate);
-    } else {
-      setDataSubmit(params);
-    }
-
+    setDataSubmit(params);
     showConfirm();
   };
 
   const handleConfirm = () => {
-    dispatch(addUpdatesAsync(dataSubmit));
+    if (updatesDetail?.id) {
+      dispatch(
+        editUpdatesAsync({ dataUpdate: dataSubmit, id: updatesDetail.id })
+      );
+    } else {
+      dispatch(addUpdatesAsync(dataSubmit));
+    }
   };
 
   const recipientsOptions = useMemo(() => {
@@ -224,10 +219,6 @@ const AddNewUpdates = () => {
   };
 
   useEffect(() => {
-    setDataRecipients(RECIPIENTS_TYPE.concat(segments || []));
-  }, [segments]);
-
-  useEffect(() => {
     dispatch(getSegmentAsync());
     dispatch(getTagsAsync());
     dispatch(getFormSubmissionsAsync());
@@ -278,14 +269,17 @@ const AddNewUpdates = () => {
       setDefaultValueMessage(updatesDetail?.message);
       setMessage(updatesDetail?.message);
       setDatetime(new Date(updatesDetail?.datetime));
-      const recipientsSelected = getFilterUpdatesSelected(updatesDetail.filter, recipientsOptions);
+      const recipientsSelected = getFilterUpdatesSelected(
+        updatesDetail.filter,
+        recipientsOptions
+      );
       setRecipients(recipientsSelected);
       setAttachmentUrl({
         url: updatesDetail?.fileUrl,
       });
     }
   }, [updatesDetail, recipientsOptions]);
-  console.log('###updatesDetail:', updatesDetail);
+  console.log("###updatesDetail:", updatesDetail);
   return (
     <LayoutComponent className="add-updates-page">
       <div className="flex items-center">

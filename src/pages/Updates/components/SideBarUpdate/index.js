@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { format, isBefore, isAfter } from "date-fns";
-import { truncate } from "lodash";
-import { Button, Input, Divider, Dropdown, Space, Menu } from "antd";
+import { Input, Divider, Dropdown, Menu } from "antd";
 import { NavLink } from "react-router-dom";
 import { DownOutlined } from "@ant-design/icons";
 
@@ -48,7 +47,11 @@ const SideBarUpdate = ({ data }) => {
       });
     } else if (filter === "Scheduled Update") {
       result = result.filter((item) => {
-        return item.triggerType !== "Once" || (item.triggerType === "Once" && isAfter(new Date(item.datetime), new Date()))
+        return (
+          item.triggerType !== "Once" ||
+          (item.triggerType === "Once" &&
+            isAfter(new Date(item.datetime), new Date()))
+        );
       });
     }
     setDataShow(result);
