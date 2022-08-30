@@ -10,10 +10,13 @@ import {
   getUpdatesDetailAsync,
   getUpdatesAsync,
   deleteUpdatesAsync,
+  resetUpdatesAsync,
 } from "../../../redux/updatesReducer";
 import { LayoutComponent } from "../../../components";
 import SideBarUpdate from "../components/SideBarUpdate";
 import { LinkIcon } from "../../../assets/svg";
+import { useModal } from "../../../hook/useModal";
+import DeleteScheduleModal from "../components/DeleteScheduleModal";
 
 import "./styles.less";
 
@@ -21,7 +24,7 @@ const AddNewUpdates = () => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
   let { updatesId } = useParams();
-  const { updates, updatesDetail } = useSelector(selectUpdates);
+  const { updates, updatesDetail, isDeleted } = useSelector(selectUpdates);
   const {
     bounced,
     bouncedPercent,
@@ -47,6 +50,11 @@ const AddNewUpdates = () => {
     responded,
     responsePercent,
   } = updatesDetail?.reporting || {};
+  const {
+    close: closeDelete,
+    show: showDelete,
+    visible: visibleDelete,
+  } = useModal();
 
   const isShowEditable =
     updatesDetail &&
@@ -56,8 +64,14 @@ const AddNewUpdates = () => {
 
   const handleDelete = () => {
     dispatch(deleteUpdatesAsync(updatesId));
-    navigate("/updates");
   };
+
+  useEffect(() => {
+    if (isDeleted) {
+      navigate("/updates");
+      dispatch(resetUpdatesAsync());
+    }
+  }, [navigate, isDeleted]);
 
   useEffect(() => {
     if (updatesId) {
@@ -80,19 +94,19 @@ const AddNewUpdates = () => {
           <Row className="w-full mt-3">
             {isShowEditable && (
               <Col className="w-full flex justify-end my-5">
-                <NavLink to={`/updates/scheduled/${updatesId}`}>
-                  <Button type="primary" size="large" className="w-48	">
-                    Edit Update
-                  </Button>
-                </NavLink>
                 <Button
                   type="primary"
                   size="large"
-                  className="w-48	ml-3"
-                  onClick={handleDelete}
+                  className="w-48"
+                  onClick={showDelete}
                 >
-                  Delete Update
+                  Delete
                 </Button>
+                <NavLink to={`/updates/scheduled/${updatesId}`}>
+                  <Button type="primary" size="large" className="w-48	ml-3">
+                    Edit Update
+                  </Button>
+                </NavLink>
               </Col>
             )}
             <Col className="w-full">
@@ -388,6 +402,11 @@ const AddNewUpdates = () => {
           </Row>
         </div>
         <SideBarUpdate data={updates} />
+        <DeleteScheduleModal
+          visible={visibleDelete}
+          handleOk={handleDelete}
+          handleCancel={closeDelete}
+        />
       </div>
     </LayoutComponent>
   );
