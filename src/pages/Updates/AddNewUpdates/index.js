@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useMemo, useRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+  useCallback,
+} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Form, Button, Row, Col, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -243,6 +249,19 @@ const AddNewUpdates = () => {
       setDatetime(newDate);
     }
   };
+
+  const clearData = useCallback(() => {
+    form.setFieldsValue({
+      triggerType: UPDATE_TRIGGER_TYPE[0].value,
+    });
+
+    setDefaultValueMessage("");
+    setMessage("");
+    setDatetime(new Date());
+    setRecipients(null);
+    setAttachmentUrl({});
+  }, []);
+
   useEffect(() => {
     handleReloadtime();
     const timer = setInterval(() => {
@@ -261,7 +280,7 @@ const AddNewUpdates = () => {
   }, [updatesId, recipientsOptions]);
 
   useEffect(() => {
-    if (updatesDetail) {
+    if (updatesId && updatesDetail) {
       form.setFieldsValue({
         triggerType: updatesDetail.triggerType,
       });
@@ -277,8 +296,10 @@ const AddNewUpdates = () => {
       setAttachmentUrl({
         url: updatesDetail?.fileUrl,
       });
+    } else {
+      clearData();
     }
-  }, [updatesDetail, recipientsOptions]);
+  }, [updatesDetail, recipientsOptions, updatesId]);
   console.log("###updatesDetail:", updatesDetail);
   return (
     <LayoutComponent className="add-updates-page">
