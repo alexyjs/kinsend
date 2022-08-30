@@ -187,6 +187,7 @@ export function* deleteUpdatesSaga(action) {
   const { response, errors } = yield call(deleteUpdates, action.payload);
   if (response) {
     yield call(getUpdatesSaga, {});
+    yield put(deleteUpdatesSuccess());
     notification.success({
       title: "Action Completed",
       message: `The UPDATES has been deleted`,
@@ -266,6 +267,7 @@ const initialState = {
   updates: [],
   updatesDetail: null,
   newUpdate: null,
+  isDeleted: false,
 };
 
 export const updatesSlice = createSlice({
@@ -306,9 +308,13 @@ export const updatesSlice = createSlice({
       state.isLoading = false;
       state.newUpdate = action.payload;
     },
+    deleteUpdatesSuccess: (state, action) => {
+      state.isDeleted = true;
+    },
     resetUpdatesSuccess: (state, action) => {
       state.newUpdate = null;
       state.isLoading = false;
+      state.isDeleted = false;
       state.errors = [];
     },
     failed: (state, action) => {
@@ -336,6 +342,7 @@ export const {
   getUpdatesDetailSuccess,
   addUpdatesSuccess,
   editUpdatesSuccess,
+  deleteUpdatesSuccess,
   resetUpdatesSuccess,
 } = updatesSlice.actions;
 
