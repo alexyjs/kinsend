@@ -1,6 +1,7 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 import { call, put, takeLatest } from "redux-saga/effects";
 import { notification } from "antd";
+import { isAfter } from "date-fns";
 
 import { handleCallAPI, getErrorMessage } from "./helpers";
 
@@ -12,9 +13,12 @@ export const getUpdatesDetailAsync = createAction(
   "updates/getUpdatesDetailAsync"
 );
 export const addUpdatesAsync = createAction("updates/addUpdatesAsync");
-export const updateUpdatesAsync = createAction("updates/updateUpdatesAsync");
+export const editUpdatesAsync = createAction("updates/editUpdatesAsync");
+export const deleteUpdatesAsync = createAction("updates/deleteUpdatesAsync");
 export const resetUpdatesAsync = createAction("updates/resetUpdatesAsync");
-export const sendTestMessageAsync = createAction("updates/sendTestMessageAsync");
+export const sendTestMessageAsync = createAction(
+  "updates/sendTestMessageAsync"
+);
 
 export async function getSegment() {
   const payload = {
@@ -63,11 +67,20 @@ export async function addUpdates(data) {
   return handleCallAPI(payload);
 }
 
-export async function updateUpdates(id, data) {
+export async function editUpdates(data, id) {
   const payload = {
     method: "PUT",
     url: `${process.env.REACT_APP_API_BASE_URL}/updates/${id}`,
     data,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function deleteUpdates(id) {
+  const payload = {
+    method: "DELETE",
+    url: `${process.env.REACT_APP_API_BASE_URL}/updates/${id}`,
   };
 
   return handleCallAPI(payload);
@@ -149,12 +162,15 @@ export function* addUpdatesSaga(action) {
   }
 }
 
-export function* updateUpdatesSaga(action) {
-  const { response, errors } = yield call(updateUpdates, action.payload.dataUpdate,
-    action.payload.id);
+export function* editUpdatesSaga(action) {
+  const { response, errors } = yield call(
+    editUpdates,
+    action.payload.dataUpdate,
+    action.payload.id
+  );
   if (response) {
     yield call(getUpdatesSaga, {});
-    yield put(updateUpdatesSuccess(response));
+    yield put(editUpdatesSuccess(response));
     notification.success({
       title: "Action Completed",
       message: `The UPDATES has been updated`,
@@ -164,6 +180,24 @@ export function* updateUpdatesSaga(action) {
     notification.error({
       title: "Action failed",
       message: getErrorMessage(errors) || `Can't update the UPDATES`,
+    });
+  }
+}
+
+export function* deleteUpdatesSaga(action) {
+  const { response, errors } = yield call(deleteUpdates, action.payload);
+  if (response) {
+    yield call(getUpdatesSaga, {});
+    yield put(deleteUpdatesSuccess());
+    notification.success({
+      title: "Action Completed",
+      message: `The UPDATES has been deleted`,
+    });
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: getErrorMessage(errors) || `Can't delete the UPDATES`,
     });
   }
 }
@@ -211,8 +245,12 @@ export function* watchAddUpdatesSaga() {
   yield takeLatest(addUpdatesAsync, addUpdatesSaga);
 }
 
-export function* watchUpdateUpdatesSaga() {
-  yield takeLatest(updateUpdatesAsync, updateUpdatesSaga);
+export function* watchEditUpdatesSaga() {
+  yield takeLatest(editUpdatesAsync, editUpdatesSaga);
+}
+
+export function* watchDeleteUpdatesSaga() {
+  yield takeLatest(deleteUpdatesAsync, deleteUpdatesSaga);
 }
 
 export function* watchResetUpdatesSaga() {
@@ -230,6 +268,7 @@ const initialState = {
   updates: [],
   updatesDetail: null,
   newUpdate: null,
+  isDeleted: false,
 };
 
 export const updatesSlice = createSlice({
@@ -251,9 +290,24 @@ export const updatesSlice = createSlice({
       state.isLoading = false;
     },
     getUpdatesSuccess: (state, action) => {
-      state.updates = action.payload.sort((a, b) => {
-        return new Date(b.createdAt) - new Date(a.createdAt);
-      });
+      // let updates = action.payload.sort((a, b) => {
+      //   return new Date(b.createdAt) - new Date(a.createdAt);
+      // });
+
+      const updates = [
+        ...action.payload
+          .filter((item) => isAfter(new Date(item.datetime), new Date()))
+          .sort((a, b) => {
+            return new Date(a.datetime) - new Date(b.datetime);
+          }),
+        ...action.payload
+          .filter((item) => !isAfter(new Date(item.datetime), new Date()))
+          .sort((a, b) => {
+            return new Date(a.datetime) - new Date(b.datetime);
+          }),
+      ];
+
+      state.updates = updates;
       state.isLoading = false;
       state.errors = [];
     },
@@ -266,13 +320,17 @@ export const updatesSlice = createSlice({
       state.isLoading = false;
       state.newUpdate = action.payload;
     },
-    updateUpdatesSuccess: (state, action) => {
+    editUpdatesSuccess: (state, action) => {
       state.isLoading = false;
       state.newUpdate = action.payload;
+    },
+    deleteUpdatesSuccess: (state, action) => {
+      state.isDeleted = true;
     },
     resetUpdatesSuccess: (state, action) => {
       state.newUpdate = null;
       state.isLoading = false;
+      state.isDeleted = false;
       state.errors = [];
     },
     failed: (state, action) => {
@@ -299,7 +357,8 @@ export const {
   getUpdatesSuccess,
   getUpdatesDetailSuccess,
   addUpdatesSuccess,
-  updateUpdatesSuccess,
+  editUpdatesSuccess,
+  deleteUpdatesSuccess,
   resetUpdatesSuccess,
 } = updatesSlice.actions;
 

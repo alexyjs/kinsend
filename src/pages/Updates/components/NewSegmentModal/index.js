@@ -12,12 +12,7 @@ import {
 } from "antd";
 import React, { useEffect, useState, useMemo } from "react";
 import DatePicker from "react-datepicker";
-import {
-  PlusOutlined,
-  MinusCircleOutlined,
-  DownOutlined,
-  CloseOutlined,
-} from "@ant-design/icons";
+import { DownOutlined, CloseOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -39,12 +34,11 @@ import {
   TAG_SEGMENT_FILTER_CONDITION,
   SEGMENT_SEGMENT_FILTER_CONDITION,
   AGE_SEGMENT_FILTER_CONDITION,
-  JOB_SEGMENT_FILTER_CONDITION,
   TIME_SEGMENT_FILTER_CONDITION,
   GENDER_SEGMENT_FILTER_CONDITION,
   GENDER_SEGMENT_FILTER_TYPE,
 } from "../../../../utils/segment";
-import { MONTH_TYPE, INDUSTRY } from "../../../../utils/constants";
+import { MONTH_TYPE } from "../../../../utils/constants";
 import { LIVE_IN_TYPE } from "../../../../utils/update";
 
 import "./styles.less";
@@ -53,8 +47,8 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const [filters, setFilters] = useState([]);
-  const { newUpdate, segments } = useSelector(selectUpdates);
-  const { tags, formSubmissions } = useSelector(selectSettings);
+  const { segments } = useSelector(selectUpdates);
+  const { tags } = useSelector(selectSettings);
   const tagsOptions = useMemo(() => {
     return formatOptionsFormDatabase({
       data: tags,
@@ -500,11 +494,13 @@ const NewSegmentModal = ({ visible, handleOk, handleCancel }) => {
         condition: TIME_SEGMENT_FILTER_CONDITION[0].key,
         value: new Date(),
       };
-    } else if (item.label.toLowerCase() === "industry" ||
+    } else if (
+      item.label.toLowerCase() === "industry" ||
       item.label === "Job Title" ||
       item.label === "Mobile" ||
       item.label === "Company" ||
-      item.label === "Email") {
+      item.label === "Email"
+    ) {
       item = {
         ...item,
         key: item.value,

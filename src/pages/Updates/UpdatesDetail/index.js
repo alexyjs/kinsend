@@ -1,28 +1,30 @@
-import React, { useEffect, useState, useMemo } from "react";
-import _ from "lodash";
-import { Form, Input, Button, Row, Col, Divider } from "antd";
+import React, { useEffect } from "react";
+import { Button, Row, Col, Divider } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { format, isBefore, isAfter } from "date-fns";
-import { NavLink, useParams } from "react-router-dom";
+import { format, isAfter } from "date-fns";
+import { NavLink, useParams, useNavigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 
 import {
   selectUpdates,
   getUpdatesDetailAsync,
   getUpdatesAsync,
+  deleteUpdatesAsync,
+  resetUpdatesAsync,
 } from "../../../redux/updatesReducer";
-import { selectUsers } from "../../../redux/userReducer";
 import { LayoutComponent } from "../../../components";
 import SideBarUpdate from "../components/SideBarUpdate";
 import { LinkIcon } from "../../../assets/svg";
+import { useModal } from "../../../hook/useModal";
+import DeleteScheduleModal from "../components/DeleteScheduleModal";
 
 import "./styles.less";
 
 const AddNewUpdates = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector(selectUsers);
+  let navigate = useNavigate();
   let { updatesId } = useParams();
-  const { updates, updatesDetail } = useSelector(selectUpdates);
+  const { updates, updatesDetail, isDeleted } = useSelector(selectUpdates);
   const {
     bounced,
     bouncedPercent,
@@ -48,8 +50,28 @@ const AddNewUpdates = () => {
     responded,
     responsePercent,
   } = updatesDetail?.reporting || {};
+  const {
+    close: closeDelete,
+    show: showDelete,
+    visible: visibleDelete,
+  } = useModal();
 
-  const isShowEditable = updatesDetail && (updatesDetail.triggerType !== "Once" || (updatesDetail.triggerType === "Once" && isAfter(new Date(updatesDetail.datetime), new Date())))
+  const isShowEditable =
+    updatesDetail &&
+    (updatesDetail.triggerType !== "Once" ||
+      (updatesDetail.triggerType === "Once" &&
+        isAfter(new Date(updatesDetail.datetime), new Date())));
+
+  const handleDelete = () => {
+    dispatch(deleteUpdatesAsync(updatesId));
+  };
+
+  useEffect(() => {
+    if (isDeleted) {
+      navigate("/updates");
+      dispatch(resetUpdatesAsync());
+    }
+  }, [navigate, isDeleted]);
 
   useEffect(() => {
     if (updatesId) {
@@ -70,16 +92,23 @@ const AddNewUpdates = () => {
       <div className="flex">
         <div className="flex-auto px-3 2xl:px-5">
           <Row className="w-full mt-3">
-            {/* {
-              isShowEditable &&
-              <Col className="w-full justify-end my-5">
+            {isShowEditable && (
+              <Col className="w-full flex justify-end my-5">
+                <Button
+                  type="primary"
+                  size="large"
+                  className="w-48"
+                  onClick={showDelete}
+                >
+                  Delete
+                </Button>
                 <NavLink to={`/updates/scheduled/${updatesId}`}>
-                  <Button type="primary" size="large" className="w-48	">
-                    Edit Updates
+                  <Button type="primary" size="large" className="w-48	ml-3">
+                    Edit Update
                   </Button>
                 </NavLink>
               </Col>
-            } */}
+            )}
             <Col className="w-full">
               <div
                 className="updates-detail-message"
@@ -93,7 +122,10 @@ const AddNewUpdates = () => {
                 }}
               ></div>
               <p>
-                <span className="text-primary">Sent</span>&nbsp;
+                <span className="text-primary">
+                  {updatesDetail.progress === "Scheduled" ? "Schedule" : "Sent"}
+                </span>
+                &nbsp;
                 {format(
                   new Date(updatesDetail.datetime),
                   "MMM dd yyyy hh:mm aa"
@@ -373,6 +405,11 @@ const AddNewUpdates = () => {
           </Row>
         </div>
         <SideBarUpdate data={updates} />
+        <DeleteScheduleModal
+          visible={visibleDelete}
+          handleOk={handleDelete}
+          handleCancel={closeDelete}
+        />
       </div>
     </LayoutComponent>
   );

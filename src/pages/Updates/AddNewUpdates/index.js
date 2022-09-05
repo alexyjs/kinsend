@@ -1,5 +1,10 @@
-import React, { useEffect, useState, useMemo, useRef } from "react";
-import _ from "lodash";
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+  useCallback,
+} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Form, Button, Row, Col, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,12 +20,12 @@ import {
   resetUpdatesAsync,
   sendTestMessageAsync,
   getUpdatesDetailAsync,
+  editUpdatesAsync,
 } from "../../../redux/updatesReducer";
 import {
   selectSettings,
   getTagsAsync,
   getFormSubmissionsAsync,
-  getSubscriberLocationsAsync,
 } from "../../../redux/settingsReducer";
 import { selectUsers } from "../../../redux/userReducer";
 import { useModal } from "../../../hook/useModal";
@@ -61,7 +66,6 @@ const AddNewUpdates = () => {
   const { tags, formSubmissions, subscriberLocations } =
     useSelector(selectSettings);
   const { user } = useSelector(selectUsers);
-  const [dataRecipients, setDataRecipients] = useState(RECIPIENTS_TYPE);
   const [dataSubmit, setDataSubmit] = useState(null);
   const childRef = useRef();
   let { updatesId } = useParams();
@@ -137,21 +141,18 @@ const AddNewUpdates = () => {
       fileUrl: attachment?.url,
     };
 
-    if (updatesDetail?.id) {
-      const dataUpdate = {
-        dataUpdate: params,
-        id: updatesDetail.id,
-      }
-      setDataSubmit(dataUpdate);
-    } else {
-      setDataSubmit(params);
-    }
-
+    setDataSubmit(params);
     showConfirm();
   };
 
   const handleConfirm = () => {
-    dispatch(addUpdatesAsync(dataSubmit));
+    if (updatesDetail?.id) {
+      dispatch(
+        editUpdatesAsync({ dataUpdate: dataSubmit, id: updatesDetail.id })
+      );
+    } else {
+      dispatch(addUpdatesAsync(dataSubmit));
+    }
   };
 
   const recipientsOptions = useMemo(() => {
@@ -224,10 +225,6 @@ const AddNewUpdates = () => {
   };
 
   useEffect(() => {
-    setDataRecipients(RECIPIENTS_TYPE.concat(segments || []));
-  }, [segments]);
-
-  useEffect(() => {
     dispatch(getSegmentAsync());
     dispatch(getTagsAsync());
     dispatch(getFormSubmissionsAsync());
@@ -252,6 +249,19 @@ const AddNewUpdates = () => {
       setDatetime(newDate);
     }
   };
+
+  const clearData = useCallback(() => {
+    form.setFieldsValue({
+      triggerType: UPDATE_TRIGGER_TYPE[0].value,
+    });
+
+    setDefaultValueMessage("");
+    setMessage("");
+    setDatetime(new Date());
+    setRecipients(null);
+    setAttachmentUrl({});
+  }, []);
+
   useEffect(() => {
     handleReloadtime();
     const timer = setInterval(() => {
@@ -270,7 +280,7 @@ const AddNewUpdates = () => {
   }, [updatesId, recipientsOptions]);
 
   useEffect(() => {
-    if (updatesDetail) {
+    if (updatesId && updatesDetail) {
       form.setFieldsValue({
         triggerType: updatesDetail.triggerType,
       });
@@ -278,14 +288,19 @@ const AddNewUpdates = () => {
       setDefaultValueMessage(updatesDetail?.message);
       setMessage(updatesDetail?.message);
       setDatetime(new Date(updatesDetail?.datetime));
-      const recipientsSelected = getFilterUpdatesSelected(updatesDetail.filter, recipientsOptions);
+      const recipientsSelected = getFilterUpdatesSelected(
+        updatesDetail.filter,
+        recipientsOptions
+      );
       setRecipients(recipientsSelected);
       setAttachmentUrl({
         url: updatesDetail?.fileUrl,
       });
+    } else {
+      clearData();
     }
-  }, [updatesDetail, recipientsOptions]);
-  console.log('###updatesDetail:', updatesDetail);
+  }, [updatesDetail, recipientsOptions, updatesId]);
+  console.log("###updatesDetail:", updatesDetail);
   return (
     <LayoutComponent className="add-updates-page">
       <div className="flex items-center">
@@ -330,7 +345,7 @@ const AddNewUpdates = () => {
           </div>
           <div className="custom-textarea-wrap">
             {showMergeField && (
-              <div className="text-right text-red-600	">
+              <div className="text-left text-red-600	">
                 {`To increase delivery rates, the message must contain at least one merge field. Merge fields accepted are <fname>, <lname>, <name> and <mobile>.`}
               </div>
             )}

@@ -3,7 +3,7 @@ import "antd-country-phone-input/dist/index.css";
 import "flagpack/dist/flagpack.css";
 import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import en from "world_countries_lists/data/countries/en/world.json";
 import Login from "./pages/Login";
@@ -94,19 +94,20 @@ function App() {
             <Route path="/message" element={<Message />} />
 
             <Route path="/settings/tags" element={<TagsManage />} />
-
             <Route path="/settings/forms" element={<FormManage />} />
             <Route path="/settings/forms/new" element={<AddNewForm />} />
             <Route path="/settings/forms/edit/:id" element={<AddNewForm />} />
 
-            {/* path="/automation/:tabname" */}
-            {/* explore | new | active */}
             <Route path="/automation/new" element={<AddNewAutomation />} />
             <Route path="/automation/edit/:id" element={<AddNewAutomation />} />
+            {/* explore | new | active */}
             <Route path="/automation/:tabname" element={<Automation />} />
 
             <Route path="/updates" element={<UpdatesDashboard />} />
-            <Route path="/updates/scheduled/:updatesId" element={<AddNewUpdates />} />
+            <Route
+              path="/updates/scheduled/:updatesId"
+              element={<AddNewUpdates />}
+            />
             <Route path="/updates/scheduled/new" element={<AddNewUpdates />} />
             <Route
               path="/updates/detail/:updatesId"
