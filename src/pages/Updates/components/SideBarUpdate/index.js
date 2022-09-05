@@ -113,8 +113,9 @@ const SideBarUpdate = ({ data }) => {
                   })} */}
                 </h3>
                 <span>
-                  Sent {format(new Date(item.datetime), "MM/dd/yyyy hh:mm aa")}.
-                  to {item.triggerType}
+                  {item.progress === "Scheduled" ? "Schedule" : "Sent"}{" "}
+                  {format(new Date(item.datetime), "MM/dd/yyyy hh:mm aa")}. to{" "}
+                  {item.triggerType}
                 </span>
               </NavLink>
             ))

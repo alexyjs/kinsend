@@ -1,6 +1,7 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 import { call, put, takeLatest } from "redux-saga/effects";
 import { notification } from "antd";
+import { isAfter } from "date-fns";
 
 import { handleCallAPI, getErrorMessage } from "./helpers";
 
@@ -196,7 +197,7 @@ export function* deleteUpdatesSaga(action) {
     yield put(failed(errors));
     notification.error({
       title: "Action failed",
-      message: getErrorMessage(errors) || `Can't deleted the UPDATES`,
+      message: getErrorMessage(errors) || `Can't delete the UPDATES`,
     });
   }
 }
@@ -289,9 +290,24 @@ export const updatesSlice = createSlice({
       state.isLoading = false;
     },
     getUpdatesSuccess: (state, action) => {
-      state.updates = action.payload.sort((a, b) => {
-        return new Date(b.createdAt) - new Date(a.createdAt);
-      });
+      // let updates = action.payload.sort((a, b) => {
+      //   return new Date(b.createdAt) - new Date(a.createdAt);
+      // });
+
+      const updates = [
+        ...action.payload
+          .filter((item) => isAfter(new Date(item.datetime), new Date()))
+          .sort((a, b) => {
+            return new Date(a.datetime) - new Date(b.datetime);
+          }),
+        ...action.payload
+          .filter((item) => !isAfter(new Date(item.datetime), new Date()))
+          .sort((a, b) => {
+            return new Date(a.datetime) - new Date(b.datetime);
+          }),
+      ];
+
+      state.updates = updates;
       state.isLoading = false;
       state.errors = [];
     },

@@ -1,8 +1,10 @@
 :root {
+  /* TODO: move to taiwind config */
   --bg-hover: #f1f2f7;
 
   --primary: #d15d36;
   --placeholder: #707070;
+  --gray-text: rgb(150, 150, 150);
 }
 body {
   margin: 0;

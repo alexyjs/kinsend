@@ -122,7 +122,10 @@ const AddNewUpdates = () => {
                 }}
               ></div>
               <p>
-                <span className="text-primary">Sent</span>&nbsp;
+                <span className="text-primary">
+                  {updatesDetail.progress === "Scheduled" ? "Schedule" : "Sent"}
+                </span>
+                &nbsp;
                 {format(
                   new Date(updatesDetail.datetime),
                   "MMM dd yyyy hh:mm aa"
