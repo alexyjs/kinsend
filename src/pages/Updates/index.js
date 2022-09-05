@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import _ from "lodash";
 import { Switch, Button, Dropdown, Space, Menu, Row, Col } from "antd";
-import { format } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { EllipsisOutlined } from "@ant-design/icons";
@@ -100,7 +100,7 @@ const Profile = () => {
               <div className="flex flex-col items-center">
                 <h2 className="text-4xl font-bold	">
                   Your next Update goes out in
-                  <span className="text-gray-500	">&nbsp;4 months</span>
+                  <span className="text-gray-500	">&nbsp;{formatDistanceToNow(new Date(upcomingUpdate.datetime))}</span>
                 </h2>
                 <div className="upcomming-block p-4 pr-8 w-110	">
                   <h3
