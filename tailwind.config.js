@@ -9,6 +9,15 @@ module.exports = {
         "gray-1": "#f5f5f5",
         "gray-2": "#969696",
       },
+      backgrounds: {
+        "gray-1": "rgba(241, 242, 247, 0.5)",
+      },
+      borderColor: {
+        "gray-1": "rgba(186, 186, 186, 0.5)",
+      },
+      borderWidth: {
+        1: "1px",
+      },
       minWidth: {
         200: "200px",
       },

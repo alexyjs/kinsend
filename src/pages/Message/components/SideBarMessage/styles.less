@@ -1,0 +1,49 @@
+.SideBarMessage {
+  .SideBarMessage-message {
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    input {
+      border: 0;
+      &:hover,
+      &:focus,
+      &:disabled,
+      .ant-input-focused {
+        cursor: default;
+        box-shadow: none;
+      }
+    }
+  }
+
+  .SideBarMessage-edit-btn {
+    background: rgba(241, 242, 247, 0.5);
+    border: 1px solid rgba(241, 242, 247, 0.5);
+    border-radius: 8px;
+    padding: 16px;
+    height: 54px;
+  }
+
+  .SideBarMessage-item {
+    margin-bottom: 5px;
+    padding: 13px 30px 13px 10px;
+    border-radius: 14px;
+    display: block;
+    border: 1px solid #f1f2f7;
+    background: rgba(241, 242, 247, 0.5);
+
+    h3 {
+      font-style: normal;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 40px;
+    }
+
+    span {
+      color: rgba(0, 0, 0, 1);
+      span {
+        color: rgba(112, 112, 112, 1);
+      }
+    }
+  }
+}
