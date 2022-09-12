@@ -20,15 +20,17 @@ import AddNewAutomation from "./pages/Automation/AddNewAutomation";
 import UpdatesDashboard from "./pages/Updates";
 import AddNewUpdates from "./pages/Updates/AddNewUpdates";
 import EditUpdates from "./pages/Updates/UpdatesDetail";
-import "./styles/antd.less";
-import "./styles/tailwind.css";
-import "./App.less";
+
 import { STORAGE_AUTH_KEY } from "./utils/constants";
 import useLocalStorage from "./hook/userLocalStorage";
 import PaymentSetup from "./pages/PaymentSetup";
 import Profile from "./pages/Profile";
 import { getUserAsync, selectUsers } from "./redux/userReducer";
 import { authStorage, getCname } from "./utils";
+
+import "./styles/antd.less";
+import "./styles/tailwind.css";
+import "./App.less";
 
 function App() {
   const [savedAuth, setAuth] = useLocalStorage(STORAGE_AUTH_KEY);
