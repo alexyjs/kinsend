@@ -1,19 +1,60 @@
 import React, { useEffect, useState } from "react";
-import { Button, Dropdown, Space, Menu, Row, Col, Divider } from "antd";
-import { EllipsisOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Space, Menu, Row, Col, Divider, Select } from "antd";
+import {
+  EllipsisOutlined,
+  SettingOutlined,
+  CloseOutlined,
+} from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 
+import { AvatarComponent } from "../../../../components";
 import {
   editSubscriberAsync,
   sendVCardAsync,
 } from "../../../../redux/subscriptionReducer";
-import { AvatarComponent } from "../../../../components";
+import { selectSettings } from "../../../../redux/settingsReducer";
 
 import "./styles.less";
 
 const SubscriberInfor = ({ data }) => {
   const dispatch = useDispatch();
+  const { tags } = useSelector(selectSettings);
+  const [taggedTagIds, setTagIds] = useState([]);
+  const [isShowTag, setShowTag] = useState(false);
   console.log("###SubscriberInfor", data);
+
+  const handleRemoveTag = (id) => {
+    const newTaggedTagIds = [...taggedTagIds];
+    const index = taggedTagIds.findIndex((item) => item.id === id);
+    newTaggedTagIds.splice(index, 1);
+    setTagIds(newTaggedTagIds);
+  };
+
+  const handleSubmitTag = () => {
+    dispatch(
+      editSubscriberAsync({
+        id: data.id,
+        dataUpdate: {
+          tagIds: taggedTagIds.map(item => item.id),
+        },
+      })
+    );
+  };
+  const handleShowTag = () => {
+    setShowTag(true);
+  };
+
+  const handleCloseTag = () => {
+    setTagIds(data.tags);
+    setShowTag(false);
+  };
+
+  const onTagChange = (id) => {
+    const newTagIds = [...taggedTagIds];
+    const obj = tags.find((item) => item.id === id);
+    newTagIds.push(obj);
+    setTagIds(newTagIds);
+  };
 
   const handleAddVip = () => {
     dispatch(
@@ -70,6 +111,14 @@ const SubscriberInfor = ({ data }) => {
       </Menu>
     );
   };
+
+  useEffect(() => {
+    if (data) {
+      // setTagIds(tags?.map((item) => item.id) || []);
+      setTagIds(data.tags);
+    }
+  }, [data]);
+
   return (
     <div className="SubscriberInfor bg-white p-3 min-h-full	">
       <div className="flex justify-between items-center">
@@ -93,9 +142,64 @@ const SubscriberInfor = ({ data }) => {
         {/* </div>
       <div> */}
         <div className="inline-flex	">
-          {["data?.tags", "1"].map((item) => (
-            <p className="text-gray-tag bg-bg-gray-tag p-2 mx-2">Tags</p>
+          {taggedTagIds.map((item) => (
+            <p
+              className="text-gray-tag bg-bg-gray-tag p-2 mx-2 items-center inline-flex"
+              key={`tag-show-${item.id}`}
+            >
+              {item?.name}{" "}
+              {isShowTag && (
+                <CloseOutlined
+                  className="ml-4 cursor-pointer"
+                  onClick={() => handleRemoveTag(item.id)}
+                />
+              )}
+            </p>
           ))}
+        </div>
+        <div>
+          {!isShowTag ? (
+            <SettingOutlined onClick={handleShowTag} className="text-3xl	" />
+          ) : (
+            <div className="mt-2 items-center inline-flex flex-col">
+              <Select
+                className="border-gray border-1 h-9"
+                onChange={onTagChange}
+                placeholder="Choose tag..."
+                // value={taggedTagIds}
+                value={null}
+              >
+                {tags &&
+                  tags.map((option) => {
+                    // const isExist = taggedTagIds?.length && taggedTagIds.findIndex(item => item.id === option.id);
+                    // console.log('###taggedTagIds', option.id, isExist)
+                    return (<Select.Option
+                        key={`option-new-form-${option.id}`}
+                        value={option.id}
+                      >
+                        {option.name}
+                      </Select.Option>
+                    );
+                  })}
+              </Select>
+              <div className="mt-3">
+                <Button
+                  className="border-gray"
+                  type="text"
+                  onClick={handleCloseTag}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="text-primary border-gray ml-3"
+                  type="text"
+                  onClick={handleSubmitTag}
+                >
+                  Save
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div className="p-3">
