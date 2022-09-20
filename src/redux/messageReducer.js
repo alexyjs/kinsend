@@ -89,19 +89,22 @@ export const messageSlice = createSlice({
     },
     getMessageDetailSuccess: (state, action) => {
       const result = action.payload || [];
-      result.push({
-        content: "Hello this is new message" + "isSubscriberMessage",
-        createdAt: "2022-09-19T15:56:57.507Z",
-        dateSent: "2022-09-19T15:56:56.952Z",
-        // formSubmission: {tags: [], isConversationArchived: false, isConversationHidden: false, isVip: false, _id: {},…}
-        id: "6328914951496c5d72a1d6b2" + 1,
-        isSubscriberMessage: true,
-        phoneNumberReceipted: " +1123456789",
-        phoneNumberSent: "+18334862552",
-        status: "success",
-        updatedAt: "2022-09-19T15:56:57.507Z",
-        user: {},
-      });
+
+      // Data Test
+
+      // result.push({
+      //   content: "Hello this is new message" + "isSubscriberMessage",
+      //   createdAt: "2022-09-19T15:56:57.507Z",
+      //   dateSent: "2022-09-19T15:56:56.952Z",
+      //   // formSubmission: {tags: [], isConversationArchived: false, isConversationHidden: false, isVip: false, _id: {},…}
+      //   id: "6328914951496c5d72a1d6b2" + 1,
+      //   isSubscriberMessage: true,
+      //   phoneNumberReceipted: " +1123456789",
+      //   phoneNumberSent: "+18334862552",
+      //   status: "success",
+      //   updatedAt: "2022-09-19T15:56:57.507Z",
+      //   user: {},
+      // });
       state.messageDetail = result;
       state.isLoading = false;
       state.errors = [];
