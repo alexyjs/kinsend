@@ -37,3 +37,4 @@ export { ReactComponent as DatetimeIcon } from "./DatetimeIcon.svg";
 export { ReactComponent as EditIcon } from "./EditIcon.svg";
 export { ReactComponent as SearchIcon } from "./SearchIcon.svg";
 export { ReactComponent as LinkIcon } from "./LinkIcon.svg";
+export { ReactComponent as FilterIcon } from "./FilterIcon.svg";

@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
 import Message from "./pages/Message";
+import MessageDetail from "./pages/Message/MessageDetail";
 import FormManage from "./pages/Settings/Form";
 import AddNewForm from "./pages/Settings/Form/AddNewForm";
 import TagsManage from "./pages/Settings/TagsManage";
@@ -94,6 +95,7 @@ function App() {
             <Route path="/payment-setup" element={<PaymentSetup />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/message" element={<Message />} />
+            <Route path="/message/:messageId" element={<MessageDetail />} />
 
             <Route path="/settings/tags" element={<TagsManage />} />
             <Route path="/settings/forms" element={<FormManage />} />

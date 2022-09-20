@@ -3,6 +3,9 @@ import { watchGetListPhoneSaga, watchAddPhoneSaga } from "./phoneReducer";
 import {
   watchGetListSubscriptionPricesSaga,
   watchGetListSubscriptionSaga,
+  watchGetSubscriberByMessageIdSaga,
+  watchEditSubscriberSaga,
+  watchSendVCardSaga,
 } from "./subscriptionReducer";
 import {
   userSaga,
@@ -62,14 +65,24 @@ import {
   watchSendTestMessageSaga,
 } from "./updatesReducer";
 
+import {
+  watchGetMessageSaga,
+  watchGetMessageDetailSaga,
+} from "./messageReducer";
+
 export default function* rootSaga() {
   yield all([
     watchGetListPhoneSaga(),
     watchAddPhoneSaga(),
 
+    // form submission
     watchGetListSubscriptionSaga(),
     watchGetListSubscriptionPricesSaga(),
+    watchGetSubscriberByMessageIdSaga(),
+    watchEditSubscriberSaga(),
+    watchSendVCardSaga(),
 
+    //
     userSaga(),
     watchLoginSaga(),
     watchLoginWithGoogleAsyncSaga(),
@@ -124,5 +137,9 @@ export default function* rootSaga() {
     watchDeleteUpdatesSaga(),
     watchResetUpdatesSaga(),
     watchSendTestMessageSaga(),
+
+    // message
+    watchGetMessageSaga(),
+    watchGetMessageDetailSaga(),
   ]);
 }

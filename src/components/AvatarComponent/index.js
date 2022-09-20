@@ -19,15 +19,19 @@ const AvatarComponent = ({ onFileChange, imgSrc }) => {
   return (
     <div className="avatar-wrap">
       <Avatar src={imgSrc || ""} size={186} icon={<UserOutlined />} />
-      <input
-        className="avatar-input"
-        type="file"
-        ref={inputFileRef}
-        onChangeCapture={hanldeFileChange}
-      />
-      <div className="icon-camera cursor-pointer" onClick={onBtnClick}>
-        <CameraIcon />
-      </div>
+      {onFileChange && (
+        <>
+          <input
+            className="avatar-input"
+            type="file"
+            ref={inputFileRef}
+            onChangeCapture={hanldeFileChange}
+          />
+          <div className="icon-camera cursor-pointer" onClick={onBtnClick}>
+            <CameraIcon />
+          </div>
+        </>
+      )}
     </div>
   );
 };

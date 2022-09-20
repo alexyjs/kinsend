@@ -10,6 +10,7 @@ import settingsReducer from "./settingsReducer";
 import publicSlice from "./publicReducer";
 import automationSlice from "./automationReducer";
 import updatesReducer from "./updatesReducer";
+import messageReducer from "./messageReducer";
 
 // disalbe thunk and add redux-saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -38,6 +39,7 @@ const store = configureStore({
     publicReducer: publicSlice,
     automationReducer: automationSlice,
     updatesReducer: updatesReducer,
+    messageReducer: messageReducer,
   },
   middleware,
 });

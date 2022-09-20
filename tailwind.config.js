@@ -8,6 +8,8 @@ module.exports = {
         "dark-gray": "#707070",
         "gray-1": "#f5f5f5",
         "gray-2": "#969696",
+        "gray-tag": "rgb(130, 130, 130)",
+        "bg-gray-tag": "rgb(247, 246, 246)",
       },
       backgrounds: {
         "gray-1": "rgba(241, 242, 247, 0.5)",
@@ -27,6 +29,7 @@ module.exports = {
       width: {
         100: "25rem",
         110: "27.5rem",
+        350: "21.75rem",
       },
     },
   },
