@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
 import { Divider, Card, Row, Col, Button } from "antd";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { SelectNumberModal, LayoutComponent } from "../../components";
 import { useModal } from "../../hook/useModal";
 import { selectUsers } from "../../redux/userReducer";
 import { AutomationRobotIcon, NotificationSVG } from "../../assets/svg";
 import SideBarMessage from "./components/SideBarMessage";
+import { selectMessage, getMessageAsync } from "../../redux/messageReducer";
 
 const Message = () => {
   const { user } = useSelector(selectUsers);
@@ -16,6 +17,8 @@ const Message = () => {
     show: showPhoneNumber,
     visible: phoneNumberModalVisible,
   } = useModal();
+  const dispatch = useDispatch();
+  const { message } = useSelector(selectMessage);
 
   const handleOkPhoneModal = () => {};
 
@@ -26,7 +29,7 @@ const Message = () => {
   const getSessionOfDay = () => {
     const time = new Date();
     const hours = time.getHours();
-    const minutes = time.getMinutes();
+    // const minutes = time.getMinutes();
 
     if (hours >= 6 && hours < 12) {
       return "Hello Morning";
@@ -37,17 +40,6 @@ const Message = () => {
     }
     return "Good";
   };
-  const contacts = [
-    {
-      id: "1",
-      name: "John",
-      image:
-        "https://kinsend-public.s3.amazonaws.com/62793df712baab540f4dc73bphoto",
-      message:
-        "Also, since tech can be buggy at times, can you please respond to this text so I know you received it?",
-      lastTime: "2022-07-06T00:58:26.612Z",
-    },
-  ];
 
   useEffect(() => {
     if (user && !user?.phoneSystem?.length) {
@@ -55,11 +47,15 @@ const Message = () => {
     }
   }, user);
 
+  useEffect(() => {
+    dispatch(getMessageAsync());
+  }, [dispatch]);
+  console.log("###message", message);
   return (
     <LayoutComponent>
       <Row gutter={16}>
         <Col span={8} className="mb-4">
-          <SideBarMessage data={contacts} />
+          <SideBarMessage data={message} />
         </Col>
         <Col span={16} className="mb-4">
           <div className="flex justify-between items-center">

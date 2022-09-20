@@ -47,7 +47,6 @@ function EditableText() {
   // When the editor changes, you can get notified via the
   // LexicalOnChangePlugin!
   const onChange = (editorState) => {
-    debugger;
     editorState.read(() => {
       // Read the contents of the EditorState here.
       const root = $getRoot();

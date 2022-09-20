@@ -138,7 +138,9 @@ const LayoutComponent = ({ className, children }) => {
       </Sider>
       <Layout className="layout-content">
         <Header>
-          <img src={LogoSVG} />
+          <NavLink to="/message">
+            <img src={LogoSVG} />
+          </NavLink>
           <div ref={wrapperRef} className="header-menu">
             <div onClick={handleShowMenu} className="header-avatar-wrap">
               <Avatar
@@ -164,7 +166,7 @@ const LayoutComponent = ({ className, children }) => {
           </div>
         </Header>
         <Content>{children}</Content>
-        <Footer></Footer>
+        {/* <Footer></Footer> */}
       </Layout>
     </Layout>
   );
