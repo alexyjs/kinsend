@@ -17,6 +17,7 @@ import {
   getSubscriberByMessageIdAsync,
   selectSubscriptions,
 } from "../../../redux/subscriptionReducer";
+import { getTagsAsync } from "../../../redux/settingsReducer";
 
 import "./styles.less";
 
@@ -43,6 +44,9 @@ const MessageDetail = () => {
   //     dispatch(getSubscriberByMessageIdAsync(messageDetail[0]?.formSubmission?.id));
   //   }
   // }, [messageDetail]);
+  useEffect(() => {
+    dispatch(getTagsAsync());
+  }, []);
 
   console.log("###messageDetail", messageDetail);
   return (
