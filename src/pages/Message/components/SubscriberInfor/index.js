@@ -35,7 +35,7 @@ const SubscriberInfor = ({ data }) => {
       editSubscriberAsync({
         id: data.id,
         dataUpdate: {
-          tagIds: taggedTagIds.map(item => item.id),
+          tagIds: taggedTagIds.map((item) => item.id),
         },
       })
     );
@@ -173,7 +173,8 @@ const SubscriberInfor = ({ data }) => {
                   tags.map((option) => {
                     // const isExist = taggedTagIds?.length && taggedTagIds.findIndex(item => item.id === option.id);
                     // console.log('###taggedTagIds', option.id, isExist)
-                    return (<Select.Option
+                    return (
+                      <Select.Option
                         key={`option-new-form-${option.id}`}
                         value={option.id}
                       >

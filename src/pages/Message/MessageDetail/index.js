@@ -52,13 +52,13 @@ const MessageDetail = () => {
   return (
     <LayoutComponent className="messageDetail-page">
       <div className="flex min-h-full">
-        <div className="mb-4 w-350">
+        <div className="w-350">
           <SideBarMessage data={message} />
         </div>
-        <div className="mb-8 flex-1">
+        <div className="flex-1">
           <MessageTimeline data={messageDetail} />
         </div>
-        <div className="mb-4 w-350">
+        <div className="w-350">
           <SubscriberInfor data={subscriberDetail} />
         </div>
       </div>
