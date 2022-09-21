@@ -32,13 +32,13 @@ const Message = () => {
     // const minutes = time.getMinutes();
 
     if (hours >= 6 && hours < 12) {
-      return "Hello Morning";
+      return "Good Morning";
     } else if (hours >= 12 && hours < 17) {
-      return "Hello Afternoon";
+      return "Good Afternoon";
     } else if (hours >= 17 && hours < 21) {
-      return "Hello Evening";
+      return "Good Evening";
     }
-    return "Good";
+    return "Hello";
   };
 
   useEffect(() => {
@@ -54,10 +54,10 @@ const Message = () => {
   return (
     <LayoutComponent>
       <Row gutter={16}>
-        <Col span={8} className="mb-4">
+        <Col span={8} className="">
           <SideBarMessage data={message} />
         </Col>
-        <Col span={16} className="mb-4">
+        <Col span={16} className="">
           <div className="flex justify-between items-center">
             <h1>
               {getSessionOfDay()}, {user && user.firstName}
@@ -127,7 +127,7 @@ const Message = () => {
                 <div className="">
                   <NavLink to="/automation/new">
                     <Button type="primary" size="small" className="mt-3">
-                      Settup
+                      Setup
                     </Button>
                   </NavLink>
                 </div>
