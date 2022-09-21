@@ -1,0 +1,26 @@
+.MessageTimeline {
+  padding: 16px;
+  // min-height: calc(100vh - 160px);
+}
+
+.MessageTimeline-item {
+  display: flex;
+  justify-content: flex-end;
+  text-align: right;
+
+  .MessageTimeline-item-content {
+    width: 80%;
+    border-radius: 3px;
+    padding: 10px 14px 12px;
+    font-size: 14px;
+    line-height: 16px;
+    max-width: 312px;
+    word-wrap: break-word;
+    white-space: pre-line;
+  }
+}
+
+.MessageTimeline-isSubscriberMessage {
+  justify-content: flex-start;
+  text-align: left;
+}

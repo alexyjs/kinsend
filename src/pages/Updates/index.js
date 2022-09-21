@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import _ from "lodash";
-import { Switch, Button, Dropdown, Space, Menu, Row, Col } from "antd";
+import { Button, Dropdown, Space, Menu, Row, Col } from "antd";
 import { format, formatDistanceToNow } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -18,15 +17,10 @@ import { UpdateDashboardEmptyIcon } from "../../assets/svg";
 
 import "./styles.less";
 
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
-
 const Profile = () => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
-  const { updates, updatesDetail, isDeleted } = useSelector(selectUpdates);
+  const { updates, isDeleted } = useSelector(selectUpdates);
   const upcomingUpdate = useMemo(() => {
     if (updates && updates[0] && updates[0].progress === "Scheduled") {
       return updates[0];
@@ -43,7 +37,7 @@ const Profile = () => {
       dispatch(resetUpdatesAsync());
       navigate("/updates");
     }
-  }, [navigate, isDeleted]);
+  }, [dispatch, navigate, isDeleted]);
 
   const menu = (item) => {
     return (
@@ -100,7 +94,10 @@ const Profile = () => {
               <div className="flex flex-col items-center">
                 <h2 className="text-4xl font-bold	">
                   Your next Update goes out in
-                  <span className="text-gray-500	">&nbsp;{formatDistanceToNow(new Date(upcomingUpdate.datetime))}</span>
+                  <span className="text-gray-500	">
+                    &nbsp;
+                    {formatDistanceToNow(new Date(upcomingUpdate.datetime))}
+                  </span>
                 </h2>
                 <div className="upcomming-block p-4 pr-8 w-110	">
                   <h3

@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
 import Message from "./pages/Message";
+import MessageDetail from "./pages/Message/MessageDetail";
 import FormManage from "./pages/Settings/Form";
 import AddNewForm from "./pages/Settings/Form/AddNewForm";
 import TagsManage from "./pages/Settings/TagsManage";
@@ -20,15 +21,17 @@ import AddNewAutomation from "./pages/Automation/AddNewAutomation";
 import UpdatesDashboard from "./pages/Updates";
 import AddNewUpdates from "./pages/Updates/AddNewUpdates";
 import EditUpdates from "./pages/Updates/UpdatesDetail";
-import "./styles/antd.less";
-import "./styles/tailwind.css";
-import "./App.less";
+
 import { STORAGE_AUTH_KEY } from "./utils/constants";
 import useLocalStorage from "./hook/userLocalStorage";
 import PaymentSetup from "./pages/PaymentSetup";
 import Profile from "./pages/Profile";
 import { getUserAsync, selectUsers } from "./redux/userReducer";
 import { authStorage, getCname } from "./utils";
+
+import "./styles/antd.less";
+import "./styles/tailwind.css";
+import "./App.less";
 
 function App() {
   const [savedAuth, setAuth] = useLocalStorage(STORAGE_AUTH_KEY);
@@ -92,6 +95,7 @@ function App() {
             <Route path="/payment-setup" element={<PaymentSetup />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/message" element={<Message />} />
+            <Route path="/message/:messageId" element={<MessageDetail />} />
 
             <Route path="/settings/tags" element={<TagsManage />} />
             <Route path="/settings/forms" element={<FormManage />} />

@@ -86,7 +86,6 @@ const EditableText = forwardRef(
       if (e.keyCode === 188) {
         setShowDropdown(true);
         console.log(e, e.pageX, e.pageY, window.getSelection().getRangeAt(0));
-        debugger;
       } else {
         setShowDropdown(false);
       }
