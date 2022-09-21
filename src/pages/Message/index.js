@@ -127,7 +127,7 @@ const Message = () => {
                 <div className="">
                   <NavLink to="/automation/new">
                     <Button type="primary" size="small" className="mt-3">
-                      Setup
+                      Set Up
                     </Button>
                   </NavLink>
                 </div>
