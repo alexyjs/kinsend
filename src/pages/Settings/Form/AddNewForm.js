@@ -78,13 +78,13 @@ const AddNewForm = () => {
   } = useModal();
 
   const onSubmitAddNewForm = (values) => {
-    if (!image && !id) {
-      notification.error({
-        title: "Action failed",
-        message: `Please upload your image`,
-      });
-      return;
-    }
+    // if (!image && !id) {
+    //   notification.error({
+    //     title: "Action failed",
+    //     message: `Please upload your image`,
+    //   });
+    //   return;
+    // }
     const formData = new FormData();
     if (image) {
       formData.append("file", image, image.name);
