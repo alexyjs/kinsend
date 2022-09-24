@@ -62,9 +62,18 @@ export function* getMessageDetailSaga(action) {
 export function* sendSmsAsyncSaga(action) {
   const { response, errors } = yield call(sendSmsAPI, action.payload);
   if (response) {
+    yield call(getMessageSaga, {});
     yield put(sendSmsSuccess(true));
+    notification.success({
+      title: "Action Completed",
+      message: `The message has been sent.`,
+    });
   } else {
     yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || `Can't sent new message.`,
+    });
   }
 }
 
@@ -123,36 +132,6 @@ export const messageSlice = createSlice({
     getMessageDetailSuccess: (state, action) => {
       const result = action.payload || [];
       // Data Test
-
-      result.push({
-        content: "Hello this is new message" + "isSubscriberMessage",
-        createdAt: "2022-09-19T15:56:57.507Z",
-        dateSent: "2022-09-19T15:56:56.952Z",
-        // formSubmission: {tags: [], isConversationArchived: false, isConversationHidden: false, isVip: false, _id: {},…}
-        id: "6328914951496c5d72a1d6b2" + 1,
-        isSubscriberMessage: true,
-        phoneNumberReceipted: " +1123456789",
-        phoneNumberSent: "+18334862552",
-        status: "success",
-        updatedAt: "2022-09-19T15:56:57.507Z",
-        user: {},
-        fileAttached:
-          "https://kinsend-public.s3.amazonaws.com/627483a74f94f034df85763avcard",
-      });
-      result.push({
-        createdAt: "2022-09-19T15:56:57.507Z",
-        dateSent: "2022-09-19T15:56:56.952Z",
-        // formSubmission: {tags: [], isConversationArchived: false, isConversationHidden: false, isVip: false, _id: {},…}
-        id: "6328914951496c5d72a1d6b2" + 1,
-        isSubscriberMessage: true,
-        phoneNumberReceipted: " +1123456789",
-        phoneNumberSent: "+18334862552",
-        status: "success",
-        updatedAt: "2022-09-19T15:56:57.507Z",
-        user: {},
-        fileAttached:
-          "https://kinsend-public.s3.amazonaws.com/627483a74f94f034df85763avcard",
-      });
       state.messageDetail = result;
       state.isLoading = false;
       state.errors = [];

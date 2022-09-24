@@ -103,6 +103,7 @@ const MessageDetail = () => {
 
   useEffect(() => {
     if (smsMessage) {
+      dispatch(getMessageDetailAsync(messageId));
       dispatch(resetSendSmsAsync());
       setAttachmentUrl({});
       setDefaultValueMessage("");
@@ -138,7 +139,7 @@ const MessageDetail = () => {
                 handleCancel={closeUpload}
               />
             </div>
-            <span>{attachment?.url}</span>
+            <span className="messageDetail-page-attachment">{attachment?.url}</span>
           </div>
         </div>
         <div className="w-350">
