@@ -66,6 +66,11 @@
     width: 450px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.06);
     z-index: 1;
+
+    &.EditableText-dropdown-top {
+      bottom: 100%;
+    }
+
     .EditableText-dropdown-item {
       padding: 16px;
       background: #ffffff;
@@ -83,5 +88,64 @@
 
   #shadowEditableRef {
     display: none;
+  }
+}
+
+// TODO: move to common
+.custom-textarea-wrap {
+  position: relative;
+
+  .hint {
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    right: 10px;
+    display: inline-flex;
+    align-items: top;
+
+    button {
+      display: inline-flex;
+      background: #f1f2f7;
+      opacity: 0.5;
+      border: 1px solid #dcdcdc;
+      border-radius: 8px;
+      align-items: center;
+
+      & + button {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  textarea {
+    padding-right: 150px;
+  }
+
+  .textarea-actions {
+    position: absolute;
+    z-index: 1;
+    bottom: 10px;
+    right: 20px;
+    display: inline-flex;
+    align-items: center;
+
+    svg {
+      cursor: pointer;
+
+      & + svg {
+        margin-left: 10px;
+      }
+    }
+
+    & > div {
+      position: absolute;
+      bottom: 0;
+    }
+  }
+
+  .ant-form-item-has-error {
+    & + .textarea-actions {
+      bottom: 40px;
+    }
   }
 }

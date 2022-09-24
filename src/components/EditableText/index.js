@@ -16,7 +16,10 @@ import {
 import "./styles.less";
 
 const EditableText = forwardRef(
-  ({ defaultValue, onChange, className }, ref) => {
+  (
+    { defaultValue, onChange, className, handleEnterSubmit, isDropdownTop },
+    ref
+  ) => {
     const [value, setValue] = useState("");
     const [offsetTopDropdown, setOffsetTopDropdown] = useState(0);
     const [showDropdown, setShowDropdown] = useState(false);
@@ -86,7 +89,7 @@ const EditableText = forwardRef(
           window.getSelection().getRangeAt(0).endContainer.offsetTop ||
           window.getSelection().getRangeAt(0).endContainer.parentElement
             .offsetTop;
-        setOffsetTopDropdown(offsetTop);
+        !isDropdownTop && setOffsetTopDropdown(offsetTop);
         console.log(
           "###offsetTop",
           window.getSelection().getRangeAt(0),
@@ -96,6 +99,7 @@ const EditableText = forwardRef(
         setShowDropdown(false);
       }
       if (e.keyCode === 13) {
+        handleEnterSubmit && handleEnterSubmit();
       }
       handleUpdateSelection();
       console.log("###handleKeyDown");
@@ -237,8 +241,10 @@ const EditableText = forwardRef(
           <div id="shadowEditableRef"></div>
           {showDropdown && (
             <div
-              className="EditableText-dropdown"
-              style={{ top: offsetTopDropdown + 30 }}
+              className={classnames("EditableText-dropdown", {
+                "EditableText-dropdown-top": isDropdownTop,
+              })}
+              style={{ top: isDropdownTop ? "auto" : offsetTopDropdown + 30 }}
             >
               <div
                 className="EditableText-dropdown-item flex justify-between"
