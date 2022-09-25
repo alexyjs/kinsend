@@ -100,9 +100,9 @@ const EditableText = forwardRef(
       }
       if (e.keyCode == 13 && !e.shiftKey) {
         handleEnterSubmit && handleEnterSubmit();
-        console.log('#####Clear data handleKeyDown', e)
-        setValue('');
-        editableRef.current.innerHTML = '';
+        console.log("#####Clear data handleKeyDown", e);
+        setValue("");
+        editableRef.current.innerHTML = "";
       }
       handleUpdateSelection();
       console.log("###handleKeyDown");
@@ -188,7 +188,7 @@ const EditableText = forwardRef(
         .replace(/<lname>/gi, `&lt;lname&gt;`)
         .replace(/<name>/gi, `&lt;name&gt;`)
         .replace(/<mobile>/gi, `&lt;mobile&gt;`);
-      console.log('#####Clear data')
+      console.log("#####Clear data");
       setValue(initValue);
       editableRef.current.innerHTML = initValue;
     }, [defaultValue]);
