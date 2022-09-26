@@ -22,6 +22,7 @@ const MessageTimeline = ({ data, className }) => {
           className={classnames("MessageTimeline-item", {
             "MessageTimeline-isSubscriberMessage": item?.isSubscriberMessage,
           })}
+          key={`MessageTimeline-${item.id}`}
         >
           <div className="MessageTimeline-item-content mb-5 mt-3 text-white flex-col flex">
             <span className="bg-primary p-3">

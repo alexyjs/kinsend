@@ -98,8 +98,11 @@ const EditableText = forwardRef(
       } else {
         setShowDropdown(false);
       }
-      if (e.keyCode === 13) {
+      if (e.keyCode == 13 && !e.shiftKey) {
         handleEnterSubmit && handleEnterSubmit();
+        console.log('#####Clear data handleKeyDown', e)
+        setValue('');
+        editableRef.current.innerHTML = '';
       }
       handleUpdateSelection();
       console.log("###handleKeyDown");
@@ -185,6 +188,7 @@ const EditableText = forwardRef(
         .replace(/<lname>/gi, `&lt;lname&gt;`)
         .replace(/<name>/gi, `&lt;name&gt;`)
         .replace(/<mobile>/gi, `&lt;mobile&gt;`);
+      console.log('#####Clear data')
       setValue(initValue);
       editableRef.current.innerHTML = initValue;
     }, [defaultValue]);
@@ -225,7 +229,7 @@ const EditableText = forwardRef(
             id="editableRef"
             className="EditableText-content"
             title={value}
-            contenteditable="true"
+            contentEditable="true"
             onInput={handleChange}
             onChange={handleChange}
             onClick={handleClick}
