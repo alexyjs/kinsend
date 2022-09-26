@@ -40,6 +40,7 @@ const SideBarMessage = ({ data }) => {
                 <NavLink
                   to={`/message/${item.id}`}
                   className="SideBarMessage-item"
+                  key={`SideBarMessage-${item.id}`}
                 >
                   <div className="flex">
                     <Avatar

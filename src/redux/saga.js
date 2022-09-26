@@ -68,6 +68,9 @@ import {
 import {
   watchGetMessageSaga,
   watchGetMessageDetailSaga,
+  watchSendSmsSaga,
+  watchResetSendSmsSaga,
+  watchGetMessageStatisticsSaga,
 } from "./messageReducer";
 
 export default function* rootSaga() {
@@ -141,5 +144,8 @@ export default function* rootSaga() {
     // message
     watchGetMessageSaga(),
     watchGetMessageDetailSaga(),
+    watchSendSmsSaga(),
+    watchResetSendSmsSaga(),
+    watchGetMessageStatisticsSaga(),
   ]);
 }
