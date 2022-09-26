@@ -11,6 +11,9 @@ export const getMessageDetailAsync = createAction(
 );
 export const sendSmsAsync = createAction("message/sendSmsAsync");
 export const resetSendSmsAsync = createAction("message/resetSendSmsAsync");
+export const getMessageStatisticsAsync = createAction(
+  "message/getMessageStatisticsAsync"
+);
 
 export async function getMessage() {
   const payload = {
@@ -35,6 +38,15 @@ export async function sendSmsAPI(data) {
     method: "POST",
     url: `${process.env.REACT_APP_API_BASE_URL}/sms`,
     data,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function getMessageStatisticsAPI(id) {
+  const payload = {
+    method: "GET",
+    url: `${process.env.REACT_APP_API_BASE_URL}/messages/statistic`,
   };
 
   return handleCallAPI(payload);
@@ -80,6 +92,19 @@ export function* sendSmsAsyncSaga(action) {
 export function* resetSendSmsSaga() {
   yield put(resetSendSmsSuccess());
 }
+
+export function* getMessageStatisticsSaga(action) {
+  const { response, errors } = yield call(
+    getMessageStatisticsAPI,
+    action.payload
+  );
+  if (response) {
+    yield put(getMessageStatisticsSuccess(response));
+  } else {
+    yield put(failed(errors));
+  }
+}
+
 //
 
 export function* watchGetMessageSaga() {
@@ -91,8 +116,11 @@ export function* watchGetMessageDetailSaga() {
 export function* watchSendSmsSaga() {
   yield takeLatest(sendSmsAsync, sendSmsAsyncSaga);
 }
-export function* watchrRsetSendSmsSaga() {
+export function* watchResetSendSmsSaga() {
   yield takeLatest(resetSendSmsAsync, resetSendSmsSaga);
+}
+export function* watchGetMessageStatisticsSaga() {
+  yield takeLatest(getMessageStatisticsAsync, getMessageStatisticsSaga);
 }
 
 const initialState = {
@@ -101,6 +129,7 @@ const initialState = {
   message: [],
   messageDetail: null,
   smsMessage: null,
+  messageStatistics: null,
 };
 
 export const messageSlice = createSlice({
@@ -146,6 +175,10 @@ export const messageSlice = createSlice({
     resetSendSmsSuccess: (state) => {
       state.smsMessage = null;
     },
+    getMessageStatisticsSuccess: (state, action) => {
+      state.messageStatistics = action.payload;
+      state.errors = [];
+    },
     failed: (state, action) => {
       state.isLoading = false;
       state.errors = action.payload;
@@ -166,6 +199,7 @@ export const {
   resetMessageSuccess,
   sendSmsSuccess,
   resetSendSmsSuccess,
+  getMessageStatisticsSuccess,
 } = messageSlice.actions;
 
 export const selectMessage = (state) => {

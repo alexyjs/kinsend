@@ -8,7 +8,11 @@ import { useModal } from "../../hook/useModal";
 import { selectUsers } from "../../redux/userReducer";
 import { AutomationRobotIcon, NotificationSVG } from "../../assets/svg";
 import SideBarMessage from "./components/SideBarMessage";
-import { selectMessage, getMessageAsync } from "../../redux/messageReducer";
+import {
+  selectMessage,
+  getMessageAsync,
+  getMessageStatisticsAsync,
+} from "../../redux/messageReducer";
 
 const Message = () => {
   const { user } = useSelector(selectUsers);
@@ -18,7 +22,7 @@ const Message = () => {
     visible: phoneNumberModalVisible,
   } = useModal();
   const dispatch = useDispatch();
-  const { message } = useSelector(selectMessage);
+  const { message, messageStatistics } = useSelector(selectMessage);
 
   const handleOkPhoneModal = () => {};
 
@@ -49,6 +53,7 @@ const Message = () => {
 
   useEffect(() => {
     dispatch(getMessageAsync());
+    dispatch(getMessageStatisticsAsync());
   }, [dispatch]);
   console.log("###message", message);
   return (
@@ -69,7 +74,9 @@ const Message = () => {
               <Col span={8} className="mb-4">
                 <div className="flex flex-col justify-between items-center">
                   <div>
-                    <h1 className="text-primary">02</h1>
+                    <h1 className="text-primary">
+                      {messageStatistics?.totalFormSubmission || 0}
+                    </h1>
                   </div>
                   <div>
                     <span>CONTACTS</span>
@@ -79,7 +86,7 @@ const Message = () => {
               <Col span={8} className="mb-4">
                 <div className="flex flex-col justify-between items-center">
                   <div>
-                    <h1>10</h1>
+                    <h1>{messageStatistics?.totalUpdate || 0}</h1>
                   </div>
                   <div>
                     <span>UPDATES SENT</span>
@@ -89,7 +96,7 @@ const Message = () => {
               <Col span={8} className="mb-4">
                 <div className="flex flex-col justify-between items-center ml-10">
                   <div>
-                    <h1>19%</h1>
+                    <h1>{messageStatistics?.clickedPercent || 0}%</h1>
                   </div>
                   <div>
                     <span>CLICK THROUGH</span>

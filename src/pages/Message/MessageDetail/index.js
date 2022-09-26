@@ -139,7 +139,9 @@ const MessageDetail = () => {
                 handleCancel={closeUpload}
               />
             </div>
-            <span className="messageDetail-page-attachment">{attachment?.url}</span>
+            <span className="messageDetail-page-attachment">
+              {attachment?.url}
+            </span>
           </div>
         </div>
         <div className="w-350">
