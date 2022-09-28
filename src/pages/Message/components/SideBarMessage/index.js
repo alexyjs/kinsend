@@ -45,7 +45,7 @@ const SideBarMessage = ({ data }) => {
                   <div className="flex">
                     <Avatar
                       src={item?.image || null}
-                      size={68}
+                      size={50}
                       icon={<UserOutlined />}
                     />
                     <div className="flex-1 ml-3">
