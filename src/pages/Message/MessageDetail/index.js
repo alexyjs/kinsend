@@ -125,7 +125,7 @@ const MessageDetail = () => {
               defaultValue={defaultValueMessage}
               onChange={hanldeChangeMessage}
               ref={childRef}
-              className=""
+              className="messageDetail-EditableText"
               handleEnterSubmit={hanldeSubmit}
               isDropdownTop
             />
