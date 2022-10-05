@@ -13,6 +13,7 @@ import {
   getMessageAsync,
   getMessageStatisticsAsync,
 } from "../../redux/messageReducer";
+import "./styles.less";
 
 const Message = () => {
   const { user } = useSelector(selectUsers);
@@ -57,7 +58,7 @@ const Message = () => {
   }, [dispatch]);
   console.log("###message", message);
   return (
-    <LayoutComponent>
+    <LayoutComponent className="Message-page">
       <Row gutter={16}>
         <Col span={8} className="">
           <SideBarMessage data={message} />

@@ -25,7 +25,7 @@ const MessageTimeline = ({ data, className }) => {
           key={`MessageTimeline-${item.id}`}
         >
           <div className="MessageTimeline-item-content mb-5 mt-3 text-white flex-col flex">
-            <span className="bg-primary p-3">
+            <span className="bg-primary p-3 rounded	">
               {item?.content}
               <a
                 href={item?.fileAttached}

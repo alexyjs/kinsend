@@ -239,7 +239,7 @@ const EditableText = forwardRef(
           />
           {!value && (
             <span className="EditableText-placeholder">
-              Compose your message.."
+              Compose your message..
             </span>
           )}
           <div id="shadowEditableRef"></div>

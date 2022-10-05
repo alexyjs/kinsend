@@ -120,12 +120,12 @@ const MessageDetail = () => {
         </div>
         <div className="flex-1 flex messageDetail-body flex-col">
           <MessageTimeline data={messageDetail} className="flex-1" />
-          <div className="custom-textarea-wrap messageDetail-page-send-message">
+          <div className="custom-textarea-wrap messageDetail-page-send-message border-left">
             <EditableText
               defaultValue={defaultValueMessage}
               onChange={hanldeChangeMessage}
               ref={childRef}
-              className=""
+              className="messageDetail-EditableText"
               handleEnterSubmit={hanldeSubmit}
               isDropdownTop
             />
