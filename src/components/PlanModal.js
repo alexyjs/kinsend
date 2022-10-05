@@ -52,7 +52,7 @@ const PlanModal = ({
           <Radio.Button type="primary" value="servicePlans">
             Self Service Plans
           </Radio.Button>
-          <Radio.Button value="enterprisePlans">Enterprise plans</Radio.Button>
+          {/* <Radio.Button value="enterprisePlans">Enterprise plans</Radio.Button> */}
         </Radio.Group>
       </div>
       <Row className="w-full">

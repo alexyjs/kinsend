@@ -59,6 +59,7 @@ function SlideBackButton() {
 const SignUp = () => {
   const [form] = Form.useForm();
   const [isEnd, setIsEnd] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState();
   const { isLoading, signupSuccess } = useSelector(selectCreateUser);
   const swiperRef = React.useRef(null);
   const dispatch = useDispatch();
@@ -87,6 +88,11 @@ const SignUp = () => {
     }
   };
 
+  const handleSelectPlan = (subscription) => {
+    setSelectedPlan(subscription);
+    close();
+  };
+
   const validateFirstScreen = () => {
     form
       .validateFields()
@@ -108,6 +114,12 @@ const SignUp = () => {
   }, [signupSuccess]);
 
   useEffect(() => {
+    if (subscriptionPrices) {
+      setSelectedPlan(subscriptionPrices[0]);
+    }
+  }, [subscriptionPrices]);
+
+  useEffect(() => {
     dispatch(getListSubscriptionPricesAsync());
     if (swiperRef?.current?.swiper) {
       swiperRef.current.swiper.slideTo(0, 0);
@@ -122,7 +134,8 @@ const SignUp = () => {
           <p>
             Thank you for your interest in the KinSend Starter Plan
             <br />
-            starting at $20.00/month{" "}
+            starting at {selectedPlan?.product?.metadata?.prices ||
+              "$19.99/m"}{" "}
             <span
               className="text-primary font-bold cursor-pointer"
               onClick={show}
@@ -435,12 +448,10 @@ const SignUp = () => {
       </div>
       <PlanModal
         handleCancel={close}
-        handleOk={(subscription) => {
-          close();
-        }}
+        handleOk={handleSelectPlan}
         visible={visible}
         subscriptionPrices={subscriptionPrices}
-        disabled={true}
+        // disabled={true}
       />
     </div>
   );
