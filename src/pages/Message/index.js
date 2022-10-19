@@ -65,7 +65,7 @@ const Message = () => {
         </Col>
         <Col span={16} className="">
           <div className="flex justify-between items-center">
-            <h1>
+            <h1 className="mt-5">
               {getSessionOfDay()}, {user && user.firstName}
             </h1>
           </div>
