@@ -20,6 +20,7 @@ export const updateAvatarAsync = createAction("user/updateAvatarAsync");
 export const syncLocalUserAsync = createAction("user/syncLocalUserAsync");
 export const createCNAMEAsync = createAction("user/createCNAMEAsync");
 export const updateCNAMEAsync = createAction("user/updateCNAMEAsync");
+// export const verifySignupAsync = createAction("user/verifySignupAsync");
 
 export async function createUserAPI(data) {
   const payload = {
@@ -125,6 +126,14 @@ export async function updateCNAMEAPI(data, id) {
     data,
   };
 
+  return handleCallAPI(payload);
+}
+
+export async function signupConfirmationAPI(token) {
+  const payload = {
+    method: "GET",
+    url: `${process.env.REACT_APP_API_BASE_URL}/verifications/confirm?token=${token}`,
+  };
   return handleCallAPI(payload);
 }
 
@@ -401,6 +410,10 @@ export function* watchCreateCNAMESaga() {
 export function* watchUpdateCNAMESaga() {
   yield takeLatest(updateCNAMEAsync, updateCNAMESaga);
 }
+
+// export function* watchVerifySignupSaga() {
+//   yield takeLatest(verifySignupAsync, verifySignupSaga);
+// }
 
 const initialState = {
   isLoading: false,

@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import en from "world_countries_lists/data/countries/en/world.json";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import SignUpConfirmation from "./pages/SignUp/SignupConfirmation";
 import Dashboard from "./pages/Dashboard";
 import Message from "./pages/Message";
 import MessageDetail from "./pages/Message/MessageDetail";
@@ -137,6 +138,7 @@ function App() {
       >
         <Routes>
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/confirmation" element={<SignUpConfirmation />} />
           <Route path="/login" element={<Login />} />
           <Route path="/thank-you" element={<PublicThankYouSubmission />} />
           <Route path="/f/:id" element={<PublicFormSumission />} />

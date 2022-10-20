@@ -54,8 +54,7 @@ const EditableText = forwardRef(
       [value, indexSelectedField]
     );
 
-    const handleKeyUp = (e) => {
-    };
+    const handleKeyUp = (e) => {};
 
     const handleChange = (e) => {
       let newValue = e.target.innerHTML || "";
@@ -100,8 +99,8 @@ const EditableText = forwardRef(
       if (e.keyCode == 13 && !e.shiftKey && handleEnterSubmit) {
         handleEnterSubmit();
         setTimeout(() => {
-          setValue('');
-          onChange('');
+          setValue("");
+          onChange("");
           setIndexSelectedField(0);
           editableRef.current.innerHTML = "";
         }, 100);
