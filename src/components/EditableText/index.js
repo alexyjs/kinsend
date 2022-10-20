@@ -55,7 +55,6 @@ const EditableText = forwardRef(
     );
 
     const handleKeyUp = (e) => {
-      console.log("###handleKeyUp");
     };
 
     const handleChange = (e) => {
@@ -78,7 +77,7 @@ const EditableText = forwardRef(
       setValue(result);
       onChange(result);
       const index = getCaretCharacterOffsetWithin();
-      console.log("###handleChange", index);
+      console.log("###handleChange", index, result);
       setIndexSelectedField(index);
     };
 
@@ -100,16 +99,16 @@ const EditableText = forwardRef(
       }
       if (e.keyCode == 13 && !e.shiftKey && handleEnterSubmit) {
         handleEnterSubmit();
-        console.log("#####Clear data handleKeyDown", e);
-        setValue("");
         setTimeout(() => {
+          setValue('');
+          onChange('');
+          setIndexSelectedField(0);
           editableRef.current.innerHTML = "";
         }, 100);
       } else {
-        handleChange(e);
+        // handleChange(e);
       }
       handleUpdateSelection();
-      console.log("###handleKeyDown");
     };
 
     const handleClick = () => {
@@ -169,7 +168,7 @@ const EditableText = forwardRef(
     const handleSelectField = (fieldSelected) => {
       let newValue = value.replace(/&lt;/gi, "<").replace(/&gt;/gi, `>`);
       newValue =
-        newValue.slice(0, indexSelectedField) +
+        newValue.slice(0, indexSelectedField - 1) +
         `${fieldSelected} ` +
         newValue.slice(indexSelectedField);
       newValue = newValue
@@ -228,14 +227,14 @@ const EditableText = forwardRef(
           </Tooltip>
         </div>
         <div className="EditableText-body">
-          <pre
+          <div
             ref={editableRef}
             id="editableRef"
             className="EditableText-content"
             title={value}
             contentEditable="true"
-            // onInput={handleChange}
-            // onChange={handleChange}
+            onInput={handleChange}
+            onChange={handleChange}
             onClick={handleClick}
             onBlur={() => {}}
             onKeyDown={handleKeyDown}
