@@ -212,7 +212,7 @@ export function* sendTestMessageSage(action) {
     // yield put(sendTestMessageSuccess(response));
     notification.success({
       title: "Action Completed",
-      message: `Send Test Message is successfully`,
+      message: `Send Test Message is Success!`,
     });
   } else {
     yield put(failed(errors));
