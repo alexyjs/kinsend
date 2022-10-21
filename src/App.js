@@ -55,31 +55,6 @@ function App() {
   const isAuth = authStorage.get();
   const cname = getCname();
 
-  if (cname) {
-    return (
-      <main>
-        <ConfigProvider
-          locale={en}
-          areaMapper={(area) => {
-            return {
-              ...area,
-              emoji: <span className={`fp ${area.short.toLowerCase()}`} />,
-            };
-          }}
-        >
-          <Routes>
-            <Route path="/sign-up" element={<SignUp />} />
-            <Route path="/confirmation" element={<SignUpConfirmation />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/thank-you" element={<PublicThankYouSubmission />} />
-            <Route path="/f/:id" element={<PublicFormSumission />} />
-            <Route path="*" element={<Navigate to="/login" replace />} />
-          </Routes>
-        </ConfigProvider>
-      </main>
-    );
-  }
-
   if (isAuth) {
     return (
       <main>
@@ -127,6 +102,29 @@ function App() {
       </main>
     );
   }
+
+  return (
+    <main>
+      <ConfigProvider
+        locale={en}
+        areaMapper={(area) => {
+          return {
+            ...area,
+            emoji: <span className={`fp ${area.short.toLowerCase()}`} />,
+          };
+        }}
+      >
+        <Routes>
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/confirmation" element={<SignUpConfirmation />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/thank-you" element={<PublicThankYouSubmission />} />
+          <Route path="/f/:id" element={<PublicFormSumission />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </ConfigProvider>
+    </main>
+  );
 }
 
 export default App;
