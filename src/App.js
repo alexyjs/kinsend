@@ -68,10 +68,12 @@ function App() {
           }}
         >
           <Routes>
+            <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/confirmation" element={<SignUpConfirmation />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/thank-you" element={<PublicThankYouSubmission />} />
             <Route path="/f/:id" element={<PublicFormSumission />} />
-            <Route path="/confirmation" element={<SignUpConfirmation />} />
-            <Route path="*" element={<PublicFormSumission />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </ConfigProvider>
       </main>
@@ -125,29 +127,6 @@ function App() {
       </main>
     );
   }
-
-  return (
-    <main>
-      <ConfigProvider
-        locale={en}
-        areaMapper={(area) => {
-          return {
-            ...area,
-            emoji: <span className={`fp ${area.short.toLowerCase()}`} />,
-          };
-        }}
-      >
-        <Routes>
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/confirmation" element={<SignUpConfirmation />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/thank-you" element={<PublicThankYouSubmission />} />
-          <Route path="/f/:id" element={<PublicFormSumission />} />
-          <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
-      </ConfigProvider>
-    </main>
-  );
 }
 
 export default App;
