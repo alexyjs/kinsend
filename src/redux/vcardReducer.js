@@ -42,7 +42,7 @@ export function* updateVCardSaga(action) {
     yield put(addVCardSuccess(response));
     notification.success({
       title: "Action Completed",
-      message: `Vcard update successfully.`,
+      message: `Vcard update Success!`,
     });
   } else {
     yield put(failed(errors));

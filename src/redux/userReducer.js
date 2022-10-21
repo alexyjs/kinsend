@@ -165,7 +165,7 @@ export function* loginSaga(action) {
     yield put(login(response));
     notification.success({
       title: "Action Completed",
-      message: `Login successfully.`,
+      message: `Login Success!`,
     });
   } else {
     yield put(failed(errors));
@@ -187,7 +187,7 @@ export function* loginWithGoogleSaga(action) {
     yield put(login(response));
     notification.success({
       title: "Action Completed",
-      message: errors || `Login With Google successfully.`,
+      message: errors || `Login With Google Success!`,
     });
   } else {
     yield put(failed(errors));
@@ -205,7 +205,7 @@ export function* resendVerifyEmailSaga(action) {
     yield put(resendVerifyEmailSuccess(response));
     notification.success({
       title: "Action Completed",
-      message: `Successfully! Please check your email.`,
+      message: `Success! Please check your email.`,
     });
   } else {
     yield put(failed(errors));
@@ -223,7 +223,7 @@ export function* resendPasswordSaga(action) {
   if (response) {
     notification.success({
       title: "Action Completed",
-      message: `Successfully! Please check your email.`,
+      message: `Success! Please check your email.`,
     });
   } else {
     yield put(failed(errors));
@@ -256,7 +256,7 @@ export function* patchUserSaga(action) {
     yield put(updatedUser(response));
     notification.success({
       title: "Action Completed",
-      message: `Update profile successfully.`,
+      message: `Update profile Success!`,
     });
   } else {
     yield put(failed(errors));
@@ -275,7 +275,7 @@ export function* resetPasswordSaga(action) {
   if (response) {
     notification.success({
       title: "Action Completed",
-      message: `Reset password successfully.`,
+      message: `Reset password Success!`,
     });
   } else {
     yield put(failed(errors));
@@ -295,7 +295,7 @@ export function* updateAvatarSaga(action) {
     yield put(updatedUser(response));
     notification.success({
       title: "Action Completed",
-      message: `Update Avatar successfully.`,
+      message: `Update Avatar Success!`,
     });
   } else {
     yield put(failed(errors));
@@ -316,7 +316,7 @@ export function* createCNAMESaga(action) {
     yield put(CNAMESuccess(response));
     notification.success({
       title: "Action Completed",
-      message: `Add CNAME successfully.`,
+      message: `Add CNAME Success!`,
     });
   } else {
     yield put(failed(errors));
@@ -337,7 +337,7 @@ export function* updateCNAMESaga(action) {
     yield put(CNAMESuccess(response));
     notification.success({
       title: "Action Completed",
-      message: `Update CNAME successfully.`,
+      message: `Update CNAME Success!`,
     });
   } else {
     yield put(failed(errors));
