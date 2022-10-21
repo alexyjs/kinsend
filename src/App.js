@@ -70,6 +70,7 @@ function App() {
           <Routes>
             <Route path="/thank-you" element={<PublicThankYouSubmission />} />
             <Route path="/f/:id" element={<PublicFormSumission />} />
+            <Route path="/confirmation" element={<SignUpConfirmation />} />
             <Route path="*" element={<PublicFormSumission />} />
           </Routes>
         </ConfigProvider>
