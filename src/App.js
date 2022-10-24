@@ -17,6 +17,7 @@ import AddNewForm from "./pages/Settings/Form/AddNewForm";
 import TagsManage from "./pages/Settings/TagsManage";
 import PublicFormSumission from "./pages/Public/FormSubmission";
 import PublicThankYouSubmission from "./pages/Public/ThankYouSubmission";
+import ForgotPasswordConfirmation from "./pages/Public/ForgotPasswordConfirmation";
 import Automation from "./pages/Automation";
 import AddNewAutomation from "./pages/Automation/AddNewAutomation";
 import UpdatesDashboard from "./pages/Updates";
@@ -117,6 +118,10 @@ function App() {
         <Routes>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/confirmation" element={<SignUpConfirmation />} />
+          <Route
+            path="/forgot-password/reset"
+            element={<ForgotPasswordConfirmation />}
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/thank-you" element={<PublicThankYouSubmission />} />
           <Route path="/f/:id" element={<PublicFormSumission />} />
