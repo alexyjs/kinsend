@@ -103,6 +103,8 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
         footer={null}
         closable={false}
         destroyOnClose={true}
+        mask={false}
+        maskClosable={false}
         centered
         width={840}
       >
@@ -165,7 +167,7 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
             />
           </Form.Item>
           <Row justify="end" className="mt-6">
-            <Col>
+            {/* <Col>
               <Form.Item noStyle>
                 <Button
                   className="md:min-w-200"
@@ -177,7 +179,7 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
                   Back
                 </Button>
               </Form.Item>
-            </Col>
+            </Col> */}
             <Col>
               <Form.Item noStyle shouldUpdate>
                 <Button

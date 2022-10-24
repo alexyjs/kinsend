@@ -24,11 +24,13 @@ const NumberAddedModal = ({ visible, handleOk, handleCancel, phoneNumber }) => {
       footer={null}
       closable={false}
       destroyOnClose={true}
+      mask={false}
+      maskClosable={false}
       centered
       width={840}
     >
       <h3 className="font-bold text-center text-2xl mb-6">
-        Your shiny new kinSend number
+        Your shiny new KinSend number
       </h3>
       <h3 className="font-bold text-center text-xl mb-6">
         {displayPhoneNumber(phoneNumber)}
@@ -48,7 +50,7 @@ const NumberAddedModal = ({ visible, handleOk, handleCancel, phoneNumber }) => {
             size="large"
             onClick={handleCancel}
           >
-            Reguest a Different Number
+            Request a Different Number
           </Button>
         </Col>
         <Col flex={1}>
@@ -58,7 +60,7 @@ const NumberAddedModal = ({ visible, handleOk, handleCancel, phoneNumber }) => {
         </Col>
       </Row>
       <Row justify="end" className="mt-6">
-        <Col>
+        {/* <Col>
           <Form.Item noStyle>
             <Button
               className="min-w-200"
@@ -70,7 +72,7 @@ const NumberAddedModal = ({ visible, handleOk, handleCancel, phoneNumber }) => {
               Cancel
             </Button>
           </Form.Item>
-        </Col>
+        </Col> */}
         <Col>
           <Form.Item noStyle shouldUpdate>
             <Button

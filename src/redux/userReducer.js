@@ -10,7 +10,7 @@ export const loginAsync = createAction("user/loginAsync");
 export const resendVerifyEmailAsync = createAction(
   "user/resendVerifyEmailAsync"
 );
-export const resendPasswordAsync = createAction("user/resendPasswordAsync");
+export const forgetPasswordAsync = createAction("user/forgetPasswordAsync");
 export const loginWithGoogleAsync = createAction("user/loginWithGoogleAsync");
 export const patchUserAsync = createAction("user/patchUserAsync");
 export const getUserAsync = createAction("user/getUserAsync");
@@ -137,6 +137,24 @@ export async function signupConfirmationAPI(token) {
   return handleCallAPI(payload);
 }
 
+export async function forgetPasswordAPI(data) {
+  const payload = {
+    method: "POST",
+    url: `${process.env.REACT_APP_API_BASE_URL}/users/reset-password`,
+    data,
+  };
+  return handleCallAPI(payload);
+}
+
+export async function forgotPasswordConfirmationAPI(data, token) {
+  const payload = {
+    method: "POST",
+    url: `${process.env.REACT_APP_API_BASE_URL}/users/verify-reset-password?token=${token}`,
+    data,
+  };
+  return handleCallAPI(payload);
+}
+
 // saga
 export function* createUserSaga(action) {
   const { response, errors } = yield call(createUserAPI, action.payload);
@@ -216,9 +234,8 @@ export function* resendVerifyEmailSaga(action) {
   }
 }
 
-// TODO: update later, we are mising this API
-export function* resendPasswordSaga(action) {
-  const { response, errors } = yield call(resendVerifyEmailAPI, action.payload);
+export function* forgetPasswordSaga(action) {
+  const { response, errors } = yield call(forgetPasswordAPI, action.payload);
 
   if (response) {
     notification.success({
@@ -375,8 +392,8 @@ export function* watchResendVerifyEmailSaga() {
   yield takeLatest(resendVerifyEmailAsync, resendVerifyEmailSaga);
 }
 
-export function* watchResendPassworSaga() {
-  yield takeLatest(resendPasswordAsync, resendPasswordSaga);
+export function* watchForgetPPassworSaga() {
+  yield takeLatest(forgetPasswordAsync, forgetPasswordSaga);
 }
 
 export function* watchPatchUserSaga() {
