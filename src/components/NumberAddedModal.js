@@ -35,13 +35,6 @@ const NumberAddedModal = ({ visible, handleOk, handleCancel, phoneNumber }) => {
       <h3 className="font-bold text-center text-xl mb-6">
         {displayPhoneNumber(phoneNumber)}
       </h3>
-
-      <p className="text-base text-dark-gray text-center mb-6">
-        It was popularised in the 1960s with the release of Letraset sheets
-        containing Lorem Ipsum passages, and more recently with desktop
-        publishing software like Aldus PageMaker includ ing versions of Lorem
-        Ipsum
-      </p>
       <Row className="mt-6" gutter={24}>
         <Col flex={1}>
           <Button
