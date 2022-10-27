@@ -89,7 +89,9 @@ const AddNewForm = () => {
     if (image) {
       formData.append("file", image, image.name);
     }
-    formData.append("tagId", values.tagId || "");
+    if (values.tagId?.length) {
+      formData.append("tagId", values.tagId || "");
+    }
     formData.append("cnameTitle", values.cnameTitle);
     formData.append("url", values.cnameTitle);
     formData.append("title", values.title || "");
