@@ -1,7 +1,8 @@
+import React, { useCallback, useEffect, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "antd";
 import _ from "lodash";
-import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { InputPhone, PhoneList } from ".";
 import { getListPhoneAsync, selectPhones } from "../redux/phoneReducer";
 import { phoneRequireValidator, phoneValidator } from "../utils";
@@ -25,8 +26,10 @@ const SelectNumberModal = ({
 }) => {
   const dispatch = useDispatch();
   const { close, show, visible: numberAddedModalVisible } = useModal();
+  const [listPhoneShow, setListPhoneShow] = useState([]);
   const { listPhone } = useSelector(selectPhones);
   const [form] = Form.useForm();
+
   const handleFinish = () => {
     show();
   };
@@ -44,6 +47,22 @@ const SelectNumberModal = ({
     close();
     handleClose();
   };
+
+  const handleOnChangePhoneNumber = () => {
+    const phoneNumber = form.getFieldValue("phoneNumber");
+    if (!phoneNumber) {
+      setListPhoneShow(listPhone);
+    } else {
+      const newList = listPhone.filter((item) =>
+        item.phoneNumber.startsWith(`+${phoneNumber.code}${phoneNumber.phone}`)
+      );
+      setListPhoneShow(newList);
+    }
+  };
+
+  useEffect(() => {
+    setListPhoneShow(listPhone);
+  }, [listPhone]);
 
   useEffect(() => {
     dispatch(getListPhoneAsync());
@@ -89,6 +108,7 @@ const SelectNumberModal = ({
                 name="phoneNumber"
                 label="Phone"
                 rules={[phoneRequireValidator, phoneValidator]}
+                onChange={handleOnChangePhoneNumber}
               >
                 <InputPhone placeholder="Enter your phone" />
               </Form.Item>
@@ -100,7 +120,10 @@ const SelectNumberModal = ({
             How about any of these numbers?
           </p>
 
-          <PhoneList listPhone={listPhone} onSelectPhone={handleSelectPhone} />
+          <PhoneList
+            listPhone={listPhoneShow}
+            onSelectPhone={handleSelectPhone}
+          />
         </div>
 
         <Row justify="end" className="mt-6">
