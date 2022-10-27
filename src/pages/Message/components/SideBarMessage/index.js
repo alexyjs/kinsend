@@ -12,12 +12,12 @@ const SideBarMessage = ({ data }) => {
   const [dataShow, setDataShow] = useState(data);
   const [searchText, setSearchText] = useState("");
 
-  useEffect(() => {
-    let result = data.filter((item) =>
-      item?.message?.content?.toLowerCase()?.includes(searchText)
-    );
-    setDataShow(result);
-  }, [data, searchText]);
+  // useEffect(() => {
+  //   let result = data.filter((item) =>
+  //     item?.message?.content?.toLowerCase()?.includes(searchText)
+  //   );
+  //   setDataShow(result);
+  // }, [data, searchText]);
   console.log("###dataShow", data, dataShow);
   return (
     <div className="SideBarMessage bg-white	p-3 min-h-full	">
