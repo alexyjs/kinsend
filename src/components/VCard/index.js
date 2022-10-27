@@ -211,13 +211,17 @@ const VCard = ({ onFileChange, imgSrc }) => {
             <Form.Item
               name="zipCode"
               label="ZIP CODE"
-              rules={[{ required: true }]}
+              // rules={[{ required: true }]}
             >
               <Input placeholder="Postal Code" />
             </Form.Item>
           </Col>
           <Col sm={12}>
-            <Form.Item name="note" label="Note" rules={[{ required: true }]}>
+            <Form.Item
+              name="note"
+              label="Note"
+              // rules={[{ required: true }]}
+            >
               <Input placeholder="Note" />
             </Form.Item>
           </Col>

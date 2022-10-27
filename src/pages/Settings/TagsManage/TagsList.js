@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Table } from "antd";
 import { useSelector, useDispatch } from "react-redux";
+import { formatDistanceStrict } from "date-fns";
 
 import { useModal } from "../../../hook/useModal";
 import AddNewTag from "./AddNewTag";
@@ -18,7 +19,13 @@ const columns = [
     title: "CREATED",
     dataIndex: "createdAt",
     key: "createdAt",
-    render: (text) => <span>{text}</span>,
+    render: (text) => (
+      <span>
+        {formatDistanceStrict(new Date(text), new Date(), {
+          addSuffix: true,
+        })}
+      </span>
+    ),
   },
   {
     title: "CONTACTS",

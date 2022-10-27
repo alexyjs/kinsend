@@ -247,7 +247,7 @@ const AddNewForm = () => {
             </div>
             <Form.Item
               name="tagId"
-              rules={[{ required: true }]}
+              // rules={[{ required: true }]}
               label={
                 <>
                   INBOUND TAG
