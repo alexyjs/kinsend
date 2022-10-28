@@ -10,7 +10,7 @@ import "./styles.less";
 
 const SideBarMessage = ({ data }) => {
   const [dataShow, setDataShow] = useState(data);
-  const [searchText, setSearchText] = useState("");
+  // const [searchText, setSearchText] = useState("");
 
   // useEffect(() => {
   //   let result = data.filter((item) =>
@@ -18,7 +18,10 @@ const SideBarMessage = ({ data }) => {
   //   );
   //   setDataShow(result);
   // }, [data, searchText]);
-  console.log("###dataShow", data, dataShow);
+  useEffect(() => {
+    setDataShow(data);
+  }, [data]);
+  // console.log("###dataShow", data, dataShow);
   return (
     <div className="SideBarMessage bg-white	p-3 min-h-full	">
       {/* <div className="flex justify-between items-center bg-gray-1">
