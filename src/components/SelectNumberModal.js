@@ -5,7 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { InputPhone, PhoneList } from ".";
 import { getListPhoneAsync, selectPhones } from "../redux/phoneReducer";
-import { phoneRequireValidator, phoneValidator } from "../utils";
+import {
+  phoneRequireValidator,
+  phoneValidator,
+  removeEmptyObject,
+} from "../utils";
 import { useModal } from "../hook/useModal";
 import NumberAddedModal from "./NumberAddedModal";
 
@@ -50,14 +54,21 @@ const SelectNumberModal = ({
 
   const handleOnChangePhoneNumber = () => {
     const phoneNumber = form.getFieldValue("phoneNumber");
-    if (!phoneNumber) {
-      setListPhoneShow(listPhone);
-    } else {
-      const newList = listPhone.filter((item) =>
-        item.phoneNumber.startsWith(`+${phoneNumber.code}${phoneNumber.phone}`)
-      );
-      setListPhoneShow(newList);
-    }
+    getData(phoneNumber);
+  };
+
+  const getData = (data) => {
+    dispatch(
+      getListPhoneAsync(
+        removeEmptyObject({
+          location: data?.location || "US",
+          phoneNumber: data?.phone ? `+${data?.code}${data?.phone}` : "",
+          // code: 1,
+          limit: 20,
+          areaCode: data?.phone?.substring(0, 3) || "",
+        })
+      )
+    );
   };
 
   useEffect(() => {
@@ -65,7 +76,13 @@ const SelectNumberModal = ({
   }, [listPhone]);
 
   useEffect(() => {
-    dispatch(getListPhoneAsync());
+    // dispatch(getListPhoneAsync({
+    //   location: 'US',
+    //   code: 1,
+    //   phoneNumber: phone: undefined,
+    //   short: "US"
+    // }));
+    getData({});
   }, []);
 
   return (

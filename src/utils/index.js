@@ -220,3 +220,7 @@ export const getFilterUpdatesSelected = (value, data) => {
 
   return dataFilter.options.filter((item) => item.value === valueSelected)[0];
 };
+
+export const removeEmptyObject = (obj) => {
+  return Object.fromEntries(Object.entries(obj).filter(([_, v]) => !!v));
+};
