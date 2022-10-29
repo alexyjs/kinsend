@@ -79,12 +79,6 @@ const SelectNumberModal = ({
   }, [listPhone]);
 
   useEffect(() => {
-    // dispatch(getListPhoneAsync({
-    //   location: 'US',
-    //   code: 1,
-    //   phoneNumber: phone: undefined,
-    //   short: "US"
-    // }));
     getData({});
   }, []);
 
