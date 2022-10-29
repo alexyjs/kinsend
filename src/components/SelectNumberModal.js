@@ -61,10 +61,10 @@ const SelectNumberModal = ({
     dispatch(
       getListPhoneAsync(
         removeEmptyObject({
-          location: data?.location || "US",
+          location: data?.short || "",
           phoneNumber: data?.phone ? `+${data?.code}${data?.phone}` : "",
           // code: 1,
-          limit: 20,
+          limit: data?.phone ? 20: undefined,
           areaCode: data?.phone?.substring(0, 3) || "",
         })
       )
