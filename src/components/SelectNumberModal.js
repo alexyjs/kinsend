@@ -58,14 +58,17 @@ const SelectNumberModal = ({
   };
 
   const getData = (data) => {
+    const lenPhone = data?.phone?.length;
+    // console.log("###Get data query", data);
     dispatch(
       getListPhoneAsync(
+        // lenPhone < 6 is limit to check area code. Need more information for this
         removeEmptyObject({
-          location: data?.short || "",
-          phoneNumber: data?.phone ? `+${data?.code}${data?.phone}` : "",
+          location: data?.phone ? data?.short || "" : "",
+          phoneNumber: lenPhone < 6 ? "" : data?.phone || "",
           // code: 1,
-          limit: data?.phone ? 20: undefined,
-          areaCode: data?.phone?.substring(0, 3) || "",
+          limit: data?.phone ? 20 : "",
+          areaCode: lenPhone < 6 ? data?.phone || "" : "",
         })
       )
     );
