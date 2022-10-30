@@ -4,7 +4,7 @@ import { formatDistanceStrict } from "date-fns";
 import { UserOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 
-import { SearchIcon } from "../../../../assets/svg";
+// import { SearchIcon } from "../../../../assets/svg";
 
 import "./styles.less";
 
@@ -72,14 +72,17 @@ const SideBarMessage = ({ data }) => {
                         </div>
                       </div>
                       <div className="SideBarMessage-message">
-                        <Input
-                          disabled
-                          className="SideBarMessage-message text-ellipsis overflow-hidden truncate"
-                          value={
-                            (item?.message?.isSubscriberMessage ? "→ " : "← ") +
-                            item?.message?.content
-                          }
-                        />
+                        {item?.message?.content && (
+                          <Input
+                            disabled
+                            className="SideBarMessage-message text-ellipsis overflow-hidden truncate"
+                            value={
+                              (item?.message?.isSubscriberMessage
+                                ? "→ "
+                                : "← ") + item?.message?.content
+                            }
+                          />
+                        )}
                       </div>
                     </div>
                   </div>

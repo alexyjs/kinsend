@@ -11,7 +11,7 @@ export async function getListPhoneAPI(data) {
   const payload = {
     method: "GET",
     url: `${process.env.REACT_APP_API_BASE_URL}/resources/available-phone-numbers`,
-    data,
+    params: data,
   };
 
   return handleCallAPI(payload);
