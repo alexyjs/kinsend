@@ -64,10 +64,10 @@ const SelectNumberModal = ({
       getListPhoneAsync(
         // lenPhone < 6 is limit to check area code. Need more information for this
         removeEmptyObject({
-          location: data?.phone ? data?.short || "" : "",
+          location: data?.short || "",
           phoneNumber: lenPhone < 6 ? "" : data?.phone || "",
           // code: 1,
-          limit: data?.phone ? 20 : "",
+          limit: 20,
           areaCode: lenPhone < 6 ? data?.phone || "" : "",
         })
       )
