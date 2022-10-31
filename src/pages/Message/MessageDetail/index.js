@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, memo } from "react";
 import { Row, Col, Avatar } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams, useNavigate } from "react-router-dom";
@@ -95,6 +95,14 @@ const MessageDetail = () => {
       setDirectMessage("");
       setDefaultValueMessage("");
     }
+
+    const timer = setInterval(() => {
+      dispatch(getSubscriberByMessageIdAsync(messageId));
+    }, 5000);
+
+    return () => {
+      clearInterval(timer);
+    };
   }, [messageId]);
 
   useEffect(() => {
@@ -111,7 +119,7 @@ const MessageDetail = () => {
     }
   }, [smsMessage]);
 
-  console.log("###messageDetail", messageDetail);
+  // console.log("###messageDetail", messageDetail);
   return (
     <LayoutComponent className="messageDetail-page">
       <div className="flex min-h-full">
@@ -152,4 +160,4 @@ const MessageDetail = () => {
   );
 };
 
-export default MessageDetail;
+export default memo(MessageDetail);

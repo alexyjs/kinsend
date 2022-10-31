@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input, Divider, Avatar } from "antd";
+import { Input, Avatar } from "antd";
 import { formatDistanceStrict } from "date-fns";
 import { UserOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";

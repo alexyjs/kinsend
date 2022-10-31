@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Button, Dropdown, Space, Menu, Row, Col, Divider, Select } from "antd";
+import React, { useEffect, useState, memo } from "react";
+import { Button, Dropdown, Space, Menu, Divider, Select } from "antd";
 import {
   EllipsisOutlined,
   SettingOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
+import cl from "classnames";
 
 import { AvatarComponent } from "../../../../components";
 import {
@@ -113,11 +114,11 @@ const SubscriberInfor = ({ data }) => {
   };
 
   useEffect(() => {
-    if (data) {
+    if (data?.id) {
       // setTagIds(tags?.map((item) => item.id) || []);
       setTagIds(data.tags);
     }
-  }, [data]);
+  }, [data?.id]);
 
   return (
     <div className="SubscriberInfor bg-white p-3 min-h-full	">
@@ -141,10 +142,14 @@ const SubscriberInfor = ({ data }) => {
         </h2>
         {/* </div>
       <div> */}
-        <div className="inline-flex	">
+        <div
+          className={cl("inline-block SubscriberInfor-tag-list", {
+            isShowTag: isShowTag,
+          })}
+        >
           {taggedTagIds.map((item) => (
             <p
-              className="text-gray-tag bg-bg-gray-tag p-2 mx-2 items-center inline-flex"
+              className="text-gray-tag bg-bg-gray-tag p-2 mx-2 mb-2 items-center inline-flex"
               key={`tag-show-${item.id}`}
             >
               {item?.name}{" "}
@@ -163,7 +168,7 @@ const SubscriberInfor = ({ data }) => {
           ) : (
             <div className="mt-2 items-center inline-flex flex-col">
               <Select
-                className="border-gray border-1 h-9"
+                className="border-gray border-1 h-9 SubscriberInfor-tag-select"
                 onChange={onTagChange}
                 placeholder="Choose tag..."
                 // value={taggedTagIds}
@@ -232,4 +237,4 @@ const SubscriberInfor = ({ data }) => {
   );
 };
 
-export default SubscriberInfor;
+export default memo(SubscriberInfor);
