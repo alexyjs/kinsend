@@ -128,9 +128,14 @@ export const getCname = () => {
 
 export const getMainDomain = () => {
   const host = window.location.host;
+  if (host.includes("www.dev.kinsend.io")) {
+    return "https://wwww.dev.kinsend.io";
+  }
+
   if (host.includes("dev.kinsend.io")) {
     return "https://dev.kinsend.io";
   }
+
 
   if (host.includes("kinsend.io")) {
     return "https://kinsend.io";
