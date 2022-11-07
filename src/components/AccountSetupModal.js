@@ -105,6 +105,7 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
         destroyOnClose={true}
         mask={false}
         maskClosable={false}
+        keyboard={false}
         centered
         width={840}
       >
