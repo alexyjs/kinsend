@@ -58,12 +58,12 @@ const Message = () => {
   }, [dispatch]);
   console.log("###message", message);
   return (
-    <LayoutComponent className="Message-page">
+    <LayoutComponent className="Message-page" title="message">
       <Row gutter={16}>
-        <Col span={8} className="">
+        <Col span={8} md={8} xs={24} className="md:w-full">
           <SideBarMessage data={message} />
         </Col>
-        <Col span={16} className="">
+        <Col span={16} className="md:block hidden">
           <div className="flex justify-between items-center">
             <h1 className="mt-5">
               {getSessionOfDay()}, {user && user.firstName}

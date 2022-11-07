@@ -59,7 +59,12 @@ const Dashboard = () => {
     <div>
       <Row gutter={16}>
         {automationList.map((item) => (
-          <Col span={8} className="mb-4" key={`automation-item-${item.id}`}>
+          <Col
+            xs={24}
+            md={8}
+            className="mb-4"
+            key={`automation-item-${item.id}`}
+          >
             <Card bordered={true} className="rounded-3xl h-60">
               <div className="flex justify-between items-center">
                 <span>

@@ -14,7 +14,11 @@ import "./styles.less";
 
 const layout = {
   labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
+  wrapperCol: {
+    span: 16,
+    xs: 24,
+    md: 16,
+  },
 };
 
 const VCard = ({ onFileChange, imgSrc }) => {
@@ -54,7 +58,7 @@ const VCard = ({ onFileChange, imgSrc }) => {
   }, []);
 
   return (
-    <div className="vcard">
+    <div className="vcard md:p-11 p-4">
       <Row justify="center" className="text-center">
         <Col>
           <h2 className="text-4xl">Dynamic vCard </h2>
@@ -72,7 +76,7 @@ const VCard = ({ onFileChange, imgSrc }) => {
         className="form-profile vcard-form"
       >
         <Row className="mt-6" gutter={24}>
-          <Col sm={12}>
+          <Col xs={24} md={12}>
             <Form.Item
               name="firstName"
               label="First Name"
@@ -81,7 +85,7 @@ const VCard = ({ onFileChange, imgSrc }) => {
               <Input placeholder="First Name" />
             </Form.Item>
           </Col>
-          <Col sm={12}>
+          <Col xs={24} md={12}>
             <Form.Item
               name="lastName"
               label="LAST NAME"
@@ -90,12 +94,12 @@ const VCard = ({ onFileChange, imgSrc }) => {
               <Input placeholder="LAST NAME" />
             </Form.Item>
           </Col>
-          <Col sm={12}>
+          <Col xs={24} md={12}>
             <Form.Item name="title" label="TITLE" rules={[{ required: true }]}>
               <Input placeholder="Job Title" />
             </Form.Item>
           </Col>
-          <Col sm={12}>
+          <Col xs={24} md={12}>
             <Form.Item
               name="organization"
               label="ORGANIZATION"
@@ -104,7 +108,7 @@ const VCard = ({ onFileChange, imgSrc }) => {
               <Input placeholder="Company Name" />
             </Form.Item>
           </Col>
-          <Col sm={12}>
+          <Col xs={24} md={12}>
             <Form.Item
               name="email"
               label="EMAIL"
@@ -126,7 +130,7 @@ const VCard = ({ onFileChange, imgSrc }) => {
               <Input placeholder="EMAIL" />
             </Form.Item>
           </Col>
-          <Col sm={12}>
+          <Col xs={24} md={12}>
             <Form.Item
               name="facebook"
               label="FACEBOOK"
@@ -135,7 +139,7 @@ const VCard = ({ onFileChange, imgSrc }) => {
               <Input placeholder="https://www.facebook.com" />
             </Form.Item>
           </Col>
-          <Col sm={12}>
+          <Col xs={24} md={12}>
             <Form.Item
               name="instagram"
               label="INSTAGRAM"
@@ -144,7 +148,7 @@ const VCard = ({ onFileChange, imgSrc }) => {
               <Input placeholder="https://www.instagram.com/" />
             </Form.Item>
           </Col>
-          <Col sm={12}>
+          <Col xs={24} md={12}>
             <Form.Item
               name="twitter"
               label="TWITTER"
@@ -153,7 +157,7 @@ const VCard = ({ onFileChange, imgSrc }) => {
               <Input placeholder="https://www.twitter.com/" />
             </Form.Item>
           </Col>
-          <Col sm={12}>
+          <Col xs={24} md={12}>
             <Form.Item
               name="linkedIn"
               label="LINKEDIN"
@@ -162,7 +166,7 @@ const VCard = ({ onFileChange, imgSrc }) => {
               <Input placeholder="https://www.linkedin.com/in/" />
             </Form.Item>
           </Col>
-          <Col sm={12}>
+          <Col xs={24} md={12}>
             <Form.Item
               name="youtube"
               label="YOUTUBE"
@@ -171,7 +175,7 @@ const VCard = ({ onFileChange, imgSrc }) => {
               <Input placeholder="https://www.youtube.com/channel/" />
             </Form.Item>
           </Col>
-          <Col sm={12}>
+          <Col xs={24} md={12}>
             <Form.Item
               name="snapchat"
               label="SNAPCHAT"
@@ -180,7 +184,7 @@ const VCard = ({ onFileChange, imgSrc }) => {
               <Input />
             </Form.Item>
           </Col>
-          <Col sm={12}>
+          <Col xs={24} md={12}>
             <Form.Item
               name="soundCloud"
               label="SOUNDCLOUD"
@@ -189,7 +193,7 @@ const VCard = ({ onFileChange, imgSrc }) => {
               <Input placeholder="https://www.soundcloud.com/" />
             </Form.Item>
           </Col>
-          <Col sm={12}>
+          <Col xs={24} md={12}>
             <Form.Item
               name="store"
               label="STORE"
@@ -198,7 +202,7 @@ const VCard = ({ onFileChange, imgSrc }) => {
               <Input placeholder="https://" />
             </Form.Item>
           </Col>
-          <Col sm={12}>
+          <Col xs={24} md={12}>
             <Form.Item
               name="website"
               label="WEB SITE"
@@ -207,7 +211,7 @@ const VCard = ({ onFileChange, imgSrc }) => {
               <Input placeholder="Enter new password" />
             </Form.Item>
           </Col>
-          <Col sm={12}>
+          <Col xs={24} md={12}>
             <Form.Item
               name="zipCode"
               label="ZIP CODE"
@@ -216,7 +220,7 @@ const VCard = ({ onFileChange, imgSrc }) => {
               <Input placeholder="Postal Code" />
             </Form.Item>
           </Col>
-          <Col sm={12}>
+          <Col xs={24} md={12}>
             <Form.Item
               name="note"
               label="Note"

@@ -10,11 +10,11 @@ const Automation = () => {
 
   const handleChangeTab = () => {};
   return (
-    <LayoutComponent className="settings-page">
-      <div className="flex justify-between items-center">
+    <LayoutComponent className="settings-page" title="Automation">
+      <div className="flex justify-between items-center md:flex-row flex-col">
         <h1>Automation</h1>
         <NavLink to="/automation/new">
-          <Button type="primary" size="large" className="w-48	">
+          <Button type="primary" size="large" className="w-48	md:mt-0 mt-4">
             New
           </Button>
         </NavLink>

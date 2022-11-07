@@ -14,7 +14,7 @@ function callback(key) {
 const TagsManage = () => {
   const { tags } = useSelector(selectSettings);
   return (
-    <LayoutComponent className="settings-page">
+    <LayoutComponent className="settings-page" title="Tags & Segments">
       <h1>
         Tags & Segments <span>SETTINGS</span>
       </h1>

@@ -17,7 +17,11 @@ import "./styles.less";
 
 const layout = {
   labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
+  wrapperCol: {
+    span: 16,
+    // md: 8,
+    // xs: 24,
+  },
 };
 
 const Profile = () => {
@@ -54,7 +58,7 @@ const Profile = () => {
       <h1>
         Profile <span>SETTINGS</span>
       </h1>
-      <div className="grid grid-cols-4">
+      <div className="md:grid md:grid-cols-4 text-center">
         <div>
           <AvatarComponent onFileChange={onFileChange} imgSrc={user?.image} />
         </div>
@@ -98,7 +102,7 @@ const Profile = () => {
         </div>
       </div>
       <Divider />
-      <div className="grid grid-cols-4">
+      <div className="md:grid md:grid-cols-4">
         <div></div>
         <div className="col-span-2">
           <Form
