@@ -28,7 +28,7 @@ const VCard = ({}) => {
   const dispatch = useDispatch();
   const { user } = useSelector(selectUsers);
   const { vcardData, isLoading } = useSelector(selectVCard);
-  const [imgSrc, setImgSrc] = useState('');
+  const [imgSrc, setImgSrc] = useState("");
 
   const onSubmitVCard = (values) => {
     dispatch(updateVCardAsync(values));
@@ -80,14 +80,14 @@ const VCard = ({}) => {
         website: vcardData?.website,
         zipCode: vcardData?.zipCode,
         note: vcardData?.note,
-        image: vcardData?.image || ''
+        image: vcardData?.image || "",
       });
     }
   }, [vcardData]);
 
   useEffect(() => {
     dispatch(getVCardAsync());
-    setImgSrc('');
+    setImgSrc("");
   }, []);
 
   return (
@@ -98,7 +98,10 @@ const VCard = ({}) => {
           <p className="pt-1.5	pb-14">
             Send a vCard that includes the number a contact has been assigned.
           </p>
-          <AvatarComponent onFileChange={onFileChange} imgSrc={imgSrc || vcardData?.image} />
+          <AvatarComponent
+            onFileChange={onFileChange}
+            imgSrc={imgSrc || vcardData?.image}
+          />
         </Col>
       </Row>
       <Form
