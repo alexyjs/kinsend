@@ -359,12 +359,12 @@ const AddNewForm = () => {
               </p>
             )}
             <Row>
-              <Col span={6}>
+              <Col md={12} xs={24}>
                 <Form.Item name="isEnabled" label="" valuePropName="checked">
                   <Checkbox>Enabled</Checkbox>
                 </Form.Item>
               </Col>
-              <Col span={6}>
+              <Col md={12} xs={24}>
                 <Form.Item
                   name="isVcardSend"
                   label=""

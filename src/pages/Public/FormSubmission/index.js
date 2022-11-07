@@ -102,7 +102,7 @@ const FormSubmission = () => {
           form={form}
           name="control-hooks"
           onFinish={onSubmitAddNewForm}
-          className="form-profile vcard-form"
+          className="form-profile vcard-form md:m-0 m-3"
           initialValues={{
             phoneNumber: {
               phone: undefined,
@@ -145,7 +145,7 @@ const FormSubmission = () => {
                 <Input size="large" placeholder="Smith" />
               </Form.Item>
             </Col>
-            <Col sm={24}>
+            <Col sm={24} span={24}>
               <Form.Item
                 name="email"
                 label="email"
@@ -163,7 +163,7 @@ const FormSubmission = () => {
                 <Input size="large" placeholder="Email@.com" />
               </Form.Item>
             </Col>
-            <Col sm={24}>
+            <Col sm={24} span={24}>
               <Form.Item
                 name="phoneNumber"
                 label="Phone"
@@ -172,7 +172,7 @@ const FormSubmission = () => {
                 <InputPhone placeholder="Enter phone number" />
               </Form.Item>
             </Col>
-            <Col sm={24}>
+            <Col sm={24} span={24}>
               <Form.Item
                 name="location"
                 label="Location"
@@ -188,7 +188,7 @@ const FormSubmission = () => {
             </Col>
           </Row>
           <Row className="mt-6 mx-5" gutter={24}>
-            <Col sm={24}>
+            <Col sm={24} span={24}>
               {formSettingDetail?.customFields &&
                 formSettingDetail?.customFields.map((cf) => (
                   <CustomFieldsComponent
@@ -197,7 +197,7 @@ const FormSubmission = () => {
                   />
                 ))}
             </Col>
-            <Col sm={24}>
+            <Col sm={24} span={24}>
               {formSettingDetail?.optionalFields &&
                 formSettingDetail?.optionalFields.map((cf) => (
                   <OptionFieldsComponent

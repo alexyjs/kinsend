@@ -94,7 +94,7 @@ const SideBarUpdate = ({ data }) => {
               <NavLink
                 to={`/updates/detail/${item.id}`}
                 className="SideBarUpdate-item"
-                key={`sidebar-update-item-${item}`}
+                key={`sidebar-update-item-${item?.id}`}
               >
                 <h3
                   className="text-ellipsis overflow-hidden truncate"
