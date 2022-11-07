@@ -90,6 +90,9 @@ const SelectNumberModal = ({
       footer={null}
       closable={false}
       destroyOnClose={true}
+      mask={false}
+      maskClosable={false}
+      keyboard={false}
       centered
       width={840}
     >
@@ -141,7 +144,7 @@ const SelectNumberModal = ({
         </div>
 
         <Row justify="end" className="mt-6">
-          <Col>
+          {/* <Col>
             <Form.Item noStyle>
               <Button
                 className="md:min-w-200"
@@ -152,7 +155,7 @@ const SelectNumberModal = ({
                 Back
               </Button>
             </Form.Item>
-          </Col>
+          </Col> */}
           <Col>
             <Form.Item noStyle shouldUpdate>
               <Button

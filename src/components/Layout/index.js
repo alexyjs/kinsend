@@ -186,7 +186,10 @@ const LayoutComponent = ({ className, children, title }) => {
           {isShowMenuMobile && (
             <div className="menu-mobile-popup">
               <div className="menu-mobile-popup-content">
-                <div className="header-menu p-5">
+                <NavLink to="/message">
+                  <img src={LogoSVG} />
+                </NavLink>
+                <div className="header-menu px-5 py-3">
                   <div className="header-avatar-wrap">
                     <Avatar
                       src={user?.image || ""}

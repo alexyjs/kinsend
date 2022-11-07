@@ -123,7 +123,7 @@ const MessageDetail = () => {
   return (
     <LayoutComponent
       className="messageDetail-page"
-      title={`${subscriberDetail?.firstName} ${subscriberDetail?.lastName}`}
+      title={`${subscriberDetail?.firstName || ''} ${subscriberDetail?.lastName || ''}`}
     >
       <div className="flex min-h-full">
         <div className="w-350 md:block hidden">
