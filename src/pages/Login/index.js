@@ -50,7 +50,7 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      if (user?.isEnabledBuyPlan) {
+      if (user?.isEnabledBuyPlan && user?.phoneSystem?.length) {
         // navigate("/dashboard");
         navigate("/message");
       } else {
