@@ -21,7 +21,7 @@ const Settings = () => {
   }, [useDispatch]);
 
   return (
-    <LayoutComponent className="settings-page">
+    <LayoutComponent className="settings-page" title="Setting">
       <h1>
         Forms & Widgets <span>SETTINGS</span>
       </h1>

@@ -136,7 +136,6 @@ export const getMainDomain = () => {
     return "https://dev.kinsend.io";
   }
 
-
   if (host.includes("kinsend.io")) {
     return "https://kinsend.io";
   }

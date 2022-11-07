@@ -17,6 +17,8 @@ import { selectUsers } from "../../../redux/userReducer";
 import { CopyComponent } from "../../../components";
 import { FORM_SETTINGS_STATUS } from "../../../utils/constants";
 
+import "./FormList.less";
+
 const TagsList = () => {
   const { close, show, visible } = useModal();
   const { forms } = useSelector(selectSettings);
@@ -117,7 +119,7 @@ const TagsList = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center my-10">
+      <div className="flex md:flex-row flex-col justify-between items-center my-10">
         <span className="max-w-xl">
           Create public facing contact forms for new contacts to fill out their
           personal details. Share your form on social channels using each form's
@@ -129,7 +131,7 @@ const TagsList = () => {
           <Button
             type="primary"
             size="large"
-            className="inline-flex items-center px-10"
+            className="inline-flex items-center px-10 md:mt-0 mt-3"
             onClick={show}
           >
             <AddIcon className="mr-2" /> New

@@ -63,7 +63,7 @@ const CustomFieldsList = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center my-10">
+      <div className="flex md:flex-row flex-col justify-between items-center my-10">
         <span className="max-w-lg">
           Custom fields allow you to collect unique information about your
           contacts when they fill out your public form. Put these fields to use
@@ -72,7 +72,7 @@ const CustomFieldsList = () => {
         <Button
           type="primary"
           size="large"
-          className="inline-flex items-center px-10"
+          className="inline-flex items-center px-10 mt-3 md:mt-0"
           onClick={show}
         >
           <AddIcon className="mr-2" /> New

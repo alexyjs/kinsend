@@ -121,9 +121,12 @@ const MessageDetail = () => {
 
   // console.log("###messageDetail", messageDetail);
   return (
-    <LayoutComponent className="messageDetail-page">
+    <LayoutComponent
+      className="messageDetail-page"
+      title={`${subscriberDetail?.firstName} ${subscriberDetail?.lastName}`}
+    >
       <div className="flex min-h-full">
-        <div className="w-350">
+        <div className="w-350 md:block hidden">
           <SideBarMessage data={message} />
         </div>
         <div className="flex-1 flex messageDetail-body flex-col">
@@ -152,7 +155,7 @@ const MessageDetail = () => {
             </span>
           </div>
         </div>
-        <div className="w-350">
+        <div className="w-350 md:block hidden">
           <SubscriberInfor data={subscriberDetail} />
         </div>
       </div>
