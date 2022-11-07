@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Row, Col, Form, Input, Button } from "antd";
+import React, { useEffect, useState } from "react";
+import { Row, Col, Form, Input, Button, notification } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
 import { selectUsers } from "../../redux/userReducer";
@@ -10,6 +10,8 @@ import {
 } from "../../redux/vcardReducer";
 import { AvatarComponent } from "..";
 import { EMAIL_REGEX } from "../../utils/validations";
+import { handleUploadImageCallAPI } from "../../redux/helpers";
+
 import "./styles.less";
 
 const layout = {
@@ -21,13 +23,42 @@ const layout = {
   },
 };
 
-const VCard = ({ onFileChange, imgSrc }) => {
+const VCard = ({}) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const { user } = useSelector(selectUsers);
   const { vcardData, isLoading } = useSelector(selectVCard);
+  const [imgSrc, setImgSrc] = useState('');
+
   const onSubmitVCard = (values) => {
     dispatch(updateVCardAsync(values));
+  };
+
+  const onFileChange = async (event) => {
+    const formData = new FormData();
+    formData.append("file", event.target.files[0], event.target.files[0].name);
+    formData.append("isResize", true);
+
+    handleUploadImageCallAPI(formData)
+      .then((res) => {
+        notification.success({
+          title: "Action Completed",
+          message: `Upload file success!.`,
+        });
+        setImgSrc(res);
+        form.setFieldsValue({
+          image: res,
+        });
+      })
+      .catch((err) => {
+        notification.error({
+          title: "Action failed",
+          message: err || `Upload file failed`,
+        });
+      })
+      .finally(() => {
+        // setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -49,12 +80,14 @@ const VCard = ({ onFileChange, imgSrc }) => {
         website: vcardData?.website,
         zipCode: vcardData?.zipCode,
         note: vcardData?.note,
+        image: vcardData?.image || ''
       });
     }
   }, [vcardData]);
 
   useEffect(() => {
     dispatch(getVCardAsync());
+    setImgSrc('');
   }, []);
 
   return (
@@ -65,7 +98,7 @@ const VCard = ({ onFileChange, imgSrc }) => {
           <p className="pt-1.5	pb-14">
             Send a vCard that includes the number a contact has been assigned.
           </p>
-          <AvatarComponent onFileChange={onFileChange} imgSrc={imgSrc} />
+          <AvatarComponent onFileChange={onFileChange} imgSrc={imgSrc || vcardData?.image} />
         </Col>
       </Row>
       <Form
@@ -76,6 +109,15 @@ const VCard = ({ onFileChange, imgSrc }) => {
         className="form-profile vcard-form"
       >
         <Row className="mt-6" gutter={24}>
+          <Col xs={24} md={12} className="hidden">
+            <Form.Item
+              name="image"
+              label="image"
+              // rules={[{ required: true }]}
+            >
+              <Input placeholder="https://www.facebook.com" />
+            </Form.Item>
+          </Col>
           <Col xs={24} md={12}>
             <Form.Item
               name="firstName"
