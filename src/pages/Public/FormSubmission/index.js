@@ -160,7 +160,7 @@ const FormSubmission = () => {
                   },
                 ]}
               >
-                <Input size="large" placeholder="Email@.com" />
+                <Input size="large" placeholder="Adamsmith@gmail.com" />
               </Form.Item>
             </Col>
             <Col sm={24}>
