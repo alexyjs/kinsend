@@ -48,7 +48,7 @@ function App() {
   }, [savedAuth]);
 
   useEffect(() => {
-    if (user && user.id && !user?.isEnabledBuyPlan) {
+    if (user && user.id && (!user?.isEnabledBuyPlan || !user?.phoneSystem?.length)) {
       navigate("/payment-setup");
     }
   }, [user]);

@@ -46,7 +46,7 @@ const PaymentSetup = () => {
   }, [showAccountModal]);
 
   useEffect(() => {
-    if (user?.isEnabledBuyPlan) {
+    if (user?.isEnabledBuyPlan && user?.phoneSystem?.length) {
       // navigate("/dashboard");
       navigate("/message");
     }
