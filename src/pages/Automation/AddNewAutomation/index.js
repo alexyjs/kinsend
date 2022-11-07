@@ -289,7 +289,7 @@ const AddNewAutomation = () => {
 
   return (
     <LayoutComponent className="create-automation-page">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between md:items-center md:flex-row flex-col">
         <h1>
           {!id && title === "New automation" ? (
             <>
@@ -303,7 +303,7 @@ const AddNewAutomation = () => {
         <Button
           type="primary"
           size="large"
-          className="min-w-200"
+          className="min-w-200 mt-3 md:mt-0"
           onClick={handleSubmit}
           disabled={!tasks?.length}
         >
