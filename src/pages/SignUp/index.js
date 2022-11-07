@@ -338,6 +338,7 @@ const SignUp = () => {
                   <Title level={4} className="text-center">
                     Tell Us More
                   </Title>
+                  <p className="text-center">This step is optional but it will help us get you the best possible results for your business with SMS Marketing.</p>
                 </div>
                 <Collapse className="my-4" accordion expandIconPosition="right">
                   <Panel header="How are you hear about KinSend?" key="1">
