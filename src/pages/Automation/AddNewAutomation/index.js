@@ -303,7 +303,7 @@ const AddNewAutomation = () => {
         <Button
           type="primary"
           size="large"
-          className="min-w-200 mt-3 md:mt-0"
+          className="min-w-200 mt-3 md:mt-0 hidden md:block"
           onClick={handleSubmit}
           disabled={!tasks?.length}
         >
@@ -314,7 +314,7 @@ const AddNewAutomation = () => {
         Change title
       </Button>
       {!trigger && (
-        <div className="flex justify-center items-center flex-col add-automation-empty">
+        <div className="flex justify-center items-center flex-col add-automation-empty md:mt-0 mt-3">
           <AutomationTriggerIcon />
           <h2>Get started with a trigger</h2>
           <span className="add-automation-empty-desc">
@@ -330,7 +330,7 @@ const AddNewAutomation = () => {
           </Button>
         </div>
       )}
-      <div className="timeline flex justify-center items-center flex-col">
+      <div className="timeline flex justify-center items-center flex-col md:mt-0 mt-3">
         {trigger && (
           <>
             <div
@@ -390,6 +390,17 @@ const AddNewAutomation = () => {
             ))
           : null}
         {trigger && emptyTask(tasks.length + 1)}
+      </div>
+      <div className="flex items-center md:hidden justify-center">
+        <Button
+          type="primary"
+          size="large"
+          className="min-w-200 mt-3 md:mt-0"
+          onClick={handleSubmit}
+          disabled={!tasks?.length}
+          >
+          SAVE
+        </Button>
       </div>
       {/* TODO: Update later. we will duplicate this one in the first version */}
       <TriggerModal
