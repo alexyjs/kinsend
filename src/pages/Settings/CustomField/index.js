@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, Tag, Space } from "antd";
+import { Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useModal } from "../../../hook/useModal";
@@ -10,11 +10,7 @@ import {
   getCustomFieldsAsync,
   selectSettings,
 } from "../../../redux/settingsReducer";
-import {
-  CUSTOM_FIELD_ICON,
-  CUSTOM_FIELD_LABEL,
-  CUSTOM_FIELD_OPTIONS,
-} from "../../../utils/constants";
+import { CUSTOM_FIELD_OPTIONS } from "../../../utils/constants";
 
 import "./styles.less";
 
@@ -31,10 +27,10 @@ const CustomFieldsList = () => {
     setSelectedRowKeys(raw);
   };
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: handleSelectKey,
-  };
+  // const rowSelection = {
+  //   selectedRowKeys,
+  //   onChange: handleSelectKey,
+  // };
 
   const handleEdit = (value) => {
     setEditData(value);
