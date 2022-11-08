@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, memo } from "react";
 import { Row, Col, Avatar } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams, useNavigate } from "react-router-dom";
-
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import {
   UploadFileModal,
   EmojiPicker,
@@ -42,6 +42,7 @@ const MessageDetail = () => {
   const [attachment, setAttachmentUrl] = useState({});
   const [defaultValueMessage, setDefaultValueMessage] = useState("");
   const [directMessage, setDirectMessage] = useState("");
+  const navigate = useNavigate();
 
   const {
     close: closeUpload,
@@ -82,6 +83,10 @@ const MessageDetail = () => {
   const handleUploadFile = (value) => {
     setAttachmentUrl(value);
     closeUpload();
+  };
+
+  const handleBackToList = () => {
+    navigate("/message");
   };
 
   useEffect(() => {
@@ -132,6 +137,13 @@ const MessageDetail = () => {
           <SideBarMessage data={message} />
         </div>
         <div className="flex-1 flex messageDetail-body flex-col">
+          <div
+            className="md:hidden flex items-center back-button px-4 py-2"
+            onClick={handleBackToList}
+          >
+            <ArrowLeftOutlined />
+            <span className="ml-3 py-3 font-bold	">View Message List</span>
+          </div>
           <MessageTimeline data={messageDetail} className="flex-1" />
           <div className="custom-textarea-wrap messageDetail-page-send-message border-left">
             <EditableText

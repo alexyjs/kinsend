@@ -65,7 +65,7 @@ const Profile = () => {
   }, []);
 
   return (
-    <LayoutComponent className="updates-detail-page">
+    <LayoutComponent className="updates-detail-page" title="Updates">
       <div className="flex-auto flex-col md:flex hidden">
         {upcomingUpdate && (
           <Row className="flex-end justify-end">
