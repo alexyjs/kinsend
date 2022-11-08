@@ -217,14 +217,14 @@ const AddNewAutomation = () => {
 
   useEffect(() => {
     dispatch(getTagsAsync());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (newAutomation) {
       navigate("/automation/active");
       dispatch(resetAutomationAsync());
     }
-  }, [navigate, newAutomation]);
+  }, [navigate, newAutomation, dispatch]);
 
   const resetData = useCallback(() => {
     setTitle("New automation");
@@ -398,7 +398,7 @@ const AddNewAutomation = () => {
           className="min-w-200 mt-3 md:mt-0"
           onClick={handleSubmit}
           disabled={!tasks?.length}
-          >
+        >
           SAVE
         </Button>
       </div>

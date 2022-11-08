@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Row,
   Col,
@@ -23,7 +23,7 @@ import {
   addFormSubmissionAsync,
   selectPublic,
 } from "../../../redux/publicReducer";
-import { parseFormDataValue, phoneValidator, getCname, getMainDomain } from "../../../utils";
+import { phoneValidator, getCname, getMainDomain } from "../../../utils";
 import { FORM_SETTINGS_STATUS } from '../../../utils/constants';
 
 import "./styles.less";
@@ -41,7 +41,7 @@ const FormSubmission = () => {
   const cname = getCname();
   const mainDomain = getMainDomain();
 
-  const { addedFormSubmission, formSettingDetail, addedForm, isNewFormLoading } =
+  const { addedFormSubmission, formSettingDetail, isNewFormLoading } =
     useSelector(selectPublic);
 
   const onSubmitAddNewForm = (values) => {

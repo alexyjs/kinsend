@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef, memo } from "react";
-import { Row, Col, Avatar } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import {
   UploadFileModal,
@@ -10,7 +9,6 @@ import {
   EditableText,
 } from "../../../components";
 import { AttachmentIcon, EmojiIcon } from "../../../assets/svg";
-import { selectUsers } from "../../../redux/userReducer";
 import SideBarMessage from "../components/SideBarMessage";
 import SubscriberInfor from "../components/SubscriberInfor";
 import MessageTimeline from "../components/MessageTimeline";
@@ -33,7 +31,6 @@ import "./styles.less";
 
 const MessageDetail = () => {
   let { messageId } = useParams();
-  const { user } = useSelector(selectUsers);
   const dispatch = useDispatch();
   const { message, messageDetail, smsMessage } = useSelector(selectMessage);
   const { subscriberDetail } = useSelector(selectSubscriptions);

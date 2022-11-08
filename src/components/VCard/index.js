@@ -26,7 +26,6 @@ const layout = {
 const VCard = ({}) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const { user } = useSelector(selectUsers);
   const { vcardData, isLoading } = useSelector(selectVCard);
   const [imgSrc, setImgSrc] = useState("");
 

@@ -27,18 +27,18 @@ const AddNewUpdates = () => {
   let { updatesId } = useParams();
   const { updates, updatesDetail, isDeleted } = useSelector(selectUpdates);
   const {
-    bounced,
+    // bounced,
     bouncedPercent,
     byInternational,
     byLocal,
-    cleaned,
+    // cleaned,
     cleanedPercent,
     clicked,
     clickedPercent,
     deliveredByMms,
     deliveredBySms,
     deliveredMMSPercent,
-    deliveredNumbers,
+    // deliveredNumbers,
     deliveredPercent,
     deliveredSMSPercent,
     domesticPercent,
@@ -46,7 +46,7 @@ const AddNewUpdates = () => {
     linkNumbers,
     notResponse,
     optedOut,
-    optedOutResponded,
+    // optedOutResponded,
     recipients,
     responded,
     responsePercent,
@@ -76,17 +76,17 @@ const AddNewUpdates = () => {
       navigate("/updates");
       dispatch(resetUpdatesAsync());
     }
-  }, [navigate, isDeleted]);
+  }, [navigate, isDeleted, dispatch]);
 
   useEffect(() => {
     if (updatesId) {
       dispatch(getUpdatesDetailAsync(updatesId));
     }
-  }, [updatesId]);
+  }, [updatesId, dispatch]);
 
   useEffect(() => {
     dispatch(getUpdatesAsync());
-  }, []);
+  }, [dispatch]);
 
   if (!updatesDetail) {
     return null;

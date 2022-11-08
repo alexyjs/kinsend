@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import _ from "lodash";
+import React, { useEffect } from "react";
 import { Divider, Form, Input, Button, Row, Col } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -19,8 +18,6 @@ const layout = {
   labelCol: { span: 8 },
   wrapperCol: {
     span: 16,
-    // md: 8,
-    // xs: 24,
   },
 };
 
@@ -51,7 +48,7 @@ const Profile = () => {
         lastName: user.lastName,
       });
     }
-  }, [user]);
+  }, [user, form]);
 
   return (
     <LayoutComponent className="profile-page">

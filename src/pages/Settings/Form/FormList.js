@@ -13,7 +13,6 @@ import {
   getTagsAsync,
   updateStatusFormAsync,
 } from "../../../redux/settingsReducer";
-import { selectUsers } from "../../../redux/userReducer";
 import { CopyComponent } from "../../../components";
 import { FORM_SETTINGS_STATUS } from "../../../utils/constants";
 
@@ -22,7 +21,6 @@ import "./FormList.less";
 const TagsList = () => {
   const { close, show, visible } = useModal();
   const { forms } = useSelector(selectSettings);
-  const { user } = useSelector(selectUsers);
   const dispatch = useDispatch();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 

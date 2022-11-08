@@ -62,7 +62,7 @@ const Profile = () => {
 
   useEffect(() => {
     dispatch(getUpdatesAsync());
-  }, []);
+  }, [dispatch]);
 
   return (
     <LayoutComponent className="updates-detail-page" title="Updates">

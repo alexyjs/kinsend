@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Form, Tabs } from "antd";
+import { Tabs } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
 import LayoutComponent from "./../../../components/Layout";
@@ -12,13 +12,12 @@ function callback(key) {
 }
 
 const Settings = () => {
-  const [form] = Form.useForm();
   const dispatch = useDispatch();
   const { customFields, forms } = useSelector(selectSettings);
 
   useEffect(() => {
     dispatch(getTagsAsync());
-  }, [useDispatch]);
+  }, [dispatch]);
 
   return (
     <LayoutComponent className="settings-page" title="Setting">
