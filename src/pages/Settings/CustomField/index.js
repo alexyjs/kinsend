@@ -20,12 +20,12 @@ const CustomFieldsList = () => {
   const { customFields, addedCustomField, updatededCustomField } =
     useSelector(selectSettings);
   const dispatch = useDispatch();
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  // const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [editData, setEditData] = useState({});
 
-  const handleSelectKey = (raw, raw1) => {
-    setSelectedRowKeys(raw);
-  };
+  // const handleSelectKey = (raw, raw1) => {
+  //   setSelectedRowKeys(raw);
+  // };
 
   // const rowSelection = {
   //   selectedRowKeys,
@@ -44,7 +44,7 @@ const CustomFieldsList = () => {
 
   useEffect(() => {
     dispatch(getCustomFieldsAsync());
-  }, [useDispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (addedCustomField) {
@@ -55,7 +55,7 @@ const CustomFieldsList = () => {
     if (updatededCustomField) {
       handleCloseEdit();
     }
-  }, [updatededCustomField]);
+  }, [updatededCustomField, handleCloseEdit]);
 
   return (
     <div>

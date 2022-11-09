@@ -76,7 +76,7 @@ const FormSubmission = () => {
         navigate(`/thank-you`, { replace: true });
       }
     }
-  }, [addedFormSubmission, useDispatch]);
+  }, [addedFormSubmission, useDispatch, navigate]);
 
   useEffect(() => {
     if (formSettingDetail?.id) {
@@ -92,7 +92,7 @@ const FormSubmission = () => {
 
   useEffect(() => {
     dispatch(getFormsSettingDetailAsync(id || cname));
-  }, [useDispatch]);
+  }, [dispatch]);
 
   return (
     <div className="settings-page add-new-form-page pb-5">
