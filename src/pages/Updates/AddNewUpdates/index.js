@@ -63,8 +63,7 @@ const AddNewUpdates = () => {
   const [attachment, setAttachmentUrl] = useState({});
   const [datetime, setDatetime] = useState(new Date());
   const { newUpdate, segments, updatesDetail } = useSelector(selectUpdates);
-  const { tags, formSubmissions, subscriberLocations } =
-    useSelector(selectSettings);
+  const { tags, formSubmissions } = useSelector(selectSettings);
   const { user } = useSelector(selectUsers);
   const [dataSubmit, setDataSubmit] = useState(null);
   const childRef = useRef();
@@ -186,7 +185,7 @@ const AddNewUpdates = () => {
         }),
       },
     ];
-  }, [tags, segments, subscriberLocations]);
+  }, [tags, segments]);
 
   const phoneSubmissionOptions = useMemo(() => {
     if (!formSubmissions?.length) {
@@ -229,14 +228,14 @@ const AddNewUpdates = () => {
     dispatch(getTagsAsync());
     dispatch(getFormSubmissionsAsync());
     // dispatch(getSubscriberLocationsAsync());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (newUpdate) {
       navigate("/updates");
       dispatch(resetUpdatesAsync());
     }
-  }, [navigate, newUpdate]);
+  }, [navigate, newUpdate, dispatch]);
 
   // Reload datetime and update time schedule
 
@@ -260,7 +259,7 @@ const AddNewUpdates = () => {
     setDatetime(new Date());
     setRecipients(null);
     setAttachmentUrl({});
-  }, []);
+  }, [form]);
 
   useEffect(() => {
     handleReloadtime();
@@ -271,13 +270,13 @@ const AddNewUpdates = () => {
     return () => {
       clearInterval(timer);
     };
-  }, [datetime]);
+  }, [datetime, handleReloadtime]);
 
   useEffect(() => {
     if (updatesId && recipientsOptions) {
       dispatch(getUpdatesDetailAsync(updatesId));
     }
-  }, [updatesId, recipientsOptions]);
+  }, [updatesId, recipientsOptions, dispatch]);
 
   useEffect(() => {
     if (updatesId && updatesDetail) {
@@ -303,8 +302,8 @@ const AddNewUpdates = () => {
   console.log("###updatesDetail:", updatesDetail);
   return (
     <LayoutComponent className="add-updates-page">
-      <div className="flex items-center">
-        <div className="phone-image-frame">
+      <div className="flex items-center md:p-0 p-3">
+        <div className="phone-image-frame md:flex hidden">
           <div className="">
             <div className="phone-image-header">
               <div
@@ -383,17 +382,19 @@ const AddNewUpdates = () => {
           </div>
           <div className="flex flex-col">
             SCHEDULE TIME/INTERVAL
-            <div className="datetime-wrap inline-flex items-center mt-3">
-              <DatetimeIcon />
-              <DatePicker
-                showTimeSelect
-                timeIntervals={5}
-                selected={datetime}
-                onChange={(date) => setDatetime(date)}
-                dateFormat="MMMM d, yyyy h:mm aa"
-                className="bg-transparent"
-                wrapperClassName="w-auto mx-3"
-              />
+            <div className="datetime-wrap inline-flex md:items-center items-start mt-3 md:flex-row flex-col">
+              <div className="flex items-center">
+                <DatetimeIcon />
+                <DatePicker
+                  showTimeSelect
+                  timeIntervals={5}
+                  selected={datetime}
+                  onChange={(date) => setDatetime(date)}
+                  dateFormat="MMMM d, yyyy h:mm aa"
+                  className="bg-transparent"
+                  wrapperClassName="w-auto mx-3"
+                />
+              </div>
               <Form.Item
                 name="triggerType"
                 label=""

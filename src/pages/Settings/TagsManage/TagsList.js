@@ -56,7 +56,7 @@ const TagsList = () => {
 
   useEffect(() => {
     dispatch(getTagsAsync());
-  }, [useDispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (addedNewTag) {

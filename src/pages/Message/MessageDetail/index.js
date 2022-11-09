@@ -105,7 +105,7 @@ const MessageDetail = () => {
     return () => {
       clearInterval(timer);
     };
-  }, [messageId]);
+  }, [messageId, dispatch]);
 
   useEffect(() => {
     dispatch(getTagsAsync());
@@ -119,7 +119,7 @@ const MessageDetail = () => {
       setDefaultValueMessage("");
       setDirectMessage("");
     }
-  }, [smsMessage]);
+  }, [smsMessage, dispatch]);
 
   // console.log("###messageDetail", messageDetail);
   return (

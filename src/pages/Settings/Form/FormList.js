@@ -19,7 +19,7 @@ import { FORM_SETTINGS_STATUS } from "../../../utils/constants";
 import "./FormList.less";
 
 const TagsList = () => {
-  const { close, show, visible } = useModal();
+  const { show } = useModal();
   const { forms } = useSelector(selectSettings);
   const dispatch = useDispatch();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -113,7 +113,7 @@ const TagsList = () => {
     dispatch(getFormsAsync());
     dispatch(getCustomFieldsAsync());
     dispatch(getTagsAsync());
-  }, [useDispatch]);
+  }, [dispatch]);
 
   return (
     <div>
