@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { format, isBefore, isAfter } from "date-fns";
-import { Input, Divider, Dropdown, Menu } from "antd";
+import { Input, Divider, Dropdown, Menu, Button } from "antd";
 import { NavLink } from "react-router-dom";
+import classNames from "classnames";
+
 import { DownOutlined } from "@ant-design/icons";
 
 import { EditIcon, SearchIcon } from "../../../../assets/svg";
 
 import "./styles.less";
 
-const SideBarUpdate = ({ data }) => {
+const SideBarUpdate = ({ data, className }) => {
   const [dataShow, setDataShow] = useState(data);
   const [filter, setFilter] = useState("All Updates");
   const [searchText, setSearchText] = useState("");
@@ -58,12 +60,19 @@ const SideBarUpdate = ({ data }) => {
   }, [data, searchText, filter]);
 
   return (
-    <div className="SideBarUpdate">
+    <div className={classNames("SideBarUpdate", className)}>
+      <div className="md:hidden flex flex-row justify-center items-center mb-3">
+        <NavLink to="/updates/scheduled/new">
+          <Button type="primary" size="large" className="w-48	">
+            New Update
+          </Button>
+        </NavLink>
+      </div>
       <div className="flex justify-between items-center">
         <div className="SideBarUpdate-input flex flex-auto justify-between items-center pr-2">
           <Input
             className="SideBarUpdate-input"
-            placeholder="Search..."
+            placeholder="Search Existing Updates..."
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />

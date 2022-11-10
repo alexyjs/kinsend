@@ -1,17 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import {
-  Row,
-  Col,
-  Form,
-  Input,
-  Button,
-  Select,
-  Option,
-  Radio,
-  Checkbox,
-  notification,
-  Modal,
-} from "antd";
+import { Row, Col, Form, Input, Button, Select, Checkbox, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
 import { useNavigate } from "react-router";
@@ -23,7 +11,6 @@ import { AvatarComponent, RichText, VCardComponent } from "../../../components";
 import { OPTION_FIELDS } from "../../../utils/constants";
 import { handleCallAPI } from "../../../redux/helpers";
 import {
-  getFormDetail,
   selectSettings,
   getCustomFieldsAsync,
   getTagsAsync,
@@ -147,18 +134,18 @@ const AddNewForm = () => {
     setPreviewImage("");
     setImage("");
     setDescription("");
-  }, []);
+  }, [form]);
 
   useEffect(() => {
     dispatch(getCustomFieldsAsync());
     dispatch(getTagsAsync());
-  }, [useDispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (addedForm) {
       navigate("/settings/forms", { replace: true });
     }
-  }, [addedForm]);
+  }, [addedForm, navigate]);
 
   useEffect(() => {
     if (!image) {

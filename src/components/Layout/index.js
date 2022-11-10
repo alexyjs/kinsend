@@ -4,7 +4,7 @@ import { DoubleRightOutlined, DoubleLeftOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, NavLink } from "react-router-dom";
 import classnames from "classnames";
-import { UserOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import { UserOutlined } from "@ant-design/icons";
 
 import { STORAGE_AUTH_KEY } from "../../utils/constants";
 import useLocalStorage from "../../hook/userLocalStorage";
@@ -20,7 +20,7 @@ import {
 import { useOutsideAlerter } from "../../hook/useOutSide";
 import "./styles.less";
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Sider, Content } = Layout;
 
 const LayoutComponent = ({ className, children, title }) => {
   const { user } = useSelector(selectUsers);

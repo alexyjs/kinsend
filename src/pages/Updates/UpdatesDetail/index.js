@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Button, Row, Col, Divider } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { format, isAfter } from "date-fns";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { NavLink, useParams, useNavigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -26,18 +27,18 @@ const AddNewUpdates = () => {
   let { updatesId } = useParams();
   const { updates, updatesDetail, isDeleted } = useSelector(selectUpdates);
   const {
-    bounced,
+    // bounced,
     bouncedPercent,
     byInternational,
     byLocal,
-    cleaned,
+    // cleaned,
     cleanedPercent,
     clicked,
     clickedPercent,
     deliveredByMms,
     deliveredBySms,
     deliveredMMSPercent,
-    deliveredNumbers,
+    // deliveredNumbers,
     deliveredPercent,
     deliveredSMSPercent,
     domesticPercent,
@@ -45,7 +46,7 @@ const AddNewUpdates = () => {
     linkNumbers,
     notResponse,
     optedOut,
-    optedOutResponded,
+    // optedOutResponded,
     recipients,
     responded,
     responsePercent,
@@ -66,31 +67,42 @@ const AddNewUpdates = () => {
     dispatch(deleteUpdatesAsync(updatesId));
   };
 
+  const handleBackToList = () => {
+    navigate("/updates");
+  };
+
   useEffect(() => {
     if (isDeleted) {
       navigate("/updates");
       dispatch(resetUpdatesAsync());
     }
-  }, [navigate, isDeleted]);
+  }, [navigate, isDeleted, dispatch]);
 
   useEffect(() => {
     if (updatesId) {
       dispatch(getUpdatesDetailAsync(updatesId));
     }
-  }, [updatesId]);
+  }, [updatesId, dispatch]);
 
   useEffect(() => {
     dispatch(getUpdatesAsync());
-  }, []);
+  }, [dispatch]);
 
   if (!updatesDetail) {
     return null;
   }
 
   return (
-    <LayoutComponent className="updates-detail-page">
-      <div className="flex">
+    <LayoutComponent className="updates-detail-page" title="Update Detail">
+      <div className="flex w-full">
         <div className="flex-auto px-3 2xl:px-5">
+          <div
+            className="md:hidden flex items-center back-button"
+            onClick={handleBackToList}
+          >
+            <ArrowLeftOutlined />
+            <span className="ml-3 py-3 font-bold	">View Update List</span>
+          </div>
           <Row className="w-full mt-3">
             {isShowEditable && (
               <Col className="w-full flex justify-end my-5">
@@ -136,19 +148,19 @@ const AddNewUpdates = () => {
                 </span>
               </p>
               <Divider className="my-10" />
-              <div className="flex justify-between">
+              <div className="flex justify-between md:flex-row flex-col">
                 <div className="report-item">
                   <span className="report-amount text-primary">
                     {recipients}
                   </span>
                   <span className="report-desc">recipients</span>
                 </div>
-                <div className="flex">
-                  <div className="report-item">
+                <div className="flex md:flex-row flex-col">
+                  <div className="report-item mt-2 md:mt-0">
                     <span className="report-amount">{responsePercent}%</span>
                     <span className="report-desc">Responded</span>
                   </div>
-                  <div className="report-item ml-3">
+                  <div className="report-item md:ml-3 mt-2 md:mt-0">
                     <span className="report-amount">{clickedPercent}%</span>
                     <span className="report-desc">Clicked</span>
                   </div>
@@ -156,7 +168,7 @@ const AddNewUpdates = () => {
               </div>
               <Divider className="my-10 border-primary" />
               <h4 className="text-3xl text-center mb-10">Delivery</h4>
-              <div className="flex justify-between">
+              <div className="flex justify-between md:flex-row flex-col">
                 <div className="report-item">
                   <span className="report-amount text-primary">
                     {recipients}
@@ -164,15 +176,15 @@ const AddNewUpdates = () => {
                   <span className="report-desc">recipients</span>
                 </div>
                 <div className="flex">
-                  <div className="report-item">
+                  <div className="report-item mt-2 md:mt-0">
                     <span className="report-amount">{deliveredPercent}%</span>
                     <span className="report-desc">Delivered</span>
                   </div>
-                  <div className="report-item ml-3">
+                  <div className="report-item ml-3 mt-2 md:mt-0">
                     <span className="report-amount">{bouncedPercent}%</span>
                     <span className="report-desc">Bounced</span>
                   </div>
-                  <div className="report-item ml-3">
+                  <div className="report-item ml-3 mt-2 md:mt-0">
                     <span className="report-amount">{cleanedPercent}%</span>
                     <span className="report-desc">Cleaned</span>
                   </div>
@@ -212,14 +224,14 @@ const AddNewUpdates = () => {
               </div>
               <Divider className="my-10 border-primary" />
               <h4 className="text-3xl text-center mb-10">Response</h4>
-              <div className="flex justify-between">
+              <div className="flex justify-between md:flex-row flex-col">
                 <div className="report-item">
                   <span className="report-amount text-primary">
                     {responsePercent}%
                   </span>
                   <span className="report-desc">responsed</span>
                 </div>
-                <div className="report-item">
+                <div className="report-item mt-2 md:mt-0">
                   <span className="report-amount">{optedOut}%</span>
                   <span className="report-desc">opted Out</span>
                 </div>
@@ -294,14 +306,14 @@ const AddNewUpdates = () => {
               ) : null}
               <Divider className="my-10 border-primary" />
               <h4 className="text-3xl text-center mb-10">Click Through</h4>
-              <div className="flex justify-between">
+              <div className="flex justify-between md:flex-row flex-col">
                 <div className="report-item">
                   <span className="report-amount text-primary">
                     {clickedPercent}%
                   </span>
                   <span className="report-desc">Clicked</span>
                 </div>
-                <div className="report-item">
+                <div className="report-item mt-2 md:mt-0">
                   <span className="report-amount">{linkNumbers}</span>
                   <span className="report-desc">Links</span>
                 </div>
@@ -404,7 +416,7 @@ const AddNewUpdates = () => {
             </Col>
           </Row>
         </div>
-        <SideBarUpdate data={updates} />
+        <SideBarUpdate data={updates} className="md:block hidden" />
         <DeleteScheduleModal
           visible={visibleDelete}
           handleOk={handleDelete}

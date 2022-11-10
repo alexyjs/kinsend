@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Form, Input, Button, notification } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectUsers } from "../../redux/userReducer";
 import {
   getVCardAsync,
   selectVCard,
@@ -26,7 +25,6 @@ const layout = {
 const VCard = ({}) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const { user } = useSelector(selectUsers);
   const { vcardData, isLoading } = useSelector(selectVCard);
   const [imgSrc, setImgSrc] = useState("");
 
