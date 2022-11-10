@@ -386,6 +386,9 @@ const AddNewUpdates = () => {
               <div className="flex items-center">
                 <DatetimeIcon />
                 <DatePicker
+                  minDate={new Date()}
+                  minTime={new Date().getTime()}
+                  maxTime={new Date().setHours(23, 59, 59, 999)}
                   showTimeSelect
                   timeIntervals={5}
                   selected={datetime}
