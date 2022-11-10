@@ -1,5 +1,5 @@
 import { Button, Input } from "antd";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { InstagramSVG, TwitterSVG } from "../assets/svg";
 
 const InputSocial = ({ defaultActiveKey = "instagram", ...rest }) => {
@@ -9,9 +9,21 @@ const InputSocial = ({ defaultActiveKey = "instagram", ...rest }) => {
     setActiveKey(activeKey);
   };
 
+  const handleInputClick = (event) => {
+    if (!event.target.value.includes("https://")) {
+      if (activeKey === "instagram") {
+        event.target.value = "https://www.instagram.com/"
+      } else if (activeKey === "twitter") {
+        event.target.value = "https://www.twitter.com/"
+      }
+    }
+  }
+
   return (
     <Input
       size="large"
+      placeholder={activeKey === defaultActiveKey ? "https://www.instagram.com/instagram" : "https://twitter.com/twitter"}
+      onClick={handleInputClick}
       {...rest}
       addonBefore={
         <>

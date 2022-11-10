@@ -205,6 +205,10 @@ const SignUp = () => {
                       label="email"
                       rules={[
                         {
+                          required: true,
+                          message: "This field is required"
+                        },
+                        {
                           validator(_, value) {
                             if (EMAIL_REGEX.test(value) || !value) {
                               return Promise.resolve();
@@ -213,17 +217,23 @@ const SignUp = () => {
                               new Error("The email is invalid")
                             );
                           },
-                        },
+                        }
                       ]}
                     >
-                      <Input size="large" placeholder="Email@.com" />
+                      <Input size="large" placeholder="Adamsmith@gmail.com" />
                     </Form.Item>
                   </Col>
                   <Col sm={12} span={24}>
                     <Form.Item
                       name="phoneNumber"
                       label="Phone"
-                      rules={[phoneValidator]}
+                      rules={[
+                        {
+                          required: true,
+                          message: "This field is required"
+                        },
+                        phoneValidator
+                      ]}
                     >
                       <InputPhone />
                     </Form.Item>
@@ -234,12 +244,12 @@ const SignUp = () => {
                       label="Social"
                       rules={[
                         {
-                          required: true,
-                          message: "This field is required",
+                          required: false,
+                          // message: "This field is required",
                         },
                       ]}
                     >
-                      <InputSocial />
+                      <InputSocial/>
                     </Form.Item>
                   </Col>
                   <Col sm={12} span={24}>
@@ -328,6 +338,7 @@ const SignUp = () => {
                   <Title level={4} className="text-center">
                     Tell Us More
                   </Title>
+                  <p className="text-center">This step is optional but it will help us get you the best possible results for your business with SMS Marketing.</p>
                 </div>
                 <Collapse className="my-4" accordion expandIconPosition="right">
                   <Panel header="How are you hear about KinSend?" key="1">
