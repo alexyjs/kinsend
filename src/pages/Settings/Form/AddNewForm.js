@@ -195,7 +195,7 @@ const AddNewForm = () => {
   return (
     <LayoutComponent className="settings-page add-new-form-page">
       <h1>
-        Settings <span>SETTINGS</span>
+        New Form <span>SETTINGS</span>
       </h1>
       <Form
         {...layout}
@@ -216,15 +216,11 @@ const AddNewForm = () => {
             <div className="input-subfix flex items-end">
               <Form.Item
                 name="cnameTitle"
-                label={
-                  <div>
-                    KINSEND URL{" "}
-                    <span>A public url to your address book form.</span>
-                  </div>
-                }
+                label="KINSEND URL"
                 rules={[{ required: true }]}
                 className="flex-1"
               >
+                <p>A public url to your address book form.</p>
                 <Input className="prefix-input-domain" placeholder="" />
               </Form.Item>
               <span
@@ -237,15 +233,9 @@ const AddNewForm = () => {
             <Form.Item
               name="tagId"
               // rules={[{ required: true }]}
-              label={
-                <>
-                  INBOUND TAG
-                  <span>
-                    Choose which tag(s) get applied to incoming contacts
-                  </span>
-                </>
-              }
+              label="INBOUND TAG"
             >
+              <p>Choose which tag(s) get applied to incoming contacts. This can be a great way to add specific subscribers to an automation.</p>
               <Select
                 allowClear
                 // onChange={onTagChange}
@@ -263,6 +253,7 @@ const AddNewForm = () => {
               </Select>
             </Form.Item>
             <Form.Item name="title" label="TITLE" rules={[{ required: true }]}>
+              <p>The public facing title of your form.</p>
               <Input placeholder="Add title" />
             </Form.Item>
             <Form.Item
@@ -270,6 +261,7 @@ const AddNewForm = () => {
               label="BROWSER TITLE"
               rules={[{ required: true }]}
             >
+              <p>The name of your form's browser tab.</p>
               <Input placeholder="Add title browser title" />
             </Form.Item>
             <Form.Item name="redirectUrl" label="CUSTOM REDIRECT URL">
@@ -280,6 +272,7 @@ const AddNewForm = () => {
               label="DESCRIPTION"
               rules={[{ required: true }]}
             >
+              <p>This description will be displayed under the title of your form. Use this field to explain why you want to collect a subscriber's information and what value they will get out of giving you their information.</p>
               <RichText
                 className="mb-2"
                 value={desc}
@@ -303,6 +296,7 @@ const AddNewForm = () => {
               </Select>
             </Form.Item>
             <Form.Item name="customFieldsIds" label="CUSTOM FIELDS">
+              <p>Custom fields allow you to collect unique information about your contacts when they fill out your public form. Put these fields to use by selecting them when you customize your form.</p>
               <Select
                 mode="multiple"
                 placeholder="Add custom fields..."
@@ -319,16 +313,9 @@ const AddNewForm = () => {
             </Form.Item>
             <Form.Item
               name="submission"
-              label={
-                <>
-                  FORM SUBMISSION
-                  <span>
-                    When the user completes your form, KinSend™ will send this
-                    message via SMS.
-                  </span>
-                </>
-              }
+              label="FORM SUBMISSION"
             >
+              <p>When the user completes your form, KinSend™ will send this message via SMS.</p>
               <Input.TextArea placeholder="Send new messenge ..." />
             </Form.Item>
             {!vcardData?.id && (
@@ -364,18 +351,11 @@ const AddNewForm = () => {
             </Row>
             <Form.Item
               name="message"
-              label={
-                <>
-                  FORM SUBMISSION SUCCESS PAGE MESSAGE{" "}
-                  <span>
-                    Unless you provided a custom redirect URL above, a contact
-                    that completes your form is forwarded to a page that lets
-                    them know the submission was successful. Below you can
-                    customize the message the user sees on this page.
-                  </span>
-                </>
-              }
+              label="FORM SUBMISSION SUCCESS PAGE MESSAGE"
             >
+              <p>
+                Unless you provided a custom redirect URL above, a contact that completes your form is forwarded to a page that lets them know the submission was successful. Below you can customize the message the user sees on this page.
+              </p>
               <Input placeholder="Thank you for adding yourself to my phone book!" />
             </Form.Item>
           </Col>
