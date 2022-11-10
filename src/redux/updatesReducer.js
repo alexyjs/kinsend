@@ -212,13 +212,13 @@ export function* sendTestMessageSage(action) {
     // yield put(sendTestMessageSuccess(response));
     notification.success({
       title: "Action Completed",
-      message: `Send Test Message is Success!`,
-    });
+      message: `Test Message Has Been Sent Successfully!`,
+    })
   } else {
     yield put(failed(errors));
     notification.error({
       title: "Action failed",
-      message: getErrorMessage(errors) || `Send Test Message is failed`,
+      message: getErrorMessage(errors) || `Test Message Send Failed`,
     });
   }
 }

@@ -366,8 +366,9 @@ const AddNewAutomation = () => {
               <div className="automation-action-item-content">
                 <h4 className="text-white inline-flex items-center">
                   <AutomationAddStopIcon className="mr-2" />
-                  Add stop trigger
+                  {`Add stop trigger`}
                 </h4>
+                <span>Optional</span>
                 <span className="text-white">
                   {stop?.type === "FIRST_MESSAGE"
                     ? "First messenge"

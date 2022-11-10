@@ -105,7 +105,8 @@ const TriggerModal = ({ visible, handleOk, handleCancel, data }) => {
             <Col>
               <Action
                 Icon={FirstMessageIcon}
-                label="First Message"
+                label="FIRST MESSAGE"
+                description="This trigger fires after a subscriber sends you a message for the first time."
                 value="FIRST_MESSAGE"
                 onClick={handleSelectTrigger}
               />
@@ -113,7 +114,8 @@ const TriggerModal = ({ visible, handleOk, handleCancel, data }) => {
             <Col>
               <Action
                 Icon={ContactCreatedIcon}
-                label="contact created"
+                label="CONTACT CREATED"
+                description="This trigger fires after a new subscriber is created."
                 value="CONTACT_CREATED"
                 onClick={handleSelectTrigger}
               />
@@ -121,7 +123,8 @@ const TriggerModal = ({ visible, handleOk, handleCancel, data }) => {
             <Col>
               <Action
                 Icon={ContactTagged}
-                label="Contact Tagged"
+                label="CONTACT TAGGED"
+                description="This trigger fires after a subscriber is tagged with your desired custom tag."
                 value="CONTACT_TAGGED"
                 onClick={handleSelectTrigger}
               />

@@ -105,7 +105,8 @@ const StopTriggerModal = ({ visible, handleOk, handleCancel, data }) => {
             <Col>
               <Action
                 Icon={FirstMessageIcon}
-                label="first message"
+                label="FIRST MESSAGE"
+                description="This trigger fires after a subscriber sends you a message for the first time."
                 value="FIRST_MESSAGE"
                 onClick={handleSelectTrigger}
               />
@@ -114,6 +115,7 @@ const StopTriggerModal = ({ visible, handleOk, handleCancel, data }) => {
               <Action
                 Icon={ContactCreatedIcon}
                 label="CONTACT CREATED"
+                description="This trigger fires after a new subscriber is created."
                 value="CONTACT_CREATED"
                 onClick={handleSelectTrigger}
               />
@@ -122,6 +124,7 @@ const StopTriggerModal = ({ visible, handleOk, handleCancel, data }) => {
               <Action
                 Icon={ContactTagged}
                 label="CONTACT TAGGED"
+                description="This trigger fires after a subscriber is tagged with your desired custom tag."
                 value="CONTACT_TAGGED"
                 onClick={handleSelectTrigger}
               />

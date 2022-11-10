@@ -46,7 +46,7 @@ export function* addFormSubmissionSaga(action) {
     yield put(addFormSubmissionSuccess(response));
     notification.success({
       title: "Action Completed",
-      message: `The request is Success!`,
+      message: `Success!`,
     });
   } else {
     yield put(failed(errors));
