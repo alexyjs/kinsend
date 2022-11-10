@@ -265,6 +265,7 @@ const AddNewForm = () => {
               <Input placeholder="Add title browser title" />
             </Form.Item>
             <Form.Item name="redirectUrl" label="CUSTOM REDIRECT URL">
+              <p>After a new subscriber submits your form they will be redirected to this link. If this is left blank then subscribers will be taken to a default form submission success page.</p>
               <Input placeholder="http//.." />
             </Form.Item>
             <Form.Item
