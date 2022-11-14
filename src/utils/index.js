@@ -110,18 +110,31 @@ export const clearEmptyField = (object) => {
 export const getCname = () => {
   const host = window.location.host;
   if (
+    // dev
     (host !== "www.dev.kinsend.io" &&
       host !== "dev.kinsend.io" &&
       // prod
+      host !== "app.kinsend.io" &&
       host !== "kinsend.io" &&
-      host.includes(".kinsend.io")) ||
-    // development
-    (host !== "localhost:3000" && host.includes(".localhost:3000"))
+      host.includes(".kinsend.io")
+      ) ||
+    // Support development. don't care this one
+    // TODO: move to port later
+    (host !== "dev.localhost:3000" && host !== "app.localhost:3000" && host !== "localhost:3000" && host.includes(".localhost:3000")) || 
+    (host !== "dev.localhost:3001" && host !== "app.localhost:3001" && host !== "localhost:3001" && host.includes(".localhost:3001"))
   ) {
     return host
       .replace(".dev.kinsend.io", "")
+      .replace(".app.kinsend.io", "")
       .replace(".kinsend.io", "")
-      .replace(".localhost:3000", "");
+      // Support development
+      // TODO: move to port later
+      .replace(".dev.localhost:3000", "")
+      .replace(".app.localhost:3000", "")
+      .replace(".localhost:3000", "")
+      .replace(".dev.localhost:3001", "")
+      .replace(".app.localhost:3001", "")
+      .replace(".localhost:3001", "");
   }
   return "";
 };
@@ -136,8 +149,23 @@ export const getMainDomain = () => {
     return "https://dev.kinsend.io";
   }
 
+  if (host.includes("app.kinsend.io")) {
+    return "https://app.kinsend.io";
+  }
+
   if (host.includes("kinsend.io")) {
     return "https://kinsend.io";
+  }
+
+
+  // Support development
+  // TODO: move to port later
+  if (host.includes("app.localhost:3001")) {
+    return "http://app.localhost:3001";
+  }
+
+  if (host.includes("dev.localhost:3001")) {
+    return "http://dev.localhost:3001";
   }
 
   return "http://localhost:3000";
