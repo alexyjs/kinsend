@@ -209,7 +209,7 @@ const AddNewForm = () => {
         className="form-profile vcard-form"
       >
         <Row className="mt-6" gutter={24}>
-          <Col sm={6} md={6}>
+          <Col xs={24} md={6} className=" text-center">
             <AvatarComponent
               onFileChange={onFileChange}
               imgSrc={previewImage}
@@ -251,7 +251,6 @@ const AddNewForm = () => {
                 </>
               }
             >
-              {/* <p>Choose which tag(s) get applied to incoming contacts. This can be a great way to add specific subscribers to an automation.</p> */}
               <Select
                 allowClear
                 // onChange={onTagChange}
