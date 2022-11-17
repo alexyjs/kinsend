@@ -36,7 +36,6 @@ export function* getFormDetailSaga(action) {
   if (response) {
     yield put(getFormsSettingDetailSuccess(response));
   } else {
-
     yield put(failed(errors));
     notification.error({
       title: "Action failed",
@@ -45,7 +44,10 @@ export function* getFormDetailSaga(action) {
     // Replace incorrect CNAME. We should redirect to Home Page for this case
     if (action.payload) {
       setTimeout(() => {
-        window.location.href = window.location.href.replace(`${action.payload}.`, '');
+        window.location.href = window.location.href.replace(
+          `${action.payload}.`,
+          ""
+        );
       }, 300);
     }
   }

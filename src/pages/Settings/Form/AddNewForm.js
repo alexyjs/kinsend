@@ -52,6 +52,8 @@ const AddNewForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [desc, setDescription] = useState("");
+
+  const [defaultDesc, setDefaultDescription] = useState("");
   const [image, setImage] = useState("");
   const [previewImage, setPreviewImage] = useState("");
   const { tags, customFields, addedForm, isNewFormLoading } =
@@ -189,6 +191,7 @@ const AddNewForm = () => {
         setImage("");
         setPreviewImage(data.image);
         setDescription(data.description);
+        setDefaultDescription(data.description);
       });
     } else {
       resetData();
@@ -325,6 +328,7 @@ const AddNewForm = () => {
               <RichText
                 className="mb-2"
                 value={desc}
+                defaultValue={defaultDesc}
                 onChange={(value) => {
                   setDescription(value);
                 }}
@@ -459,6 +463,15 @@ const AddNewForm = () => {
           </Col>
         </Row>
       </Form>
+      {/* <RichText
+        className="mb-2"
+        // value={desc}
+        defaultValue={defaultDesc}
+        onChange={(value) => {
+          console.log('###RichText', value);
+          setDescription(value);
+        }}
+      /> */}
       <Modal
         visible={visibleVcard}
         onOk={handleVcardOk}

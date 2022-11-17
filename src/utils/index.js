@@ -116,25 +116,32 @@ export const getCname = () => {
       // prod
       host !== "app.kinsend.io" &&
       host !== "kinsend.io" &&
-      host.includes(".kinsend.io")
-      ) ||
+      host.includes(".kinsend.io")) ||
     // Support development. don't care this one
     // TODO: move to port later
-    (host !== "dev.localhost:3000" && host !== "app.localhost:3000" && host !== "localhost:3000" && host.includes(".localhost:3000")) || 
-    (host !== "dev.localhost:3001" && host !== "app.localhost:3001" && host !== "localhost:3001" && host.includes(".localhost:3001"))
+    (host !== "dev.localhost:3000" &&
+      host !== "app.localhost:3000" &&
+      host !== "localhost:3000" &&
+      host.includes(".localhost:3000")) ||
+    (host !== "dev.localhost:3001" &&
+      host !== "app.localhost:3001" &&
+      host !== "localhost:3001" &&
+      host.includes(".localhost:3001"))
   ) {
-    return host
-      .replace(".dev.kinsend.io", "")
-      .replace(".app.kinsend.io", "")
-      .replace(".kinsend.io", "")
-      // Support development
-      // TODO: move to port later
-      .replace(".dev.localhost:3000", "")
-      .replace(".app.localhost:3000", "")
-      .replace(".localhost:3000", "")
-      .replace(".dev.localhost:3001", "")
-      .replace(".app.localhost:3001", "")
-      .replace(".localhost:3001", "");
+    return (
+      host
+        .replace(".dev.kinsend.io", "")
+        .replace(".app.kinsend.io", "")
+        .replace(".kinsend.io", "")
+        // Support development
+        // TODO: move to port later
+        .replace(".dev.localhost:3000", "")
+        .replace(".app.localhost:3000", "")
+        .replace(".localhost:3000", "")
+        .replace(".dev.localhost:3001", "")
+        .replace(".app.localhost:3001", "")
+        .replace(".localhost:3001", "")
+    );
   }
   return "";
 };
@@ -156,7 +163,6 @@ export const getMainDomain = () => {
   if (host.includes("kinsend.io")) {
     return "https://kinsend.io";
   }
-
 
   // Support development
   // TODO: move to port later
