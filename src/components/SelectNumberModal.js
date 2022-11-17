@@ -132,25 +132,31 @@ const SelectNumberModal = ({
             );
           }}
         </Form.Item>
-        <div className={`my-6 ${listPhoneShow && listPhoneShow.length === 0 && "centered"}`}>
-          {listPhoneShow && listPhoneShow.length === 0 ?
+        <div
+          className={`my-6 ${
+            listPhoneShow && listPhoneShow.length === 0 && "centered"
+          }`}
+        >
+          {listPhoneShow && listPhoneShow.length === 0 ? (
             <p className="text-base text-primary text-center ">
               No results. Please make sure you're only searching area codes.
-            </p> :
+            </p>
+          ) : (
             <p className="text-base text-primary text-center ">
               How about any of these numbers?
             </p>
-          }
+          )}
 
-          {listPhoneShow && listPhoneShow.length === 0 ?
-            <span></span> :
+          {listPhoneShow && listPhoneShow.length === 0 ? (
+            <span></span>
+          ) : (
             <p className="text-base text-primary text-center ">
               <PhoneList
                 listPhone={listPhoneShow}
                 onSelectPhone={handleSelectPhone}
               />
             </p>
-          }
+          )}
         </div>
 
         <Row justify="end" className="mt-6">
@@ -173,7 +179,7 @@ const SelectNumberModal = ({
                 type="primary"
                 size="large"
                 htmlType="submit"
-              // onClick={show}
+                // onClick={show}
               >
                 Confirm
               </Button>

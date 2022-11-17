@@ -12,17 +12,21 @@ const InputSocial = ({ defaultActiveKey = "instagram", ...rest }) => {
   const handleInputClick = (event) => {
     if (!event.target.value.includes("https://")) {
       if (activeKey === "instagram") {
-        event.target.value = "https://www.instagram.com/"
+        event.target.value = "https://www.instagram.com/";
       } else if (activeKey === "twitter") {
-        event.target.value = "https://www.twitter.com/"
+        event.target.value = "https://www.twitter.com/";
       }
     }
-  }
+  };
 
   return (
     <Input
       size="large"
-      placeholder={activeKey === defaultActiveKey ? "https://www.instagram.com/instagram" : "https://twitter.com/twitter"}
+      placeholder={
+        activeKey === defaultActiveKey
+          ? "https://www.instagram.com/instagram"
+          : "https://twitter.com/twitter"
+      }
       onClick={handleInputClick}
       {...rest}
       addonBefore={
