@@ -180,8 +180,11 @@ const AddNewForm = () => {
         form.setFieldsValue({
           ...data,
           customFieldsIds: (data?.customFields || []).map((item) => item.id),
-          tagId: data?.tags?.id,
-          cnameTitle: data?.cnameTitle ? data?.cnameTitle : data?.url,
+          tagId:
+            data?.tags?.length > 1
+              ? (data?.tags || []).map((item) => item.id)
+              : data?.tags?.id,
+          cnameTitle: data?.cname?.title ? data?.cname?.title : data?.url,
         });
         setImage("");
         setPreviewImage(data.image);
@@ -216,11 +219,15 @@ const AddNewForm = () => {
             <div className="input-subfix flex items-end">
               <Form.Item
                 name="cnameTitle"
-                label="KINSEND URL"
                 rules={[{ required: true }]}
                 className="flex-1"
+                label={
+                  <>
+                    KINSEND URL
+                    <span>A public url to your address book form.</span>
+                  </>
+                }
               >
-                <p>A public url to your address book form.</p>
                 <Input className="prefix-input-domain" placeholder="" />
               </Form.Item>
               <span
@@ -233,9 +240,18 @@ const AddNewForm = () => {
             <Form.Item
               name="tagId"
               // rules={[{ required: true }]}
-              label="INBOUND TAG"
+              label={
+                <>
+                  INBOUND TAG
+                  <span>
+                    Choose which tag(s) get applied to incoming contacts. This
+                    can be a great way to add specific subscribers to an
+                    automation.
+                  </span>
+                </>
+              }
             >
-              <p>Choose which tag(s) get applied to incoming contacts. This can be a great way to add specific subscribers to an automation.</p>
+              {/* <p>Choose which tag(s) get applied to incoming contacts. This can be a great way to add specific subscribers to an automation.</p> */}
               <Select
                 allowClear
                 // onChange={onTagChange}
@@ -252,28 +268,61 @@ const AddNewForm = () => {
                   ))}
               </Select>
             </Form.Item>
-            <Form.Item name="title" label="TITLE" rules={[{ required: true }]}>
-              <p>The public facing title of your form.</p>
+            <Form.Item
+              name="title"
+              rules={[{ required: true }]}
+              label={
+                <>
+                  TITLE
+                  <span>The public facing title of your form.</span>
+                </>
+              }
+            >
               <Input placeholder="Add title" />
             </Form.Item>
             <Form.Item
               name="browserTitle"
-              label="BROWSER TITLE"
               rules={[{ required: true }]}
+              label={
+                <>
+                  BROWSER TITLE
+                  <span>The name of your form's browser tab.</span>
+                </>
+              }
             >
-              <p>The name of your form's browser tab.</p>
               <Input placeholder="Add title browser title" />
             </Form.Item>
-            <Form.Item name="redirectUrl" label="CUSTOM REDIRECT URL">
-              <p>After a new subscriber submits your form they will be redirected to this link. If this is left blank then subscribers will be taken to a default form submission success page.</p>
+            <Form.Item
+              name="redirectUrl"
+              label={
+                <>
+                  CUSTOM REDIRECT URL
+                  <span>
+                    After a new subscriber submits your form they will be
+                    redirected to this link. If this is left blank then
+                    subscribers will be taken to a default form submission
+                    success page.
+                  </span>
+                </>
+              }
+            >
               <Input placeholder="http//.." />
             </Form.Item>
             <Form.Item
               name="description"
-              label="DESCRIPTION"
               rules={[{ required: true }]}
+              label={
+                <>
+                  DESCRIPTION
+                  <span>
+                    This description will be displayed under the title of your
+                    form. Use this field to explain why you want to collect a
+                    subscriber's information and what value they will get out of
+                    giving you their information.
+                  </span>
+                </>
+              }
             >
-              <p>This description will be displayed under the title of your form. Use this field to explain why you want to collect a subscriber's information and what value they will get out of giving you their information.</p>
               <RichText
                 className="mb-2"
                 value={desc}
@@ -296,8 +345,20 @@ const AddNewForm = () => {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item name="customFieldsIds" label="CUSTOM FIELDS">
-              <p>Custom fields allow you to collect unique information about your contacts when they fill out your public form. Put these fields to use by selecting them when you customize your form.</p>
+            <Form.Item
+              name="customFieldsIds"
+              label={
+                <>
+                  CUSTOM FIELDS
+                  <span>
+                    Custom fields allow you to collect unique information about
+                    your contacts when they fill out your public form. Put these
+                    fields to use by selecting them when you customize your
+                    form.
+                  </span>
+                </>
+              }
+            >
               <Select
                 mode="multiple"
                 placeholder="Add custom fields..."
@@ -314,9 +375,16 @@ const AddNewForm = () => {
             </Form.Item>
             <Form.Item
               name="submission"
-              label="FORM SUBMISSION"
+              label={
+                <>
+                  FORM SUBMISSION
+                  <span>
+                    When the user completes your form, KinSend™ will send this
+                    message via SMS.
+                  </span>
+                </>
+              }
             >
-              <p>When the user completes your form, KinSend™ will send this message via SMS.</p>
               <Input.TextArea placeholder="Send new messenge ..." />
             </Form.Item>
             {!vcardData?.id && (
@@ -352,11 +420,18 @@ const AddNewForm = () => {
             </Row>
             <Form.Item
               name="message"
-              label="FORM SUBMISSION SUCCESS PAGE MESSAGE"
+              label={
+                <>
+                  FORM SUBMISSION SUCCESS PAGE MESSAGE
+                  <span>
+                    Unless you provided a custom redirect URL above, a contact
+                    that completes your form is forwarded to a page that lets
+                    them know the submission was successful. Below you can
+                    customize the message the user sees on this page.
+                  </span>
+                </>
+              }
             >
-              <p>
-                Unless you provided a custom redirect URL above, a contact that completes your form is forwarded to a page that lets them know the submission was successful. Below you can customize the message the user sees on this page.
-              </p>
               <Input placeholder="Thank you for adding yourself to my phone book!" />
             </Form.Item>
           </Col>
