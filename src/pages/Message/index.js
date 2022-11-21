@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Divider, Card, Row, Col, Button } from "antd";
+import { Divider, Card, Row, Col, Button, Checkbox } from "antd";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,6 +13,8 @@ import {
   getMessageAsync,
   getMessageStatisticsAsync,
 } from "../../redux/messageReducer";
+import { getFormsAsync, selectSettings } from "../../redux/settingsReducer";
+import { getVCardAsync, selectVCard } from "../../redux/vcardReducer";
 import "./styles.less";
 
 const Message = () => {
@@ -24,6 +26,8 @@ const Message = () => {
   } = useModal();
   const dispatch = useDispatch();
   const { message, messageStatistics } = useSelector(selectMessage);
+  const { vcardData } = useSelector(selectVCard);
+  const { forms } = useSelector(selectSettings);
 
   const handleOkPhoneModal = () => {};
 
@@ -55,20 +59,55 @@ const Message = () => {
   useEffect(() => {
     dispatch(getMessageAsync());
     dispatch(getMessageStatisticsAsync());
+
+    //
+    dispatch(getFormsAsync());
+    dispatch(getVCardAsync());
   }, [dispatch]);
-  console.log("###message", message);
+
   return (
     <LayoutComponent className="Message-page" title="Conversations">
       <Row gutter={16}>
-        <Col span={8} lg={8} xs={24} className="lg:w-full">
+        <Col span={8} lg={8} xs={24} className="md:w-full">
           <SideBarMessage data={message} />
         </Col>
-        <Col span={16} className="lg:block">
+        <Col span={16} className="md:block hidden">
           <div className="flex justify-between items-center">
             <h1 className="mt-5">
               {getSessionOfDay()}, {user && user.firstName}
             </h1>
           </div>
+          {(!vcardData?.id || !forms?.length) && (
+            <>
+              <Divider className="mt-3 mb-5" />
+              <Row gutter={16}>
+                <Col span={12} className="mb-4">
+                  <Card bordered={true} className="rounded-3xl h-40 pl-2 pr-2">
+                    <div className="flex flex-col justify-between items-start">
+                      <Checkbox checked={vcardData?.id}>Vcard</Checkbox>
+                      <div className="mt-2">
+                        VCard updated for subscribers to save your contact
+                        information in their phone
+                      </div>
+                    </div>
+                  </Card>
+                </Col>
+                <Col span={12} className="mb-4">
+                  <Card bordered={true} className="rounded-3xl h-40 pl-2 pr-2">
+                    <div className="flex flex-col justify-between items-start">
+                      <Checkbox checked={forms?.length}>
+                        Subscribers Intake Form
+                      </Checkbox>
+                      <div className="mt-2">
+                        Form landing page created to collect new subscribers'
+                        information in your phonebook
+                      </div>
+                    </div>
+                  </Card>
+                </Col>
+              </Row>
+            </>
+          )}
           <Divider className="mt-3 mb-5" />
           <Card bordered={true} className="rounded-3xl mb-10">
             <Row gutter={16}>
@@ -142,6 +181,32 @@ const Message = () => {
               </Card>
             </Col>
           </Row>
+          {vcardData?.id && forms?.length && (
+            <Row gutter={16}>
+              <Col span={12} className="mb-4">
+                <Card bordered={true} className="rounded-3xl h-40 pl-2 pr-2">
+                  <div className="flex flex-col justify-between items-start">
+                    <Checkbox checked>Vcard</Checkbox>
+                    <div className="mt-2">
+                      VCard updated for subscribers to save your contact
+                      information in their phone
+                    </div>
+                  </div>
+                </Card>
+              </Col>
+              <Col span={12} className="mb-4">
+                <Card bordered={true} className="rounded-3xl h-40 pl-2 pr-2">
+                  <div className="flex flex-col justify-between items-start">
+                    <Checkbox checked>Subscribers Intake Form</Checkbox>
+                    <div className="mt-2">
+                      Form landing page created to collect new subscribers'
+                      information in your phonebook
+                    </div>
+                  </div>
+                </Card>
+              </Col>
+            </Row>
+          )}
         </Col>
       </Row>
       <SelectNumberModal
