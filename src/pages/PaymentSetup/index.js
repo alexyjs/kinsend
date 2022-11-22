@@ -42,12 +42,12 @@ const PaymentSetup = () => {
   };
 
   useEffect(() => {
-    if (!user?.isEnabledBuyPlan) {
+    if (user && !user?.isEnabledBuyPlan) {
       showAccountModal();
     } else {
       showPhoneNumber();
     }
-  }, [showAccountModal]);
+  }, [user, showAccountModal]);
 
   useEffect(() => {
     if (user?.isEnabledBuyPlan && user?.phoneSystem?.length) {
