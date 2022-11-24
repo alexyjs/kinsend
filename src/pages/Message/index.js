@@ -15,6 +15,7 @@ import {
 } from "../../redux/messageReducer";
 import { getFormsAsync, selectSettings } from "../../redux/settingsReducer";
 import { getVCardAsync, selectVCard } from "../../redux/vcardReducer";
+import WorkFlow from "./WorkFlow";
 import "./styles.less";
 
 const Message = () => {
@@ -69,7 +70,16 @@ const Message = () => {
     <LayoutComponent className="Message-page" title="Conversations">
       <Row gutter={16}>
         <Col span={8} lg={8} xs={24} className="md:w-full">
-          <SideBarMessage data={message} />
+          <SideBarMessage
+            data={message}
+            className="Message-page-SideBarMessage"
+          />
+          <div className="md:hidden block ">
+            <>
+              <Divider className="mt-3 mb-5" />
+              <WorkFlow vcardData={vcardData} forms={forms} />
+            </>
+          </div>
         </Col>
         <Col span={16} className="md:block hidden">
           <div className="flex justify-between items-center">
@@ -77,39 +87,14 @@ const Message = () => {
               {getSessionOfDay()}, {user && user.firstName}
             </h1>
           </div>
-          {(!vcardData?.id || !forms?.length) && (
+          {forms && (!vcardData?.id || !forms?.length) && (
             <>
               <Divider className="mt-3 mb-5" />
-              <Row gutter={16}>
-                <Col span={12} className="mb-4">
-                  <Card bordered={true} className="rounded-3xl h-40 pl-2 pr-2">
-                    <div className="flex flex-col justify-between items-start">
-                      <Checkbox checked={vcardData?.id}>Vcard</Checkbox>
-                      <div className="mt-2">
-                        VCard updated for subscribers to save your contact
-                        information in their phone
-                      </div>
-                    </div>
-                  </Card>
-                </Col>
-                <Col span={12} className="mb-4">
-                  <Card bordered={true} className="rounded-3xl h-40 pl-2 pr-2">
-                    <div className="flex flex-col justify-between items-start">
-                      <Checkbox checked={forms?.length}>
-                        Subscribers Intake Form
-                      </Checkbox>
-                      <div className="mt-2">
-                        Form landing page created to collect new subscribers'
-                        information in your phonebook
-                      </div>
-                    </div>
-                  </Card>
-                </Col>
-              </Row>
+              <WorkFlow vcardData={vcardData} forms={forms} />
             </>
           )}
           <Divider className="mt-3 mb-5" />
-          <Card bordered={true} className="rounded-3xl mb-10">
+          <Card bordered={true} className="rounded-3xl mb-5">
             <Row gutter={16}>
               <Col span={8} className="mb-4">
                 <div className="flex flex-col justify-between items-center">
@@ -182,30 +167,7 @@ const Message = () => {
             </Col>
           </Row>
           {vcardData?.id && forms?.length && (
-            <Row gutter={16}>
-              <Col span={12} className="mb-4">
-                <Card bordered={true} className="rounded-3xl h-40 pl-2 pr-2">
-                  <div className="flex flex-col justify-between items-start">
-                    <Checkbox checked>Vcard</Checkbox>
-                    <div className="mt-2">
-                      VCard updated for subscribers to save your contact
-                      information in their phone
-                    </div>
-                  </div>
-                </Card>
-              </Col>
-              <Col span={12} className="mb-4">
-                <Card bordered={true} className="rounded-3xl h-40 pl-2 pr-2">
-                  <div className="flex flex-col justify-between items-start">
-                    <Checkbox checked>Subscribers Intake Form</Checkbox>
-                    <div className="mt-2">
-                      Form landing page created to collect new subscribers'
-                      information in your phonebook
-                    </div>
-                  </div>
-                </Card>
-              </Col>
-            </Row>
+            <WorkFlow vcardData={vcardData} forms={forms} />
           )}
         </Col>
       </Row>
