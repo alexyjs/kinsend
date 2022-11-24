@@ -87,12 +87,12 @@ const Message = () => {
               {getSessionOfDay()}, {user && user.firstName}
             </h1>
           </div>
-          {forms && (!vcardData?.id || !forms?.length) && (
+          {forms && (!vcardData?.id || !forms?.length) ? (
             <>
               <Divider className="mt-3 mb-5" />
               <WorkFlow vcardData={vcardData} forms={forms} />
             </>
-          )}
+          ) : null}
           <Divider className="mt-3 mb-5" />
           <Card bordered={true} className="rounded-3xl mb-5">
             <Row gutter={16}>
@@ -166,9 +166,9 @@ const Message = () => {
               </Card>
             </Col>
           </Row>
-          {vcardData?.id && forms?.length && (
+          {vcardData?.id && forms?.length ? (
             <WorkFlow vcardData={vcardData} forms={forms} />
-          )}
+          ): null}
         </Col>
       </Row>
       <SelectNumberModal
