@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Input, Avatar } from "antd";
+import cl from "classnames";
 import { formatDistanceStrict } from "date-fns";
 import { UserOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
@@ -8,7 +9,7 @@ import { NavLink } from "react-router-dom";
 
 import "./styles.less";
 
-const SideBarMessage = ({ data }) => {
+const SideBarMessage = ({ data, className }) => {
   const [dataShow, setDataShow] = useState(data);
   // const [searchText, setSearchText] = useState("");
 
@@ -23,7 +24,7 @@ const SideBarMessage = ({ data }) => {
   }, [data]);
   // console.log("###dataShow", data, dataShow);
   return (
-    <div className="SideBarMessage bg-white	p-3 min-h-full	">
+    <div className={cl("SideBarMessage bg-white	p-3", className)}>
       {/* <div className="flex justify-between items-center bg-gray-1">
         <div className=" h-14 flex flex-auto justify-between items-center pr-2 bg-gray-1 border-2	border-gray-1 border-1 border-solid	rounded-lg	">
           <Input

@@ -43,7 +43,7 @@ const PaymentSetup = () => {
 
   useEffect(() => {
     if (user) {
-      if(!user?.isEnabledBuyPlan) {
+      if (!user?.isEnabledBuyPlan) {
         showAccountModal();
       } else {
         showPhoneNumber();
