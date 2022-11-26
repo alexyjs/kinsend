@@ -30,7 +30,7 @@ const Message = () => {
   const { vcardData } = useSelector(selectVCard);
   const { forms } = useSelector(selectSettings);
 
-  const handleOkPhoneModal = () => {};
+  const handleOkPhoneModal = () => { };
 
   const handleCancelPhoneModal = () => {
     closePhoneNumber();
@@ -96,7 +96,7 @@ const Message = () => {
           <Divider className="mt-3 mb-5" />
           <Card bordered={true} className="rounded-3xl mb-5">
             <Row gutter={16}>
-              <Col span={8} className="mb-4">
+              <Col span={8} className="">
                 <div className="flex flex-col justify-between items-center">
                   <div>
                     <h1 className="text-primary">
@@ -108,7 +108,7 @@ const Message = () => {
                   </div>
                 </div>
               </Col>
-              <Col span={8} className="mb-4">
+              <Col span={8} className="">
                 <div className="flex flex-col justify-between items-center">
                   <div>
                     <h1>{messageStatistics?.totalUpdate || 0}</h1>
@@ -118,7 +118,7 @@ const Message = () => {
                   </div>
                 </div>
               </Col>
-              <Col span={8} className="mb-4">
+              <Col span={8} className="">
                 <div className="flex flex-col justify-between items-center ml-10">
                   <div>
                     <h1>{messageStatistics?.clickedPercent || 0}%</h1>
@@ -132,9 +132,11 @@ const Message = () => {
           </Card>
           <Row gutter={16}>
             <Col span={12} className="mb-4">
-              <Card bordered={true} className="rounded-3xl h-60 pt-3 pl-2 pr-2">
-                <NotificationSVG />
-                <h2 className="font-bold text-xl mt-5">Send an Update</h2>
+              <Card bordered={true} className="rounded-3xl h-48 pt-3 pl-2 pr-2">
+                <div className="flex flex-row items-center mb-3">
+                  <NotificationSVG />
+                  <h2 className="font-bold text-xl ml-4">Send an Update</h2>
+                </div>
                 <span>
                   Broadcast a message to all of your subscribers or select a
                   filtered segment
@@ -149,9 +151,11 @@ const Message = () => {
               </Card>
             </Col>
             <Col span={12} className="mb-4">
-              <Card bordered={true} className="rounded-3xl h-60 pl-2 pr-2">
-                <AutomationRobotIcon />
-                <h2 className="font-bold text-xl">Create an Automation</h2>
+              <Card bordered={true} className="rounded-3xl h-48 pl-2 pr-2">
+                <div className="flex flex-row items-center">
+                  <AutomationRobotIcon />
+                  <h2 className="font-bold text-xl ml-4">Create an Automation</h2>
+                </div>
                 <span>
                   Create powerful drip campaigns & auto-responses based on a
                   variety of triggers
@@ -168,7 +172,7 @@ const Message = () => {
           </Row>
           {vcardData?.id && forms?.length ? (
             <WorkFlow vcardData={vcardData} forms={forms} />
-          ): null}
+          ) : null}
         </Col>
       </Row>
       <SelectNumberModal

@@ -6,7 +6,7 @@ const WorkFlow = ({ vcardData, forms }) => {
   return (
     <Row gutter={16}>
       <Col md={12} xs={24} className="mb-4">
-        <Card bordered={true} className="rounded-3xl h-40 pl-2 pr-2">
+        <Card bordered={true} className="rounded-3xl h-35 pl-2 pr-2">
           <div className="flex flex-col justify-between items-start">
             <Checkbox checked={vcardData?.id}>
               <NavLink to="/settings/profile">Vcard</NavLink>
@@ -19,7 +19,7 @@ const WorkFlow = ({ vcardData, forms }) => {
         </Card>
       </Col>
       <Col md={12} xs={24} className="mb-4">
-        <Card bordered={true} className="rounded-3xl h-40 pl-2 pr-2">
+        <Card bordered={true} className="rounded-3xl h-35 pl-2 pr-2">
           <div className="flex flex-col justify-between items-start">
             <Checkbox checked={forms?.length}>
               <NavLink to="/settings/forms/new">
