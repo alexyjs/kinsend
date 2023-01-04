@@ -128,6 +128,11 @@ const LayoutComponent = ({ className, children, title }) => {
                   <span>Tags & Segments</span>
                 </NavLink>
               </Menu.Item>
+              <Menu.Item>
+                <NavLink to="/settings/csv-contacts-import">
+                  <span>Contact Import</span>
+                </NavLink>
+              </Menu.Item>
             </Menu.SubMenu>
           </Menu>
         </Sider>
@@ -272,6 +277,11 @@ const LayoutComponent = ({ className, children, title }) => {
                     <Menu.Item>
                       <NavLink to="/settings/tags">
                         <span>Tags & Segments</span>
+                      </NavLink>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <NavLink to="/settings/csv-contacts-import">
+                        <span>Contact Import</span>
                       </NavLink>
                     </Menu.Item>
                   </Menu.SubMenu>
