@@ -24,6 +24,7 @@ export const getFormSubmissionsAsync = createAction(
 export const getSubscriberLocationsAsync = createAction(
   "settings/getSubscriberLocationsAsync"
 );
+export const importContactsAsync = createAction("settings/importContactsAsync");
 
 export async function getTags(data) {
   const payload = {
@@ -143,6 +144,16 @@ export async function getFormSubmissions(data) {
   };
 
   return handleCallAPI(payload);
+}
+
+export async function importContacts(data) {
+  const payload = {
+    method: "POST",
+    url: `${process.env.REACT_APP_API_BASE_URL}/contacts`,
+    data,
+  };
+
+  return handleFileCallAPI(payload);
 }
 
 // saga
@@ -320,6 +331,19 @@ export function* getSubscriberSaga(action) {
   }
 }
 
+export function* importContactsSaga(action) {
+  const { response, errors } = yield call(importContacts, action.payload);
+  if (response) {
+    yield put(importContactsSuccess(response));
+  } else {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || `Failed to import contacts, please try again!`,
+    });
+  }
+}
+
 export function* watchgetTagsSaga() {
   yield takeLatest(getTagsAsync, getTagsSaga);
 }
@@ -362,6 +386,10 @@ export function* watchGetFormSubmissionsSaga() {
 
 export function* watchGetSubscriberSaga() {
   yield takeLatest(getSubscriberLocationsAsync, getSubscriberSaga);
+}
+
+export function* watchImportContactsSaga() {
+  yield takeLatest(importContactsAsync, importContactsSaga);
 }
 
 const initialState = {
@@ -459,6 +487,7 @@ export const {
   addFormSuccess,
   getFormSubmissionsSuccess,
   getFormSubscriberLocationsSuccess,
+  importContactsSuccess,
 } = settingsSlice.actions;
 
 export const selectSettings = ({ settings }) => {
