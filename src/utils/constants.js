@@ -93,6 +93,7 @@ export const PLANS_DATA = {
 //   "Company",
 //   "Industry",
 // ];
+
 export const OPTION_FIELDS = [
   "GENDER",
   "BIRTHDAY",
@@ -103,6 +104,14 @@ export const OPTION_FIELDS = [
   "TITLE",
   "COMPANY",
   "INDUSTRY",
+];
+
+export const DEFAULT_FIELDS = [
+  "FIRST NAME",
+  "LAST NAME",
+  "PHONE NUMBER",
+  "EMAIL",
+  "LOCATION"
 ];
 
 export const INDUSTRY = ["Tech", "Music", "Fashion", "Other"];
