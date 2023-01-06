@@ -4,11 +4,19 @@ import { useState } from "react";
 import { useMemo } from "react";
 import { useModal } from "../../hook/useModal";
 import FieldSelectModal from "./FieldSelectModal";
+import { useSelector } from "react-redux";
+import { selectSettings } from "../../redux/settingsReducer";
 
-const FieldMapper = ({ index, fieldName, fieldValues, handleMap, initMappedField = '' }) => {
+const FieldMapper = ({ index, fieldName, fieldValues, handleMap }) => {
   const { close, show, visible } = useModal();
-  const [mappedField, setMappedField] = useState(initMappedField);
+  const { mappedFields } = useSelector(selectSettings);
   const [styles, setStyles] = useState('bg-white');
+
+  const mappedField = useMemo(() => {
+    const field = mappedFields?.find(field => field.from === index);
+
+    return field?.to || '';
+  }, [mappedFields, index]);
 
   const menu = useMemo(() => {
     return (
@@ -28,7 +36,6 @@ const FieldMapper = ({ index, fieldName, fieldValues, handleMap, initMappedField
 
   const handleFieldSelected = (field) => {
     handleMap(index, field);
-    setMappedField(field);
   }
 
   return (
@@ -47,8 +54,12 @@ const FieldMapper = ({ index, fieldName, fieldValues, handleMap, initMappedField
           <div className="flex">
             <Dropdown overlay={menu} trigger={["click"]} className="w-full">
               <Button>
-                <Space className="flex-1 flex items-center justify-between">
-                  { mappedField ? `Map to ${mappedField}` : 'Select field' }
+                <Space className="flex-1 flex items-center justify-between text-center w-full">
+                  { mappedField ? (
+                    <span className="normal-case font-normal">Map to <strong>{mappedField}</strong></span>
+                  ) : (
+                    <span className="normal-case">Select field</span>
+                  ) }
                   <CaretDownOutlined className="flex align-center" />
                 </Space>
               </Button>

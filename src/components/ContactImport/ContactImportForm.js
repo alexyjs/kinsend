@@ -1,27 +1,46 @@
 import { Button } from "antd";
-import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import CsvParser from "papaparse";
-import { importContactsAsync } from "../../redux/settingsReducer";
+import { fieldMapped, getCustomFieldsAsync, getTagsAsync, importContactsAsync, selectSettings } from "../../redux/settingsReducer";
 import { useMemo } from "react";
 import ContactImportMapper from "./ContactImportMapper";
+import { mapFieldsFromRawContacts } from "./helpers";
+import FinalDetails from "./FinalDetails";
 
 const contacts = JSON.parse('[["First Name","Last Name","Phone","Email","Job Title","Company","Address1","Address2","City","State/Province","Country Code","Zip Code","Tags","Birthday","Instagram","Twitter","Amount Spent"],["John","Doe","12025550169","j@shopify.com","Software Developer","Disruptive Multimedia","123 Fake Street","210 Another Fake Address","Ottawa","ON","CA","a1b2c3","customer;friend","10/21/1994","@instagram","@twitter","16.1"],["John","Doe","12025550169","j@shopify.com","Software Developer","Disruptive Multimedia","123 Fake Street","210 Another Fake Address","Ottawa","ON","CA","a1b2c3","customer;friend","10/21/1994","@instagram","@twitter","16.1"]]');
 
 const ContactImportForm = () => {
   const dispatch = useDispatch();
   const fileRef = useRef();
+  const { customFields, tags } = useSelector(selectSettings);
   const [file, setFile] = useState();
-  const [rawContacts, setRawContacts] = useState(contacts);
+  const [tag, setTag] = useState('');
+  const [rawContacts, setRawContacts] = useState([]);
 
-  const handleChange = (event) => {
+  const handleFileChange = (event) => {
     setFile(event.target.files[0]);
     CsvParser.parse(event.target.files[0], {
       complete: (rawData) => {
+        if (rawData.data.length < 2) {
+          alert('Invalid file!');
+          return;
+        }
+
+        const onFieldMatched = (from, to) => {
+          dispatch(fieldMapped({ from, to }));
+        }
+
+        mapFieldsFromRawContacts(rawData.data, onFieldMatched, customFields);
         setRawContacts(rawData.data);
       }
     });
   };
+
+  useEffect(() => {
+    dispatch(getCustomFieldsAsync());
+    dispatch(getTagsAsync());
+  }, [dispatch]);
 
   return (
     <>
@@ -30,7 +49,7 @@ const ContactImportForm = () => {
           <div className="max-w-xl">
             <h2 className="text-lg text-black font-bold mb-5">Upload your CSV File</h2>
             <span>
-              Ensure that your table includes columns for First Name and Phone Number or Email. To learn more about what data to include and get the most value out of SuperPhone
+              Ensure that your table includes columns for First Name and Phone Number or Email. To learn more about what data to include and get the most value out of Kinsend
               {/* TODO: add FAQ link */}
             </span>
           </div>
@@ -42,7 +61,7 @@ const ContactImportForm = () => {
           >
             Browser
           </Button>
-          <input id="upload" name="upload" type="file" ref={fileRef} hidden onChange={handleChange} />
+          <input id="upload" name="upload" type="file" ref={fileRef} hidden onChange={handleFileChange} />
         </div>
       </div>
       {
@@ -50,6 +69,7 @@ const ContactImportForm = () => {
           <ContactImportMapper rawContacts={rawContacts} />
         )
       }
+      <FinalDetails tags={tags} onSelect={setTag} />
     </>
   );
 }

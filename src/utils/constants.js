@@ -109,7 +109,7 @@ export const OPTION_FIELDS = [
 export const DEFAULT_FIELDS = [
   "FIRST NAME",
   "LAST NAME",
-  "PHONE NUMBER",
+  "PHONE",
   "EMAIL",
   "LOCATION"
 ];
