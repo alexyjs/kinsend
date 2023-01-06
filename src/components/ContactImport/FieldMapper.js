@@ -1,14 +1,13 @@
-import { Button, Dropdown, Menu, Modal, Select, Space } from "antd";
+import { Button, Dropdown, Menu, Space } from "antd";
 import { CaretDownOutlined } from '@ant-design/icons';
 import { useState } from "react";
-import { DEFAULT_FIELDS, OPTION_FIELDS } from "../../utils/constants";
 import { useMemo } from "react";
-import { CloseModalIcon } from "../../assets/svg";
 import { useModal } from "../../hook/useModal";
+import FieldSelectModal from "./FieldSelectModal";
 
-const FieldMapper = ({ index, fieldName, fieldValues, handleMap }) => {
+const FieldMapper = ({ index, fieldName, fieldValues, handleMap, initMappedField = '' }) => {
   const { close, show, visible } = useModal();
-  const [mappedField, setMappedField] = useState(index);
+  const [mappedField, setMappedField] = useState(initMappedField);
   const [styles, setStyles] = useState('bg-white');
 
   const menu = useMemo(() => {
@@ -27,6 +26,11 @@ const FieldMapper = ({ index, fieldName, fieldValues, handleMap }) => {
     );
   }, [index, handleMap, show]);
 
+  const handleFieldSelected = (field) => {
+    handleMap(index, field);
+    setMappedField(field);
+  }
+
   return (
     <>
       <div className={`w-72 rounded-md shadow-md ` + styles}>
@@ -35,16 +39,16 @@ const FieldMapper = ({ index, fieldName, fieldValues, handleMap }) => {
           <p className="font-bold text-base text-black">{ fieldName }</p>
         </div>
         <div className="p-5 h-44 border-y-1 border-gray-1">
-          <p className="text-base">{ fieldValues[0] }</p>
+          <p className="text-base">{ fieldValues[0] || '' }</p>
           <p className="text-base">{ fieldValues[1] || '' }</p>
           <p className="text-base">{ fieldValues[2] || '' }</p>
         </div>
-        <div className="p-2 h-14 text-center">
+        <div className="p-2 text-center">
           <div className="flex">
             <Dropdown overlay={menu} trigger={["click"]} className="w-full">
               <Button>
                 <Space className="flex-1 flex items-center justify-between">
-                  Select field
+                  { mappedField ? `Map to ${mappedField}` : 'Select field' }
                   <CaretDownOutlined className="flex align-center" />
                 </Space>
               </Button>
@@ -52,24 +56,12 @@ const FieldMapper = ({ index, fieldName, fieldValues, handleMap }) => {
           </div>
         </div>
       </div>
-      <Modal
-        visible={visible}
-        onOk={close}
-        onCancel={close}
-        footer={null}
-        // closable={false}
-        closeIcon={<CloseModalIcon />}
-        destroyOnClose={true}
-        centered
-        className="small-modal add-custom-field-modal"
-      >
-        <h3 className="font-bold text-center text-4xl mb-5">Map Column { fieldName } to</h3>
-        <div className="small-body-modal">
-          <div className="flex">
-            Select fields here!!!
-          </div>
-        </div>
-      </Modal>
+      <FieldSelectModal 
+        onSelect={handleFieldSelected} 
+        close={close} 
+        visible={visible} 
+        fieldName={fieldName} 
+      />
     </>
   )
 }

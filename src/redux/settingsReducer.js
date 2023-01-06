@@ -405,6 +405,7 @@ const initialState = {
   isNewFormLoading: false,
   formSubmissions: [],
   subscriberLocations: [],
+  mappedFields: [],
 };
 
 export const settingsSlice = createSlice({
@@ -455,6 +456,9 @@ export const settingsSlice = createSlice({
       state.isNewFormLoading = false;
       state.errors = action.payload;
     },
+    fieldMapped: (state, action) => {
+      state.mappedFields.push(action.payload);
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -488,6 +492,7 @@ export const {
   getFormSubmissionsSuccess,
   getFormSubscriberLocationsSuccess,
   importContactsSuccess,
+  fieldMapped
 } = settingsSlice.actions;
 
 export const selectSettings = ({ settings }) => {
@@ -502,6 +507,7 @@ export const selectSettings = ({ settings }) => {
     addedForm: settings.addedForm,
     isNewFormLoading: settings.isNewFormLoading,
     formSubmissions: settings.formSubmissions,
+    mappedFields: settings.mappedFields,
   };
 };
 
