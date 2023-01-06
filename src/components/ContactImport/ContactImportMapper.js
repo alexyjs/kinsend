@@ -1,14 +1,17 @@
+import { useDispatch } from "react-redux";
 import { extractInfoFromRawContacts } from "./helpers";
-
-import './contact-import.less';
 import FieldMapper from "./FieldMapper";
 
+import './contact-import.less';
+import { fieldMapped } from "../../redux/settingsReducer";
+
 const ContactImportMapper = ({ rawContacts }) => {
+  const dispatch = useDispatch();
   const { rawFields, colValues } = extractInfoFromRawContacts(rawContacts);
   const maxWidth = rawFields.length * 308;
 
   const handleMap = (from, to, isSkipped) => {
-
+    dispatch(fieldMapped({ from, to }));
   };
 
   return (
