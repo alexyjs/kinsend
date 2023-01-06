@@ -15,7 +15,7 @@ const ContactImportMapper = ({ rawContacts }) => {
   };
 
   return (
-    <div className="bg-gray-1 p-12 border-4 border-white rounded-b-lg ">
+    <div className="bg-gray-1 p-12 border-4 border-white">
       <div className="mb-5">
         <h2 className="text-lg text-black font-bold mb-1">Map your File to your Kinsend</h2>
         <span>

@@ -457,7 +457,11 @@ export const settingsSlice = createSlice({
       state.errors = action.payload;
     },
     fieldMapped: (state, action) => {
-      state.mappedFields.push(action.payload);
+      if (action.payload.to) {
+        state.mappedFields.push(action.payload);
+      } else { // remove mapped field
+        state.mappedFields = state.mappedFields.filter(field => field.from !== action.payload.from);
+      }
     }
   },
   extraReducers: (builder) => {
