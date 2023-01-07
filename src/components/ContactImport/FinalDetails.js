@@ -31,7 +31,7 @@ const FinalDetails = ({ tags, onSelect }) => {
           </Select>
           <Checkbox
             className="flex mt-5"
-            onChange={console.log}
+            onChange={onSelect}
           >
             <div>
               <p className="text-base font-semibold">Override Pre-existing Contact Information</p>

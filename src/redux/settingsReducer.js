@@ -149,11 +149,11 @@ export async function getFormSubmissions(data) {
 export async function importContacts(data) {
   const payload = {
     method: "POST",
-    url: `${process.env.REACT_APP_API_BASE_URL}/contacts`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/contacts/import`,
     data,
   };
 
-  return handleFileCallAPI(payload);
+  return handleCallAPI(payload);
 }
 
 // saga
@@ -333,14 +333,19 @@ export function* getSubscriberSaga(action) {
 
 export function* importContactsSaga(action) {
   const { response, errors } = yield call(importContacts, action.payload);
-  if (response) {
-    yield put(importContactsSuccess(response));
-  } else {
+
+  if (errors) {
     yield put(failed(errors));
     notification.error({
       title: "Action failed",
       message: errors || `Failed to import contacts, please try again!`,
     });
+  } else {
+    notification.success({
+      title: "Action Completed",
+      message: `Import contacts has been completed.`,
+    });
+    // yield put(importContactsSuccess(response));
   }
 }
 
@@ -462,6 +467,9 @@ export const settingsSlice = createSlice({
       } else { // remove mapped field
         state.mappedFields = state.mappedFields.filter(field => field.from !== action.payload.from);
       }
+    },
+    resetMappedFields: (state) => {
+      state.mappedFields = [];
     }
   },
   extraReducers: (builder) => {
@@ -496,7 +504,8 @@ export const {
   getFormSubmissionsSuccess,
   getFormSubscriberLocationsSuccess,
   importContactsSuccess,
-  fieldMapped
+  fieldMapped,
+  resetMappedFields
 } = settingsSlice.actions;
 
 export const selectSettings = ({ settings }) => {

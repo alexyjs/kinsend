@@ -109,10 +109,12 @@ export const OPTION_FIELDS = [
 export const DEFAULT_FIELDS = [
   "FIRST NAME",
   "LAST NAME",
-  "PHONE",
+  "PHONE NUMBER",
   "EMAIL",
   "LOCATION"
 ];
+
+export const defaultFieldsCamelized = ["firstName", "lastName", "phoneNumber", "email", "location"];
 
 export const INDUSTRY = ["Tech", "Music", "Fashion", "Other"];
 
