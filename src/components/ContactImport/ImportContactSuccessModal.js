@@ -26,7 +26,7 @@ const ImportContactSuccessModal = () => {
         className="small-modal"
       >
         <div className="justify-center">
-          <h3 className="font-bold text-center text-4xl mb-5">Your Import is Complete</h3>
+          <h3 className="font-bold text-center text-xl sm:text-4xl mb-5">Your Import is Complete</h3>
           <div className="mt-5">
             <p className="text-center">Your CSV file is successfully imported into Kinsend.</p>
             <div className="flex justify-center mt-5">

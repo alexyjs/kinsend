@@ -33,7 +33,7 @@ const FieldSelectModal = ({ close, visible, fieldName, onSelect }) => {
         centered
         className="small-modal add-custom-field-modal"
       >
-        <h3 className="font-bold text-center text-4xl mb-5">Map Column { fieldName } to</h3>
+        <h3 className="font-bold text-center text-xl md:text-4xl mb-5">Map Column { fieldName } to</h3>
         <div className="mt-10">
           <div className="flex">
             <Search
@@ -44,7 +44,7 @@ const FieldSelectModal = ({ close, visible, fieldName, onSelect }) => {
           <div className="mt-10">
             {
               fields.map((field, index) => (
-                <div key={index} className="flex md:flex-row flex-col justify-between items-center py-2 border-t-1 border-gray-1">
+                <div key={index} className="flex flex-row justify-between items-center py-2 border-t-1 border-gray-1">
                   <div>
                     <strong>{ field }</strong>
                   </div>
@@ -52,7 +52,7 @@ const FieldSelectModal = ({ close, visible, fieldName, onSelect }) => {
                     <Button
                       type="primary"
                       size="small"
-                      className="inline-flex items-center px-6 py-4 mt-3 md:mt-0"
+                      className="inline-flex items-center px-6 py-4 md:mt-0"
                       onClick={() => {
                         onSelect(field);
                         close();
