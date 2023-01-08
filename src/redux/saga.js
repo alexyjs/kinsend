@@ -38,6 +38,7 @@ import {
   watchGetFormSubmissionsSaga,
   watchGetSubscriberSaga,
   watchImportContactsSaga,
+  watchGetImportContactHistorySaga,
 } from "./settingsReducer";
 
 import {
@@ -119,6 +120,7 @@ export default function* rootSaga() {
     watchGetFormSubmissionsSaga(),
     watchGetSubscriberSaga(),
     watchImportContactsSaga(),
+    watchGetImportContactHistorySaga(),
 
     // public
     watchGetFormSettingDetailSaga(),

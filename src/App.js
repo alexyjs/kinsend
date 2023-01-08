@@ -35,6 +35,7 @@ import "./styles/antd.less";
 import "./styles/tailwind.css";
 import "./App.less";
 import ContactImport from "./pages/Settings/ContactImport/ContactImport";
+import ContactImportHistory from "./pages/Settings/ContactImport/ContactImportHistory";
 
 function App() {
   const [savedAuth, setAuth] = useLocalStorage(STORAGE_AUTH_KEY);
@@ -109,6 +110,7 @@ function App() {
             <Route path="/settings/forms/new" element={<AddNewForm />} />
             <Route path="/settings/forms/edit/:id" element={<AddNewForm />} />
             <Route path="/settings/csv-contacts-import" element={<ContactImport />} />
+            <Route path="/settings/csv-contacts-import-history" element={<ContactImportHistory />} />
 
             <Route path="/automation/new" element={<AddNewAutomation />} />
             <Route path="/automation/edit/:id" element={<AddNewAutomation />} />
