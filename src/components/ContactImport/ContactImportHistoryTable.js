@@ -12,14 +12,12 @@ const ContactImportHistoryTable = () => {
     dispatch(getImportContactHistoryAsync());
   }, [dispatch]);
 
-  console.log(contactHistory);
-
   return (
     <>
     <div className="px-12 py-4 bg-white rounded-lg shadow-md">
       {
         contactHistory?.map((history, index) => (
-          <div className={`flex py-4 justify-between items-center border-gray-1 ${ index === contactHistory.length - 1 ? '' : ' border-b-1 ' }`}>
+          <div className={`flex py-4 justify-between items-center border-gray-1 ${ index === contactHistory.length - 1 ? '' : ' border-b-1 ' }`} key={index}>
             {
               history.numbersContact === history.numbersContactImported ? (
                 <CheckCircleOutlined className="text-3xl text-green-500" />
