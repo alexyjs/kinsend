@@ -1,11 +1,11 @@
 import { defaultFieldsCamelized, DEFAULT_FIELDS, OPTION_FIELDS } from "../../utils/constants";
 
 export const extractInfoFromRawContacts = (rawContacts) => {
-  const copyRawContacts = rawContacts.slice();
+  const contacts = rawContacts.filter(rawContact => !isRowEmpty(rawContact));
 
   return {
-    rawFields: copyRawContacts.shift(),
-    colValues: transpose(copyRawContacts)
+    rawFields: contacts.shift(),
+    colValues: transpose(contacts)
   };
 }
 
@@ -30,6 +30,7 @@ export const mapContacts = (rawContacts, mappedFields) => {
       to: camelize(mappedField.to)
     }
   });
+
   return removeHeaders(rawContacts).map(rawContact => mapContact(rawContact, camelizedMappedFields));
 }
 
@@ -73,9 +74,11 @@ const transformPhone = (phoneString) => {
   // TODO: add transform phone logic
   return {
     phone: phoneString,
-    code: 123,
-    short: "US",
-    status: "VERIFY",
-    isPrimary: true
+    code: 1,
+    short: "US"
   };
+}
+
+const isRowEmpty = (row) => {
+  return row.every(col => !!!col)
 }

@@ -4,16 +4,22 @@ import FieldMapper from "./FieldMapper";
 
 import './contact-import.less';
 import { fieldMapped, selectSettings } from "../../redux/settingsReducer";
+import { useMemo } from "react";
+import { REQUIRED_FIELDS } from "../../utils/constants";
 
 const ContactImportMapper = ({ rawContacts, isCurrentStep, onEdit }) => {
   const dispatch = useDispatch();
-  const { mappedFields } = useSelector(selectSettings);
+  const { mappedFields, skippedFields } = useSelector(selectSettings);
   const { rawFields, colValues } = extractInfoFromRawContacts(rawContacts);
-  const maxWidth = rawFields.length * 308;
+  const maxWidth = (rawFields.length - skippedFields.length) * 308;
 
   const handleMap = (from, to, isSkipped) => {
     dispatch(fieldMapped({ from, to }));
   };
+
+  const isRequiredFieldsMapped = useMemo(() => {
+    return REQUIRED_FIELDS.every(requiredField => mappedFields.find(mappedField => mappedField.to === requiredField));
+  }, [mappedFields]);
 
   return (
     <div className="bg-gray-1 p-12 border-4 border-white">
@@ -36,21 +42,26 @@ const ContactImportMapper = ({ rawContacts, isCurrentStep, onEdit }) => {
         </div>
       </div>
       {isCurrentStep && (
-        <div className="w-full overflow-x-scroll mt-5">
+        <div className="w-full overflow-x-auto mt-5">
           <div className="flex md:flex-row flex-col space-x-5 my-5" style={{ width: maxWidth + 'px' }}>
             {
               rawFields.map((field, index) => (
-                <FieldMapper
-                  key={index}
-                  index={index}
-                  fieldName={field} 
-                  fieldValues={colValues[index]} 
-                  handleMap={handleMap}
-                />
+                !skippedFields.includes(index) && (
+                  <FieldMapper
+                    key={index}
+                    index={index}
+                    fieldName={field} 
+                    fieldValues={colValues[index]} 
+                    handleMap={handleMap}
+                  />
+                )
               ))
             }
           </div>
         </div>
+      )}
+      {!isRequiredFieldsMapped && (
+        <p className="mt-5 text-red-500">Mapping is incorrect! Ensure that your table includes columns for First Name, Last Name and Phone Number.</p>
       )}
     </div>
   );

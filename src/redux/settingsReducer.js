@@ -24,6 +24,7 @@ export const getFormSubmissionsAsync = createAction(
 export const getSubscriberLocationsAsync = createAction(
   "settings/getSubscriberLocationsAsync"
 );
+export const getImportContactHistoryAsync = createAction("settings/getImportContactHistoryAsync");
 export const importContactsAsync = createAction("settings/importContactsAsync");
 
 export async function getTags(data) {
@@ -151,6 +152,15 @@ export async function importContacts(data) {
     method: "POST",
     url: `${process.env.REACT_APP_API_BASE_URL}/contacts/import`,
     data,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function getContactHistory() {
+  const payload = {
+    method: "GET",
+    url: `${process.env.REACT_APP_API_BASE_URL}/contacts/history`,
   };
 
   return handleCallAPI(payload);
@@ -345,7 +355,16 @@ export function* importContactsSaga(action) {
       title: "Action Completed",
       message: `Import contacts has been completed.`,
     });
-    // yield put(importContactsSuccess(response));
+    yield put(importContactsSuccess(response));
+  }
+}
+
+export function* getImportContactHistorySaga(action) {
+  const { response, errors } = yield call(getContactHistory, action.payload);
+  if (response) {
+    yield put(getImportContactHistorySuccess(response));
+  } else {
+    yield put(failed(errors));
   }
 }
 
@@ -397,6 +416,10 @@ export function* watchImportContactsSaga() {
   yield takeLatest(importContactsAsync, importContactsSaga);
 }
 
+export function* watchGetImportContactHistorySaga() {
+  yield takeLatest(getImportContactHistoryAsync, getImportContactHistorySaga);
+}
+
 const initialState = {
   isLoading: false,
   errors: [],
@@ -411,6 +434,9 @@ const initialState = {
   formSubmissions: [],
   subscriberLocations: [],
   mappedFields: [],
+  skippedFields: [],
+  importContactStatus: null,
+  contactHistory: null,
 };
 
 export const settingsSlice = createSlice({
@@ -462,14 +488,27 @@ export const settingsSlice = createSlice({
       state.errors = action.payload;
     },
     fieldMapped: (state, action) => {
+      state.mappedFields = state.mappedFields.filter(field => field.from !== action.payload.from);
+
       if (action.payload.to) {
         state.mappedFields.push(action.payload);
-      } else { // remove mapped field
-        state.mappedFields = state.mappedFields.filter(field => field.from !== action.payload.from);
+      } else {
+        state.skippedFields.push(action.payload.from);
       }
     },
     resetMappedFields: (state) => {
       state.mappedFields = [];
+      state.skippedFields = [];
+      state.importContactStatus = null;
+    },
+    beginImportContact: (state) => {
+      state.importContactStatus = "loading"
+    },
+    importContactsSuccess: (state) => {
+      state.importContactStatus = 'success';
+    },
+    getImportContactHistorySuccess: (state, action) => {
+      state.contactHistory = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -505,7 +544,9 @@ export const {
   getFormSubscriberLocationsSuccess,
   importContactsSuccess,
   fieldMapped,
-  resetMappedFields
+  resetMappedFields,
+  beginImportContact,
+  getImportContactHistorySuccess,
 } = settingsSlice.actions;
 
 export const selectSettings = ({ settings }) => {
@@ -521,6 +562,9 @@ export const selectSettings = ({ settings }) => {
     isNewFormLoading: settings.isNewFormLoading,
     formSubmissions: settings.formSubmissions,
     mappedFields: settings.mappedFields,
+    skippedFields: settings.skippedFields,
+    importContactStatus: settings.importContactStatus,
+    contactHistory: settings.contactHistory,
   };
 };
 

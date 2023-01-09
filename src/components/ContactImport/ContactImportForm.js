@@ -1,4 +1,4 @@
-import { Button, Checkbox, Select } from "antd";
+import { Button, Checkbox, notification, Select } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,6 +6,9 @@ import CsvParser from "papaparse";
 import { fieldMapped, getCustomFieldsAsync, getTagsAsync, importContactsAsync, resetMappedFields, selectSettings } from "../../redux/settingsReducer";
 import ContactImportMapper from "./ContactImportMapper";
 import { mapContacts, mapFieldsFromRawContacts } from "./helpers";
+import { useMemo } from "react";
+import { REQUIRED_FIELDS } from "../../utils/constants";
+import ImportContactSuccessModal from "./ImportContactSuccessModal";
 
 const steps = {
   UPLOAD_CSV: 0,
@@ -17,18 +20,38 @@ const ContactImportForm = () => {
   const dispatch = useDispatch();
   const fileRef = useRef();
   const [step, setStep] = useState(steps.UPLOAD_CSV);
-  const { customFields, tags, mappedFields } = useSelector(selectSettings);
+  const { customFields, tags, mappedFields, importContactStatus } = useSelector(selectSettings);
   const [file, setFile] = useState();
   const [tag, setTag] = useState('');
   const [shouldOverride, setShouldOverride] = useState(false);
   const [rawContacts, setRawContacts] = useState([]);
+  
+  const isRequiredFieldsMapped = useMemo(() => {
+    return REQUIRED_FIELDS.every(requiredField => mappedFields.find(mappedField => mappedField.to === requiredField));
+  }, [mappedFields]);
 
   const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-    CsvParser.parse(event.target.files[0], {
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    if (file.type !== 'text/csv') {
+      notification.error({
+        title: "Action failed",
+        message: `File must be csv!`,
+      });
+
+      return;
+    }
+
+    setFile(file);
+    CsvParser.parse(file, {
       complete: (rawData) => {
         if (rawData.data.length < 2) {
-          alert('Invalid file!');
+          notification.error({
+            title: "Action failed",
+            message: `Csv file must have header and at least one contact!`,
+          });
           return;
         }
 
@@ -41,6 +64,12 @@ const ContactImportForm = () => {
         mapFieldsFromRawContacts(rawData.data, onFieldMatched, customFields);
         setRawContacts(rawData.data);
         setStep(steps.MAP_FILEDS);
+      },
+      error: (error) => {
+        notification.error({
+          title: "Action failed",
+          message: `Invalid CSV file!`,
+        });
       }
     });
   };
@@ -104,7 +133,7 @@ const ContactImportForm = () => {
               Browser
             </Button>
           )}
-          <input id="upload" name="upload" type="file" ref={fileRef} hidden onChange={handleFileChange} />
+          <input id="upload" name="upload" type="file" ref={fileRef} hidden onChange={handleFileChange} accept=".csv" />
         </div>
       </div>
       {
@@ -157,13 +186,21 @@ const ContactImportForm = () => {
           <Button
             type="primary"
             size="large"
-            className="next-btn inline-flex items-center px-12 mt-3 md:mt-0"
+            className={`next-btn inline-flex items-center px-12 mt-3 md:mt-0 ${!isRequiredFieldsMapped ? 'opacity-30' : 'opacity-80 hover:opacity-100'}`}
             onClick={handleNext}
+            disabled={!isRequiredFieldsMapped}
+            loading={importContactStatus === "loading"}
           >
             Next
           </Button>
         </div>
       )}
+
+      {
+        importContactStatus === "success" && (
+          <ImportContactSuccessModal />
+        )
+      }
     </div>
   );
 }
