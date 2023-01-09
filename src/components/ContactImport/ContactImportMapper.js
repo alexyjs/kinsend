@@ -43,7 +43,7 @@ const ContactImportMapper = ({ rawContacts, isCurrentStep, onEdit }) => {
       </div>
       {isCurrentStep && (
         <div className="w-full overflow-x-auto mt-5">
-          <div className={`flex flex-row space-x-5 my-5 w-[${(rawFields.length - skippedFields.length) * 308}px] md:w-[${(rawFields.length - skippedFields.length) * 308}px]`}>
+          <div className={`flex flex-row space-x-5 my-5`} style={{ width: maxWidth }}>
             {
               rawFields.map((field, index) => (
                 !skippedFields.includes(index) && (
