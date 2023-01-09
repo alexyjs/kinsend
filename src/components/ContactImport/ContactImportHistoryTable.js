@@ -14,7 +14,7 @@ const ContactImportHistoryTable = () => {
 
   return (
     <>
-    <div className="px-12 py-4 bg-white rounded-lg shadow-md">
+    <div className="px-7 md:px-12 py-1 md:py-4 bg-white rounded-lg shadow-md">
       {
         contactHistory?.map((history, index) => (
           <div className={`flex py-4 justify-between items-center border-gray-1 ${ index === contactHistory.length - 1 ? '' : ' border-b-1 ' }`} key={index}>
@@ -31,9 +31,9 @@ const ContactImportHistoryTable = () => {
                 <span 
                   className={history.numbersContact === history.numbersContactImported ? '' : 'text-amber-500'}
                 >
-                  { history.numbersContact === history.numbersContactImported ? history.numbersContact : `${history.numbersContactImported} of ${history.numbersContact}` }{' '}contact(s),{' '}
+                  { history.numbersContact === history.numbersContactImported ? history.numbersContact : `${history.numbersContactImported} of ${history.numbersContact}` }{' '}contacts,{' '}
                 </span>
-                {history.numbersColumnMapped} column(s) mapped
+                {history.numbersColumnMapped} columns mapped
               </p>
             </div>
           </div>

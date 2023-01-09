@@ -118,17 +118,17 @@ const LayoutComponent = ({ className, children, title }) => {
                 </div>
               }
             >
-              <Menu.Item>
+              <Menu.Item key="settings-form">
                 <NavLink to="/settings/forms">
                   <span>Forms & Widgets</span>
                 </NavLink>
               </Menu.Item>
-              <Menu.Item>
+              <Menu.Item key="settings-tag">
                 <NavLink to="/settings/tags">
                   <span>Tags & Segments</span>
                 </NavLink>
               </Menu.Item>
-              <Menu.Item>
+              <Menu.Item key="settings-import">
                 <NavLink to="/settings/csv-contacts-import">
                   <span>Contact Import</span>
                 </NavLink>
@@ -269,17 +269,17 @@ const LayoutComponent = ({ className, children, title }) => {
                       </div>
                     }
                   >
-                    <Menu.Item>
+                    <Menu.Item key="settings-form">
                       <NavLink to="/settings/forms">
                         <span>Forms & Widgets</span>
                       </NavLink>
                     </Menu.Item>
-                    <Menu.Item>
+                    <Menu.Item key="settings-tag">
                       <NavLink to="/settings/tags">
                         <span>Tags & Segments</span>
                       </NavLink>
                     </Menu.Item>
-                    <Menu.Item>
+                    <Menu.Item key="settings-import">
                       <NavLink to="/settings/csv-contacts-import">
                         <span>Contact Import</span>
                       </NavLink>

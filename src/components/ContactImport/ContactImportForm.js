@@ -102,7 +102,7 @@ const ContactImportForm = () => {
 
   return (
     <div className="contact-import-form">
-      <div className="px-12 py-4 bg-white rounded-t-lg shadow-md">
+      <div className="px-7 md:px-12 py-1 md:py-4 bg-white rounded-t-lg shadow-md">
         <div className="flex md:flex-row flex-col justify-between items-center my-5">
           <div className="max-w-xl">
             <h2 className="text-lg text-black font-bold">Upload your CSV File</h2>
@@ -116,7 +116,7 @@ const ContactImportForm = () => {
             }
           </div>
           {file ? (
-            <p className="flex items-center space-x-2 bg-gray-1 py-4 px-6">
+            <p className="flex items-center space-x-2 bg-gray-1 py-4 px-6 mt-5 md:mt-0">
               <span>{ file.name }</span>
               <CloseOutlined className="cursor-pointer" onClick={() => {
                 setFile(null);
@@ -127,7 +127,7 @@ const ContactImportForm = () => {
             <Button
               type="primary"
               size="large"
-              className="inline-flex items-center px-10 mt-3 md:mt-0"
+              className="inline-flex items-center px-10 mt-5 md:mt-0"
               onClick={() => fileRef.current.click()}
             >
               Browser
@@ -142,7 +142,7 @@ const ContactImportForm = () => {
         )
       }
       {step === steps.FINAL_DETAILS && (
-        <div className="px-12 py-4 bg-white rounded-b-lg shadow-md">
+        <div className="px-7 md:px-12 py-1 md:py-4 bg-white rounded-b-lg shadow-md">
           <div className="flex md:flex-row flex-col justify-between my-5">
             <div className="w-80">
               <h2 className="text-lg text-black font-bold mb-5">Final Details</h2>
