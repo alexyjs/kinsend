@@ -10,7 +10,7 @@ const ImportContactSuccessModal = () => {
 
   const onReview = () => {
     dispatch(resetMappedFields());
-    navigate('/');
+    navigate('/settings/csv-contacts-import-history');
   };
 
   return (

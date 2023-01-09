@@ -31,7 +31,7 @@ export const mapContacts = (rawContacts, mappedFields) => {
     }
   });
 
-  return removeHeaders(rawContacts).map(rawContact => mapContact(rawContact, camelizedMappedFields));
+  return removeRedundantRows(rawContacts).map(rawContact => mapContact(rawContact, camelizedMappedFields));
 }
 
 const mapContact = (rawContact, mappedFields) => {
@@ -54,11 +54,8 @@ const mapContact = (rawContact, mappedFields) => {
   return mappedContact;
 }
 
-const removeHeaders = (rawContacts) => {
-  const copyRawContacts = rawContacts.slice();
-  copyRawContacts.shift();
-
-  return copyRawContacts;
+const removeRedundantRows = (rawContacts) => {
+  return rawContacts.filter((rawContact, i) => !isRowEmpty(rawContact) && i > 0);
 }
 
 const camelize = (str) => {

@@ -342,6 +342,7 @@ export function* getSubscriberSaga(action) {
 }
 
 export function* importContactsSaga(action) {
+  yield put(beginImportContacts());
   const { response, errors } = yield call(importContacts, action.payload);
 
   if (errors) {
@@ -351,10 +352,6 @@ export function* importContactsSaga(action) {
       message: errors || `Failed to import contacts, please try again!`,
     });
   } else {
-    notification.success({
-      title: "Action Completed",
-      message: `Import contacts has been completed.`,
-    });
     yield put(importContactsSuccess(response));
   }
 }
@@ -501,7 +498,7 @@ export const settingsSlice = createSlice({
       state.skippedFields = [];
       state.importContactStatus = null;
     },
-    beginImportContact: (state) => {
+    beginImportContacts: (state) => {
       state.importContactStatus = "loading"
     },
     importContactsSuccess: (state) => {
@@ -542,10 +539,10 @@ export const {
   addFormSuccess,
   getFormSubmissionsSuccess,
   getFormSubscriberLocationsSuccess,
+  beginImportContacts,
   importContactsSuccess,
   fieldMapped,
   resetMappedFields,
-  beginImportContact,
   getImportContactHistorySuccess,
 } = settingsSlice.actions;
 
