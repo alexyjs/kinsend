@@ -130,7 +130,7 @@ const ContactImportForm = () => {
               className="inline-flex items-center px-10 mt-5 md:mt-0"
               onClick={() => fileRef.current.click()}
             >
-              Browser
+              Browse
             </Button>
           )}
           <input id="upload" name="upload" type="file" ref={fileRef} hidden onChange={handleFileChange} accept=".csv" />
