@@ -441,7 +441,7 @@ const SignUp = () => {
                     <Typography className="text-center">
                       <p className="max-w-sm mx-auto">
                         Thank you for completing the sigup for the KinSend
-                        Starter Plan. Plase check your email for a verification
+                        Starter Plan. Please check your email for a verification
                         link.
                       </p>
                     </Typography>
