@@ -8,7 +8,7 @@ const WorkFlow = ({ vcardData, forms }) => {
       <Col md={12} xs={24} className="mb-4">
         <Card bordered={true} className="rounded-3xl h-35 pl-2 pr-2">
           <div className="flex flex-col justify-between items-start">
-            <Checkbox checked={vcardData?.id}>
+            <Checkbox checked={vcardData?.firstName}>
               <NavLink to="/settings/profile">Vcard</NavLink>
             </Checkbox>
             <div className="mt-2">
