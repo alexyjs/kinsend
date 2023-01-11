@@ -1,5 +1,6 @@
 import React from "react";
-import { Row, Col, Checkbox, Card } from "antd";
+import { Row, Col, Card } from "antd";
+import { CheckCircleOutlined, CheckCircleFilled } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 
 const WorkFlow = ({ vcardData, forms }) => {
@@ -8,9 +9,17 @@ const WorkFlow = ({ vcardData, forms }) => {
       <Col md={12} xs={24} className="mb-4">
         <Card bordered={true} className="rounded-3xl h-35 pl-2 pr-2">
           <div className="flex flex-col justify-between items-start">
-            <Checkbox checked={vcardData?.firstName}>
-              <NavLink to="/settings/profile">Vcard</NavLink>
-            </Checkbox>
+            <NavLink
+              to="/settings/profile"
+              className="flex items-center py-1 w-full"
+            >
+              {!vcardData?.firstName ? (
+                <CheckCircleFilled style={{ color: "#36B37E" }} />
+              ) : (
+                <CheckCircleOutlined style={{ color: "#bcbcbc" }} />
+              )}
+              <span className="ml-2">Vcard</span>
+            </NavLink>
             <div className="mt-2">
               VCard updated for subscribers to save your contact information in
               their phone
@@ -21,11 +30,17 @@ const WorkFlow = ({ vcardData, forms }) => {
       <Col md={12} xs={24} className="mb-4">
         <Card bordered={true} className="rounded-3xl h-35 pl-2 pr-2">
           <div className="flex flex-col justify-between items-start">
-            <Checkbox checked={forms?.length}>
-              <NavLink to="/settings/forms/new">
-                Subscribers Intake Form
-              </NavLink>
-            </Checkbox>
+            <NavLink
+              to="/settings/forms/new"
+              className="flex items-center py-1 w-full"
+            >
+              {forms?.length ? (
+                <CheckCircleFilled style={{ color: "#36B37E" }} />
+              ) : (
+                <CheckCircleOutlined style={{ color: "#bcbcbc" }} />
+              )}
+              <span className="ml-2">Subscribers Intake Form</span>
+            </NavLink>
 
             <div className="mt-2">
               Form landing page created to collect new subscribers' information
