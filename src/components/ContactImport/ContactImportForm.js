@@ -10,7 +10,6 @@ import { mapContacts, mapFieldsFromRawContacts } from "./helpers";
 import { useMemo } from "react";
 import { REQUIRED_FIELDS } from "../../utils/constants";
 import ImportContactSuccessModal from "./ImportContactSuccessModal";
-import ContactFileSample from '../../assets/ks_contacts_sample.csv';
 
 const steps = {
   UPLOAD_FILE: 0,
@@ -131,7 +130,7 @@ const ContactImportForm = () => {
                   Ensure that your table includes columns for First Name and Phone Number or Email.
                   <br />
                   Download sample CSV template file{' '}
-                  <a className="text-primary hover:underline" href={ContactFileSample} download="ks_contacts_sample.csv">here</a>
+                  <a className="text-primary hover:underline" href="/ks_contacts_sample.csv" download="ks_contacts_sample.csv">here</a>
                 </p>
               )
             }
