@@ -36,6 +36,8 @@ import "./styles/tailwind.css";
 import "./App.less";
 import ContactImport from "./pages/Settings/ContactImport/ContactImport";
 import ContactImportHistory from "./pages/Settings/ContactImport/ContactImportHistory";
+import AutomatedResponses from "./pages/AutomatedResponses/AutomatedResponses";
+import FirstContact from "./pages/AutomatedResponses/FirstContact";
 
 function App() {
   const [savedAuth, setAuth] = useLocalStorage(STORAGE_AUTH_KEY);
@@ -127,6 +129,10 @@ function App() {
               path="/updates/detail/:updatesId"
               element={<EditUpdates />}
             />
+
+            <Route path="/automated-responses" element={<AutomatedResponses />} />
+            <Route path="/automated-responses/first-contact" element={<FirstContact />} />
+
             <Route path="*" element={<Navigate to="/message" replace />} />
           </Routes>
         </ConfigProvider>

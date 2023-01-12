@@ -75,6 +75,8 @@ import {
   watchGetMessageStatisticsSaga,
 } from "./messageReducer";
 
+import { watchToggleFirstContactSaga } from './automatedResponsesReducer';
+
 export default function* rootSaga() {
   yield all([
     watchGetListPhoneSaga(),
@@ -151,5 +153,8 @@ export default function* rootSaga() {
     watchSendSmsSaga(),
     watchResetSendSmsSaga(),
     watchGetMessageStatisticsSaga(),
+
+    // automated responses
+    watchToggleFirstContactSaga(),
   ]);
 }
