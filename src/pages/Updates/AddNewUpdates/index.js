@@ -80,6 +80,7 @@ const AddNewUpdates = () => {
     !message.includes(`&lt;name&gt;`) &&
     !message.includes(`&lt;mobile&gt;`) &&
     !message.includes(`&lt;form&gt;`);
+
   const {
     close: closeSegment,
     show: showSegment,
@@ -299,7 +300,9 @@ const AddNewUpdates = () => {
       clearData();
     }
   }, [updatesDetail, recipientsOptions, updatesId]);
-  console.log("###updatesDetail:", updatesDetail);
+
+  //   console.log("###updatesDetail:", updatesDetail);
+
   return (
     <LayoutComponent className="add-updates-page">
       <div className="flex items-center md:p-0 p-3">

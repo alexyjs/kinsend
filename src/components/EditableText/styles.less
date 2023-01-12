@@ -56,6 +56,12 @@
       display: inline-block;
       border-radius: 3px;
     }
+
+    .mergeField {
+        padding: 2px;
+        background-color: var(--placeholder);
+        color: white;
+    }
   }
 
   .EditableText-dropdown {
@@ -84,6 +90,9 @@
 
       & {
         border-top: 1px solid #dcdcdc;
+      }
+      &.active {
+        background: var(--bg-hover);
       }
     }
   }
