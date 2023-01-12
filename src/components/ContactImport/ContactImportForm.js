@@ -130,7 +130,7 @@ const ContactImportForm = () => {
                   Ensure that your table includes columns for First Name and Phone Number or Email.
                   <br />
                   Download sample CSV template file{' '}
-                  <a className="text-primary hover:underline" href={process.env.PUBLIC_URL + '/ks_contacts_sample.csv'} download="ks_contacts_sample.csv">here</a>
+                  <a className="text-primary hover:underline" href="https://kinsend-public.s3.amazonaws.com/ks_contacts_sample.csv" download="ks_contacts_sample.csv">here</a>
                 </p>
               )
             }
