@@ -122,13 +122,15 @@ const ContactImportForm = () => {
     <div className="contact-import-form">
       <div className="px-7 md:px-12 py-1 md:py-4 bg-white rounded-t-lg shadow-md">
         <div className="flex md:flex-row flex-col justify-between items-center my-5">
-          <div className="max-w-xl">
+          <div className="max-w-2xl">
             <h2 className="text-lg text-black font-bold">Upload your CSV or XLSX File</h2>
             {
               step === steps.UPLOAD_FILE && (
                 <p className="block mt-5 md:max-w-md lg:max-w-full">
-                  Ensure that your table includes columns for First Name and Phone Number or Email. To learn more about what data to include and get the most value out of Kinsend
-                  {/* TODO: add FAQ link */}
+                  Ensure that your table includes columns for First Name and Phone Number or Email.
+                  <br />
+                  Download sample CSV template file{' '}
+                  <a className="text-primary hover:underline" href="https://kinsend-public.s3.amazonaws.com/ks_contacts_sample.csv" download="ks_contacts_sample.csv">here</a>
                 </p>
               )
             }
