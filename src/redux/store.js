@@ -41,7 +41,7 @@ const store = configureStore({
     automationReducer: automationSlice,
     updatesReducer: updatesReducer,
     messageReducer: messageReducer,
-    automatedResponsesReducer: automatedResponsesReducer,
+    automatedResponses: automatedResponsesReducer,
   },
   middleware,
 });

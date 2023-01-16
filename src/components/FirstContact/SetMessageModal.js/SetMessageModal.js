@@ -83,6 +83,9 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
             onFinish={hadnleSubmitSendMessage}
             className=""
           >
+            <p className="mb-1">
+              <strong>Note</strong>: you can send a link to your default form using the merge field {'<form>'} or an arbitrary link
+            </p>
             <div className="sendmessage-textarea-wrap">
               <div className="hint">
                 <Tooltip
@@ -139,7 +142,7 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
               <Col>
                 <Form.Item noStyle>
                   <Button
-                    className="md:min-w-200"
+                    className="md:min-w-200 mr-5"
                     type="text"
                     size="large"
                     onClick={handleCancel}
@@ -151,7 +154,7 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
               <Col>
                 <Form.Item noStyle shouldUpdate>
                   <Button
-                    className="md:min-w-200 ml-5"
+                    className="md:min-w-200"
                     type="primary"
                     size="large"
                     htmlType="submit"
