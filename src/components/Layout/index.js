@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo } from "react";
 import { Layout, Avatar, Menu, Button } from "antd";
-import { DoubleRightOutlined, DoubleLeftOutlined } from "@ant-design/icons";
+import { DoubleRightOutlined, DoubleLeftOutlined, PartitionOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, NavLink } from "react-router-dom";
 import classnames from "classnames";
@@ -134,6 +134,16 @@ const LayoutComponent = ({ className, children, title }) => {
                 </NavLink>
               </Menu.Item>
             </Menu.SubMenu>
+            <Menu.Item key="automated-responses">
+              <NavLink
+                to="/automated-responses"
+                onMouseOver={() => setHover(true)}
+                onMouseOut={() => setHover(false)}
+              >
+                <AutomationRobotIcon />
+                <span className="menu-item-label">Automated Reponses</span>
+              </NavLink>
+            </Menu.Item>
           </Menu>
         </Sider>
         <Layout className="layout-content">
@@ -285,6 +295,16 @@ const LayoutComponent = ({ className, children, title }) => {
                       </NavLink>
                     </Menu.Item>
                   </Menu.SubMenu>
+                  <Menu.Item key="automated-responses">
+                    <NavLink
+                      to="/automated-responses"
+                      onMouseOver={() => setHover(true)}
+                      onMouseOut={() => setHover(false)}
+                    >
+                      <AutomationRobotIcon />
+                      <span className="menu-item-label">Automated Responses</span>
+                    </NavLink>
+                  </Menu.Item>
                 </Menu>
               </div>
               <div

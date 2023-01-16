@@ -27,7 +27,7 @@ const PlanModal = ({
       <Typography.Title level={1} className="text-center">
         Get Started with Kinsend
       </Typography.Title>
-      <Typography className={`mb-4 text-center`}>
+      {/* <Typography className={`mb-4 text-center`}>
         <p>
           Want to estimate your monthly spend?{" "}
           <span className="text-primary font-bold">
@@ -42,7 +42,7 @@ const PlanModal = ({
             Check pricing by country
           </span>
         </p>
-      </Typography>
+      </Typography> */}
       <div className="text-center my-8">
         <Radio.Group
           defaultValue="servicePlans"
