@@ -8,10 +8,21 @@ export const toggleFirstContactAsync = createAction(
   "public/toggleFirstContactAsync"
 );
 
+export const toggleKeyResponsesAsync = createAction("public/toggleKeyResponsesAsync");
+
 export async function toggleFirstContact(isEnabled) {
   const payload = {
     method: "PATCH",
     url: `${process.env.REACT_APP_API_BASE_URL}/automated-responses/first-contact`
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function toggleKeyResponses(isEnabled) {
+  const payload = {
+    method: "PATCH",
+    url: `${process.env.REACT_APP_API_BASE_URL}/automated-responses/key-repsonses`
   };
 
   return handleCallAPI(payload);
@@ -28,8 +39,23 @@ export function* toggleFirstContactSaga(action) {
   }
 }
 
+export function* toggleKeyResponsesSaga(action) {
+  const { errors } = yield call(toggleKeyResponses, action.payload);
+  if (errors) {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || `Something went wrong! Please try again!`,
+    });
+  }
+}
+
 export function* watchToggleFirstContactSaga() {
   yield takeLatest(toggleFirstContactAsync, toggleFirstContactSaga);
+}
+
+export function* watchToggleKeyResponsesSaga() {
+  yield takeLatest(toggleKeyResponsesAsync, toggleKeyResponsesSaga);
 }
 
 const initialState = {
