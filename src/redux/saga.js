@@ -75,7 +75,7 @@ import {
   watchGetMessageStatisticsSaga,
 } from "./messageReducer";
 
-import { watchGetFirstContactSettingsSaga, watchSaveFirstContactSettingsSaga, watchToggleFirstContactSaga, watchToggleKeyResponsesSaga } from './automatedResponsesReducer';
+import { watchGetFirstContactSettingsSaga, watchGetKeyResponsesSettingsSaga, watchSaveFirstContactSettingsSaga, watchToggleFirstContactSaga, watchToggleKeyResponsesSaga } from './automatedResponsesReducer';
 
 export default function* rootSaga() {
   yield all([
@@ -159,5 +159,6 @@ export default function* rootSaga() {
     watchToggleKeyResponsesSaga(),
     watchSaveFirstContactSettingsSaga(),
     watchGetFirstContactSettingsSaga(),
+    watchGetKeyResponsesSettingsSaga(),
   ]);
 }

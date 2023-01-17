@@ -1,14 +1,20 @@
 import { Button, Switch } from "antd";
 import React from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toggleFirstContactAsync, toggleKeyResponsesAsync } from "../../redux/automatedResponsesReducer";
+import KeywordResponseForm from "../../components/KeywordResponse/KeywordResponseForm";
+import { getKeyResponsesSettingsAsync, toggleFirstContactAsync } from "../../redux/automatedResponsesReducer";
 
 import LayoutComponent from "./../../components/Layout";
 
 const AutomatedResponses = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getKeyResponsesSettingsAsync());
+  }, [dispatch]);
 
   return (
     <LayoutComponent className="settings-page" title="Automated Response">
@@ -39,19 +45,7 @@ const AutomatedResponses = () => {
         </div>
       </div>
       <hr className="text-gray-2 my-10" />
-      <div className="flex flex-col md:flex-row justify-between">
-        <div>
-          <div className="flex items-center justify-between md:justify-start">
-            <h1 className="text-3xl md:text-4xl">
-              Keyword Responses
-            </h1>
-            <Switch className="ml-5" defaultChecked onChange={(checked) => dispatch(toggleKeyResponsesAsync(checked))} />
-          </div>
-          <div className="max-w-4xl mt-2 md:mt-4">
-            Create automated responses by checking incoming messages for hashtags, emojis, or Regex rules. Reorder the responses to determine which responses takes priority if a message contains more than one of the chosen hashtags, emojis or rules.
-          </div>
-        </div>
-      </div>
+      <KeywordResponseForm />
     </LayoutComponent>
   );
 };
