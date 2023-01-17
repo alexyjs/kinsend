@@ -8,6 +8,7 @@ export const toggleFirstContactAsync = createAction("public/toggleFirstContactAs
 export const toggleKeyResponsesAsync = createAction("public/toggleKeyResponsesAsync");
 export const saveFirstContactSettingsAsync = createAction("public/saveFirstContactSettingsAsync");
 export const getFirstContactSettingsAsync = createAction("public/getFirstContactSettingsAsync");
+export const getKeyResponsesSettingsAsync = createAction("public/getKeyResponsesSettingsAsync");
 
 export async function toggleFirstContact(isEnabled) {
   const payload = {
@@ -41,6 +42,15 @@ export async function getFirstContactSettings() {
   const payload = {
     method: "GET",
     url: `${process.env.REACT_APP_API_BASE_URL}/automated-responses/first-contact`
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function getKeyResponsesSettings() {
+  const payload = {
+    method: "GET",
+    url: `${process.env.REACT_APP_API_BASE_URL}/automated-responses/key-responses`
   };
 
   return handleCallAPI(payload);
@@ -107,6 +117,31 @@ export function* getFirstContactSettingsSaga(action) {
   }));
 }
 
+export function* getKeyResponsesSettingsSaga(action) {
+  const { response, errors } = yield call(getKeyResponsesSettings, action.payload);
+  // if (errors) {
+  //   yield put(failed(errors));
+  //   notification.error({
+  //     title: "Action failed",
+  //     message: errors || `Something went wrong! Please try again!`,
+  //   });
+  // } else {
+  //   yield put(getKeyResponsesSettingsSuccess(response));
+  // }
+  yield put(getKeyResponsesSettingsSuccess({
+    tasks: [
+      {
+        keyword: 'Hello',
+        message: 'This is a fake message from reducer'
+      },
+      {
+        keyword: '😍',
+        message: 'This is another fake message from reducer'
+      }
+    ]
+  }));
+}
+
 export function* watchToggleFirstContactSaga() {
   yield takeLatest(toggleFirstContactAsync, toggleFirstContactSaga);
 }
@@ -123,10 +158,16 @@ export function* watchGetFirstContactSettingsSaga() {
   yield takeLatest(getFirstContactSettingsAsync, getFirstContactSettingsSaga);
 }
 
+export function* watchGetKeyResponsesSettingsSaga() {
+  yield takeLatest(getKeyResponsesSettingsAsync, getKeyResponsesSettingsSaga);
+}
+
 
 const initialState = {
   isLoading: false,
-  errors: []
+  errors: [],
+  firstContactSettings: [],
+  keyResponsesSettings: []
 };
 
 export const automatedResponsesSlice = createSlice({
@@ -142,6 +183,11 @@ export const automatedResponsesSlice = createSlice({
       state.isLoading = false;
       state.errors = [];
       state.firstContactSettings = action.payload;
+    },
+    getKeyResponsesSettingsSuccess: (state, action) => {
+      state.isLoading = false;
+      state.errors = [];
+      state.keyResponsesSettings = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -167,13 +213,15 @@ export const automatedResponsesSlice = createSlice({
 
 export const {
   failed,
-  getFirstContactSettingsSuccess
+  getFirstContactSettingsSuccess,
+  getKeyResponsesSettingsSuccess
 } = automatedResponsesSlice.actions;
 
 export const selectAutomatedResponses = ({ automatedResponses }) => {
   return {
     isLoading: automatedResponses.isLoading,
-    firstContactSettings: automatedResponses.firstContactSettings
+    firstContactSettings: automatedResponses.firstContactSettings,
+    keyResponsesSettings: automatedResponses.keyResponsesSettings
   };
 };
 
