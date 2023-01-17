@@ -74,7 +74,7 @@ const EditableText = forwardRef(
             .replace(/<name>/gi, `&lt;name&gt;`)
             .replace(/<mobile>/gi, `&lt;mobile&gt;`)
             .replace(/<form>/gi, `&lt;form&gt;`);
-          console.log("###useImperativeHandle", indexSelectedField);
+          //   console.log("###useImperativeHandle", indexSelectedField);
           setValue(newValue);
           editableRef.current.innerHTML = newValue;
           setShowDropdown(false);
@@ -84,54 +84,115 @@ const EditableText = forwardRef(
       [value, indexSelectedField]
     );
 
-    const handleKeyUp = (e) => {};
+    const handleKeyUp = (e) => {
+      if (e.keyCode === 39 || e.keyCode === 37) {
+        handleUpdateSelection();
+      }
+    };
+
+    const getFieldText = (index, text) => {
+      const cursorIndex = index;
+      const searchText = text;
+      const part1 = searchText.slice(0, cursorIndex);
+      const part2 = searchText.slice(cursorIndex);
+      const leftArrowPositionRelToCur = part1
+        .split("")
+        .reverse()
+        .reduce((result, letter, index) => {
+          if (result === false || result !== null) {
+            return result;
+          }
+          if (letter === ">") {
+            return false;
+          }
+          if (letter === "<") {
+            return index;
+          }
+          return null;
+        }, null);
+
+      if (typeof leftArrowPositionRelToCur !== "number") {
+        return false;
+      }
+
+      const rightArrowPositionRelToCur = part2
+        .split("")
+        .reduce((result, letter, index) => {
+          if (result !== null) return result;
+          if (letter === ">" || letter === "<") {
+            return index;
+          }
+          return null;
+        }, null);
+
+      const leftTextPos = part1.length - leftArrowPositionRelToCur - 1;
+      const rightTextLength = rightArrowPositionRelToCur ?? part2.length;
+
+      const rightTextPos = part1.length + rightTextLength;
+
+      const fieldText = searchText.slice(leftTextPos + 1, rightTextPos);
+
+      return fieldText;
+    };
 
     const handleChange = (e) => {
-      if (showDropdown) {
-        const lastFieldName = e.target.innerText.slice(
-          e.target.innerText.lastIndexOf("<") + 1
-        );
-        setFieldValue(lastFieldName);
-        return;
-      } else {
-        let newValue = e.target.innerHTML || "";
-        let result = newValue
-          .replace(`<fname>`, `&lt;fname&gt;`)
-          .replace(`<lname>`, `&lt;lname&gt;`)
-          .replace(`<name>`, `&lt;name&gt;`)
-          .replace(`<mobile>`, `&lt;mobile&gt;`)
-          .replace(`<form>`, `&lt;form&gt;`)
-          .replace(/<div><\/div>/, `\n`)
-          .replace(/<br>/g, `\n`)
-          .replace(/(<([^>]+)>)/gi, "")
-          .replace(/(<([^>]+)>)/gi, "");
-        if (newValue?.length > 160) {
-          console.log("$$$", newValue, newValue?.length);
-          newValue = newValue.slice(0, 160);
-          editableRef.current.innerHTML = newValue;
-        }
-        setValue(result);
-        onChange(result);
-        const index = getCaretCharacterOffsetWithin();
-        console.log("###handleChange", index, result);
-        setIndexSelectedField(index);
+      let newValue = e.target.innerHTML || "";
+      let result = newValue
+        .replace(`<fname>`, `&lt;fname&gt;`)
+        .replace(`<lname>`, `&lt;lname&gt;`)
+        .replace(`<name>`, `&lt;name&gt;`)
+        .replace(`<mobile>`, `&lt;mobile&gt;`)
+        .replace(`<form>`, `&lt;form&gt;`)
+        .replace(/<div><\/div>/, `\n`)
+        .replace(/<br>/g, `\n`)
+        .replace(/(<([^>]+)>)/gi, "")
+        .replace(/(<([^>]+)>)/gi, "")
+        .replace(/&nbsp;/gi, " ");
+
+      if (newValue?.length > 160) {
+        console.log("$$$", newValue, newValue?.length);
+        newValue = newValue.slice(0, 160);
+        editableRef.current.innerHTML = newValue;
       }
+      setValue(result);
+      onChange(result);
+      const index = getCaretCharacterOffsetWithin();
+      console.log("###handleChange", index, result);
+      setIndexSelectedField(index);
     };
 
     const handleKeyDown = (e) => {
       switch (e.keyCode) {
+        case 190: {
+          if (e.shiftKey) {
+            setShowDropdown(false);
+            setFieldValue("");
+            const typedField = memoizedFields.find(
+              ({ fieldLabel }) => fieldLabel === fieldValue
+            );
+            if (typedField) {
+              e.preventDefault();
+              handleSelectField(`<${typedField.fieldLabel}>`);
+              setCaretAtTheEnd();
+            }
+          }
+          break;
+        }
+
         case 188: {
-          setShowDropdown(true);
-          const offsetTop =
-            window.getSelection().getRangeAt(0).endContainer.offsetTop ||
-            window.getSelection().getRangeAt(0).endContainer.parentElement
-              .offsetTop;
-          !isDropdownTop && setOffsetTopDropdown(offsetTop);
-          console.log(
-            "###offsetTop",
-            window.getSelection().getRangeAt(0),
-            offsetTop
-          );
+          if (e.shiftKey) {
+            setShowDropdown(true);
+            const offsetTop =
+              window.getSelection().getRangeAt(0).endContainer.offsetTop ||
+              window.getSelection().getRangeAt(0).endContainer.parentElement
+                .offsetTop;
+            !isDropdownTop && setOffsetTopDropdown(offsetTop);
+            console.log(
+              "###offsetTop",
+              window.getSelection().getRangeAt(0),
+              offsetTop
+            );
+          }
           break;
         }
         case 13:
@@ -172,11 +233,12 @@ const EditableText = forwardRef(
         default:
           break;
       }
-      handleUpdateSelection();
+      if (e.keyCode !== 39 && e.keyCode !== 37) {
+        handleUpdateSelection();
+      }
     };
 
     const handleClick = () => {
-      setShowDropdown(false);
       handleUpdateSelection();
       const offsetTop = window.getSelection().getRangeAt(0)
         .endContainer.offsetTop;
@@ -202,6 +264,7 @@ const EditableText = forwardRef(
       let caretOffset = 0;
       let doc = element.ownerDocument || element.document;
       let win = doc.defaultView || doc.parentWindow;
+
       let sel;
       if (typeof win.getSelection != "undefined") {
         sel = win.getSelection();
@@ -216,13 +279,16 @@ const EditableText = forwardRef(
           let selection =
             document.getElementById("shadowEditableRef").innerHTML;
           selection = selection
+            .replace(/<\/?span[^>]*>/g, "")
             .replace(/<div><\/div>/, "\n")
             .replace(/<br>/g, `\n`)
             .replace(/(<([^>]+)>)/gi, "")
             .replace(/(<([^>]+)>)/gi, "")
             .replace(/&lt;/gi, "<")
-            .replace(/&gt;/gi, `>`);
+            .replace(/&gt;/gi, `>`)
+            .replace(/&nbsp;/gi, " ");
           // caretOffset = preCaretTextRange.text.length;
+
           caretOffset = selection.length;
           document.getElementById("shadowEditableRef").innerHTML = "";
         }
@@ -237,24 +303,49 @@ const EditableText = forwardRef(
     };
 
     const handleSelectField = (fieldSelected) => {
-      let newValue = value.replace(/&lt;/gi, "<").replace(/&gt;/gi, `>`);
+      let newValue = value
+        .replace(/<\/?span[^>]*>/g, "")
+        .replace(/&lt;/gi, "<")
+        .replace(/&gt;/gi, ">")
+        .replace(/&nbsp;/gi, " ");
+      const endSlice = newValue.slice(indexSelectedField).startsWith(">")
+        ? 1
+        : 0;
       newValue =
-        newValue.slice(0, indexSelectedField - 1) +
+        newValue.slice(0, indexSelectedField - fieldValue.length - 1) +
         `${fieldSelected} ` +
-        newValue.slice(indexSelectedField);
-      newValue = newValue
+        newValue.slice(indexSelectedField + endSlice);
 
-        .replace(/<fname>/gi, `&lt;fname&gt;`)
-        .replace(/<lname>/gi, `&lt;lname&gt;`)
-        .replace(/<name>/gi, `&lt;name&gt;`)
-        .replace(/<mobile>/gi, `&lt;mobile&gt;`);
       if (newValue?.length > 160) {
         newValue = newValue.slice(0, 160);
       }
+
+      newValue = newValue
+        .replace(/</gi, "&lt;")
+        .replace(/>/gi, "&gt;")
+        .replace(/\s+/g, "&nbsp;");
+      newValue = newValue
+        .replace(
+          /&lt;fname&gt;/gi,
+          `<span class=mergeField contentEditable=false>&lt;fname&gt;</span>`
+        )
+        .replace(
+          /&lt;lname&gt;/gi,
+          `<span class=mergeField contentEditable=false>&lt;lname&gt;</span>`
+        )
+        .replace(
+          /&lt;name&gt;/gi,
+          `<span class=mergeField contentEditable=false>&lt;name&gt;</span>`
+        )
+        .replace(
+          /&lt;mobile&gt;/gi,
+          `<span class=mergeField contentEditable=false>&lt;mobile&gt;</span>`
+        );
       setValue(newValue);
       editableRef.current.innerHTML = newValue;
       setShowDropdown(false);
       onChange(newValue);
+      handleUpdateSelection();
     };
 
     useEffect(() => {
@@ -267,6 +358,21 @@ const EditableText = forwardRef(
       setValue(initValue);
       editableRef.current.innerHTML = initValue;
     }, [defaultValue]);
+
+    useEffect(() => {
+      const fieldText = getFieldText(
+        indexSelectedField,
+        editableRef.current.innerText
+      );
+
+      if (fieldText === false) {
+        setShowDropdown(false);
+        setFieldValue("");
+      } else {
+        setShowDropdown(true);
+        setFieldValue(fieldText);
+      }
+    }, [indexSelectedField]);
 
     return (
       <div className={classnames("EditableText", className)}>
@@ -320,7 +426,6 @@ const EditableText = forwardRef(
           <div id="shadowEditableRef"></div>
           {showDropdown && (
             <div
-              //   onKeyDown={handleDropdownKeyDown}
               className={classnames("EditableText-dropdown", {
                 "EditableText-dropdown-top": isDropdownTop,
               })}
