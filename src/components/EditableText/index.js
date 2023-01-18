@@ -74,7 +74,6 @@ const EditableText = forwardRef(
             .replace(/<name>/gi, `&lt;name&gt;`)
             .replace(/<mobile>/gi, `&lt;mobile&gt;`)
             .replace(/<form>/gi, `&lt;form&gt;`);
-          //   console.log("###useImperativeHandle", indexSelectedField);
           setValue(newValue);
           editableRef.current.innerHTML = newValue;
           setShowDropdown(false);
@@ -150,14 +149,12 @@ const EditableText = forwardRef(
         .replace(/&nbsp;/gi, " ");
 
       if (newValue?.length > 160) {
-        console.log("$$$", newValue, newValue?.length);
         newValue = newValue.slice(0, 160);
         editableRef.current.innerHTML = newValue;
       }
       setValue(result);
       onChange(result);
       const index = getCaretCharacterOffsetWithin();
-      console.log("###handleChange", index, result);
       setIndexSelectedField(index);
     };
 
@@ -187,11 +184,6 @@ const EditableText = forwardRef(
               window.getSelection().getRangeAt(0).endContainer.parentElement
                 .offsetTop;
             !isDropdownTop && setOffsetTopDropdown(offsetTop);
-            console.log(
-              "###offsetTop",
-              window.getSelection().getRangeAt(0),
-              offsetTop
-            );
           }
           break;
         }
@@ -244,11 +236,9 @@ const EditableText = forwardRef(
         .endContainer.offsetTop;
       const parentElementoffsetTop = window.getSelection().getRangeAt(0)
         .endContainer.parentElement.offsetTop;
-      console.log("###offsetTop", offsetTop, parentElementoffsetTop);
     };
     const handleUpdateSelection = () => {
       const index = getCaretCharacterOffsetWithin();
-      console.log("###handleUpdateSelection", index);
       setIndexSelectedField(index);
     };
 
@@ -354,7 +344,6 @@ const EditableText = forwardRef(
         .replace(/<lname>/gi, `&lt;lname&gt;`)
         .replace(/<name>/gi, `&lt;name&gt;`)
         .replace(/<mobile>/gi, `&lt;mobile&gt;`);
-      console.log("#####Clear data");
       setValue(initValue);
       editableRef.current.innerHTML = initValue;
     }, [defaultValue]);
