@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import FirstContactForm from "../../components/FirstContact/FirstContactForm";
-import { selectAutomatedResponses } from "../../redux/automatedResponsesReducer";
+import {
+  getFirstContactSettingsAsync,
+  selectAutomatedResponses,
+} from "../../redux/automatedResponsesReducer";
 import LayoutComponent from "./../../components/Layout";
 
 const FirstContact = () => {
+  const dispatch = useDispatch();
   const { firstContactSettings } = useSelector(selectAutomatedResponses);
+
+  useEffect(() => {
+    dispatch(getFirstContactSettingsAsync());
+  }, [dispatch]);
 
   return (
     <LayoutComponent className="first-contact-page" title="First Contact">

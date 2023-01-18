@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Button, Switch } from "antd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AutomationActionIcon, AutomationAddStopIcon } from "../../assets/svg";
 import { useModal } from "../../hook/useModal";
 import SetMessageModal from "./SetMessageModal.js/SetMessageModal";
 import {
   saveFirstContactSettingsAsync,
+  selectAutomatedResponses,
   toggleFirstContactAsync,
 } from "../../redux/automatedResponsesReducer";
 
@@ -25,6 +26,7 @@ const isTasksValid = (tasks) => {
 const FirstContactForm = ({ initValue }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { firstContactSettings } = useSelector(selectAutomatedResponses);
   const {
     close: closeAction,
     show: showAction,
@@ -85,8 +87,9 @@ const FirstContactForm = ({ initValue }) => {
             <h1 className="text-3xl md:text-4xl">First Contact</h1>
             <Switch
               className="ml-5"
-              defaultChecked
               onChange={(checked) => dispatch(toggleFirstContactAsync(checked))}
+              checked={firstContactSettings.isEnabled}
+              loading={firstContactSettings.isTogglingFirstContact}
             />
           </div>
           <div className="max-w-4xl mt-2 md:mt-4">
