@@ -11,7 +11,7 @@ const EmojiPicker = (props) => {
     new Picker({ ...props, data, ref });
   }, []);
 
-  return <div ref={ref} />;
+  return <div className={props.className || ""} ref={ref} />;
 };
 
 export default EmojiPicker;
