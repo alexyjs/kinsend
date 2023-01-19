@@ -22,6 +22,9 @@ export const getKeyResponsesSettingsAsync = createAction(
 export const createKeyResponsesSettingsAsync = createAction(
   "public/createKeyResponsesSettingsAsync"
 );
+export const updateKeyResponsesSettingsAsync = createAction(
+  "public/updateKeyResponsesSettingsAsync"
+);
 
 export async function toggleFirstContact(isEnabled) {
   const payload = {
@@ -76,6 +79,17 @@ export async function createKeyResponsesSettings(data) {
   const payload = {
     method: "POST",
     url: `${process.env.REACT_APP_API_BASE_URL}/keyword-response`,
+    data,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function updateKeyResponsesSettings(data) {
+  console.log(data);
+  const payload = {
+    method: "PUT",
+    url: `${process.env.REACT_APP_API_BASE_URL}/keyword-response/${data.id}`,
     data,
   };
 
@@ -234,6 +248,24 @@ export function* createKeyResponsesSettingsSaga(action) {
   yield put(getKeyResponsesSettingsAsync());
 }
 
+export function* updateKeyResponsesSettingsSaga(action) {
+  const { errors } = yield call(updateKeyResponsesSettings, action.payload);
+  if (errors) {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || `Something went wrong! Please try again!`,
+    });
+  } else {
+    notification.success({
+      title: "Action completed",
+      message: `Key responses updated`,
+    });
+    yield put(getKeyResponsesSettingsAsync());
+  }
+  yield put(getKeyResponsesSettingsAsync());
+}
+
 export function* watchToggleFirstContactSaga() {
   yield takeLatest(toggleFirstContactAsync, toggleFirstContactSaga);
 }
@@ -256,6 +288,10 @@ export function* watchGetKeyResponsesSettingsSaga() {
 
 export function* watchCreateKeyResponsesSettingsSaga() {
   yield takeLatest(createKeyResponsesSettingsAsync, createKeyResponsesSettingsSaga);
+}
+
+export function* watchUpdateKeyResponsesSettingsSaga() {
+  yield takeLatest(updateKeyResponsesSettingsAsync, updateKeyResponsesSettingsSaga);
 }
 
 const initialState = {

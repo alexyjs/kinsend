@@ -4,10 +4,12 @@ import DraggableList from "./DraggableList";
 import KeyResponseModal from "./KeyResponseModal.js/KeyResponseModal";
 import { useModal } from "../../hook/useModal";
 import { useDispatch, useSelector } from "react-redux";
-import { createKeyResponsesSettingsAsync, selectAutomatedResponses } from "../../redux/automatedResponsesReducer";
+import { createKeyResponsesSettingsAsync, selectAutomatedResponses, updateKeyResponsesSettingsAsync } from "../../redux/automatedResponsesReducer";
+import { useState } from "react";
 
 const KeywordResponseList = () => {
   const dispatch = useDispatch();
+  const [selectedKeywordResponse, setSelectedKeywordResponse] = useState(null);
   const { hashTagOrEmojiResponsesSettings, regexResponsesSettings } = useSelector(selectAutomatedResponses);
   const {
     close: closeAction,
@@ -26,16 +28,33 @@ const KeywordResponseList = () => {
       hashTagOrEmoji: data.hashTagOrEmoji,
       tagId: data.tagId,
       type: "HASHTAG_OR_EMOJI",
-      index: data.index
-    }
+      id: data.id
+    };
 
     if (data.id) {
-      
+      payload.index = data.index;
+      dispatch(updateKeyResponsesSettingsAsync(payload));
     } else {
+      payload.index = 0;
       dispatch(createKeyResponsesSettingsAsync(payload));
     }
     closeAction();
   };
+
+  const handleSort = (data) => {
+    data.hashTagOrEmoji = data.pattern;
+    dispatch(updateKeyResponsesSettingsAsync(data));
+  }
+
+  const handleOpenCreate = () => {
+    setSelectedKeywordResponse(null);
+    showAction();
+  }
+
+  const handleOpenEdit = (item) => {
+    setSelectedKeywordResponse(item);
+    showAction();
+  }
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md mt-5">
@@ -51,15 +70,15 @@ const KeywordResponseList = () => {
           type="primary"
           size="small"
           className="inline-flex items-center"
-          onClick={() => showAction()}
+          onClick={() => handleOpenCreate()}
         >
           <PlusOutlined />
           New
         </Button>
       </div>
-      <DraggableList list={hashTagOrEmojiResponsesSettings} onSorted={console.log} />
+      <DraggableList list={hashTagOrEmojiResponsesSettings} onSorted={handleSort} handleOpenEdit={handleOpenEdit} handleDelete={console.log} />
       <KeyResponseModal
-        data={null}
+        data={selectedKeywordResponse}
         visible={visibleAction}
         handleCancel={closeAction}
         handleOk={handleSaveKeywordResponse}
