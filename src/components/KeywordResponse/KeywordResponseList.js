@@ -4,11 +4,12 @@ import DraggableList from "./DraggableList";
 import KeyResponseModal from "./KeyResponseModal.js/KeyResponseModal";
 import { useModal } from "../../hook/useModal";
 import { useDispatch, useSelector } from "react-redux";
-import { createKeyResponsesSettingsAsync, selectAutomatedResponses, updateKeyResponsesSettingsAsync } from "../../redux/automatedResponsesReducer";
+import { createKeyResponsesSettingsAsync, deleteKeyResponsesSettingsAsync, selectAutomatedResponses, updateKeyResponsesSettingsAsync } from "../../redux/automatedResponsesReducer";
 import { useState } from "react";
 
 const KeywordResponseList = () => {
   const dispatch = useDispatch();
+  const [type, setType] = useState("");
   const [selectedKeywordResponse, setSelectedKeywordResponse] = useState(null);
   const { hashTagOrEmojiResponsesSettings, regexResponsesSettings } = useSelector(selectAutomatedResponses);
   const {
@@ -17,43 +18,53 @@ const KeywordResponseList = () => {
     visible: visibleAction,
   } = useModal();
 
-  const handleSaveKeywordResponse = (data) => {
+  const handleSaveKeywordResponse = (keywordType, data) => {
     const payload = {
       response: {
         type: "SEND_MESSAGE",
         message: data.message,
         fileAttached: data.fileAttached
       },
-      pattern: data.hashTagOrEmoji,
-      hashTagOrEmoji: data.hashTagOrEmoji,
       tagId: data.tagId,
-      type: "HASHTAG_OR_EMOJI",
+      type: keywordType,
       id: data.id
     };
+
+    if (keywordType === "HASHTAG_OR_EMOJI") {
+      payload.hashTagOrEmoji = data.keyword
+    } else {
+      payload.pattern = data.keyword
+    }
 
     if (data.id) {
       payload.index = data.index;
       dispatch(updateKeyResponsesSettingsAsync(payload));
     } else {
-      payload.index = 0;
+      payload.index = hashTagOrEmojiResponsesSettings.length;
       dispatch(createKeyResponsesSettingsAsync(payload));
     }
     closeAction();
   };
 
   const handleSort = (data) => {
-    data.hashTagOrEmoji = data.pattern;
+    console.log(data);
     dispatch(updateKeyResponsesSettingsAsync(data));
   }
 
-  const handleOpenCreate = () => {
+  const handleOpenCreate = (createType) => {
     setSelectedKeywordResponse(null);
+    setType(createType);
     showAction();
   }
 
-  const handleOpenEdit = (item) => {
+  const handleOpenEdit = (keywordType, item) => {
+    setType(keywordType);
     setSelectedKeywordResponse(item);
     showAction();
+  }
+
+  const handleDelete = (id) => {
+    dispatch(deleteKeyResponsesSettingsAsync(id))
   }
 
   return (
@@ -70,18 +81,19 @@ const KeywordResponseList = () => {
           type="primary"
           size="small"
           className="inline-flex items-center"
-          onClick={() => handleOpenCreate()}
+          onClick={() => handleOpenCreate("HASHTAG_OR_EMOJI")}
         >
           <PlusOutlined />
           New
         </Button>
       </div>
-      <DraggableList list={hashTagOrEmojiResponsesSettings} onSorted={handleSort} handleOpenEdit={handleOpenEdit} handleDelete={console.log} />
+      <DraggableList type={type} list={hashTagOrEmojiResponsesSettings} onSorted={handleSort} handleOpenEdit={handleOpenEdit} handleDelete={handleDelete} />
       <KeyResponseModal
         data={selectedKeywordResponse}
         visible={visibleAction}
         handleCancel={closeAction}
         handleOk={handleSaveKeywordResponse}
+        type={type}
       />
     </div>
   );

@@ -25,6 +25,9 @@ export const createKeyResponsesSettingsAsync = createAction(
 export const updateKeyResponsesSettingsAsync = createAction(
   "public/updateKeyResponsesSettingsAsync"
 );
+export const deleteKeyResponsesSettingsAsync = createAction(
+  "public/deleteKeyResponsesSettingsAsync"
+);
 
 export async function toggleFirstContact(isEnabled) {
   const payload = {
@@ -86,11 +89,19 @@ export async function createKeyResponsesSettings(data) {
 }
 
 export async function updateKeyResponsesSettings(data) {
-  console.log(data);
   const payload = {
     method: "PUT",
     url: `${process.env.REACT_APP_API_BASE_URL}/keyword-response/${data.id}`,
     data,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function deleteKeyResponsesSettings(id) {
+  const payload = {
+    method: "DELETE",
+    url: `${process.env.REACT_APP_API_BASE_URL}/keyword-response/${id}`
   };
 
   return handleCallAPI(payload);
@@ -176,58 +187,15 @@ export function* getKeyResponsesSettingsSaga(action) {
     getKeyResponsesSettings,
     action.payload
   );
-  // if (errors) {
-  //   yield put(failed(errors));
-  //   notification.error({
-  //     title: "Action failed",
-  //     message: errors || `Something went wrong! Please try again!`,
-  //   });
-  // } else {
-  //   yield put(getKeyResponsesSettingsSuccess(response));
-  // }
-  yield put(
-    getKeyResponsesSettingsSuccess([
-      {
-        response: {
-          type: "SEND_MESSAGE",
-          message: "This is a message with emoji 😊😊",
-          fileAttached: null
-        },
-        pattern: "😂",
-        hashTagOrEmoji: {},
-        tagId: "63b81e2b7d8c963ea0f9c2d0",
-        type: "HASHTAG_OR_EMOJI",
-        id: "63b81e2b7d8c963ea0f9c2d0",
-        index: 0,
-      },
-      {
-        response: {
-          type: "SEND_MESSAGE",
-          message: "This is a message with emoji 😊😊",
-          fileAttached: null
-        },
-        pattern: "😊",
-        hashTagOrEmoji: {},
-        tagId: "63b81e2b7d8c963ea0f9c2d0",
-        type: "HASHTAG_OR_EMOJI",
-        id: "63b81e2b7d8c963ea0f9c2d0",
-        index: 1,
-      },
-      {
-        response: {
-          type: "SEND_MESSAGE",
-          message: "This is a message with emoji 😊😊",
-          fileAttached: null
-        },
-        pattern: "😘",
-        hashTagOrEmoji: {},
-        tagId: "63b81e2b7d8c963ea0f9c2d0",
-        type: "HASHTAG_OR_EMOJI",
-        id: "63b81e2b7d8c963ea0f9c2d0",
-        index: 2,
-      }
-    ])
-  );
+  if (errors) {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || `Something went wrong! Please try again!`,
+    });
+  } else {
+    yield put(getKeyResponsesSettingsSuccess(response));
+  }
 }
 
 export function* createKeyResponsesSettingsSaga(action) {
@@ -241,11 +209,10 @@ export function* createKeyResponsesSettingsSaga(action) {
   } else {
     notification.success({
       title: "Action completed",
-      message: `Key responses created`,
+      message: `Key response is created`,
     });
     yield put(getKeyResponsesSettingsAsync());
   }
-  yield put(getKeyResponsesSettingsAsync());
 }
 
 export function* updateKeyResponsesSettingsSaga(action) {
@@ -259,11 +226,27 @@ export function* updateKeyResponsesSettingsSaga(action) {
   } else {
     notification.success({
       title: "Action completed",
-      message: `Key responses updated`,
+      message: `Key response is updated`,
     });
     yield put(getKeyResponsesSettingsAsync());
   }
-  yield put(getKeyResponsesSettingsAsync());
+}
+
+export function* deleteKeyResponsesSettingsSaga(action) {
+  const { errors } = yield call(deleteKeyResponsesSettings, action.payload);
+  if (errors) {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || `Something went wrong! Please try again!`,
+    });
+  } else {
+    notification.success({
+      title: "Action completed",
+      message: `Key response is deleted`,
+    });
+    yield put(getKeyResponsesSettingsAsync());
+  }
 }
 
 export function* watchToggleFirstContactSaga() {
@@ -294,11 +277,17 @@ export function* watchUpdateKeyResponsesSettingsSaga() {
   yield takeLatest(updateKeyResponsesSettingsAsync, updateKeyResponsesSettingsSaga);
 }
 
+export function* watchDeleteKeyResponsesSettingsSaga() {
+  yield takeLatest(deleteKeyResponsesSettingsAsync, deleteKeyResponsesSettingsSaga);
+}
+
 const initialState = {
   isLoading: false,
   errors: [],
   firstContactSettings: [],
   keyResponsesSettings: [],
+  hashTagOrEmojiResponsesSettings: [],
+  regexResponsesSettings: []
 };
 
 export const automatedResponsesSlice = createSlice({
@@ -325,6 +314,8 @@ export const automatedResponsesSlice = createSlice({
       state.isLoading = false;
       state.errors = [];
       state.keyResponsesSettings = action.payload;
+      state.hashTagOrEmojiResponsesSettings = extractHashTagOrEmojiResponsesSettings(action.payload);
+      state.regexResponsesSettings = extractRegexResponsesSettings(action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -361,17 +352,43 @@ export const selectAutomatedResponses = ({ automatedResponses }) => {
     isLoading: automatedResponses.isLoading,
     firstContactSettings: automatedResponses.firstContactSettings,
     keyResponsesSettings: automatedResponses.keyResponsesSettings,
-    hashTagOrEmojiResponsesSettings: getHashTagOrEmojiResponsesSettings(automatedResponses.keyResponsesSettings),
-    regexResponsesSettings: getRegexResponsesSettings(automatedResponses.keyResponsesSettings)
+    hashTagOrEmojiResponsesSettings: automatedResponses.hashTagOrEmojiResponsesSettings,
+    regexResponsesSettings: automatedResponses.regexResponsesSettings
   };
 };
 
-const getHashTagOrEmojiResponsesSettings = (settings) => {
-  return settings.filter(setting => setting.type === "HASHTAG_OR_EMOJI");
+const extractHashTagOrEmojiResponsesSettings = (settings) => {
+  return settings.hashtagAndEmoji.map((setting) => {
+    return {
+      response: {
+        message: setting.response.message,
+        type: setting.response.type,
+        fileAttached: setting.response.fileAttached
+      },
+      keyword: setting.hashTagOrEmoji,
+      tagId: setting.tag?.id,
+      type: setting.type,
+      id: setting.id,
+      index: setting.index - 1
+    }
+  });
 }
 
-const getRegexResponsesSettings = (settings) => {
-  return settings.filter(setting => setting.type === "REGEX");
+const extractRegexResponsesSettings = (settings) => {
+  return settings.hashtagAndEmoji.map(setting => {
+    return {
+      response: {
+        message: setting.response.message,
+        type: setting.response.type,
+        fileAttached: setting.response.fileAttached
+      },
+      keyword: setting.pattern,
+      tagId: setting.tag?.id,
+      type: setting.type,
+      id: setting.id,
+      index: setting.index
+    }
+  });
 }
 
 export default automatedResponsesSlice.reducer;

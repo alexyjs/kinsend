@@ -13,7 +13,7 @@ const DragHandle = sortableHandle(({ active }) => (
 const SortableItem = sortableElement((props) => <tr className="sortable-item" style={{ zIndex: 1 }} {...props} />);
 const SortableContainer = sortableContainer((props) => <tbody {...props} />);
 
-function DraggableList({ list, onSorted, handleOpenEdit, handleDelete }) {
+function DraggableList({ list, onSorted, handleOpenEdit, handleDelete, type }) {
   const [dataSource, setDataSource] = useState(list);
 
   const getColumns = () => {
@@ -29,8 +29,8 @@ function DraggableList({ list, onSorted, handleOpenEdit, handleDelete }) {
         )
       },
       {
-        dataIndex: "pattern",
-        className: "col-pattern"
+        dataIndex: "keyword",
+        className: "col-keyword"
       },
       {
         dataIndex: ["response", "message"],
@@ -46,7 +46,7 @@ function DraggableList({ list, onSorted, handleOpenEdit, handleDelete }) {
               type="primary"
               size="small"
               className="inline-flex items-center"
-              onClick={() => handleOpenEdit(d)}
+              onClick={() => handleOpenEdit(type, d)}
             >
               Edit
             </Button>
@@ -54,7 +54,7 @@ function DraggableList({ list, onSorted, handleOpenEdit, handleDelete }) {
               type="primary"
               size="small"
               className="inline-flex items-center"
-              onClick={() => handleDelete(d)}
+              onClick={() => handleDelete(d.id)}
             >
               Delete
             </Button>
@@ -69,7 +69,7 @@ function DraggableList({ list, onSorted, handleOpenEdit, handleDelete }) {
     return [...a.slice(0, i), ...b, ...aa.slice(i, aa.length)];
   };
   const onSortEnd = ({ oldIndex, newIndex }) => {
-    let tempDataSource = dataSource;
+    let tempDataSource = [...dataSource];
 
     if (oldIndex !== newIndex) {
       let movingItem = tempDataSource[oldIndex];
