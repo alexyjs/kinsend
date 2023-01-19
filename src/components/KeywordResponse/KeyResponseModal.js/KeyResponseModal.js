@@ -38,6 +38,8 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, index }) => {
       hashTagOrEmoji: values.hashTagOrEmoji,
       tagId: values.tagId,
       fileAttached: attachment,
+      id: data?.id,
+      index: data?.index
     });
   };
 
@@ -91,11 +93,15 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, index }) => {
       setAttachmentUrl({});
       form.setFieldsValue({
         message: "",
+        hashTagOrEmoji: "",
+        tagId: ""
       });
     } else {
       setAttachmentUrl(data.fileAttached);
       form.setFieldsValue({
-        message: data.message,
+        message: data.response.message,
+        hashTagOrEmoji: data.pattern,
+        tagId: data.tagId || ""
       });
     }
   }, [visible, data]);

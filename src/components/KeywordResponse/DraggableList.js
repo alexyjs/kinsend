@@ -13,7 +13,7 @@ const DragHandle = sortableHandle(({ active }) => (
 const SortableItem = sortableElement((props) => <tr className="sortable-item" style={{ zIndex: 1 }} {...props} />);
 const SortableContainer = sortableContainer((props) => <tbody {...props} />);
 
-function DraggableList({ list, onSorted }) {
+function DraggableList({ list, onSorted, handleOpenEdit, handleDelete }) {
   const [dataSource, setDataSource] = useState(list);
 
   const getColumns = () => {
@@ -46,7 +46,7 @@ function DraggableList({ list, onSorted }) {
               type="primary"
               size="small"
               className="inline-flex items-center"
-              onClick={() => console.log}
+              onClick={() => handleOpenEdit(d)}
             >
               Edit
             </Button>
@@ -54,7 +54,7 @@ function DraggableList({ list, onSorted }) {
               type="primary"
               size="small"
               className="inline-flex items-center"
-              onClick={() => console.log}
+              onClick={() => handleDelete(d)}
             >
               Delete
             </Button>
