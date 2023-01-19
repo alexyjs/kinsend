@@ -18,11 +18,11 @@ import { selectSettings } from "../../../redux/settingsReducer";
 const emojiRegex =
   /^(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])$/;
 
-const KeyResponseModal = ({ visible, handleOk, handleCancel, data, index }) => {
+const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
   const { tags } = useSelector(selectSettings);
-  const [attachment, setAttachmentUrl] = useState({});
+  const [attachment, setAttachment] = useState({});
   const [form] = Form.useForm();
-  const [hashTagOrEmoji, setHashTagOrEmoji] = useState("");
+  const [keyword, setKeyword] = useState("");
 
   const {
     close: closeUpload,
@@ -33,35 +33,35 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, index }) => {
   const [showInputEmoji, setShowInputEmoji] = useState(false);
 
   const handleSubmitSendMessage = (values) => {
-    handleOk({
+    handleOk(type, {
       message: values.message,
-      hashTagOrEmoji: values.hashTagOrEmoji,
+      keyword: values.keyword,
       tagId: values.tagId,
-      fileAttached: attachment,
+      fileAttached: attachment?.url || "",
       id: data?.id,
       index: data?.index
     });
   };
 
   const handleUploadFile = (value) => {
-    setAttachmentUrl(value);
+    setAttachment(value);
     closeUpload();
   };
 
   const handleChangeIputEmoji = (emojiObj) => {
     setShowInputEmoji(false);
-    let hashTagOrEmoji = form.getFieldValue("hashTagOrEmoji") || "";
+    let keyword = form.getFieldValue("keyword") || "";
 
     if (
-      hashTagOrEmoji &&
-      (/^[a-zA-Z0-9]*$/.test(hashTagOrEmoji) || emojiRegex.test(hashTagOrEmoji))
+      keyword &&
+      (/^[a-zA-Z0-9]*$/.test(keyword) || emojiRegex.test(keyword))
     ) {
       return;
     }
 
-    setHashTagOrEmoji(emojiObj.native);
+    setKeyword(emojiObj.native);
     form.setFieldsValue({
-      hashTagOrEmoji: emojiObj.native,
+      keyword: emojiObj.native,
     });
   };
 
@@ -73,34 +73,34 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, index }) => {
     setShowEmoji(false);
   };
 
-  const handleChangeHashTagOrEmoji = (e) => {
+  const handleChangeKeyword = (e) => {
     const trimmedValue = e.target.value.replace(/ /g, "");
     if (/^[a-zA-Z0-9]*$/.test(trimmedValue) || emojiRegex.test(trimmedValue)) {
       form.setFieldsValue({
-        hashTagOrEmoji: trimmedValue,
+        keyword: trimmedValue,
       });
-      setHashTagOrEmoji(trimmedValue);
+      setKeyword(trimmedValue);
     } else {
       form.setFieldsValue({
-        hashTagOrEmoji: hashTagOrEmoji,
+        keyword: keyword,
       });
-      setHashTagOrEmoji(hashTagOrEmoji);
+      setKeyword(keyword);
     }
   };
 
   useEffect(() => {
     if (!data) {
-      setAttachmentUrl({});
+      setAttachment({});
       form.setFieldsValue({
         message: "",
-        hashTagOrEmoji: "",
+        keyword: "",
         tagId: ""
       });
     } else {
-      setAttachmentUrl(data.fileAttached);
+      setAttachment(data.fileAttached);
       form.setFieldsValue({
         message: data.response.message,
-        hashTagOrEmoji: data.pattern,
+        keyword: data.keyword,
         tagId: data.tagId || ""
       });
     }
@@ -132,11 +132,11 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, index }) => {
             className=""
           >
             <div className="relative">
-              <label className="font-semibold" htmlFor="hashTagOrEmoji">HASHTAG OR EMOJI RULE</label>
-              <Form.Item name="hashTagOrEmoji" rules={[{ required: true }]}>
+              <label className="font-semibold" htmlFor="keyword">HASHTAG OR EMOJI RULE</label>
+              <Form.Item name="keyword" rules={[{ required: true }]}>
                 <Input
                   placeholder="#Hashtag or 👍"
-                  onChange={handleChangeHashTagOrEmoji}
+                  onChange={handleChangeKeyword}
                   suffix={
                     <EmojiIcon
                       className="cursor-pointer"
