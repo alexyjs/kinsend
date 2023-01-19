@@ -111,16 +111,18 @@ export const DEFAULT_FIELDS = [
   "LAST NAME",
   "PHONE NUMBER",
   "EMAIL",
-  "LOCATION"
+  "LOCATION",
 ];
 
-export const REQUIRED_FIELDS = [
-  "FIRST NAME",
-  "LAST NAME",
-  "PHONE NUMBER",
-];
+export const REQUIRED_FIELDS = ["FIRST NAME", "LAST NAME", "PHONE NUMBER"];
 
-export const defaultFieldsCamelized = ["firstName", "lastName", "phoneNumber", "email", "location"];
+export const defaultFieldsCamelized = [
+  "firstName",
+  "lastName",
+  "phoneNumber",
+  "email",
+  "location",
+];
 
 export const INDUSTRY = ["Tech", "Music", "Fashion", "Other"];
 
@@ -382,3 +384,23 @@ export const SECOND = 1000;
 export const MINUTE = SECOND * 60;
 export const HOUR = MINUTE * 60;
 export const DAY = HOUR * 24;
+
+export const MERGE_FIELDS = [
+  {
+    fieldLabel: "fname",
+    text: "Contact's first name",
+    label: "firstName",
+  },
+  {
+    fieldLabel: "name",
+    text: "Contact's full name",
+  },
+  {
+    fieldLabel: "mobile",
+    text: "Contact's mobile name",
+  },
+  {
+    fieldLabel: "lname",
+    text: "Contact's last name",
+  },
+];

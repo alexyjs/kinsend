@@ -262,3 +262,17 @@ export const getFilterUpdatesSelected = (value, data) => {
 export const removeEmptyObject = (obj) => {
   return Object.fromEntries(Object.entries(obj).filter(([_, v]) => !!v));
 };
+
+export const getMessagePreview = (message, userFields) => {
+  const preview = message
+    .replace(/&nbsp;/gi, " ")
+    .replace(/<\/?span[^>]*>/g, "")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/<fname>/, userFields.fname)
+    .replace(/<lname>/, userFields.lname)
+    .replace(/<name>/, userFields.name)
+    .replace(/<mobile>/, userFields.mobile);
+
+  return preview;
+};
