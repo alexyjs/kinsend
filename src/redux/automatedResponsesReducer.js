@@ -19,6 +19,9 @@ export const getFirstContactSettingsAsync = createAction(
 export const getKeyResponsesSettingsAsync = createAction(
   "public/getKeyResponsesSettingsAsync"
 );
+export const createKeyResponsesSettingsAsync = createAction(
+  "public/createKeyResponsesSettingsAsync"
+);
 
 export async function toggleFirstContact(isEnabled) {
   const payload = {
@@ -63,7 +66,17 @@ export async function getFirstContactSettings() {
 export async function getKeyResponsesSettings() {
   const payload = {
     method: "GET",
-    url: `${process.env.REACT_APP_API_BASE_URL}/automated-responses/key-responses`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/keyword-response`,
+  };
+
+  return handleCallAPI(payload);
+}
+
+export async function createKeyResponsesSettings(data) {
+  const payload = {
+    method: "POST",
+    url: `${process.env.REACT_APP_API_BASE_URL}/keyword-response`,
+    data,
   };
 
   return handleCallAPI(payload);
@@ -159,19 +172,66 @@ export function* getKeyResponsesSettingsSaga(action) {
   //   yield put(getKeyResponsesSettingsSuccess(response));
   // }
   yield put(
-    getKeyResponsesSettingsSuccess({
-      tasks: [
-        {
-          keyword: "Hello",
-          message: "This is a fake message from reducer",
+    getKeyResponsesSettingsSuccess([
+      {
+        response: {
+          type: "SEND_MESSAGE",
+          message: "This is a message with emoji 😊😊",
+          fileAttached: null
         },
-        {
-          keyword: "😍",
-          message: "This is another fake message from reducer",
+        pattern: "😂",
+        hashTagOrEmoji: {},
+        tagId: "63b81e2b7d8c963ea0f9c2d0",
+        type: "HASHTAG_OR_EMOJI",
+        id: "63b81e2b7d8c963ea0f9c2d0",
+        index: 0,
+      },
+      {
+        response: {
+          type: "SEND_MESSAGE",
+          message: "This is a message with emoji 😊😊",
+          fileAttached: null
         },
-      ],
-    })
+        pattern: "😊",
+        hashTagOrEmoji: {},
+        tagId: "63b81e2b7d8c963ea0f9c2d0",
+        type: "HASHTAG_OR_EMOJI",
+        id: "63b81e2b7d8c963ea0f9c2d0",
+        index: 1,
+      },
+      {
+        response: {
+          type: "SEND_MESSAGE",
+          message: "This is a message with emoji 😊😊",
+          fileAttached: null
+        },
+        pattern: "😘",
+        hashTagOrEmoji: {},
+        tagId: "63b81e2b7d8c963ea0f9c2d0",
+        type: "HASHTAG_OR_EMOJI",
+        id: "63b81e2b7d8c963ea0f9c2d0",
+        index: 2,
+      }
+    ])
   );
+}
+
+export function* createKeyResponsesSettingsSaga(action) {
+  const { errors } = yield call(createKeyResponsesSettings, action.payload);
+  if (errors) {
+    yield put(failed(errors));
+    notification.error({
+      title: "Action failed",
+      message: errors || `Something went wrong! Please try again!`,
+    });
+  } else {
+    notification.success({
+      title: "Action completed",
+      message: `Key responses created`,
+    });
+    yield put(getKeyResponsesSettingsAsync());
+  }
+  yield put(getKeyResponsesSettingsAsync());
 }
 
 export function* watchToggleFirstContactSaga() {
@@ -192,6 +252,10 @@ export function* watchGetFirstContactSettingsSaga() {
 
 export function* watchGetKeyResponsesSettingsSaga() {
   yield takeLatest(getKeyResponsesSettingsAsync, getKeyResponsesSettingsSaga);
+}
+
+export function* watchCreateKeyResponsesSettingsSaga() {
+  yield takeLatest(createKeyResponsesSettingsAsync, createKeyResponsesSettingsSaga);
 }
 
 const initialState = {
@@ -261,7 +325,17 @@ export const selectAutomatedResponses = ({ automatedResponses }) => {
     isLoading: automatedResponses.isLoading,
     firstContactSettings: automatedResponses.firstContactSettings,
     keyResponsesSettings: automatedResponses.keyResponsesSettings,
+    hashTagOrEmojiResponsesSettings: getHashTagOrEmojiResponsesSettings(automatedResponses.keyResponsesSettings),
+    regexResponsesSettings: getRegexResponsesSettings(automatedResponses.keyResponsesSettings)
   };
 };
+
+const getHashTagOrEmojiResponsesSettings = (settings) => {
+  return settings.filter(setting => setting.type === "HASHTAG_OR_EMOJI");
+}
+
+const getRegexResponsesSettings = (settings) => {
+  return settings.filter(setting => setting.type === "REGEX");
+}
 
 export default automatedResponsesSlice.reducer;

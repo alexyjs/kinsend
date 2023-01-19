@@ -3,8 +3,12 @@ import { PlusOutlined } from "@ant-design/icons";
 import DraggableList from "./DraggableList";
 import KeyResponseModal from "./KeyResponseModal.js/KeyResponseModal";
 import { useModal } from "../../hook/useModal";
+import { useDispatch, useSelector } from "react-redux";
+import { createKeyResponsesSettingsAsync, selectAutomatedResponses } from "../../redux/automatedResponsesReducer";
 
 const KeywordResponseList = () => {
+  const dispatch = useDispatch();
+  const { hashTagOrEmojiResponsesSettings, regexResponsesSettings } = useSelector(selectAutomatedResponses);
   const {
     close: closeAction,
     show: showAction,
@@ -12,7 +16,25 @@ const KeywordResponseList = () => {
   } = useModal();
 
   const handleSaveKeywordResponse = (data) => {
-    // TODO: call API to create or edit
+    const payload = {
+      response: {
+        type: "SEND_MESSAGE",
+        message: data.message,
+        fileAttached: data.fileAttached
+      },
+      pattern: data.hashTagOrEmoji,
+      hashTagOrEmoji: data.hashTagOrEmoji,
+      tagId: data.tagId,
+      type: "HASHTAG_OR_EMOJI",
+      index: data.index
+    }
+
+    if (data.id) {
+      
+    } else {
+      dispatch(createKeyResponsesSettingsAsync(payload));
+    }
+    closeAction();
   };
 
   return (
@@ -35,12 +57,12 @@ const KeywordResponseList = () => {
           New
         </Button>
       </div>
-      <DraggableList />
+      <DraggableList list={hashTagOrEmojiResponsesSettings} onSorted={console.log} />
       <KeyResponseModal
         data={null}
         visible={visibleAction}
         handleCancel={closeAction}
-        handleOk={console.log}
+        handleOk={handleSaveKeywordResponse}
       />
     </div>
   );

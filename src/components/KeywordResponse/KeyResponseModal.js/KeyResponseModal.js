@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Form, Modal, Button, Input, Tooltip } from "antd";
+import { Row, Col, Form, Modal, Button, Input, Tooltip, Select } from "antd";
 import { useModal } from "../../../hook/useModal";
 import UploadFileModal from "../../UploadFileModal";
 import EmojiPicker from "../../EmojiPicker";
@@ -12,11 +12,14 @@ import {
 } from "../../../assets/svg";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { useSelector } from "react-redux";
+import { selectSettings } from "../../../redux/settingsReducer";
 
 const emojiRegex =
   /^(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])$/;
 
 const KeyResponseModal = ({ visible, handleOk, handleCancel, data, index }) => {
+  const { tags } = useSelector(selectSettings);
   const [attachment, setAttachmentUrl] = useState({});
   const [form] = Form.useForm();
   const [hashTagOrEmoji, setHashTagOrEmoji] = useState("");
@@ -30,9 +33,10 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, index }) => {
   const [showInputEmoji, setShowInputEmoji] = useState(false);
 
   const handleSubmitSendMessage = (values) => {
-    handleOk(data, index, {
+    handleOk({
       message: values.message,
       hashTagOrEmoji: values.hashTagOrEmoji,
+      tagId: values.tagId,
       fileAttached: attachment,
     });
   };
@@ -122,6 +126,7 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, index }) => {
             className=""
           >
             <div className="relative">
+              <label className="font-semibold" htmlFor="hashTagOrEmoji">HASHTAG OR EMOJI RULE</label>
               <Form.Item name="hashTagOrEmoji" rules={[{ required: true }]}>
                 <Input
                   placeholder="#Hashtag or 👍"
@@ -141,51 +146,75 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, index }) => {
                 />
               )}
             </div>
-            <div className="sendmessage-textarea-wrap">
-              <div className="hint">
-                <Tooltip
-                  placement="topLeft"
-                  title={
-                    <>
-                      Messages without <b>emojis & special</b> characters are
-                      sent in segments of <b>160 characters.</b>
-                    </>
-                  }
-                >
-                  <Button>
-                    <AutomationActionMaxMessageIcon />| 160
-                  </Button>
-                </Tooltip>
-                <Tooltip
-                  placement="top"
-                  title={
-                    <>
-                      Carriers charge you for <b>every segment</b> they deliver
-                      to your recipient
-                    </>
-                  }
-                >
-                  <Button>
-                    <AutomationActionMessageIcon />
-                  </Button>
-                </Tooltip>
+            <div>
+              <label className="font-semibold" htmlFor="message">AUTO RESPONSE</label>
+              <div className="sendmessage-textarea-wrap">
+                <div className="hint">
+                  <Tooltip
+                    placement="topLeft"
+                    title={
+                      <>
+                        Messages without <b>emojis & special</b> characters are
+                        sent in segments of <b>160 characters.</b>
+                      </>
+                    }
+                  >
+                    <Button>
+                      <AutomationActionMaxMessageIcon />| 160
+                    </Button>
+                  </Tooltip>
+                  <Tooltip
+                    placement="top"
+                    title={
+                      <>
+                        Carriers charge you for <b>every segment</b> they deliver
+                        to your recipient
+                      </>
+                    }
+                  >
+                    <Button>
+                      <AutomationActionMessageIcon />
+                    </Button>
+                  </Tooltip>
+                </div>
+                <Form.Item name="message" rules={[{ required: true, max: 160 }]}>
+                  <Input.TextArea
+                    style={{ height: 200 }}
+                    placeholder="Send new messenge ..."
+                  />
+                </Form.Item>
+                <div className="textarea-actions">
+                  <AttachmentIcon onClick={showUpload} />
+                  <EmojiIcon onClick={() => setShowEmoji(true)} />
+                  {showEmoji && <EmojiPicker onEmojiSelect={handleChangeEmoji} />}
+                  <UploadFileModal
+                    visible={visibleUpload}
+                    handleOk={handleUploadFile}
+                    handleCancel={closeUpload}
+                  />
+                </div>
               </div>
-              <Form.Item name="message" rules={[{ required: true, max: 160 }]}>
-                <Input.TextArea
-                  style={{ height: 200 }}
-                  placeholder="Send new messenge ..."
-                />
+            </div>
+            <div className="mt-5">
+              <label className="font-semibold" htmlFor="tagId">APPLY TAG</label>
+              <Form.Item name="tagId">
+                <Select
+                  allowClear
+                  placeholder="Select tag..."
+                  className="w-full md:w-[350px] bg-gray-1"
+                >
+                  {
+                    tags?.map((option) => (
+                      <Select.Option
+                        key={`tag-${option.id}`}
+                        value={option.id}
+                      >
+                        {option.name}
+                      </Select.Option>
+                    ))
+                  }
+                </Select>
               </Form.Item>
-              <div className="textarea-actions">
-                <AttachmentIcon onClick={showUpload} />
-                <EmojiIcon onClick={() => setShowEmoji(true)} />
-                {showEmoji && <EmojiPicker onEmojiSelect={handleChangeEmoji} />}
-                <UploadFileModal
-                  visible={visibleUpload}
-                  handleOk={handleUploadFile}
-                  handleCancel={closeUpload}
-                />
-              </div>
             </div>
             {attachment?.name && <b>{attachment?.name}</b>}
             <Row justify="end" className="mt-12">
