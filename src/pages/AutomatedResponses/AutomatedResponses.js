@@ -10,6 +10,7 @@ import {
   selectAutomatedResponses,
   toggleFirstContactAsync,
 } from "../../redux/automatedResponsesReducer";
+import { getTagsAsync } from "../../redux/settingsReducer";
 
 import LayoutComponent from "./../../components/Layout";
 
@@ -21,6 +22,7 @@ const AutomatedResponses = () => {
   useEffect(() => {
     dispatch(getKeyResponsesSettingsAsync());
     dispatch(getFirstContactSettingsAsync());
+    dispatch(getTagsAsync());
   }, [dispatch]);
 
   return (

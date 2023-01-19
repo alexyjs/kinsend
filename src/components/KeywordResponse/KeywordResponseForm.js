@@ -1,13 +1,10 @@
 import { Switch } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { selectAutomatedResponses, toggleKeyResponsesAsync } from "../../redux/automatedResponsesReducer";
+import { useDispatch } from "react-redux";
+import { toggleKeyResponsesAsync } from "../../redux/automatedResponsesReducer";
 import KeywordResponseList from "./KeywordResponseList";
 
 const KeywordResponseForm = () => {
-  const { keyResponsesSettings } = useSelector(selectAutomatedResponses);
   const dispatch = useDispatch();
-
-  console.log(keyResponsesSettings);
 
   return (
     <div>
