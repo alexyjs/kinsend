@@ -4,45 +4,7 @@ import { sortableContainer, sortableElement, sortableHandle } from "react-sortab
 import { MenuOutlined } from "@ant-design/icons";
 
 import "./style.less";
-
-const data = [
-  {
-    key: "1",
-    keyword: "John Brown",
-    message: "New York No. 1 Lake Park",
-    index: 0
-  },
-  {
-    key: "2",
-    keyword: "Jim Green",
-    message: "London No. 1 Lake Park",
-    index: 1
-  },
-  {
-    key: "3",
-    keyword: "Joe Black",
-    message: "Sidney No. 1 Lake Park",
-    index: 2
-  },
-  {
-    key: "4",
-    keyword: "4",
-    message: "New York No. 1 Lake Park",
-    index: 3
-  },
-  {
-    key: "5",
-    keyword: "5",
-    message: "London No. 1 Lake Park",
-    index: 4
-  },
-  {
-    key: "6",
-    keyword: "6",
-    message: "Sidney No. 1 Lake Park",
-    index: 5
-  }
-];
+import { useEffect } from "react";
 
 const DragHandle = sortableHandle(({ active }) => (
   <MenuOutlined style={{ cursor: "grab", color: active ? "blue" : "#999" }} />
@@ -51,8 +13,8 @@ const DragHandle = sortableHandle(({ active }) => (
 const SortableItem = sortableElement((props) => <tr className="sortable-item" style={{ zIndex: 1 }} {...props} />);
 const SortableContainer = sortableContainer((props) => <tbody {...props} />);
 
-function DraggableList() {
-  const [dataSource, setDataSource] = useState(data);
+function DraggableList({ list, onSorted }) {
+  const [dataSource, setDataSource] = useState(list);
 
   const getColumns = () => {
     return [
@@ -67,11 +29,11 @@ function DraggableList() {
         )
       },
       {
-        dataIndex: "keyword",
-        className: "col-keyword"
+        dataIndex: "pattern",
+        className: "col-pattern"
       },
       {
-        dataIndex: "message",
+        dataIndex: ["response", "message"],
         className: "col-message"
       },
       {
@@ -114,6 +76,7 @@ function DraggableList() {
       tempDataSource.splice(oldIndex, 1);
       tempDataSource = merge(tempDataSource, [movingItem], newIndex);
       setDataSource(tempDataSource);
+      onSorted({...movingItem, index: newIndex});
     }
   };
 
@@ -139,6 +102,10 @@ function DraggableList() {
       />
     );
   };
+
+  useEffect(() => {
+    setDataSource(list);
+  }, [list]);
 
   return (
     <Table
