@@ -41,10 +41,13 @@ export async function toggleFirstContact(isEnabled) {
   return handleCallAPI(payload);
 }
 
-export async function toggleKeyResponses(isEnabled) {
+export async function toggleKeyResponses(isEnable) {
   const payload = {
-    method: "PUT",
+    method: "PATCH",
     url: `${process.env.REACT_APP_API_BASE_URL}/keyword-repsonse`,
+    data: {
+      isEnable
+    }
   };
 
   return handleCallAPI(payload);
@@ -210,7 +213,7 @@ export function* createKeyResponsesSettingsSaga(action) {
   } else {
     notification.success({
       title: "Action completed",
-      message: `Key response is created`,
+      message: `Keyword response is created`,
     });
     yield put(getKeyResponsesSettingsAsync());
   }
@@ -228,7 +231,7 @@ export function* updateKeyResponsesSettingsSaga(action) {
   } else {
     notification.success({
       title: "Action completed",
-      message: `Key response is updated`,
+      message: `Keyword response is updated`,
     });
     yield put(getKeyResponsesSettingsAsync());
   }
@@ -245,7 +248,7 @@ export function* deleteKeyResponsesSettingsSaga(action) {
   } else {
     notification.success({
       title: "Action completed",
-      message: `Key response is deleted`,
+      message: `Keyword response is deleted`,
     });
     yield put(getKeyResponsesSettingsAsync());
   }

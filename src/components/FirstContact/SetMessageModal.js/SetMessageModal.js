@@ -15,7 +15,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./styles.less";
 
 const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
-  const [attachment, setAttachmentUrl] = useState({});
+  const [attachment, setAttachment] = useState({});
   const [form] = Form.useForm();
 
   const {
@@ -28,12 +28,12 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
   const hadnleSubmitSendMessage = (values) => {
     handleOk(data, index, {
       message: values.message,
-      fileAttached: attachment,
+      fileAttached: attachment.url,
     });
   };
 
   const handleUploadFile = (value) => {
-    setAttachmentUrl(value);
+    setAttachment(value);
     closeUpload();
   };
 
@@ -47,12 +47,12 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
 
   useEffect(() => {
     if (!data) {
-      setAttachmentUrl({});
+      setAttachment({});
       form.setFieldsValue({
         message: "",
       });
     } else {
-      setAttachmentUrl(data.fileAttached);
+      setAttachment(data.fileAttached);
       form.setFieldsValue({
         message: data.message,
       });

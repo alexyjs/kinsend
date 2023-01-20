@@ -75,26 +75,48 @@ const KeywordResponseList = () => {
   }
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md mt-5">
-      <div className="flex items-center justify-between">
-        <div className="">
-          <p className="font-bold">Hashtag and Emoji Responses</p>
-          <p>
-            Select responses to send to your contacts who message you with
-            specific Hashtags or Emojis
-          </p>
+    <div>
+      <div className="p-4 bg-white rounded-lg shadow-md mt-5">
+        <div className="flex items-center justify-between">
+          <div className="">
+            <p className="font-bold">Hashtag and Emoji Responses</p>
+            <p>
+              Select responses to send to your contacts who message you with
+              specific Hashtags or Emojis
+            </p>
+          </div>
+          <Button
+            type="primary"
+            size="small"
+            className="inline-flex items-center"
+            onClick={() => handleOpenCreate("HASHTAG_OR_EMOJI")}
+          >
+            <PlusOutlined />
+            New
+          </Button>
         </div>
-        <Button
-          type="primary"
-          size="small"
-          className="inline-flex items-center"
-          onClick={() => handleOpenCreate("HASHTAG_OR_EMOJI")}
-        >
-          <PlusOutlined />
-          New
-        </Button>
+        <DraggableList type={type} list={hashTagOrEmojiResponsesSettings} onSorted={handleSort} handleOpenEdit={handleOpenEdit} handleDelete={handleOpenDelete} />
       </div>
-      <DraggableList type={type} list={hashTagOrEmojiResponsesSettings} onSorted={handleSort} handleOpenEdit={handleOpenEdit} handleDelete={handleOpenDelete} />
+      <div className="p-4 bg-white rounded-lg shadow-md mt-5">
+        <div className="flex items-center justify-between">
+          <div className="">
+            <p className="font-bold">Regular Expression Responses</p>
+            <p>
+              Select responses to your contacts using Regular Expression Rules
+            </p>
+          </div>
+          <Button
+            type="primary"
+            size="small"
+            className="inline-flex items-center"
+            onClick={() => handleOpenCreate("REGEX")}
+          >
+            <PlusOutlined />
+            New
+          </Button>
+        </div>
+        <DraggableList type={type} list={regexResponsesSettings} onSorted={handleSort} handleOpenEdit={handleOpenEdit} handleDelete={handleOpenDelete} />
+      </div>
       <KeyResponseModal
         data={selectedKeywordResponse}
         visible={visibleAction}
