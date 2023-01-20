@@ -54,7 +54,7 @@ function DraggableList({ list, onSorted, handleOpenEdit, handleDelete, type }) {
               type="primary"
               size="small"
               className="inline-flex items-center"
-              onClick={() => handleDelete(d.id)}
+              onClick={() => handleDelete(d)}
             >
               Delete
             </Button>

@@ -44,7 +44,7 @@ export async function toggleFirstContact(isEnabled) {
 export async function toggleKeyResponses(isEnabled) {
   const payload = {
     method: "PUT",
-    url: `${process.env.REACT_APP_API_BASE_URL}/automated-responses/key-repsonses`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/keyword-repsonse`,
   };
 
   return handleCallAPI(payload);
@@ -199,6 +199,7 @@ export function* getKeyResponsesSettingsSaga(action) {
 }
 
 export function* createKeyResponsesSettingsSaga(action) {
+  action.payload.index = action.payload.index + 1;
   const { errors } = yield call(createKeyResponsesSettings, action.payload);
   if (errors) {
     yield put(failed(errors));
@@ -216,6 +217,7 @@ export function* createKeyResponsesSettingsSaga(action) {
 }
 
 export function* updateKeyResponsesSettingsSaga(action) {
+  action.payload.index = action.payload.index + 1;
   const { errors } = yield call(updateKeyResponsesSettings, action.payload);
   if (errors) {
     yield put(failed(errors));
@@ -358,37 +360,26 @@ export const selectAutomatedResponses = ({ automatedResponses }) => {
 };
 
 const extractHashTagOrEmojiResponsesSettings = (settings) => {
-  return settings.hashtagAndEmoji.map((setting) => {
-    return {
-      response: {
-        message: setting.response.message,
-        type: setting.response.type,
-        fileAttached: setting.response.fileAttached
-      },
-      keyword: setting.hashTagOrEmoji,
-      tagId: setting.tag?.id,
-      type: setting.type,
-      id: setting.id,
-      index: setting.index - 1
-    }
-  });
+  return settings.hashtagAndEmoji.map(transformSetting);
 }
 
 const extractRegexResponsesSettings = (settings) => {
-  return settings.hashtagAndEmoji.map(setting => {
-    return {
-      response: {
-        message: setting.response.message,
-        type: setting.response.type,
-        fileAttached: setting.response.fileAttached
-      },
-      keyword: setting.pattern,
-      tagId: setting.tag?.id,
-      type: setting.type,
-      id: setting.id,
-      index: setting.index
-    }
-  });
+  return settings.regex.map(transformSetting);
+}
+
+const transformSetting = (setting) => {
+  return {
+    response: {
+      message: setting.response.message,
+      type: setting.response.type,
+      fileAttached: setting.response.fileAttached
+    },
+    keyword: setting.pattern,
+    tagId: setting.tag?.id,
+    type: setting.type,
+    id: setting.id,
+    index: setting.index - 1
+  }; 
 }
 
 export default automatedResponsesSlice.reducer;
