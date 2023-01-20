@@ -16,6 +16,7 @@ import {
   SettingSVG,
   ArrowDownIcon,
   AutomationRobotIcon,
+  AutoResponse
 } from "../../assets/svg";
 import { useOutsideAlerter } from "../../hook/useOutSide";
 import "./styles.less";
@@ -140,7 +141,7 @@ const LayoutComponent = ({ className, children, title }) => {
                 onMouseOver={() => setHover(true)}
                 onMouseOut={() => setHover(false)}
               >
-                <AutomationRobotIcon />
+                <AutoResponse />
                 <span className="menu-item-label">Automated Reponses</span>
               </NavLink>
             </Menu.Item>
@@ -301,7 +302,7 @@ const LayoutComponent = ({ className, children, title }) => {
                       onMouseOver={() => setHover(true)}
                       onMouseOut={() => setHover(false)}
                     >
-                      <AutomationRobotIcon />
+                      <AutoResponse />
                       <span className="menu-item-label">Automated Responses</span>
                     </NavLink>
                   </Menu.Item>

@@ -74,6 +74,14 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
   };
 
   const handleChangeKeyword = (e) => {
+    if (type === "REGEX") {
+      form.setFieldsValue({
+        keyword: e.target.value,
+      });
+      setKeyword(e.target.value);
+      return;
+    }
+
     const trimmedValue = e.target.value.replace(/ /g, "");
     if (/^[a-zA-Z0-9]*$/.test(trimmedValue) || emojiRegex.test(trimmedValue)) {
       form.setFieldsValue({
@@ -119,10 +127,12 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
         centered
         className="automation-trigger-modal"
       >
-        <h3 className="font-bold text-center text-2xl mb-9">New Response</h3>
+        <h3 className="font-bold text-center text-2xl mb-9">{!!data ? "Edit" : "New"} Response</h3>
         <p className="text-center">
-          Enter a Hashtag or Emoji Rule. For matching incoming messages choose
-          an auto response and/or tag to apply
+          { type === "REGEX" 
+            ? "Enter a Regular Expression Rule. For matching incoming messages choose an auto response and/or tag to apply." 
+            : "Enter a Hashtag or Emoji Rule. For matching incoming messages choose an auto response and/or tag to apply."
+          }
         </p>
         <div className="action-detail-wrap">
           <Form
@@ -132,16 +142,27 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
             className=""
           >
             <div className="relative">
-              <label className="font-semibold" htmlFor="keyword">HASHTAG OR EMOJI RULE</label>
+              <label className="font-semibold" htmlFor="keyword">
+              { type === "REGEX" 
+                ? "REGEX RULE" 
+                : "HASHTAG OR EMOJI RULE"
+              }
+              </label>
               <Form.Item name="keyword" rules={[{ required: true }]}>
                 <Input
-                  placeholder="#Hashtag or 👍"
+                  placeholder={type === "REGEX" ? "Aabc[\\d]D" : "#Hashtag or 👍"}
                   onChange={handleChangeKeyword}
                   suffix={
-                    <EmojiIcon
-                      className="cursor-pointer"
-                      onClick={() => setShowInputEmoji(true)}
-                    />
+                    <>
+                      {
+                        type === "HASHTAG_OR_EMOJI" && (
+                          <EmojiIcon
+                            className="cursor-pointer"
+                            onClick={() => setShowInputEmoji(true)}
+                          />
+                        )
+                      }
+                    </>
                   }
                 />
               </Form.Item>
@@ -203,7 +224,7 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
             </div>
             <div className="mt-5">
               <label className="font-semibold" htmlFor="tagId">APPLY TAG</label>
-              <Form.Item name="tagId">
+              <Form.Item name="tagId" rules={[{ required: true }]}>
                 <Select
                   allowClear
                   placeholder="Select tag..."
