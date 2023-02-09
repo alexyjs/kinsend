@@ -14,9 +14,13 @@ const WorkFlow = ({ vcardData, forms }) => {
               className="flex items-center py-1 w-full"
             >
               {vcardData?.firstName ? (
-                <CheckCircleFilled style={{ fontSize: "1.6em", color: "#36B37E" }} />
+                <CheckCircleFilled
+                  style={{ fontSize: "1.6em", color: "#36B37E" }}
+                />
               ) : (
-                <CheckCircleOutlined style={{ fontSize: "1.6em", color: "#bcbcbc" }} />
+                <CheckCircleOutlined
+                  style={{ fontSize: "1.6em", color: "#bcbcbc" }}
+                />
               )}
               <span className="font-bold text-xl ml-2">Update vCard</span>
               {!forms?.length && <span className="ml-2">{"(Incomplete)"}</span>}
@@ -36,9 +40,13 @@ const WorkFlow = ({ vcardData, forms }) => {
               className="flex items-center py-1 w-full"
             >
               {forms?.length ? (
-                <CheckCircleFilled style={{ fontSize: "1.6em", color: "#36B37E" }} />
+                <CheckCircleFilled
+                  style={{ fontSize: "1.6em", color: "#36B37E" }}
+                />
               ) : (
-                <CheckCircleOutlined style={{ fontSize: "1.6em", color: "#bcbcbc" }} />
+                <CheckCircleOutlined
+                  style={{ fontSize: "1.6em", color: "#bcbcbc" }}
+                />
               )}
               <span className="font-bold text-xl ml-2">Create Form</span>
               {!forms?.length && <span className="ml-2">{"(Incomplete)"}</span>}

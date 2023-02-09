@@ -4,7 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CsvParser from "papaparse";
 import { read, utils } from "xlsx";
-import { fieldMapped, getCustomFieldsAsync, getTagsAsync, importContactsAsync, resetMappedFields, selectSettings } from "../../redux/settingsReducer";
+import {
+  fieldMapped,
+  getCustomFieldsAsync,
+  getTagsAsync,
+  importContactsAsync,
+  resetMappedFields,
+  selectSettings,
+} from "../../redux/settingsReducer";
 import ContactImportMapper from "./ContactImportMapper";
 import { mapContacts, mapFieldsFromRawContacts } from "./helpers";
 import { useMemo } from "react";
@@ -14,21 +21,24 @@ import ImportContactSuccessModal from "./ImportContactSuccessModal";
 const steps = {
   UPLOAD_FILE: 0,
   MAP_FILEDS: 1,
-  FINAL_DETAILS: 2
+  FINAL_DETAILS: 2,
 };
 
 const ContactImportForm = () => {
   const dispatch = useDispatch();
   const fileRef = useRef();
   const [step, setStep] = useState(steps.UPLOAD_FILE);
-  const { customFields, tags, mappedFields, importContactStatus } = useSelector(selectSettings);
+  const { customFields, tags, mappedFields, importContactStatus } =
+    useSelector(selectSettings);
   const [file, setFile] = useState();
-  const [tag, setTag] = useState('');
+  const [tag, setTag] = useState("");
   const [shouldOverride, setShouldOverride] = useState(false);
   const [rawContacts, setRawContacts] = useState([]);
-  
+
   const isRequiredFieldsMapped = useMemo(() => {
-    return REQUIRED_FIELDS.every(requiredField => mappedFields.find(mappedField => mappedField.to === requiredField));
+    return REQUIRED_FIELDS.every((requiredField) =>
+      mappedFields.find((mappedField) => mappedField.to === requiredField)
+    );
   }, [mappedFields]);
 
   const handleFileChange = (event) => {
@@ -36,7 +46,11 @@ const ContactImportForm = () => {
 
     if (!file) return;
 
-    if (file.type !== 'text/csv' && file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+    if (
+      file.type !== "text/csv" &&
+      file.type !==
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
       notification.error({
         title: "Action failed",
         message: `File must be csv or xlsx!`,
@@ -58,32 +72,38 @@ const ContactImportForm = () => {
 
       const onFieldMatched = (from, to) => {
         dispatch(fieldMapped({ from, to }));
-      }
+      };
 
       mapFieldsFromRawContacts(rawData.data, onFieldMatched, customFields);
       setRawContacts(rawData.data);
       setStep(steps.MAP_FILEDS);
-    }
+    };
 
     const onParseFailed = () => {
       notification.error({
         title: "Action failed",
         message: `Invalid file!`,
       });
-    }
+    };
 
-    if (file.type === 'text/csv') {
-      CsvParser.parse(file, { complete: onParseCompleted, error: onParseFailed });
+    if (file.type === "text/csv") {
+      CsvParser.parse(file, {
+        complete: onParseCompleted,
+        error: onParseFailed,
+      });
     } else {
       const reader = new FileReader();
       reader.onload = (e) => {
-          const data = e.target.result;
-          const workbook = read(data, { type: "array" });
-          const sheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[sheetName];
-          const csvString = utils.sheet_to_csv(worksheet);
-          
-          CsvParser.parse(csvString, { complete: onParseCompleted, error: onParseFailed });
+        const data = e.target.result;
+        const workbook = read(data, { type: "array" });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const csvString = utils.sheet_to_csv(worksheet);
+
+        CsvParser.parse(csvString, {
+          complete: onParseCompleted,
+          error: onParseFailed,
+        });
       };
 
       reader.readAsArrayBuffer(file);
@@ -98,7 +118,7 @@ const ContactImportForm = () => {
     } else {
       bulkImportContacts();
     }
-  }
+  };
 
   const bulkImportContacts = () => {
     const contacts = mapContacts(rawContacts, mappedFields);
@@ -108,10 +128,10 @@ const ContactImportForm = () => {
       numbersContactImported: contacts.length,
       numbersColumnMapped: mappedFields.length,
       tagId: tag,
-      isOverride: shouldOverride
+      isOverride: shouldOverride,
     };
     dispatch(importContactsAsync(data));
-  }
+  };
 
   useEffect(() => {
     dispatch(getCustomFieldsAsync());
@@ -137,7 +157,7 @@ const ContactImportForm = () => {
           </div>
           {file ? (
             <p className="flex items-center space-x-2 bg-gray-1 py-4 px-6 mt-5 md:mt-0">
-              <span>{ file.name }</span>
+              <span>{file.name}</span>
               <CloseOutlined className="cursor-pointer" onClick={() => {
                 setFile(null);
                 setStep(steps.UPLOAD_FILE);
@@ -153,22 +173,36 @@ const ContactImportForm = () => {
               Browse
             </Button>
           )}
-          <input id="upload" name="upload" type="file" ref={fileRef} hidden onChange={handleFileChange} accept=".csv,.xlsx" />
+          <input
+            id="upload"
+            name="upload"
+            type="file"
+            ref={fileRef}
+            hidden
+            onChange={handleFileChange}
+            accept=".csv,.xlsx"
+          />
         </div>
       </div>
-      {
-        rawContacts.length > 0 && step > steps.UPLOAD_FILE && (
-          <ContactImportMapper rawContacts={rawContacts} isCurrentStep={step === steps.MAP_FILEDS} onEdit={() => setStep(steps.MAP_FILEDS)} />
-        )
-      }
+      {rawContacts.length > 0 && step > steps.UPLOAD_FILE && (
+        <ContactImportMapper
+          rawContacts={rawContacts}
+          isCurrentStep={step === steps.MAP_FILEDS}
+          onEdit={() => setStep(steps.MAP_FILEDS)}
+        />
+      )}
       {step === steps.FINAL_DETAILS && (
         <div className="px-7 md:px-12 py-1 md:py-4 bg-white rounded-b-lg shadow-md">
           <div className="flex md:flex-row flex-col justify-between my-5">
             <div className="w-80">
-              <h2 className="text-lg text-black font-bold mb-5">Final Details</h2>
+              <h2 className="text-lg text-black font-bold mb-5">
+                Final Details
+              </h2>
             </div>
             <div className="flex-grow">
-              <p><strong>INBOUND TAG</strong></p>
+              <p>
+                <strong>INBOUND TAG</strong>
+              </p>
               <p>Select tag to apply to the newly imported contacts</p>
               <Select
                 allowClear
@@ -176,24 +210,24 @@ const ContactImportForm = () => {
                 placeholder="Select tag..."
                 className="w-full md:w-[350px] mt-5 bg-gray-1"
               >
-                {
-                  tags?.map((option) => (
-                    <Select.Option
-                      key={`tag-${option.id}`}
-                      value={option.id}
-                    >
-                      {option.name}
-                    </Select.Option>
-                  ))
-                }
+                {tags?.map((option) => (
+                  <Select.Option key={`tag-${option.id}`} value={option.id}>
+                    {option.name}
+                  </Select.Option>
+                ))}
               </Select>
               <Checkbox
                 className="flex mt-5"
                 onChange={(e) => setShouldOverride(e.target.checked)}
               >
                 <div>
-                  <p className="text-base font-semibold">Override Pre-existing Contact Information</p>
-                  <p>Decide whether to skip import for contacts that already exist</p>
+                  <p className="text-base font-semibold">
+                    Override Pre-existing Contact Information
+                  </p>
+                  <p>
+                    Decide whether to skip import for contacts that already
+                    exist
+                  </p>
                 </div>
               </Checkbox>
             </div>
@@ -206,7 +240,10 @@ const ContactImportForm = () => {
           <Button
             type="primary"
             size="large"
-            className={`next-btn inline-flex items-center px-12 mt-3 md:mt-0 ${!isRequiredFieldsMapped ? 'opacity-30' : 'opacity-80 hover:opacity-100'}`}
+            className={`next-btn inline-flex items-center px-12 mt-3 md:mt-0 ${!isRequiredFieldsMapped
+                ? "opacity-30"
+                : "opacity-80 hover:opacity-100"
+              }`}
             onClick={handleNext}
             disabled={!isRequiredFieldsMapped}
             loading={importContactStatus === "loading"}
@@ -216,13 +253,9 @@ const ContactImportForm = () => {
         </div>
       )}
 
-      {
-        importContactStatus === "success" && (
-          <ImportContactSuccessModal />
-        )
-      }
+      {importContactStatus === "success" && <ImportContactSuccessModal />}
     </div>
   );
-}
- 
+};
+
 export default ContactImportForm;

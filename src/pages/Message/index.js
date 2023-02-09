@@ -30,7 +30,7 @@ const Message = () => {
   const { vcardData } = useSelector(selectVCard);
   const { forms } = useSelector(selectSettings);
 
-  const handleOkPhoneModal = () => { };
+  const handleOkPhoneModal = () => {};
 
   const handleCancelPhoneModal = () => {
     closePhoneNumber();
@@ -154,7 +154,9 @@ const Message = () => {
               <Card bordered={true} className="rounded-3xl h-48 pl-2 pr-2">
                 <div className="flex flex-row items-center">
                   <AutomationRobotIcon />
-                  <h2 className="font-bold text-xl ml-4">Create an Automation</h2>
+                  <h2 className="font-bold text-xl ml-4">
+                    Create an Automation
+                  </h2>
                 </div>
                 <span>
                   Create powerful drip campaigns & auto-responses based on a

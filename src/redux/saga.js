@@ -75,6 +75,17 @@ import {
   watchGetMessageStatisticsSaga,
 } from "./messageReducer";
 
+import {
+  watchCreateKeyResponsesSettingsSaga,
+  watchDeleteKeyResponsesSettingsSaga,
+  watchGetFirstContactSettingsSaga,
+  watchGetKeyResponsesSettingsSaga,
+  watchSaveFirstContactSettingsSaga,
+  watchToggleFirstContactSaga,
+  watchToggleKeyResponsesSaga,
+  watchUpdateKeyResponsesSettingsSaga,
+} from "./automatedResponsesReducer";
+
 export default function* rootSaga() {
   yield all([
     watchGetListPhoneSaga(),
@@ -151,5 +162,15 @@ export default function* rootSaga() {
     watchSendSmsSaga(),
     watchResetSendSmsSaga(),
     watchGetMessageStatisticsSaga(),
+
+    // automated responses
+    watchToggleFirstContactSaga(),
+    watchToggleKeyResponsesSaga(),
+    watchSaveFirstContactSettingsSaga(),
+    watchGetFirstContactSettingsSaga(),
+    watchGetKeyResponsesSettingsSaga(),
+    watchCreateKeyResponsesSettingsSaga(),
+    watchUpdateKeyResponsesSettingsSaga(),
+    watchDeleteKeyResponsesSettingsSaga(),
   ]);
 }
