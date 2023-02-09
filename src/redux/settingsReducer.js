@@ -24,7 +24,9 @@ export const getFormSubmissionsAsync = createAction(
 export const getSubscriberLocationsAsync = createAction(
   "settings/getSubscriberLocationsAsync"
 );
-export const getImportContactHistoryAsync = createAction("settings/getImportContactHistoryAsync");
+export const getImportContactHistoryAsync = createAction(
+  "settings/getImportContactHistoryAsync"
+);
 export const importContactsAsync = createAction("settings/importContactsAsync");
 
 export async function getTags(data) {
@@ -485,7 +487,9 @@ export const settingsSlice = createSlice({
       state.errors = action.payload;
     },
     fieldMapped: (state, action) => {
-      state.mappedFields = state.mappedFields.filter(field => field.from !== action.payload.from);
+      state.mappedFields = state.mappedFields.filter(
+        (field) => field.from !== action.payload.from
+      );
 
       if (action.payload.to) {
         state.mappedFields.push(action.payload);
@@ -499,14 +503,14 @@ export const settingsSlice = createSlice({
       state.importContactStatus = null;
     },
     beginImportContacts: (state) => {
-      state.importContactStatus = "loading"
+      state.importContactStatus = "loading";
     },
     importContactsSuccess: (state) => {
-      state.importContactStatus = 'success';
+      state.importContactStatus = "success";
     },
     getImportContactHistorySuccess: (state, action) => {
       state.contactHistory = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder

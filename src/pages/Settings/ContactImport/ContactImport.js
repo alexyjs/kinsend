@@ -8,10 +8,11 @@ const ContactImport = () => {
   return (
     <LayoutComponent className="settings-page" title="Setting">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl md:text-4xl">
-          Contact Import
-        </h1>
-        <NavLink to={`/settings/csv-contacts-import-history`} className="text-base text-primary">
+        <h1 className="text-3xl md:text-4xl">Contact Import</h1>
+        <NavLink
+          to={`/settings/csv-contacts-import-history`}
+          className="text-base text-primary"
+        >
           History
         </NavLink>
       </div>

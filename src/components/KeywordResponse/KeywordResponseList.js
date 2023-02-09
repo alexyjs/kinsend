@@ -4,7 +4,12 @@ import DraggableList from "./DraggableList";
 import KeyResponseModal from "./KeyResponseModal/KeyResponseModal";
 import { useModal } from "../../hook/useModal";
 import { useDispatch, useSelector } from "react-redux";
-import { createKeyResponsesSettingsAsync, deleteKeyResponsesSettingsAsync, selectAutomatedResponses, updateKeyResponsesSettingsAsync } from "../../redux/automatedResponsesReducer";
+import {
+  createKeyResponsesSettingsAsync,
+  deleteKeyResponsesSettingsAsync,
+  selectAutomatedResponses,
+  updateKeyResponsesSettingsAsync,
+} from "../../redux/automatedResponsesReducer";
 import { useState } from "react";
 import DeleteKeywordResponseModal from "./KeyResponseModal/DeleteKeywordResponseModal";
 
@@ -13,7 +18,8 @@ const KeywordResponseList = () => {
   const [type, setType] = useState("");
   const [selectedKeywordResponse, setSelectedKeywordResponse] = useState(null);
   const [selectedDeletion, setSelectedDeletion] = useState(null);
-  const { hashTagOrEmojiResponsesSettings, regexResponsesSettings } = useSelector(selectAutomatedResponses);
+  const { hashTagOrEmojiResponsesSettings, regexResponsesSettings } =
+    useSelector(selectAutomatedResponses);
   const {
     close: closeAction,
     show: showAction,
@@ -30,12 +36,12 @@ const KeywordResponseList = () => {
       response: {
         type: "SEND_MESSAGE",
         message: data.message,
-        fileAttached: data.fileAttached
+        fileAttached: data.fileAttached,
       },
       pattern: data.keyword,
       tagId: data.tagId,
       type: keywordType,
-      id: data.id
+      id: data.id,
     };
 
     if (data.id) {
@@ -50,29 +56,29 @@ const KeywordResponseList = () => {
 
   const handleSort = (data) => {
     dispatch(updateKeyResponsesSettingsAsync(data));
-  }
+  };
 
   const handleOpenCreate = (createType) => {
     setSelectedKeywordResponse(null);
     setType(createType);
     showAction();
-  }
+  };
 
   const handleOpenEdit = (keywordType, item) => {
     setType(keywordType);
     setSelectedKeywordResponse(item);
     showAction();
-  }
+  };
 
   const handleOpenDelete = (item) => {
     setSelectedDeletion(item);
     showDelete();
-  }
+  };
 
   const handleDelete = (item) => {
     dispatch(deleteKeyResponsesSettingsAsync(item.id));
     closeDelete();
-  }
+  };
 
   return (
     <div>
@@ -95,7 +101,13 @@ const KeywordResponseList = () => {
             New
           </Button>
         </div>
-        <DraggableList type={type} list={hashTagOrEmojiResponsesSettings} onSorted={handleSort} handleOpenEdit={handleOpenEdit} handleDelete={handleOpenDelete} />
+        <DraggableList
+          type={type}
+          list={hashTagOrEmojiResponsesSettings}
+          onSorted={handleSort}
+          handleOpenEdit={handleOpenEdit}
+          handleDelete={handleOpenDelete}
+        />
       </div>
       <div className="p-4 bg-white rounded-lg shadow-md mt-5">
         <div className="flex items-center justify-between">
@@ -115,7 +127,13 @@ const KeywordResponseList = () => {
             New
           </Button>
         </div>
-        <DraggableList type={type} list={regexResponsesSettings} onSorted={handleSort} handleOpenEdit={handleOpenEdit} handleDelete={handleOpenDelete} />
+        <DraggableList
+          type={type}
+          list={regexResponsesSettings}
+          onSorted={handleSort}
+          handleOpenEdit={handleOpenEdit}
+          handleDelete={handleOpenDelete}
+        />
       </div>
       <KeyResponseModal
         data={selectedKeywordResponse}
@@ -124,7 +142,12 @@ const KeywordResponseList = () => {
         handleOk={handleSaveKeywordResponse}
         type={type}
       />
-      <DeleteKeywordResponseModal handleCancel={closeDelete} handleOk={handleDelete} item={selectedDeletion} visible={visibleDelete} />
+      <DeleteKeywordResponseModal
+        handleCancel={closeDelete}
+        handleOk={handleDelete}
+        item={selectedDeletion}
+        visible={visibleDelete}
+      />
     </div>
   );
 };

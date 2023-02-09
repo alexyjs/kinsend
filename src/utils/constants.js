@@ -111,16 +111,18 @@ export const DEFAULT_FIELDS = [
   "LAST NAME",
   "PHONE NUMBER",
   "EMAIL",
-  "LOCATION"
+  "LOCATION",
 ];
 
-export const REQUIRED_FIELDS = [
-  "FIRST NAME",
-  "LAST NAME",
-  "PHONE NUMBER",
-];
+export const REQUIRED_FIELDS = ["FIRST NAME", "LAST NAME", "PHONE NUMBER"];
 
-export const defaultFieldsCamelized = ["firstName", "lastName", "phoneNumber", "email", "location"];
+export const defaultFieldsCamelized = [
+  "firstName",
+  "lastName",
+  "phoneNumber",
+  "email",
+  "location",
+];
 
 export const INDUSTRY = ["Tech", "Music", "Fashion", "Other"];
 

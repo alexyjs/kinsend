@@ -39,7 +39,7 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
       tagId: values.tagId,
       fileAttached: attachment?.url || "",
       id: data?.id,
-      index: data?.index
+      index: data?.index,
     });
   };
 
@@ -102,14 +102,14 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
       form.setFieldsValue({
         message: "",
         keyword: "",
-        tagId: ""
+        tagId: "",
       });
     } else {
       setAttachment(data.fileAttached);
       form.setFieldsValue({
         message: data.response.message,
         keyword: data.keyword,
-        tagId: data.tagId || ""
+        tagId: data.tagId || "",
       });
     }
   }, [visible, data]);
@@ -127,12 +127,13 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
         centered
         className="automation-trigger-modal"
       >
-        <h3 className="font-bold text-center text-2xl mb-9">{!!data ? "Edit" : "New"} Response</h3>
+        <h3 className="font-bold text-center text-2xl mb-9">
+          {!!data ? "Edit" : "New"} Response
+        </h3>
         <p className="text-center">
-          { type === "REGEX" 
-            ? "Enter a Regular Expression Rule. For matching incoming messages choose an auto response and/or tag to apply." 
-            : "Enter a Hashtag or Emoji Rule. For matching incoming messages choose an auto response and/or tag to apply."
-          }
+          {type === "REGEX"
+            ? "Enter a Regular Expression Rule. For matching incoming messages choose an auto response and/or tag to apply."
+            : "Enter a Hashtag or Emoji Rule. For matching incoming messages choose an auto response and/or tag to apply."}
         </p>
         <div className="action-detail-wrap">
           <Form
@@ -143,25 +144,22 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
           >
             <div className="relative">
               <label className="font-semibold" htmlFor="keyword">
-              { type === "REGEX" 
-                ? "REGEX RULE" 
-                : "HASHTAG OR EMOJI RULE"
-              }
+                {type === "REGEX" ? "REGEX RULE" : "HASHTAG OR EMOJI RULE"}
               </label>
               <Form.Item name="keyword" rules={[{ required: true }]}>
                 <Input
-                  placeholder={type === "REGEX" ? "Aabc[\\d]D" : "#Hashtag or 👍"}
+                  placeholder={
+                    type === "REGEX" ? "Aabc[\\d]D" : "#Hashtag or 👍"
+                  }
                   onChange={handleChangeKeyword}
                   suffix={
                     <>
-                      {
-                        type === "HASHTAG_OR_EMOJI" && (
-                          <EmojiIcon
-                            className="cursor-pointer"
-                            onClick={() => setShowInputEmoji(true)}
-                          />
-                        )
-                      }
+                      {type === "HASHTAG_OR_EMOJI" && (
+                        <EmojiIcon
+                          className="cursor-pointer"
+                          onClick={() => setShowInputEmoji(true)}
+                        />
+                      )}
                     </>
                   }
                 />
@@ -174,7 +172,9 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
               )}
             </div>
             <div>
-              <label className="font-semibold" htmlFor="message">AUTO RESPONSE</label>
+              <label className="font-semibold" htmlFor="message">
+                AUTO RESPONSE
+              </label>
               <div className="sendmessage-textarea-wrap">
                 <div className="hint">
                   <Tooltip
@@ -194,8 +194,8 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
                     placement="top"
                     title={
                       <>
-                        Carriers charge you for <b>every segment</b> they deliver
-                        to your recipient
+                        Carriers charge you for <b>every segment</b> they
+                        deliver to your recipient
                       </>
                     }
                   >
@@ -204,7 +204,10 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
                     </Button>
                   </Tooltip>
                 </div>
-                <Form.Item name="message" rules={[{ required: true, max: 160 }]}>
+                <Form.Item
+                  name="message"
+                  rules={[{ required: true, max: 160 }]}
+                >
                   <Input.TextArea
                     style={{ height: 200 }}
                     placeholder="Send new messenge ..."
@@ -213,7 +216,9 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
                 <div className="textarea-actions">
                   <AttachmentIcon onClick={showUpload} />
                   <EmojiIcon onClick={() => setShowEmoji(true)} />
-                  {showEmoji && <EmojiPicker onEmojiSelect={handleChangeEmoji} />}
+                  {showEmoji && (
+                    <EmojiPicker onEmojiSelect={handleChangeEmoji} />
+                  )}
                   <UploadFileModal
                     visible={visibleUpload}
                     handleOk={handleUploadFile}
@@ -223,23 +228,20 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
               </div>
             </div>
             <div className="mt-5">
-              <label className="font-semibold" htmlFor="tagId">APPLY TAG</label>
+              <label className="font-semibold" htmlFor="tagId">
+                APPLY TAG
+              </label>
               <Form.Item name="tagId" rules={[{ required: true }]}>
                 <Select
                   allowClear
                   placeholder="Select tag..."
                   className="w-full md:w-[350px] bg-gray-1"
                 >
-                  {
-                    tags?.map((option) => (
-                      <Select.Option
-                        key={`tag-${option.id}`}
-                        value={option.id}
-                      >
-                        {option.name}
-                      </Select.Option>
-                    ))
-                  }
+                  {tags?.map((option) => (
+                    <Select.Option key={`tag-${option.id}`} value={option.id}>
+                      {option.name}
+                    </Select.Option>
+                  ))}
                 </Select>
               </Form.Item>
             </div>
