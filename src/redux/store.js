@@ -11,7 +11,7 @@ import publicSlice from "./publicReducer";
 import automationSlice from "./automationReducer";
 import updatesReducer from "./updatesReducer";
 import messageReducer from "./messageReducer";
-import automatedResponsesReducer from './automatedResponsesReducer';
+import automatedResponsesReducer from "./automatedResponsesReducer";
 
 // disalbe thunk and add redux-saga middleware
 const sagaMiddleware = createSagaMiddleware();

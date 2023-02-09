@@ -111,8 +111,14 @@ function App() {
             <Route path="/settings/forms" element={<FormManage />} />
             <Route path="/settings/forms/new" element={<AddNewForm />} />
             <Route path="/settings/forms/edit/:id" element={<AddNewForm />} />
-            <Route path="/settings/csv-contacts-import" element={<ContactImport />} />
-            <Route path="/settings/csv-contacts-import-history" element={<ContactImportHistory />} />
+            <Route
+              path="/settings/csv-contacts-import"
+              element={<ContactImport />}
+            />
+            <Route
+              path="/settings/csv-contacts-import-history"
+              element={<ContactImportHistory />}
+            />
 
             <Route path="/automation/new" element={<AddNewAutomation />} />
             <Route path="/automation/edit/:id" element={<AddNewAutomation />} />
@@ -130,8 +136,14 @@ function App() {
               element={<EditUpdates />}
             />
 
-            <Route path="/automated-responses" element={<AutomatedResponses />} />
-            <Route path="/automated-responses/first-contact" element={<FirstContact />} />
+            <Route
+              path="/automated-responses"
+              element={<AutomatedResponses />}
+            />
+            <Route
+              path="/automated-responses/first-contact"
+              element={<FirstContact />}
+            />
 
             <Route path="*" element={<Navigate to="/message" replace />} />
           </Routes>

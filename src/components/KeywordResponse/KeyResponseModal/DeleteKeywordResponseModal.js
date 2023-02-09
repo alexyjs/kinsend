@@ -1,12 +1,17 @@
 import { Button, Col, Form, Modal, Row } from "antd";
 import React from "react";
 
-const DeleteKeywordResponseModal = ({ visible, handleOk, handleCancel, item }) => {
+const DeleteKeywordResponseModal = ({
+  visible,
+  handleOk,
+  handleCancel,
+  item,
+}) => {
   return (
     <Modal
       key="DeleteKeywordResponseModal"
       visible={visible}
-      onOk={_ => handleOk(item)}
+      onOk={(_) => handleOk(item)}
       onCancel={handleCancel}
       footer={null}
       closable={false}
@@ -19,7 +24,8 @@ const DeleteKeywordResponseModal = ({ visible, handleOk, handleCancel, item }) =
         Delete Keyword Response
       </h3>
       <p className="text-center pb-5">
-        Do you want to delete the Keyword Response <strong>"{ item?.keyword }"?</strong>
+        Do you want to delete the Keyword Response{" "}
+        <strong>"{item?.keyword}"?</strong>
       </p>
       <Row justify="space-around" className="mt-12">
         <Col>
@@ -42,7 +48,7 @@ const DeleteKeywordResponseModal = ({ visible, handleOk, handleCancel, item }) =
               type="primary"
               size="large"
               block
-              onClick={_ => handleOk(item)}
+              onClick={(_) => handleOk(item)}
             >
               Confirm
             </Button>

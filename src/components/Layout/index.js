@@ -1,6 +1,10 @@
 import React, { useState, useRef, useMemo } from "react";
 import { Layout, Avatar, Menu, Button } from "antd";
-import { DoubleRightOutlined, DoubleLeftOutlined, PartitionOutlined } from "@ant-design/icons";
+import {
+  DoubleRightOutlined,
+  DoubleLeftOutlined,
+  PartitionOutlined,
+} from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, NavLink } from "react-router-dom";
 import classnames from "classnames";
@@ -16,7 +20,7 @@ import {
   SettingSVG,
   ArrowDownIcon,
   AutomationRobotIcon,
-  AutoResponse
+  AutoResponse,
 } from "../../assets/svg";
 import { useOutsideAlerter } from "../../hook/useOutSide";
 import "./styles.less";
@@ -303,7 +307,9 @@ const LayoutComponent = ({ className, children, title }) => {
                       onMouseOut={() => setHover(false)}
                     >
                       <AutoResponse />
-                      <span className="menu-item-label">Automated Responses</span>
+                      <span className="menu-item-label">
+                        Automated Responses
+                      </span>
                     </NavLink>
                   </Menu.Item>
                 </Menu>

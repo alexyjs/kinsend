@@ -28,11 +28,12 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
   const hadnleSubmitSendMessage = (values) => {
     handleOk(data, index, {
       message: values.message,
-      fileAttached: attachment.url,
+      fileAttached: attachment?.url || "",
     });
   };
 
   const handleUploadFile = (value) => {
+    debugger;
     setAttachment(value);
     closeUpload();
   };
@@ -58,7 +59,7 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
       });
     }
   }, [visible, data]);
-
+  console.log("###data", data);
   return (
     <>
       <Modal
@@ -72,10 +73,10 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
         centered
         className="automation-trigger-modal"
       >
-        <h3 className="font-bold text-center text-2xl mb-9">Customize Action</h3>
-        <p className="text-center">
-          Set up an Action to fire automatically
-        </p>
+        <h3 className="font-bold text-center text-2xl mb-9">
+          Customize Action
+        </h3>
+        <p className="text-center">Set up an Action to fire automatically</p>
         <div className="action-detail-wrap">
           <Form
             form={form}
@@ -84,7 +85,8 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
             className=""
           >
             <p className="mb-1">
-              <strong>Note</strong>: you can send a link to your default form using the merge field {'<form>'} or an arbitrary link
+              <strong>Note</strong>: you can send a link to your default form
+              using the merge field {"<form>"} or an arbitrary link
             </p>
             <div className="sendmessage-textarea-wrap">
               <div className="hint">
@@ -105,8 +107,8 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
                   placement="top"
                   title={
                     <>
-                      Carriers charge you for <b>every segment</b> they
-                      deliver to your recipient
+                      Carriers charge you for <b>every segment</b> they deliver
+                      to your recipient
                     </>
                   }
                 >
@@ -115,10 +117,7 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
                   </Button>
                 </Tooltip>
               </div>
-              <Form.Item
-                name="message"
-                rules={[{ required: true, max: 160 }]}
-              >
+              <Form.Item name="message" rules={[{ required: true, max: 160 }]}>
                 <Input.TextArea
                   style={{ height: 200 }}
                   placeholder="Send new messenge ..."
@@ -127,9 +126,7 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
               <div className="textarea-actions">
                 <AttachmentIcon onClick={showUpload} />
                 <EmojiIcon onClick={() => setShowEmoji(true)} />
-                {showEmoji && (
-                  <EmojiPicker onEmojiSelect={handleChangeEmoji} />
-                )}
+                {showEmoji && <EmojiPicker onEmojiSelect={handleChangeEmoji} />}
                 <UploadFileModal
                   visible={visibleUpload}
                   handleOk={handleUploadFile}
@@ -137,7 +134,17 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
                 />
               </div>
             </div>
-            {attachment?.name && <b>{attachment?.name}</b>}
+            {attachment?.name ? (
+              <b>{attachment?.name}</b>
+            ) : data?.fileAttached ? (
+              <a
+                href={data?.fileAttached}
+                target="_blank"
+                className="block underline"
+              >
+                {data?.fileAttached}
+              </a>
+            ) : null}
             <Row justify="end" className="mt-12">
               <Col>
                 <Form.Item noStyle>

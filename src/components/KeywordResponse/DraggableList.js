@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Button, Table } from "antd";
-import { sortableContainer, sortableElement, sortableHandle } from "react-sortable-hoc";
+import {
+  sortableContainer,
+  sortableElement,
+  sortableHandle,
+} from "react-sortable-hoc";
 import { MenuOutlined } from "@ant-design/icons";
 
 import "./style.less";
@@ -10,7 +14,9 @@ const DragHandle = sortableHandle(({ active }) => (
   <MenuOutlined style={{ cursor: "grab", color: active ? "blue" : "#999" }} />
 ));
 
-const SortableItem = sortableElement((props) => <tr className="sortable-item" style={{ zIndex: 1 }} {...props} />);
+const SortableItem = sortableElement((props) => (
+  <tr className="sortable-item" style={{ zIndex: 1 }} {...props} />
+));
 const SortableContainer = sortableContainer((props) => <tbody {...props} />);
 
 function DraggableList({ list, onSorted, handleOpenEdit, handleDelete, type }) {
@@ -26,15 +32,15 @@ function DraggableList({ list, onSorted, handleOpenEdit, handleDelete, type }) {
           <>
             <DragHandle />
           </>
-        )
+        ),
       },
       {
         dataIndex: "keyword",
-        className: "col-keyword"
+        className: "col-keyword",
       },
       {
         dataIndex: ["response", "message"],
-        className: "col-message"
+        className: "col-message",
       },
       {
         dataIndex: "",
@@ -59,7 +65,7 @@ function DraggableList({ list, onSorted, handleOpenEdit, handleDelete, type }) {
               Delete
             </Button>
           </div>
-        )
+        ),
       },
     ];
   };
@@ -76,7 +82,7 @@ function DraggableList({ list, onSorted, handleOpenEdit, handleDelete, type }) {
       tempDataSource.splice(oldIndex, 1);
       tempDataSource = merge(tempDataSource, [movingItem], newIndex);
       setDataSource(tempDataSource);
-      onSorted({...movingItem, index: newIndex});
+      onSorted({ ...movingItem, index: newIndex });
     }
   };
 
@@ -95,12 +101,7 @@ function DraggableList({ list, onSorted, handleOpenEdit, handleDelete, type }) {
     const index = dataSource.findIndex(
       (x) => x.index === restProps["data-row-key"]
     );
-    return (
-      <SortableItem
-        index={index}
-        {...restProps}
-      />
-    );
+    return <SortableItem index={index} {...restProps} />;
   };
 
   useEffect(() => {
@@ -116,8 +117,8 @@ function DraggableList({ list, onSorted, handleOpenEdit, handleDelete, type }) {
       components={{
         body: {
           wrapper: DraggableContainer,
-          row: DraggableBodyRow
-        }
+          row: DraggableBodyRow,
+        },
       }}
       showHeader={false}
       className="mt-4 border-t-1 border-gray-1"
