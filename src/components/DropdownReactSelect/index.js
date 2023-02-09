@@ -13,7 +13,7 @@ const groupStyles = {
 // Show the value which selected
 const SingleValue = (props) => {
   const { children, formatValue, data } = props;
-  console.log("###SingleValue", props);
+  //   console.log("###SingleValue", props);
   return (
     <ReactSelectComponent.SingleValue
       {...props}

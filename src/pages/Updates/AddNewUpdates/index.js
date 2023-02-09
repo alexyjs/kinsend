@@ -48,10 +48,13 @@ import {
   getFilterUpdatesFeature,
   formatOptions,
   getFilterUpdatesSelected,
+  getMessagePreview,
 } from "../../../utils";
 import NewSegmentModal from "../components/NewSegmentModal";
 import ConfirmScheduleModal from "../components/ConfirmScheduleModal";
 import SendTestMessage from "../components/SendTestMessage";
+
+import { MERGE_FIELDS } from "../../../utils/constants";
 
 import "./styles.less";
 
@@ -72,6 +75,16 @@ const AddNewUpdates = () => {
   // const message = Form.useWatch("message", form);
   const [message, setMessage] = useState("");
   const [defaultValueMessage, setDefaultValueMessage] = useState("");
+  const [messagePreview, setMessagePreview] = useState("");
+
+  const userPreviewFields = useMemo(() => {
+    return {
+      fname: user?.firstName,
+      lname: user?.lastName,
+      name: `${user?.firstName} ${user?.lastName}`,
+      mobile: `${user?.phoneNumber[0].code}${user?.phoneNumber[0].phone}`,
+    };
+  }, [user]);
 
   const showMergeField =
     message &&
@@ -80,6 +93,7 @@ const AddNewUpdates = () => {
     !message.includes(`&lt;name&gt;`) &&
     !message.includes(`&lt;mobile&gt;`) &&
     !message.includes(`&lt;form&gt;`);
+
   const {
     close: closeSegment,
     show: showSegment,
@@ -130,10 +144,10 @@ const AddNewUpdates = () => {
     }
     const params = {
       message: message
-        .replace(/<span>/gi, "")
-        .replace(/<\/span>/gi, "")
+        .replace(/<\/?span[^>]*>/g, "")
         .replace(/&lt;/gi, "<")
-        .replace(/&gt;/gi, ">"),
+        .replace(/&gt;/gi, ">")
+        .replace(/&nbsp;/gi, " "),
       datetime: datetime,
       triggerType: values.triggerType,
       filter: getFilterUpdatesFeature(recipients),
@@ -220,7 +234,9 @@ const AddNewUpdates = () => {
   };
 
   const hanldeChangeMessage = (messageValue) => {
+    const messagePreview = getMessagePreview(messageValue, userPreviewFields);
     setMessage(messageValue);
+    setMessagePreview(messagePreview);
   };
 
   useEffect(() => {
@@ -283,7 +299,12 @@ const AddNewUpdates = () => {
       form.setFieldsValue({
         triggerType: updatesDetail.triggerType,
       });
-
+      const messagePreview = getMessagePreview(
+        updatesDetail?.message,
+        userPreviewFields
+      );
+      setMessagePreview(messagePreview);
+      console.log(updatesDetail?.message);
       setDefaultValueMessage(updatesDetail?.message);
       setMessage(updatesDetail?.message);
       setDatetime(new Date(updatesDetail?.datetime));
@@ -299,7 +320,11 @@ const AddNewUpdates = () => {
       clearData();
     }
   }, [updatesDetail, recipientsOptions, updatesId]);
-  console.log("###updatesDetail:", updatesDetail);
+
+  //   console.log("###updatesDetail:", updatesDetail);
+
+  console.log(message);
+
   return (
     <LayoutComponent className="add-updates-page">
       <div className="flex items-center md:p-0 p-3">
@@ -323,7 +348,7 @@ const AddNewUpdates = () => {
               )}
               <div
                 className="phone-image-content-message"
-                dangerouslySetInnerHTML={{ __html: message }}
+                dangerouslySetInnerHTML={{ __html: messagePreview }}
               ></div>
             </div>
           </div>
