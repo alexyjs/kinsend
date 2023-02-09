@@ -16,7 +16,24 @@ import {
 
 import "./styles.less";
 
-import { MERGE_FIELDS } from "../../utils/constants";
+const FIELDS = [
+  {
+    fieldLabel: "fname",
+    text: "Contact's first name",
+  },
+  {
+    fieldLabel: "name",
+    text: "Contact's full name",
+  },
+  {
+    fieldLabel: "mobile",
+    text: "Contact's mobile name",
+  },
+  {
+    fieldLabel: "lname",
+    text: "Contact's last name",
+  },
+];
 
 const EditableText = forwardRef(
   (
@@ -34,10 +51,8 @@ const EditableText = forwardRef(
     const memoizedFields = useMemo(
       () =>
         fieldValue
-          ? MERGE_FIELDS.filter(({ fieldLabel }) =>
-              fieldLabel.includes(fieldValue)
-            )
-          : MERGE_FIELDS,
+          ? FIELDS.filter(({ fieldLabel }) => fieldLabel.includes(fieldValue))
+          : FIELDS,
       [fieldValue]
     );
 
@@ -133,6 +148,10 @@ const EditableText = forwardRef(
         .replace(/(<([^>]+)>)/gi, "")
         .replace(/&nbsp;/gi, " ");
 
+      if (newValue?.length > 160) {
+        newValue = newValue.slice(0, 160);
+        editableRef.current.innerHTML = newValue;
+      }
       setValue(result);
       onChange(result);
       const index = getCaretCharacterOffsetWithin();
@@ -218,7 +237,6 @@ const EditableText = forwardRef(
       const parentElementoffsetTop = window.getSelection().getRangeAt(0)
         .endContainer.parentElement.offsetTop;
     };
-
     const handleUpdateSelection = () => {
       const index = getCaretCharacterOffsetWithin();
       setIndexSelectedField(index);
@@ -288,6 +306,10 @@ const EditableText = forwardRef(
         `${fieldSelected} ` +
         newValue.slice(indexSelectedField + endSlice);
 
+      if (newValue?.length > 160) {
+        newValue = newValue.slice(0, 160);
+      }
+
       newValue = newValue
         .replace(/</gi, "&lt;")
         .replace(/>/gi, "&gt;")
@@ -309,7 +331,6 @@ const EditableText = forwardRef(
           /&lt;mobile&gt;/gi,
           `<span class=mergeField contentEditable=false>&lt;mobile&gt;</span>`
         );
-
       setValue(newValue);
       editableRef.current.innerHTML = newValue;
       setShowDropdown(false);
@@ -319,22 +340,10 @@ const EditableText = forwardRef(
 
     useEffect(() => {
       const initValue = defaultValue
-        .replace(
-          /<fname>/gi,
-          `<span class=mergeField contentEditable=false>&lt;fname&gt;</span>`
-        )
-        .replace(
-          /<lname>/gi,
-          `<span class=mergeField contentEditable=false>&lt;lname&gt;</span>`
-        )
-        .replace(
-          /<name>/gi,
-          `<span class=mergeField contentEditable=false>&lt;name&gt;</span>`
-        )
-        .replace(
-          /<mobile>/gi,
-          `<span class=mergeField contentEditable=false>&lt;mobile&gt;</span>`
-        );
+        .replace(/<fname>/gi, `&lt;fname&gt;`)
+        .replace(/<lname>/gi, `&lt;lname&gt;`)
+        .replace(/<name>/gi, `&lt;name&gt;`)
+        .replace(/<mobile>/gi, `&lt;mobile&gt;`);
       setValue(initValue);
       editableRef.current.innerHTML = initValue;
     }, [defaultValue]);
