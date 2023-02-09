@@ -379,14 +379,14 @@ export const {
   setToggleKeyword,
 } = automatedResponsesSlice.actions;
 
-export const selectAutomatedResponses = ({ automatedResponsesReducer }) => {
+export const selectAutomatedResponses = ({ automatedResponses }) => {
   return {
-    isLoading: automatedResponsesReducer.isLoading,
-    firstContactSettings: automatedResponsesReducer.firstContactSettings,
-    keyResponsesSettings: automatedResponsesReducer.keyResponsesSettings,
+    isLoading: automatedResponses.isLoading,
+    firstContactSettings: automatedResponses.firstContactSettings,
+    keyResponsesSettings: automatedResponses.keyResponsesSettings,
     hashTagOrEmojiResponsesSettings:
-      automatedResponsesReducer.hashTagOrEmojiResponsesSettings,
-    regexResponsesSettings: automatedResponsesReducer.regexResponsesSettings,
+    automatedResponses.hashTagOrEmojiResponsesSettings,
+    regexResponsesSettings: automatedResponses.regexResponsesSettings,
   };
 };
 
