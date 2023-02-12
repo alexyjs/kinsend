@@ -430,7 +430,7 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
             <div className="flex justify-between items-center action-detail-input">
               <span>Send Message</span>
               <button
-                className="text-primary px-3 py-1"
+                className="text-primary px-3 py-1 automation-trigger-modal-"
                 onClick={handleResetActionType}
               >
                 Change

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Row, Col, Form, Modal, Button, Input, Tooltip } from "antd";
 import { useModal } from "../../../hook/useModal";
 import UploadFileModal from "../../UploadFileModal";
 import EmojiPicker from "../../EmojiPicker";
-
+import { EditableText } from "../../../components";
 import {
   AutomationActionMessageIcon,
   AutomationActionMaxMessageIcon,
@@ -15,8 +15,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./styles.less";
 
 const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
-  const [attachment, setAttachment] = useState({});
+  const childRef = useRef();
   const [form] = Form.useForm();
+  const [message, setMessage] = useState("");
+  const [attachment, setAttachment] = useState({});
+  const [defaultValueMessage, setDefaultValueMessage] = useState("");
 
   const {
     close: closeUpload,
@@ -27,13 +30,16 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
 
   const hadnleSubmitSendMessage = (values) => {
     handleOk(data, index, {
-      message: values.message,
+      message: message
+        .replace(/<span>/gi, "")
+        .replace(/<\/span>/gi, "")
+        .replace(/&lt;/gi, "<")
+        .replace(/&gt;/gi, ">"),
       fileAttached: attachment?.url || "",
     });
   };
 
   const handleUploadFile = (value) => {
-    debugger;
     setAttachment(value);
     closeUpload();
   };
@@ -44,6 +50,10 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
       message: message + emojiObj.native,
     });
     setShowEmoji(false);
+  };
+
+  const hanldeChangeMessage = (messageValue) => {
+    setMessage(messageValue);
   };
 
   useEffect(() => {
@@ -57,9 +67,10 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
       form.setFieldsValue({
         message: data.message,
       });
+      setDefaultValueMessage(data?.message);
     }
   }, [visible, data]);
-  console.log("###data", data);
+
   return (
     <>
       <Modal
@@ -71,7 +82,7 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
         closable={true}
         destroyOnClose={true}
         centered
-        className="automation-trigger-modal"
+        className="automation-trigger-modal first-contact-message-modal"
       >
         <h3 className="font-bold text-center text-2xl mb-9">
           Customize Action
@@ -89,40 +100,12 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
               using the merge field {"<form>"} or an arbitrary link
             </p>
             <div className="sendmessage-textarea-wrap">
-              <div className="hint">
-                <Tooltip
-                  placement="topLeft"
-                  title={
-                    <>
-                      Messages without <b>emojis & special</b> characters are
-                      sent in segments of <b>160 characters.</b>
-                    </>
-                  }
-                >
-                  <Button>
-                    <AutomationActionMaxMessageIcon />| 160
-                  </Button>
-                </Tooltip>
-                <Tooltip
-                  placement="top"
-                  title={
-                    <>
-                      Carriers charge you for <b>every segment</b> they deliver
-                      to your recipient
-                    </>
-                  }
-                >
-                  <Button>
-                    <AutomationActionMessageIcon />
-                  </Button>
-                </Tooltip>
-              </div>
-              <Form.Item name="message" rules={[{ required: true, max: 160 }]}>
-                <Input.TextArea
-                  style={{ height: 200 }}
-                  placeholder="Send new messenge ..."
-                />
-              </Form.Item>
+              <EditableText
+                defaultValue={defaultValueMessage}
+                onChange={hanldeChangeMessage}
+                ref={childRef}
+                isFormEnable
+              />
               <div className="textarea-actions">
                 <AttachmentIcon onClick={showUpload} />
                 <EmojiIcon onClick={() => setShowEmoji(true)} />
