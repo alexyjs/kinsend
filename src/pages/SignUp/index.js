@@ -18,6 +18,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import { useSearchParams } from "react-router-dom";
 
 import { SuccessIcon } from "../../assets/svg";
 import {
@@ -65,6 +66,9 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const { close, show, visible } = useModal();
   const { listSubscriptionPrices } = useSelector(selectSubscriptions);
+  const [searchParams] = useSearchParams();
+  const planIdQueryParam = searchParams.get("planId");
+  // const typePlanQueryParam = searchParams.get("type");
 
   const subscriptionPrices = useMemo(() => {
     return _.orderBy(listSubscriptionPrices, "unit_amount");
@@ -115,9 +119,14 @@ const SignUp = () => {
 
   useEffect(() => {
     if (subscriptionPrices) {
-      setSelectedPlan(subscriptionPrices[0]);
+      const selectedPlan = subscriptionPrices.filter((item) => item.id === planIdQueryParam)[0];
+      if (planIdQueryParam && selectedPlan) {
+        setSelectedPlan(selectedPlan);
+      } else {
+        setSelectedPlan(subscriptionPrices[0]);
+      }
     }
-  }, [subscriptionPrices]);
+  }, [planIdQueryParam, subscriptionPrices]);
 
   useEffect(() => {
     dispatch(getListSubscriptionPricesAsync());
