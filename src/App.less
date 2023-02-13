@@ -331,6 +331,60 @@ h1 {
   text-transform: uppercase;
 }
 
+.sendmessage-textarea-wrap {
+  position: relative;
+
+  .hint {
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    right: 10px;
+    display: inline-flex;
+    // align-items: center;
+
+    button {
+      display: inline-flex;
+      background: #f1f2f7;
+      opacity: 0.5;
+      border: 1px solid #dcdcdc;
+      border-radius: 8px;
+      cursor: default;
+      align-items: center;
+
+      & + button {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  textarea {
+    padding-right: 150px;
+  }
+
+  .textarea-actions {
+    position: absolute;
+    z-index: 1;
+    bottom: 10px;
+    right: 20px;
+    display: inline-flex;
+    align-items: center;
+
+    svg {
+      cursor: pointer;
+
+      & + svg {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .ant-form-item-has-error {
+    & + .textarea-actions {
+      bottom: 40px;
+    }
+  }
+}
+
 @media only screen and (max-width: 768px) {
   .ant-modal-close {
     width: 16px;

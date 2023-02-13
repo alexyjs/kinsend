@@ -10,10 +10,11 @@ import {
   selectAutomatedResponses,
   toggleFirstContactAsync,
 } from "../../redux/automatedResponsesReducer";
-
+import { getMessagePreview } from "../../utils";
 import "./styles.less";
 import { useMemo } from "react";
 import { useEffect } from "react";
+import { selectUsers } from "../../redux/userReducer";
 
 const shortenMessage = (message) => {
   return message.length < 50 ? message : message.substring(0, 50) + "...";
@@ -35,6 +36,16 @@ const FirstContactForm = ({ initValue }) => {
   const [tasks, setTasks] = useState(initValue?.tasks || []);
   const [selectedAction, setSelectedAction] = useState({});
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const { user } = useSelector(selectUsers);
+
+  const userPreviewFields = useMemo(() => {
+    return {
+      fname: user?.firstName,
+      lname: user?.lastName,
+      name: `${user?.firstName} ${user?.lastName}`,
+      mobile: `${user?.phoneNumber[0].code}${user?.phoneNumber[0].phone}`,
+    };
+  }, [user]);
 
   const enableSaveBtn = useMemo(() => {
     return isTasksValid(tasks) && tasks.some((task) => task.isUpdated);
@@ -140,11 +151,19 @@ const FirstContactForm = ({ initValue }) => {
                 )}
                 ADD TASK
               </h4>
-              <p className="text-white short-message">
-                {tasks[0]?.message
-                  ? shortenMessage(tasks[0]?.message)
-                  : "Send Message"}
-              </p>
+              <p
+                className="text-white short-message text-ellipsis overflow-hidden truncate w-full"
+                dangerouslySetInnerHTML={{
+                  __html: tasks[0]?.message
+                    ? getMessagePreview(tasks[0]?.message, userPreviewFields)
+                        .replace(/<fname>/gi, `&lt;fname&gt;`)
+                        .replace(/<lname>/gi, `&lt;lname&gt;`)
+                        .replace(/<name>/gi, `&lt;name&gt;`)
+                        .replace(/<mobile>/gi, `&lt;mobile&gt;`)
+                        .replace(/<form>/gi, `&lt;form&gt;`)
+                    : "Send Message",
+                }}
+              ></p>
             </div>
           </div>
           <div className="first-contact-action-item">
@@ -174,11 +193,19 @@ const FirstContactForm = ({ initValue }) => {
                 )}
                 ADD TASK
               </h4>
-              <p className="text-white short-message">
-                {tasks[1]?.message
-                  ? shortenMessage(tasks[1]?.message)
-                  : "Send Message"}
-              </p>
+              <p
+                className="text-white short-message text-ellipsis overflow-hidden truncate w-full"
+                dangerouslySetInnerHTML={{
+                  __html: tasks[1]?.message
+                    ? getMessagePreview(tasks[0]?.message, userPreviewFields)
+                        .replace(/<fname>/gi, `&lt;fname&gt;`)
+                        .replace(/<lname>/gi, `&lt;lname&gt;`)
+                        .replace(/<name>/gi, `&lt;name&gt;`)
+                        .replace(/<mobile>/gi, `&lt;mobile&gt;`)
+                        .replace(/<form>/gi, `&lt;form&gt;`)
+                    : "Send Message",
+                }}
+              ></p>
             </div>
           </div>
           <SetMessageModal

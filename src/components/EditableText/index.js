@@ -16,11 +16,18 @@ import {
 
 import "./styles.less";
 
-import { MERGE_FIELDS } from "../../utils/constants";
+import { MERGE_FIELDS, MERGE_FIELDS_WITH_FORM } from "../../utils/constants";
 
 const EditableText = forwardRef(
   (
-    { defaultValue, onChange, className, handleEnterSubmit, isDropdownTop },
+    {
+      defaultValue,
+      onChange,
+      className,
+      handleEnterSubmit,
+      isDropdownTop,
+      isFormEnable,
+    },
     ref
   ) => {
     const [value, setValue] = useState("");
@@ -31,15 +38,14 @@ const EditableText = forwardRef(
     const [cursor, setCursor] = useState(0);
     const editableRef = useRef();
 
-    const memoizedFields = useMemo(
-      () =>
-        fieldValue
-          ? MERGE_FIELDS.filter(({ fieldLabel }) =>
-              fieldLabel.includes(fieldValue)
-            )
-          : MERGE_FIELDS,
-      [fieldValue]
-    );
+    const memoizedFields = useMemo(() => {
+      const mergeFields = isFormEnable ? MERGE_FIELDS_WITH_FORM : MERGE_FIELDS;
+      return fieldValue
+        ? mergeFields.filter(({ fieldLabel }) =>
+            fieldLabel.includes(fieldValue)
+          )
+        : mergeFields;
+    }, [fieldValue, isFormEnable]);
 
     useImperativeHandle(
       ref,
@@ -55,6 +61,7 @@ const EditableText = forwardRef(
             newValue.slice(indexSelectedField);
           newValue = newValue
             .replace(/<fname>/gi, `&lt;fname&gt;`)
+            .replace(/<form>/gi, `&lt;form&gt;`)
             .replace(/<lname>/gi, `&lt;lname&gt;`)
             .replace(/<name>/gi, `&lt;name&gt;`)
             .replace(/<mobile>/gi, `&lt;mobile&gt;`)
@@ -123,6 +130,7 @@ const EditableText = forwardRef(
       let newValue = e.target.innerHTML || "";
       let result = newValue
         .replace(`<fname>`, `&lt;fname&gt;`)
+        .replace(`<form>`, `&lt;form&gt;`)
         .replace(`<lname>`, `&lt;lname&gt;`)
         .replace(`<name>`, `&lt;name&gt;`)
         .replace(`<mobile>`, `&lt;mobile&gt;`)
@@ -298,6 +306,10 @@ const EditableText = forwardRef(
           `<span class=mergeField contentEditable=false>&lt;fname&gt;</span>`
         )
         .replace(
+          /&lt;form&gt;/gi,
+          `<span class=mergeField contentEditable=false>&lt;form&gt;</span>`
+        )
+        .replace(
           /&lt;lname&gt;/gi,
           `<span class=mergeField contentEditable=false>&lt;lname&gt;</span>`
         )
@@ -334,6 +346,14 @@ const EditableText = forwardRef(
         .replace(
           /<mobile>/gi,
           `<span class=mergeField contentEditable=false>&lt;mobile&gt;</span>`
+        )
+        .replace(
+          /<form>/gi,
+          `<span class=mergeField contentEditable=false>&lt;form&gt;</span>`
+        )
+        .replace(
+          /\n/gi,
+          `<br />`
         );
       setValue(initValue);
       editableRef.current.innerHTML = initValue;

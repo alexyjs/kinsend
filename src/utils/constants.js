@@ -404,3 +404,28 @@ export const MERGE_FIELDS = [
     text: "Contact's last name",
   },
 ];
+
+export const MERGE_FIELDS_WITH_FORM = [
+  {
+    fieldLabel: "fname",
+    text: "Contact's first name",
+    label: "firstName",
+  },
+  {
+    fieldLabel: "name",
+    text: "Contact's full name",
+  },
+  {
+    fieldLabel: "mobile",
+    text: "Contact's mobile name",
+  },
+  {
+    fieldLabel: "lname",
+    text: "Contact's last name",
+  },
+  {
+    fieldLabel: "form",
+    text: "Send a link to your default form or Select a Form",
+    // label: "form",
+  },
+];
