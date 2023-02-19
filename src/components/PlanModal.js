@@ -1,6 +1,12 @@
 import { Button, Card, Col, Modal, Radio, Row, Typography } from "antd";
 import _ from "lodash";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Switch } from "antd";
+import classnames from "classnames";
+
+import { PLAN_PAYMENT_METHOD } from "../utils/constants";
+
+import "./PlanModal.less";
 
 const PlanModal = ({
   visible,
@@ -8,10 +14,17 @@ const PlanModal = ({
   handleCancel,
   subscriptionPrices,
   disabled,
+  planPaymentMethod,
+  handleChangeTypePlan,
 }) => {
+  const [planPaymentMethodState, setPlanPaymentMethodState] = useState(planPaymentMethod || PLAN_PAYMENT_METHOD.MONTHLY)
   const handleSelectSubscription = (subscription) => {
     handleOk(subscription);
   };
+
+  useEffect(() => {
+    setPlanPaymentMethodState(planPaymentMethod);
+  }, [planPaymentMethod]);
 
   return (
     <Modal
@@ -27,22 +40,24 @@ const PlanModal = ({
       <Typography.Title level={1} className="text-center">
         Get Started with Kinsend
       </Typography.Title>
-      {/* <Typography className={`mb-4 text-center`}>
-        <p>
-          Want to estimate your monthly spend?{" "}
-          <span className="text-primary font-bold">
-            Use our handy calculator
-          </span>
-        </p>
-      </Typography>
-      <Typography className={`mb-4 text-center`}>
-        <p>
-          Want to learn more about SMS Rates?{" "}
-          <span className="text-primary font-bold">
-            Check pricing by country
-          </span>
-        </p>
-      </Typography> */}
+      <div className="w-tabs-list-h mt-4">
+        <button
+          className={classnames("w-tabs-item", {
+            active: planPaymentMethodState !== PLAN_PAYMENT_METHOD.ANNUAL,
+          })}
+          onClick={() => handleChangeTypePlan(PLAN_PAYMENT_METHOD.MONTHLY)}
+        >
+          Monthly
+        </button>
+        <button
+          className={classnames("w-tabs-item", {
+            active: planPaymentMethodState === PLAN_PAYMENT_METHOD.ANNUAL,
+          })}
+          onClick={() => handleChangeTypePlan(PLAN_PAYMENT_METHOD.ANNUAL)}
+        >
+          Annual
+        </button>
+      </div>
       <div className="text-center my-8">
         <Radio.Group
           defaultValue="servicePlans"

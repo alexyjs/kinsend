@@ -50,7 +50,7 @@ export async function makeDefaultPaymentMethodAPI(paymentMethodId) {
   return handleCallAPI(payload);
 }
 
-export async function createPaymentSubscription(stripeCustomerUserId, priceID) {
+export async function createPaymentSubscription(stripeCustomerUserId, priceID, planPaymentMethod) {
   const payload = {
     method: "POST",
     url: `${process.env.REACT_APP_API_BASE_URL}/subscriptions`,
@@ -59,6 +59,7 @@ export async function createPaymentSubscription(stripeCustomerUserId, priceID) {
       items: [
         {
           price: priceID,
+          planPaymentMethod: planPaymentMethod,
         },
       ],
     },
@@ -82,7 +83,7 @@ export async function createPaymentCharge(amount, paymentMethodId) {
 
 // saga
 export function* addPaymentMethodSaga(action) {
-  const { paymentMethod, user, priceID } = action.payload;
+  const { paymentMethod, user, priceID, planPaymentMethod } = action.payload;
   const { response, errors } = yield call(addPaymentMethodAPI, {
     paymentMethodId: paymentMethod.id,
     type: paymentMethod.type,
@@ -92,7 +93,7 @@ export function* addPaymentMethodSaga(action) {
     response.stripePaymentMethodId
   );
   const { response: responseSubscription, errors: errorsSubscription } =
-    yield call(createPaymentSubscription, user.stripeCustomerUserId, priceID);
+    yield call(createPaymentSubscription, user.stripeCustomerUserId, priceID, planPaymentMethod);
   if (responseSubscription) {
     yield put(addPaymentSuccess(responseSubscription));
   } else {

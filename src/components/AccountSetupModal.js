@@ -15,6 +15,7 @@ import {
   getListSubscriptionPricesAsync,
   selectSubscriptions,
 } from "../redux/subscriptionReducer";
+import { PLAN_PAYMENT_METHOD } from "./../utils/constants";
 
 const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
   // const { updatedUserSuccess } = useSelector(selectUpdatedUserSuccess);
@@ -26,6 +27,7 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
   const [form] = Form.useForm();
   const { close: closePlan, show: showPlan, visible: visiblePlan } = useModal();
   const [selectedSubscription, setSelectedSubscription] = useState(null);
+  const [planPaymentMethod, setPlanPaymentMethod] = useState(PLAN_PAYMENT_METHOD.MONTHLY);
   const { listSubscriptionPrices } = useSelector(selectSubscriptions);
   const { user } = useSelector(selectUsers);
 
@@ -39,6 +41,10 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
 
   const handleSelectSubscription = (subscription) => {
     setSelectedSubscription(subscription);
+  };
+
+  const handleChangeTypePlan = (planPaymentMethodChanged) => {
+    setPlanPaymentMethod(planPaymentMethodChanged);
   };
 
   const handleFinish = async (values) => {
@@ -66,6 +72,7 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
           paymentMethod,
           user,
           priceID: selectedSubscription.id,
+          planPaymentMethod: planPaymentMethod
         })
       );
     } catch (e) {
@@ -93,6 +100,14 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
       handleOk();
     }
   }, [addPaymentSuccess, handleOk]);
+
+  useEffect(() => {
+    if (user && subscriptionPrices?.length) {
+      const priceId = user?.planSubscription?.priceId || subscriptionPrices[0]?.id;
+      setPlanPaymentMethod(user?.planSubscription?.planPaymentMethod || PLAN_PAYMENT_METHOD.MONTHLY);
+      setSelectedSubscription(subscriptionPrices.filter((item => item.id === priceId))[0])
+    }
+  }, [user, subscriptionPrices]);
 
   return (
     <>
@@ -199,12 +214,14 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
       </Modal>
       <PlanModal
         handleCancel={closePlan}
-        handleOk={(subscription) => {
-          handleSelectSubscription(subscription);
+        handleOk={(data) => {
+          handleSelectSubscription(data);
           closePlan();
         }}
         visible={visiblePlan}
         subscriptionPrices={subscriptionPrices}
+        planPaymentMethod={planPaymentMethod}
+        handleChangeTypePlan={handleChangeTypePlan}
       />
     </>
   );
