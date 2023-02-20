@@ -27,7 +27,7 @@ import {
   resendVerifyEmailAsync,
 } from "../../redux/userReducer";
 import { phoneValidator } from "../../utils";
-import { INFO_FROM } from "../../utils/constants";
+import { INFO_FROM, PLAN_PAYMENT_METHOD } from "../../utils/constants";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "../../utils/validations";
 import { InputPhone, InputSocial, PlanModal } from "../../components";
 import { useModal } from "../../hook/useModal";
@@ -61,6 +61,7 @@ const SignUp = () => {
   const [form] = Form.useForm();
   const [isEnd, setIsEnd] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState();
+  const [planPaymentMethod, setPlanPaymentMethod] = useState(PLAN_PAYMENT_METHOD.MONTHLY);
   const { isLoading, signupSuccess } = useSelector(selectCreateUser);
   const swiperRef = React.useRef(null);
   const dispatch = useDispatch();
@@ -87,9 +88,17 @@ const SignUp = () => {
       try {
         let params = { ...values };
         params.phoneNumber = [params.phoneNumber];
+        params.planSubscription = {
+          priceId: selectedPlan.id,
+          planPaymentMethod: planPaymentMethod,
+        };
         dispatch(createUserAsync(params));
       } catch {}
     }
+  };
+
+  const handleChangeTypePlan = (planPaymentMethodChanged) => {
+    setPlanPaymentMethod(planPaymentMethodChanged);
   };
 
   const handleSelectPlan = (subscription) => {
@@ -119,7 +128,9 @@ const SignUp = () => {
 
   useEffect(() => {
     if (subscriptionPrices) {
-      const selectedPlan = subscriptionPrices.filter((item) => item.id === planIdQueryParam)[0];
+      const selectedPlan = subscriptionPrices.filter(
+        (item) => item.id === planIdQueryParam
+      )[0];
       if (planIdQueryParam && selectedPlan) {
         setSelectedPlan(selectedPlan);
       } else {
@@ -475,6 +486,9 @@ const SignUp = () => {
         visible={visible}
         subscriptionPrices={subscriptionPrices}
         // disabled={true}
+        selectedPlan={selectedPlan}
+        planPaymentMethod={planPaymentMethod}
+        handleChangeTypePlan={handleChangeTypePlan}
       />
     </div>
   );

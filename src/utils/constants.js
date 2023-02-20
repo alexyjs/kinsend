@@ -429,3 +429,8 @@ export const MERGE_FIELDS_WITH_FORM = [
     // label: "form",
   },
 ];
+
+export const PLAN_PAYMENT_METHOD = {
+  MONTHLY: 'MONTHLY',
+  ANNUAL: 'ANNUAL',
+};
