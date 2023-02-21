@@ -27,7 +27,9 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
   const [form] = Form.useForm();
   const { close: closePlan, show: showPlan, visible: visiblePlan } = useModal();
   const [selectedSubscription, setSelectedSubscription] = useState(null);
-  const [planPaymentMethod, setPlanPaymentMethod] = useState(PLAN_PAYMENT_METHOD.MONTHLY);
+  const [planPaymentMethod, setPlanPaymentMethod] = useState(
+    PLAN_PAYMENT_METHOD.MONTHLY
+  );
   const { listSubscriptionPrices } = useSelector(selectSubscriptions);
   const { user } = useSelector(selectUsers);
 
@@ -72,7 +74,7 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
           paymentMethod,
           user,
           priceID: selectedSubscription.id,
-          planPaymentMethod: planPaymentMethod
+          planPaymentMethod: planPaymentMethod,
         })
       );
     } catch (e) {
@@ -80,7 +82,7 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
     }
   };
 
-  const { name, prices } = useMemo(() => {
+  const { name, prices, annual_prices } = useMemo(() => {
     const subscription = selectedSubscription || _.first(subscriptionPrices);
     if (_.isEmpty(subscription)) {
       return {};
@@ -103,9 +105,14 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
 
   useEffect(() => {
     if (user && subscriptionPrices?.length) {
-      const priceId = user?.planSubscription?.priceId || subscriptionPrices[0]?.id;
-      setPlanPaymentMethod(user?.planSubscription?.planPaymentMethod || PLAN_PAYMENT_METHOD.MONTHLY);
-      setSelectedSubscription(subscriptionPrices.filter((item => item.id === priceId))[0])
+      const priceId =
+        user?.planSubscription?.priceId || subscriptionPrices[0]?.id;
+      setPlanPaymentMethod(
+        user?.planSubscription?.planPaymentMethod || PLAN_PAYMENT_METHOD.MONTHLY
+      );
+      setSelectedSubscription(
+        subscriptionPrices.filter((item) => item.id === priceId)[0]
+      );
     }
   }, [user, subscriptionPrices]);
 
@@ -140,7 +147,11 @@ const AccountSetupModal = ({ visible, handleOk, handleCancel }) => {
           </Row>
           <Form.Item
             name="cardNumber"
-            label={`${name} (${prices})`}
+            label={`${name} (${
+              planPaymentMethod === PLAN_PAYMENT_METHOD.ANNUAL
+                ? annual_prices
+                : prices
+            })`}
             rules={[
               {
                 required: true,

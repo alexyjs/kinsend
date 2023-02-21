@@ -61,7 +61,9 @@ const SignUp = () => {
   const [form] = Form.useForm();
   const [isEnd, setIsEnd] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState();
-  const [planPaymentMethod, setPlanPaymentMethod] = useState(PLAN_PAYMENT_METHOD.MONTHLY);
+  const [planPaymentMethod, setPlanPaymentMethod] = useState(
+    PLAN_PAYMENT_METHOD.MONTHLY
+  );
   const { isLoading, signupSuccess } = useSelector(selectCreateUser);
   const swiperRef = React.useRef(null);
   const dispatch = useDispatch();
@@ -69,7 +71,7 @@ const SignUp = () => {
   const { listSubscriptionPrices } = useSelector(selectSubscriptions);
   const [searchParams] = useSearchParams();
   const planIdQueryParam = searchParams.get("planId");
-  // const typePlanQueryParam = searchParams.get("type");
+  const typePlanQueryParam = searchParams.get("type");
 
   const subscriptionPrices = useMemo(() => {
     return _.orderBy(listSubscriptionPrices, "unit_amount");
@@ -140,6 +142,10 @@ const SignUp = () => {
   }, [planIdQueryParam, subscriptionPrices]);
 
   useEffect(() => {
+    setPlanPaymentMethod(typePlanQueryParam === 'annual' ? PLAN_PAYMENT_METHOD.ANNUAL : PLAN_PAYMENT_METHOD.MONTHLY);
+  }, [typePlanQueryParam]);
+
+  useEffect(() => {
     dispatch(getListSubscriptionPricesAsync());
     if (swiperRef?.current?.swiper) {
       swiperRef.current.swiper.slideTo(0, 0);
@@ -154,8 +160,10 @@ const SignUp = () => {
           <p>
             Thank you for your interest in the KinSend Starter Plan
             <br />
-            starting at {selectedPlan?.product?.metadata?.prices ||
-              "$19.99/m"}{" "}
+            starting at{" "}
+            {planPaymentMethod === PLAN_PAYMENT_METHOD.ANNUAL
+              ? selectedPlan?.product?.metadata?.annual_prices
+              : selectedPlan?.product?.metadata?.prices}{" "}
             <span
               className="text-primary font-bold cursor-pointer"
               onClick={show}
