@@ -17,7 +17,9 @@ const PlanModal = ({
   planPaymentMethod,
   handleChangeTypePlan,
 }) => {
-  const [planPaymentMethodState, setPlanPaymentMethodState] = useState(planPaymentMethod || PLAN_PAYMENT_METHOD.MONTHLY)
+  const [planPaymentMethodState, setPlanPaymentMethodState] = useState(
+    planPaymentMethod || PLAN_PAYMENT_METHOD.MONTHLY
+  );
   const handleSelectSubscription = (subscription) => {
     handleOk(subscription);
   };
@@ -75,7 +77,8 @@ const PlanModal = ({
           const { unit_amount: unitAmount, id } = subscription;
           const product = _.get(subscription, "product", {});
           const { name, metadata = {}, key, code } = product;
-          const { messages, prices, subscribers, descriptions } = metadata;
+          const { messages, prices, annual_prices, subscribers, descriptions } =
+            metadata;
           return (
             <Col sm={{ span: 8 }} key={id}>
               <Card
@@ -87,7 +90,11 @@ const PlanModal = ({
                   <>
                     <div className="text-center bg-gray-1">
                       <p className="uppercase text-bold text-lg mb-2">{name}</p>
-                      <p className="text-bold text-5xl my-2">{prices}</p>
+                      <p className="text-bold text-5xl my-2">
+                        {planPaymentMethod === PLAN_PAYMENT_METHOD.ANNUAL
+                          ? annual_prices
+                          : prices}
+                      </p>
                       {/* <p className='text-bold text-5xl my-2'>
                         {accounting.formatMoney(unitAmount / 100 )}/m
                         </p> */}
