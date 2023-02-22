@@ -160,15 +160,19 @@ const AddNewAutomation = () => {
             <AutomationActionIcon className="mr-2" />
             Action
           </h4>
-          <span className="text-ellipsis overflow-hidden truncate w-full" dangerouslySetInnerHTML={{
-                  __html: tasks[0]?.message
-                    ? item?.message.replace(/<fname>/gi, `&lt;fname&gt;`)
-                        .replace(/<lname>/gi, `&lt;lname&gt;`)
-                        .replace(/<name>/gi, `&lt;name&gt;`)
-                        .replace(/<mobile>/gi, `&lt;mobile&gt;`)
-                        .replace(/<form>/gi, `&lt;form&gt;`)
-                    : "Send Message",
-                }} />
+          <span
+            className="text-ellipsis overflow-hidden truncate w-full"
+            dangerouslySetInnerHTML={{
+              __html: tasks[0]?.message
+                ? item?.message
+                    .replace(/<fname>/gi, `&lt;fname&gt;`)
+                    .replace(/<lname>/gi, `&lt;lname&gt;`)
+                    .replace(/<name>/gi, `&lt;name&gt;`)
+                    .replace(/<mobile>/gi, `&lt;mobile&gt;`)
+                    .replace(/<form>/gi, `&lt;form&gt;`)
+                : "Send Message",
+            }}
+          />
         </div>
       </div>
     );

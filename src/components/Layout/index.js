@@ -139,7 +139,7 @@ const LayoutComponent = ({ className, children, title }) => {
                 </NavLink>
               </Menu.Item>
               <Menu.Item key="automated-responses">
-                <NavLink  to="/automated-responses">
+                <NavLink to="/automated-responses">
                   <span>Automated Reponses</span>
                 </NavLink>
               </Menu.Item>

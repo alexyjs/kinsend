@@ -351,10 +351,7 @@ const EditableText = forwardRef(
           /<form>/gi,
           `<span class=mergeField contentEditable=false>&lt;form&gt;</span>`
         )
-        .replace(
-          /\n/gi,
-          `<br />`
-        );
+        .replace(/\n/gi, `<br />`);
       setValue(initValue);
       editableRef.current.innerHTML = initValue;
     }, [defaultValue]);

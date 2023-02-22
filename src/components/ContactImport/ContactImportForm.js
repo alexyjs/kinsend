@@ -49,7 +49,7 @@ const ContactImportForm = () => {
     if (
       file.type !== "text/csv" &&
       file.type !==
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
       notification.error({
         title: "Action failed",
@@ -143,25 +143,35 @@ const ContactImportForm = () => {
       <div className="px-7 md:px-12 py-1 md:py-4 bg-white rounded-t-lg shadow-md">
         <div className="flex md:flex-row flex-col justify-between items-center my-5">
           <div className="max-w-2xl">
-            <h2 className="text-lg text-black font-bold">Upload your CSV or XLSX File</h2>
-            {
-              step === steps.UPLOAD_FILE && (
-                <p className="block mt-5 md:max-w-md lg:max-w-full">
-                  Ensure that your table includes columns for First Name and Phone Number or Email.
-                  <br />
-                  Download sample CSV template file{' '}
-                  <a className="text-primary hover:underline" href="https://kinsend-public.s3.amazonaws.com/ks_contacts_sample.csv" download="ks_contacts_sample.csv">here</a>
-                </p>
-              )
-            }
+            <h2 className="text-lg text-black font-bold">
+              Upload your CSV or XLSX File
+            </h2>
+            {step === steps.UPLOAD_FILE && (
+              <p className="block mt-5 md:max-w-md lg:max-w-full">
+                Ensure that your table includes columns for First Name and Phone
+                Number or Email.
+                <br />
+                Download sample CSV template file{" "}
+                <a
+                  className="text-primary hover:underline"
+                  href="https://kinsend-public.s3.amazonaws.com/ks_contacts_sample.csv"
+                  download="ks_contacts_sample.csv"
+                >
+                  here
+                </a>
+              </p>
+            )}
           </div>
           {file ? (
             <p className="flex items-center space-x-2 bg-gray-1 py-4 px-6 mt-5 md:mt-0">
               <span>{file.name}</span>
-              <CloseOutlined className="cursor-pointer" onClick={() => {
-                setFile(null);
-                setStep(steps.UPLOAD_FILE);
-              }} />
+              <CloseOutlined
+                className="cursor-pointer"
+                onClick={() => {
+                  setFile(null);
+                  setStep(steps.UPLOAD_FILE);
+                }}
+              />
             </p>
           ) : (
             <Button
@@ -240,10 +250,11 @@ const ContactImportForm = () => {
           <Button
             type="primary"
             size="large"
-            className={`next-btn inline-flex items-center px-12 mt-3 md:mt-0 ${!isRequiredFieldsMapped
+            className={`next-btn inline-flex items-center px-12 mt-3 md:mt-0 ${
+              !isRequiredFieldsMapped
                 ? "opacity-30"
                 : "opacity-80 hover:opacity-100"
-              }`}
+            }`}
             onClick={handleNext}
             disabled={!isRequiredFieldsMapped}
             loading={importContactStatus === "loading"}

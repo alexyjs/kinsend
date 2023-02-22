@@ -385,7 +385,7 @@ export const selectAutomatedResponses = ({ automatedResponses }) => {
     firstContactSettings: automatedResponses.firstContactSettings,
     keyResponsesSettings: automatedResponses.keyResponsesSettings,
     hashTagOrEmojiResponsesSettings:
-    automatedResponses.hashTagOrEmojiResponsesSettings,
+      automatedResponses.hashTagOrEmojiResponsesSettings,
     regexResponsesSettings: automatedResponses.regexResponsesSettings,
   };
 };

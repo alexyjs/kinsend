@@ -142,7 +142,11 @@ const SignUp = () => {
   }, [planIdQueryParam, subscriptionPrices]);
 
   useEffect(() => {
-    setPlanPaymentMethod(typePlanQueryParam === 'annual' ? PLAN_PAYMENT_METHOD.ANNUAL : PLAN_PAYMENT_METHOD.MONTHLY);
+    setPlanPaymentMethod(
+      typePlanQueryParam === "annual"
+        ? PLAN_PAYMENT_METHOD.ANNUAL
+        : PLAN_PAYMENT_METHOD.MONTHLY
+    );
   }, [typePlanQueryParam]);
 
   useEffect(() => {

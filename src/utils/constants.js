@@ -431,6 +431,6 @@ export const MERGE_FIELDS_WITH_FORM = [
 ];
 
 export const PLAN_PAYMENT_METHOD = {
-  MONTHLY: 'MONTHLY',
-  ANNUAL: 'ANNUAL',
+  MONTHLY: "MONTHLY",
+  ANNUAL: "ANNUAL",
 };

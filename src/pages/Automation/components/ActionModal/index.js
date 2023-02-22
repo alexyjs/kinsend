@@ -64,11 +64,9 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
     setActionType(value);
   };
 
-
   const hanldeChangeMessage = (messageValue) => {
     setMessage(messageValue);
   };
-
 
   const handleResetActionType = () => {
     setActionType("");
@@ -142,7 +140,7 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
 
   useEffect(() => {
     setDefaultValueMessage(data?.message);
-  }, [data])
+  }, [data]);
 
   const renderDelayContent = () => {
     if (duration === DURATION_TYPE.TIME_FROM_TRIGGER) {
@@ -453,22 +451,24 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
               className=""
             >
               <div className="sendmessage-textarea-wrap">
-              <EditableText
-                defaultValue={defaultValueMessage}
-                onChange={hanldeChangeMessage}
-                ref={childRef}
-                isFormEnable
-              />
-              <div className="textarea-actions">
-                <AttachmentIcon onClick={showUpload} />
-                <EmojiIcon onClick={() => setShowEmoji(true)} />
-                {showEmoji && <EmojiPicker onEmojiSelect={handleChangeEmoji} />}
-                <UploadFileModal
-                  visible={visibleUpload}
-                  handleOk={handleUploadFile}
-                  handleCancel={closeUpload}
+                <EditableText
+                  defaultValue={defaultValueMessage}
+                  onChange={hanldeChangeMessage}
+                  ref={childRef}
+                  isFormEnable
                 />
-              </div>
+                <div className="textarea-actions">
+                  <AttachmentIcon onClick={showUpload} />
+                  <EmojiIcon onClick={() => setShowEmoji(true)} />
+                  {showEmoji && (
+                    <EmojiPicker onEmojiSelect={handleChangeEmoji} />
+                  )}
+                  <UploadFileModal
+                    visible={visibleUpload}
+                    handleOk={handleUploadFile}
+                    handleCancel={closeUpload}
+                  />
+                </div>
               </div>
               {attachment?.name && <b>{attachment?.name}</b>}
               <Row justify="end" className="mt-12">
