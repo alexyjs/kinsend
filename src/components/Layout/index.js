@@ -138,17 +138,12 @@ const LayoutComponent = ({ className, children, title }) => {
                   <span>Contact Import</span>
                 </NavLink>
               </Menu.Item>
+              <Menu.Item key="automated-responses">
+                <NavLink  to="/automated-responses">
+                  <span>Automated Reponses</span>
+                </NavLink>
+              </Menu.Item>
             </Menu.SubMenu>
-            <Menu.Item key="automated-responses">
-              <NavLink
-                to="/automated-responses"
-                onMouseOver={() => setHover(true)}
-                onMouseOut={() => setHover(false)}
-              >
-                <AutoResponse />
-                <span className="menu-item-label">Automated Reponses</span>
-              </NavLink>
-            </Menu.Item>
           </Menu>
         </Sider>
         <Layout className="layout-content">

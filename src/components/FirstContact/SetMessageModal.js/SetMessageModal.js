@@ -45,10 +45,7 @@ const SetMessageModal = ({ visible, handleOk, handleCancel, data, index }) => {
   };
 
   const handleChangeEmoji = (emojiObj) => {
-    let message = form.getFieldValue("message") || "";
-    form.setFieldsValue({
-      message: message + emojiObj.native,
-    });
+    childRef.current.triggerUpdateText(emojiObj.native);
     setShowEmoji(false);
   };
 

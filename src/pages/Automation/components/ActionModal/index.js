@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Row, Col, Form, Select, Modal, Button, Input, Tooltip } from "antd";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
@@ -23,6 +23,7 @@ import {
   DAY_OF_WEEK_TYPE,
   MONTH_TYPE,
 } from "../../../../utils/constants";
+import { EditableText } from "../../../../components";
 
 import { clearEmptyField } from "../../../../utils";
 
@@ -48,8 +49,10 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
   const [hours, setHoursState] = useState(0);
   const [minutes, setMinutesState] = useState(0);
   const [seconds, setSecondsState] = useState(0);
-
+  const [defaultValueMessage, setDefaultValueMessage] = useState("");
+  const [message, setMessage] = useState("");
   const [selectedTimezone, setSelectedTimezone] = useState({});
+  const childRef = useRef();
 
   const {
     close: closeUpload,
@@ -61,6 +64,12 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
     setActionType(value);
   };
 
+
+  const hanldeChangeMessage = (messageValue) => {
+    setMessage(messageValue);
+  };
+
+
   const handleResetActionType = () => {
     setActionType("");
   };
@@ -68,7 +77,7 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
   const hadnleSubmitSendMessage = (values) => {
     handleOk(data, index, {
       type: actionType,
-      message: values.message,
+      message: message,
       fileAttached: attachment,
       delay: null,
     });
@@ -123,16 +132,17 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
   };
 
   const handleChangeEmoji = (emojiObj) => {
-    let message = form.getFieldValue("message") || "";
-    form.setFieldsValue({
-      message: message + emojiObj.native,
-    });
+    childRef.current.triggerUpdateText(emojiObj.native);
     setShowEmoji(false);
   };
 
   const handleSelectTimeZome = (e) => {
     setSelectedTimezone(e);
   };
+
+  useEffect(() => {
+    setDefaultValueMessage(data?.message);
+  }, [data])
 
   const renderDelayContent = () => {
     if (duration === DURATION_TYPE.TIME_FROM_TRIGGER) {
@@ -443,55 +453,22 @@ const ActionModal = ({ visible, handleOk, handleCancel, data, index }) => {
               className=""
             >
               <div className="sendmessage-textarea-wrap">
-                <div className="hint">
-                  <Tooltip
-                    placement="topLeft"
-                    title={
-                      <>
-                        Messages without <b>emojis & special</b> characters are
-                        sent in segments of <b>160 characters.</b>
-                      </>
-                    }
-                  >
-                    <Button>
-                      <AutomationActionMaxMessageIcon />| 160
-                    </Button>
-                  </Tooltip>
-                  <Tooltip
-                    placement="top"
-                    title={
-                      <>
-                        Carriers charge you for <b>every segment</b> they
-                        deliver to your recipient
-                      </>
-                    }
-                  >
-                    <Button>
-                      <AutomationActionMessageIcon />
-                    </Button>
-                  </Tooltip>
-                </div>
-                <Form.Item
-                  name="message"
-                  rules={[{ required: true, max: 160 }]}
-                >
-                  <Input.TextArea
-                    style={{ height: 200 }}
-                    placeholder="Send new messenge ..."
-                  />
-                </Form.Item>
-                <div className="textarea-actions">
-                  <AttachmentIcon onClick={showUpload} />
-                  <EmojiIcon onClick={() => setShowEmoji(true)} />
-                  {showEmoji && (
-                    <EmojiPicker onEmojiSelect={handleChangeEmoji} />
-                  )}
-                  <UploadFileModal
-                    visible={visibleUpload}
-                    handleOk={handleUploadFile}
-                    handleCancel={closeUpload}
-                  />
-                </div>
+              <EditableText
+                defaultValue={defaultValueMessage}
+                onChange={hanldeChangeMessage}
+                ref={childRef}
+                isFormEnable
+              />
+              <div className="textarea-actions">
+                <AttachmentIcon onClick={showUpload} />
+                <EmojiIcon onClick={() => setShowEmoji(true)} />
+                {showEmoji && <EmojiPicker onEmojiSelect={handleChangeEmoji} />}
+                <UploadFileModal
+                  visible={visibleUpload}
+                  handleOk={handleUploadFile}
+                  handleCancel={closeUpload}
+                />
+              </div>
               </div>
               {attachment?.name && <b>{attachment?.name}</b>}
               <Row justify="end" className="mt-12">

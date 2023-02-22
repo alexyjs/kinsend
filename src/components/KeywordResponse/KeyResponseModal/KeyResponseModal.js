@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Row, Col, Form, Modal, Button, Input, Tooltip, Select } from "antd";
 import { useModal } from "../../../hook/useModal";
 import UploadFileModal from "../../UploadFileModal";
@@ -14,6 +14,9 @@ import {
 import "react-datepicker/dist/react-datepicker.css";
 import { useSelector } from "react-redux";
 import { selectSettings } from "../../../redux/settingsReducer";
+import { EditableText } from "../../../components";
+
+import "./styles.less";
 
 const emojiRegex =
   /^(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])$/;
@@ -23,6 +26,9 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
   const [attachment, setAttachment] = useState({});
   const [form] = Form.useForm();
   const [keyword, setKeyword] = useState("");
+  const [defaultValueMessage, setDefaultValueMessage] = useState("");
+  const [message, setMessage] = useState("");
+  const childRef = useRef();
 
   const {
     close: closeUpload,
@@ -32,9 +38,17 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
   const [showEmoji, setShowEmoji] = useState(false);
   const [showInputEmoji, setShowInputEmoji] = useState(false);
 
+  const hanldeChangeMessage = (messageValue) => {
+    setMessage(messageValue);
+  };
+
   const handleSubmitSendMessage = (values) => {
     handleOk(type, {
-      message: values.message,
+      message: message
+        .replace(/<span>/gi, "")
+        .replace(/<\/span>/gi, "")
+        .replace(/&lt;/gi, "<")
+        .replace(/&gt;/gi, ">"),
       keyword: values.keyword,
       tagId: values.tagId,
       fileAttached: attachment?.url || "",
@@ -66,10 +80,7 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
   };
 
   const handleChangeEmoji = (emojiObj) => {
-    let message = form.getFieldValue("message") || "";
-    form.setFieldsValue({
-      message: message + emojiObj.native,
-    });
+    childRef.current.triggerUpdateText(emojiObj.native);
     setShowEmoji(false);
   };
 
@@ -107,10 +118,11 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
     } else {
       setAttachment(data.fileAttached);
       form.setFieldsValue({
-        message: data.response.message,
+        // message: data.response.message,
         keyword: data.keyword,
         tagId: data.tagId || "",
       });
+      setDefaultValueMessage(data.response.message);
     }
   }, [visible, data]);
 
@@ -125,7 +137,7 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
         closable={true}
         destroyOnClose={true}
         centered
-        className="automation-trigger-modal"
+        className="automation-trigger-modal key-response-modal"
       >
         <h3 className="font-bold text-center text-2xl mb-9">
           {!!data ? "Edit" : "New"} Response
@@ -176,43 +188,12 @@ const KeyResponseModal = ({ visible, handleOk, handleCancel, data, type }) => {
                 AUTO RESPONSE
               </label>
               <div className="sendmessage-textarea-wrap">
-                <div className="hint">
-                  <Tooltip
-                    placement="topLeft"
-                    title={
-                      <>
-                        Messages without <b>emojis & special</b> characters are
-                        sent in segments of <b>160 characters.</b>
-                      </>
-                    }
-                  >
-                    <Button>
-                      <AutomationActionMaxMessageIcon />| 160
-                    </Button>
-                  </Tooltip>
-                  <Tooltip
-                    placement="top"
-                    title={
-                      <>
-                        Carriers charge you for <b>every segment</b> they
-                        deliver to your recipient
-                      </>
-                    }
-                  >
-                    <Button>
-                      <AutomationActionMessageIcon />
-                    </Button>
-                  </Tooltip>
-                </div>
-                <Form.Item
-                  name="message"
-                  rules={[{ required: true, max: 160 }]}
-                >
-                  <Input.TextArea
-                    style={{ height: 200 }}
-                    placeholder="Send new messenge ..."
-                  />
-                </Form.Item>
+                <EditableText
+                  defaultValue={defaultValueMessage}
+                  onChange={hanldeChangeMessage}
+                  ref={childRef}
+                  isFormEnable
+                />
                 <div className="textarea-actions">
                   <AttachmentIcon onClick={showUpload} />
                   <EmojiIcon onClick={() => setShowEmoji(true)} />
