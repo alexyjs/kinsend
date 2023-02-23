@@ -106,7 +106,7 @@ const SideBarUpdate = ({ data, className }) => {
                 key={`sidebar-update-item-${item?.id}`}
               >
                 <h3
-                  className="text-ellipsis overflow-hidden truncate"
+                  className="text-ellipsis overflow-hidden truncate pl-2 pr-2"
                   dangerouslySetInnerHTML={{
                     __html: item.message
                       .replace(/<fname>/gi, `&lt;fname&gt;`)

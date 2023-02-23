@@ -330,7 +330,7 @@ const EditableText = forwardRef(
     };
 
     useEffect(() => {
-      const initValue = defaultValue
+      const initValue = (defaultValue || '')
         .replace(
           /<fname>/gi,
           `<span class=mergeField contentEditable=false>&lt;fname&gt;</span>`

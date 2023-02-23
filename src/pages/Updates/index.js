@@ -101,7 +101,7 @@ const Profile = () => {
                 </h2>
                 <div className="upcomming-block p-4 pr-8 w-110	">
                   <h3
-                    className="text-ellipsis overflow-hidden truncate text-xl	"
+                    className="text-ellipsis overflow-hidden truncate text-xl pl-2 pr-2"
                     dangerouslySetInnerHTML={{
                       __html: upcomingUpdate?.message
                         .replace(/<fname>/gi, `&lt;fname&gt;`)

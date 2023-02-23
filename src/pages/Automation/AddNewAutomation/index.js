@@ -161,7 +161,7 @@ const AddNewAutomation = () => {
             Action
           </h4>
           <span
-            className="text-ellipsis overflow-hidden truncate w-full"
+            className="text-ellipsis overflow-hidden truncate w-full pl-2 pr-2 text-center"
             dangerouslySetInnerHTML={{
               __html: tasks[0]?.message
                 ? item?.message

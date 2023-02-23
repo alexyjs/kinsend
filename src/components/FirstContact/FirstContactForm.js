@@ -152,7 +152,7 @@ const FirstContactForm = ({ initValue }) => {
                 ADD TASK
               </h4>
               <p
-                className="text-white short-message text-ellipsis overflow-hidden truncate w-full"
+                className="text-white short-message text-ellipsis overflow-hidden truncate w-full pl-2 pr-2"
                 dangerouslySetInnerHTML={{
                   __html: tasks[0]?.message
                     ? getMessagePreview(tasks[0]?.message, userPreviewFields)
@@ -194,7 +194,7 @@ const FirstContactForm = ({ initValue }) => {
                 ADD TASK
               </h4>
               <p
-                className="text-white short-message text-ellipsis overflow-hidden truncate w-full"
+                className="text-white short-message text-ellipsis overflow-hidden truncate w-full pl-2 pr-2"
                 dangerouslySetInnerHTML={{
                   __html: tasks[1]?.message
                     ? getMessagePreview(tasks[0]?.message, userPreviewFields)
